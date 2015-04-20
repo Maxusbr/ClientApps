@@ -1,0 +1,35 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Menu="clr-namespace:DTCDev.Client.Menu;assembly=DTCDev.Client"
+             x:Class="DTCDev.Client.Cars.Controls.Controls.Settings.SettingsCars"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="600">
+    <Grid x:Name="LayoutRoot" Background="White">
+        <ListBox ItemsSource="{Binding Path=Items}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Width="560">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Название авто" Margin="8"/>
+                        <TextBox Text="{Binding Path=Name, Mode=TwoWay}" Grid.Column="1" Margin="5"/>
+                        <TextBlock Text="VIN" Grid.Column="2" Margin="8"/>
+                        <TextBox Text="{Binding Path=VIN, Mode=TwoWay}" Grid.Column="3" Margin="5"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</UserControl>

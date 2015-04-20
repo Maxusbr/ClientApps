@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="DTCDev.Client.Cars.Controls.Controls.Driver.DriversControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             xmlns:Menu="clr-namespace:DTCDev.Client.Menu;assembly=DTCDev.Client"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid x:Name="LayoutRoot" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Margin="8" Orientation="Horizontal" x:Name="stkBack" Visibility="Collapsed">
+            <Image Width="32" Height="32" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/back.png" Cursor="Hand" MouseLeftButtonUp="Image_MouseLeftButtonUp"/>
+            <TextBlock Text="Назад" Margin="8,0" VerticalAlignment="Center"/>
+        </StackPanel>
+        <WrapPanel Grid.Row="1" Margin="8">
+            <Grid Width="200" Height="40" Margin="5" x:Name="grdDriversList" MouseLeftButtonUp="grdDistanceReport_MouseLeftButtonUp" Cursor="Hand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.ColumnSpan="2" Background="White" Opacity="0"/>
+                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/ReportsMenu/mileage.png" Width="33"/>
+                <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="Список водителей" VerticalAlignment="Center" FontSize="16" Margin="10,0,0,0"/>
+            </Grid>
+            <Grid Width="200" Height="40" Margin="5" x:Name="grdDriversToCar" MouseLeftButtonUp="grdDriversToCar_MouseLeftButtonUp" Cursor="Hand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.ColumnSpan="2" Background="White" Opacity="0"/>
+                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/ReportsMenu/mileage.png" Width="33"/>
+                <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="Привязка водителя к авто" VerticalAlignment="Center" FontSize="16" Margin="10,0,0,0"/>
+            </Grid>
+        </WrapPanel>
+        <Grid Grid.Row="1" Background="White" x:Name="grdContent" Visibility="Collapsed"/>
+    </Grid>
+</UserControl>

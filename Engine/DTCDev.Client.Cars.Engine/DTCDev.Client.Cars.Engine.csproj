@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4A0AEF23-4112-4A4D-998E-BB88AD24C0C9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DTCDev.Client.Cars.Engine</RootNamespace>
+    <AssemblyName>DTCDev.Client.Cars.Engine</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Cars\M2B Cars\packages\Newtonsoft.Json.6.0.6\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Device" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppLogic\CarSelector.cs" />
+    <Compile Include="AppLogic\DistanceCalculator.cs" />
+    <Compile Include="AppLogic\GeoAdress.cs" />
+    <Compile Include="DisplayModels\DISP_Car.cs" />
+    <Compile Include="DisplayModels\IndicatorPercentModel.cs" />
+    <Compile Include="DisplayModels\VmPolyline.cs" />
+    <Compile Include="Handlers\Cars\CarBaseHandler.cs" />
+    <Compile Include="Handlers\Cars\CarsHandler.cs" />
+    <Compile Include="Handlers\Cars\DriverHandler.cs" />
+    <Compile Include="Handlers\Cars\HistoryHandler.cs" />
+    <Compile Include="Handlers\Cars\ReportsHandler.cs" />
+    <Compile Include="Handlers\Cars\ZonesHandler.cs" />
+    <Compile Include="Handlers\LoginHandler.cs" />
+    <Compile Include="Handlers\UpdateDriver.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Handlers\ClientCl.cs" />
+    <Compile Include="Handlers\SocketClient.cs" />
+    <Compile Include="Handlers\TCPConnection.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Models\DTCDev.Models.CarBase\DTCDev.Models.CarBase.csproj">
+      <Project>{c6a37dea-e583-41eb-8d92-4c6e97c4b74e}</Project>
+      <Name>DTCDev.Models.CarBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Models\DTCDev.Models.CarsSending\DTCDev.Models.CarsSending.csproj">
+      <Project>{17d29bc2-3bde-4104-a96b-db91c1dfa5e7}</Project>
+      <Name>DTCDev.Models.CarsSending</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Models\DTCDev.Models.Cars\DTCDev.Models.Cars.csproj">
+      <Project>{5bd144f2-bc4a-4d4e-b191-101a681f6758}</Project>
+      <Name>DTCDev.Models.Cars</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Models\DTCDev.Models.DeviceSender\DTCDev.Models.DeviceSender.csproj">
+      <Project>{3bc2c930-6d31-43bf-a16f-a5f3b7a59240}</Project>
+      <Name>DTCDev.Models.DeviceSender</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Models\DTCDev.Models\DTCDev.Models.csproj">
+      <Project>{ddd0ab63-faf8-4a78-9369-2481e912e641}</Project>
+      <Name>DTCDev.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DTCDev.Client.Cars.Manager\DTCDev.Client.Cars.Manager.csproj">
+      <Project>{acb82fb0-8a28-4b80-9d15-9f4961e8465b}</Project>
+      <Name>DTCDev.Client.Cars.Manager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DTCDev.Client.Controls\DTCDev.Client.Controls.Map.csproj">
+      <Project>{226f3575-b683-446d-a2f0-181291dc8787}</Project>
+      <Name>DTCDev.Client.Controls.Map</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DTCDev.Client.ViewModel\DTCDev.Client.ViewModel.csproj">
+      <Project>{76c18809-1b91-41ee-901b-36db43e59fb1}</Project>
+      <Name>DTCDev.Client.ViewModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DTCDev\DTCDev.csproj">
+      <Project>{d839aa11-c210-446b-a41a-65c6020c4a33}</Project>
+      <Name>DTCDev</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

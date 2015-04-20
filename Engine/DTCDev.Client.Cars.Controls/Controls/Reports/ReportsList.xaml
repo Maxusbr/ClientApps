@@ -1,0 +1,77 @@
+﻿<UserControl x:Class="DTCDev.Client.Cars.Controls.Controls.Reports.ReportsList"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="600">
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Margin="8" Orientation="Horizontal" x:Name="stkBack" Visibility="Collapsed">
+            <Image Width="32" Height="32" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/back.png" Cursor="Hand" MouseLeftButtonUp="Image_MouseLeftButtonUp"/>
+            <TextBlock Text="Назад" Margin="8,0" VerticalAlignment="Center"/>
+        </StackPanel>
+        <WrapPanel Grid.Row="1">
+            <Grid Width="200" Height="40" Margin="5" x:Name="grdDistanceReport" MouseLeftButtonUp="grdDistanceReport_MouseLeftButtonUp" Cursor="Hand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.ColumnSpan="2" Background="White" Opacity="0"/>
+                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/ReportsMenu/mileage.png" Width="33"/>
+                <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="Пробег" VerticalAlignment="Center" FontSize="16" Margin="10,0,0,0"/>
+            </Grid>
+            <Grid Width="200" Height="40" Margin="5" x:Name="grdSpeedReport" MouseLeftButtonUp="grdSpeedReport_MouseLeftButtonUp" Cursor="Hand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.ColumnSpan="2" Background="White" Opacity="0"/>
+                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/ReportsMenu/report.png" Width="33"/>
+                <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="Скорость" VerticalAlignment="Center" FontSize="16" Margin="10,0,0,0"/>
+            </Grid>
+            <Grid Width="200" Height="40" Margin="5" x:Name="grdSpeedDropReport" MouseLeftButtonUp="grdSpeedDropReport_MouseLeftButtonUp" Cursor="Hand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.ColumnSpan="2" Background="White" Opacity="0"/>
+                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/ReportsMenu/excess.png" Width="33"/>
+                <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="Превышения скорости" VerticalAlignment="Center" FontSize="16" Margin="10,0,0,0"/>
+            </Grid>
+            <Grid Width="200" Height="40" Margin="5" x:Name="grdStartStopReport" MouseLeftButtonUp="grdStartStopReport_MouseLeftButtonUp" Cursor="Hand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.ColumnSpan="2" Background="White" Opacity="0"/>
+                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/ReportsMenu/work.png" Width="33"/>
+                <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="Начало/окончание работы" VerticalAlignment="Center" FontSize="16" Margin="10,0,0,0"/>
+            </Grid>
+            <Grid Width="200" Height="40" Margin="5" Visibility="Collapsed" x:Name="grdParkingReport" MouseLeftButtonUp="grdParkingReport_MouseLeftButtonUp" Cursor="Hand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.ColumnSpan="2" Background="White" Opacity="0"/>
+                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/ReportsMenu/stop.png" Width="33"/>
+                <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="Стоянки" VerticalAlignment="Center" FontSize="16" Margin="10,0,0,0"/>
+            </Grid>
+            <Grid Width="200" Height="40" Margin="5" x:Name="grdFuelReport" MouseLeftButtonUp="grdFuelReport_MouseLeftButtonUp" Cursor="Hand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.ColumnSpan="2" Background="White" Opacity="0"/>
+                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/ReportsMenu/Fuel-icon.png" Width="33"/>
+                <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="Отчеты о топливе (OBD II)" VerticalAlignment="Center" FontSize="16" Margin="10,0,0,0"/>
+            </Grid>
+        </WrapPanel>
+        <Grid Grid.Row="1" x:Name="grdContent" Visibility="Collapsed" Background="White">
+            
+        </Grid>
+    </Grid>
+</UserControl>

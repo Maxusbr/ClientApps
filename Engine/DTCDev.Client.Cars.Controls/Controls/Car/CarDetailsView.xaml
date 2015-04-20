@@ -1,0 +1,104 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Map="clr-namespace:DTCDev.Client.Controls.Map;assembly=DTCDev.Client.Controls.Map"
+             xmlns:Models="clr-namespace:DTCDev.Client.Cars.Controls.Models"
+             xmlns:local="clr-namespace:DTCDev.Client.Cars.Controls.Controls.Map" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
+             x:Class="DTCDev.Client.Cars.Controls.Controls.Car.CarDetailsView" 
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="400">
+    <UserControl.Resources>
+        
+
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
+        <DataTemplate x:Key="PolylineItemTemplate">
+            <Grid Height="1" Width="1">
+                <Map:MapPolyline Locations="{Binding Locations}" Stroke="#FFEE4B0E" StrokeThickness="3" IsClosed="True" Fill="#4CD85010" IsEnabled="{Binding EnableEdit}"/>
+                <Map:MapItemsControl ItemsSource="{Binding MovedLocations}" 
+					ItemContainerStyle="{DynamicResource MovedElementItemStyle}" 
+					Visibility="{Binding EnableEdit, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            </Grid>
+
+        </DataTemplate>
+        
+
+        <Models:BoolToColorConverter x:Key="BoolToColorConverter"/>
+
+        
+    </UserControl.Resources>
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="150"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="286"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="144"/>
+            </Grid.RowDefinitions>
+            <Image Grid.ColumnSpan="2" Grid.RowSpan="2" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/CarDetailsView/340116-5000x3350.jpg"/>
+            <Grid Grid.Row="1">
+                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/CarDetailsView/panel.png" />
+                <Border x:Name="brdrSpeed" Background="White" Width="22" Height="4" Margin="24,70,240,70" BorderBrush="#FF4477FF" BorderThickness="0" CornerRadius="1" RenderTransformOrigin="2.193,0.5">
+                    <Border.RenderTransform>
+                        <TransformGroup>
+                            <RotateTransform Angle="-30" x:Name="angRotate"/>
+                        </TransformGroup>
+                    </Border.RenderTransform>
+                </Border>
+                <Border Background="White" Width="22" Height="4" Margin="165,70,99,70" BorderBrush="#FF4477FF" BorderThickness="0" CornerRadius="1" RenderTransformOrigin="2.193,0.5">
+                    <Border.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="-30" x:Name="angRPM"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Border.RenderTransform>
+                </Border>
+                <Border Width="35" Height="8" BorderThickness="1" BorderBrush="#FF00EEFF" Margin="55,65,196,71">
+                    <Border Height="4" Margin="1" Background="#FF00EEFF" HorizontalAlignment="Left" Width="10"/>
+                </Border>
+                <Border Width="35" Height="8" BorderThickness="1" BorderBrush="#FF00EEFF" Margin="196,65,55,71">
+                    <Border Height="4" Margin="1" Background="#FF00EEFF" HorizontalAlignment="Left" Width="10"/>
+                </Border>
+                <Border BorderThickness="1" BorderBrush="#FF00EEFF" Margin="11,131,0,8" HorizontalAlignment="Left" Width="4">
+                    <Border  Background="#FF00EEFF" Visibility="Collapsed"/>
+                </Border>
+                <Border BorderThickness="1" BorderBrush="#FF00EEFF" Margin="16,129,0,8" HorizontalAlignment="Left" Width="4">
+                    <Border  Background="#FF00EEFF" Visibility="Collapsed"/>
+                </Border>
+                <Border BorderThickness="1" BorderBrush="#FF00EEFF" Margin="21,126,0,8" HorizontalAlignment="Left" Width="4">
+                    <Border  Background="#FF00EEFF" Visibility="Collapsed"/>
+                </Border>
+                <Border BorderThickness="1" BorderBrush="#FF00EEFF" Margin="268,131,0,8" HorizontalAlignment="Left" Width="4">
+                    <Border x:Name="brdrSatMin"  Background="#FF00EEFF" Visibility="Collapsed"/>
+                </Border>
+                <Border BorderThickness="1" BorderBrush="#FF00EEFF" Margin="263,129,0,8" HorizontalAlignment="Left" Width="4">
+                    <Border x:Name="brdrSatMid"  Background="#FF00EEFF" Visibility="Collapsed"/>
+                </Border>
+                <Border BorderThickness="1" BorderBrush="#FF00EEFF" Margin="258,126,0,8" HorizontalAlignment="Left" Width="4">
+                    <Border x:Name="brdrSatMax"  Background="#FF00EEFF" Visibility="Collapsed"/>
+                </Border>
+            </Grid>
+        </Grid>
+        <Map:Map x:Name="map" TargetZoomLevel="11" TargetCenter="{Binding MapCenterUser, Mode=TwoWay}" Center="{Binding MapCenter}" IsManipulationEnabled="False">
+            <TextBlock TextWrapping="Wrap" Text="{Binding CurrentLocation}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Visibility="Collapsed"/>
+            <TextBlock TextWrapping="Wrap" Text="&#xE1D9;" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,10,0,0" FontFamily="Segoe UI Symbol" Visibility="Collapsed"/>
+            <TextBlock TextWrapping="Wrap" Text="{Binding EnableEditZone, Mode=TwoWay}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="35,0,-25.757,0" FontFamily="Segoe UI Symbol" Visibility="Collapsed"/>
+            <local:MapViewElement Map:MapPanel.Location="{Binding MapCenter}"  Height="Auto"  Width="Auto" Visibility="Collapsed"/>
+            <Map:Pushpin Map:MapPanel.Location="{Binding MapCenter, Mode=TwoWay}" Background="{x:Null}" >
+                <local:MapViewElement DataContext="{Binding Car}" Margin="-60,0,0,-60" Visibility="{Binding VisOnMap}"/>
+            </Map:Pushpin>
+
+        </Map:Map>
+    </Grid>
+</UserControl>

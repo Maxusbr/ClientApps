@@ -1,0 +1,13 @@
+﻿<UserControl x:Class="DTCDev.Client.Sensors.Discret.Min.DiscretMinLock"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Width="25" Height="25">
+    
+    <Grid x:Name="LayoutRoot">
+        <Image x:Name="imgUnlock" Source="/DTCDev.Client.Sensors;component/Assets/Images/unlock.png" Margin="1" />
+        <Image x:Name="imgLock" Source="/DTCDev.Client.Sensors;component/Assets/Images/lock.png" Margin="1" Visibility="Collapsed" />
+    </Grid>
+</UserControl>

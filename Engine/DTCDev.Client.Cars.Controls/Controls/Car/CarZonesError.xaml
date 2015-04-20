@@ -1,0 +1,118 @@
+﻿<UserControl x:Class="DTCDev.Client.Cars.Controls.Controls.Car.CarZonesError"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="clr-namespace:DTCDev.Client.Cars.Controls.ViewModels.Car"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:models="clr-namespace:DTCDev.Client.Cars.Controls.Models"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" >
+    <UserControl.Resources>
+    	<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <Style x:Key="CarErrorItemStyle" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Padding" Value="4,1"/>
+            <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FocusVisualStyle">
+                <Setter.Value>
+                    <Style>
+                        <Setter Property="Control.Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <Rectangle Margin="2" SnapsToDevicePixels="True" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Grid Height="Auto" Width="Auto">
+                        	<Grid.ColumnDefinitions>
+                        		<ColumnDefinition/>
+                        		<ColumnDefinition/>
+                        		<ColumnDefinition/>
+                        		<ColumnDefinition/>
+                        		<ColumnDefinition Width="30"/>
+                        	</Grid.ColumnDefinitions>
+                    		<Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True" Visibility="Collapsed">
+                    			<ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    		</Border>
+                        	<TextBlock HorizontalAlignment="Stretch" Text="{Binding CarNumber}" VerticalAlignment="Center"/>
+                        	<Border BorderBrush="#FFB81E1E" BorderThickness="1" HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch"  Visibility="{Binding IsOutZone, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Column="1" Background="#FFB81E1E">
+                        		<TextBlock HorizontalAlignment="Center" Text="{Binding StrOutZoneDate}" VerticalAlignment="Center" Foreground="White" />
+                        	</Border>
+                    		<TextBlock HorizontalAlignment="Center" Text="{Binding ZoneName}" VerticalAlignment="Center" Grid.Column="2"/>
+                    		<Border BorderBrush="#FF1EB872" BorderThickness="1" HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch"  Visibility="{Binding IsInZone, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Column="3" Background="#FF1EB872">
+                    			<TextBlock HorizontalAlignment="Center" Text="{Binding StrInZoneDate}" VerticalAlignment="Center" Visibility="{Binding IsInZone, Converter={StaticResource BooleanToVisibilityConverter}}" Foreground="White"/>
+                    		</Border>
+                            <Button Content="OK" HorizontalAlignment="Center" VerticalAlignment="Top" Padding="3,1" Grid.Column="4">
+                                <i:Interaction.Behaviors>
+                                    <models:EventToCommandBehavior Command="{Binding OkCommand}" Event="Click" PassArguments="True"/>
+                                </i:Interaction.Behaviors>
+                            </Button>
+                    	</Grid>
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" TargetName="Bd" Value="#1F26A0DA"/>
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="#A826A0DA"/>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                                    <Condition Property="IsSelected" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" TargetName="Bd" Value="#3DDADADA"/>
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="#FFDADADA"/>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                                    <Condition Property="IsSelected" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" TargetName="Bd" Value="#3D26A0DA"/>
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="#FF26A0DA"/>
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="TextElement.Foreground" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <!--<UserControl.DataContext>
+        <vm:CarZonesErrorViewModel />
+    </UserControl.DataContext>-->
+    <Grid>
+    	<Grid.RowDefinitions>
+    		<RowDefinition Height="Auto"/>
+    		<RowDefinition/>
+    	</Grid.RowDefinitions>
+    	<Grid.ColumnDefinitions>
+    		<ColumnDefinition/>
+    		<ColumnDefinition/>
+    		<ColumnDefinition/>
+    		<ColumnDefinition/>
+    		<ColumnDefinition Width="30"/>
+    		<ColumnDefinition Width="18.5"/>
+    	</Grid.ColumnDefinitions>
+        <ListBox ItemsSource="{Binding CarsInOut}" ItemContainerStyle="{DynamicResource CarErrorItemStyle}" Grid.ColumnSpan="6" ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.Row="1" />
+        <TextBlock HorizontalAlignment="Center" Text="Номер" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Center" Text="Дата выхода из зоны" VerticalAlignment="Top" Grid.Column="1" Visibility="{Binding IsOutZone, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <TextBlock HorizontalAlignment="Center" Text="Название зоны" VerticalAlignment="Top" Grid.Column="2"/>
+        <TextBlock HorizontalAlignment="Center" Text="Дата возвращения в зону" VerticalAlignment="Top" Grid.Column="3" Visibility="{Binding IsInZone, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+    </Grid>
+</UserControl>

@@ -1,0 +1,128 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Help="clr-namespace:DTCDev.Client.Sensors.Analog.Max.Help" x:Class="DTCDev.Client.Sensors.Analog.Max.MxAnalogDefaultNew" 
+             mc:Ignorable="d" 
+             Height="166" Width="136">
+	<UserControl.Resources>
+		<Storyboard x:Key="stbCheck">
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="grid">
+				<EasingDoubleKeyFrame KeyTime="0" Value="-30"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="210"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:0.8" Value="-30"/>
+				</DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="stbMove">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="grid">
+                <EasingDoubleKeyFrame KeyTime="0" Value="{Binding Path=LastAngle}"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="{Binding Path=NewAngle}"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <!--<Style x:Key="grdArrow">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=AnimateStart}" Value="True">
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard>
+                            
+                        </BeginStoryboard>
+                    </DataTrigger.EnterActions>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>-->
+	</UserControl.Resources>
+	<UserControl.Triggers>
+		<EventTrigger RoutedEvent="FrameworkElement.Loaded">
+			<BeginStoryboard Storyboard="{StaticResource stbCheck}"/>
+		</EventTrigger>
+	</UserControl.Triggers>
+    <Grid >
+        <Grid Height="136" VerticalAlignment="Top">
+
+        <!--<Path Stroke="Black" StrokeThickness="1">
+            <Path.Data>
+                <PathGeometry>
+                    <PathGeometry.Figures>
+                        <PathFigureCollection>
+                            <PathFigure StartPoint="100,50">
+                                <PathFigure.Segments>
+                                    <PathSegmentCollection>
+                                        <ArcSegment Size="50,50" RotationAngle="10"
+                                            IsLargeArc="True"
+                                            SweepDirection="Clockwise"
+                                            Point="100,200" />
+                                    </PathSegmentCollection>
+                                </PathFigure.Segments>
+                            </PathFigure>
+                        </PathFigureCollection>
+                    </PathGeometry.Figures>
+                </PathGeometry>
+            </Path.Data>
+        </Path>-->
+
+        <Ellipse Width="120" Height="120" Fill="#FF4444" Visibility="{Binding Path=VisAlarm}" >
+            <Ellipse.Effect>
+                <BlurEffect Radius="20"/>
+            </Ellipse.Effect>
+        </Ellipse>
+
+        <Ellipse Width="100" Height="100" Fill="#111111"/>
+        <Ellipse Width="96" Height="96">
+            <Ellipse.Fill>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF4D4D4D" Offset="0"/>
+                    <GradientStop Color="#FF9F9F92" Offset="1"/>
+                </LinearGradientBrush>
+            </Ellipse.Fill>
+        </Ellipse>
+        <Ellipse Width="92" Height="92" Fill="#ECECE8"/>
+
+
+        <Help:Arc StrokeThickness="8" SmallAngle="True" Visibility="{Binding Path=VisMaxArc}"
+         SnapsToDevicePixels="True"
+         StartAngle="0.53" EndAngle="-0.53" Center="68 68" Radius="42"
+                  Stroke="#FFFF2500" />
+        <Help:Arc StrokeThickness="8" Visibility="{Binding Path=VisMinArc}"
+         SnapsToDevicePixels="True"
+         StartAngle="-2.6" EndAngle="2.6" Center="68 68" Radius="42" 
+                  Stroke="#FFFF2500" />
+
+        <Help:Arc StrokeThickness="2" SmallAngle="True" Visibility="{Binding Path=VisMaxArc}"
+         SnapsToDevicePixels="True"
+         StartAngle="0.53" EndAngle="-0.53" Center="68 68" Radius="45"
+                  Stroke="#FFFF6600" />
+        <Help:Arc StrokeThickness="2" Visibility="{Binding Path=VisMinArc}" 
+         SnapsToDevicePixels="True"
+         StartAngle="-2.6" EndAngle="2.6" Center="68 68" Radius="45" 
+                  Stroke="#FFFF6600" />
+
+        <Image Source="/DTCDev.Client.Sensors;component/Assets/AnalogPresenter_degries.png" Width="85" Height="66" Margin="26,24,25,46"/>
+
+        <Grid x:Name="grid" Width="74" Height="12" RenderTransformOrigin="0.5,0.5">
+        	<Grid.RenderTransform>
+        		<TransformGroup>
+        			<ScaleTransform/>
+        			<SkewTransform/>
+                    <RotateTransform Angle="-30"/>
+        			<TranslateTransform/>
+        		</TransformGroup>
+        	</Grid.RenderTransform>
+            <Ellipse Width="12" Height="12" Fill="Black"/>
+            <Border Width="45" Margin="4" HorizontalAlignment="Left" Height="2" Background="Black"/>
+            <Path Data="M9,3 L0,5 9,7" Fill="Black" HorizontalAlignment="Left" Margin="0,4" Stretch="Fill" Stroke="Black" Width="8"/>
+        </Grid>
+        <TextBlock Foreground="Gray" TextAlignment="Right" HorizontalAlignment="Right" Margin="0,88,114,0" TextWrapping="Wrap" Text="{Binding Path=Vol0}" VerticalAlignment="Top" FontSize="9.333" Width="22"/>
+        <TextBlock Foreground="Gray" TextAlignment="Right" HorizontalAlignment="Right" Margin="0,35,114,0" TextWrapping="Wrap" Text="{Binding Path=Vol1}" VerticalAlignment="Top" FontSize="9.333" d:LayoutOverrides="VerticalAlignment" Width="22"/>
+        <TextBlock Foreground="Gray"  HorizontalAlignment="Left" Margin="113,88,0,0" TextWrapping="Wrap" Text="{Binding Path=Vol4}" VerticalAlignment="Top" FontSize="9.333" Width="22"/>
+        <TextBlock Foreground="Gray" HorizontalAlignment="Left" Margin="113,35,0,0" TextWrapping="Wrap" Text="{Binding Path=Vol3}" VerticalAlignment="Top" FontSize="9.333" Width="22" d:LayoutOverrides="VerticalAlignment"/>
+        <TextBlock Foreground="Gray" TextAlignment="Center" HorizontalAlignment="Right" Margin="0,3,56,0" TextWrapping="Wrap" Text="{Binding Path=Vol2}" VerticalAlignment="Top" FontSize="9.333" Width="22" d:LayoutOverrides="VerticalAlignment"/>
+        <TextBlock Margin="0,88,0,22" Text="{Binding Path=Vol}" TextAlignment="Center"/>
+    </Grid>
+
+        <Grid Height="30" VerticalAlignment="Bottom">
+            <TextBlock TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Text="{Binding Path=SensorModel.Model.Name}"/>
+        </Grid>
+    </Grid>
+</UserControl>

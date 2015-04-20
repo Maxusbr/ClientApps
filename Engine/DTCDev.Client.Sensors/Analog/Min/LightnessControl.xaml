@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="DTCDev.Client.Sensors.Analog.Min.LightnessControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="25" d:DesignWidth="25" Width="25" Height="25" Loaded="UserControl_Loaded">
+    
+    <Grid x:Name="LayoutRoot">
+        <Grid Margin="2">
+        	<Ellipse Margin="4">
+        		<Ellipse.Fill>
+        			<RadialGradientBrush>
+        				<GradientStop Color="#FFF7D281" Offset="0"/>
+        				<GradientStop Color="#FFDC9A09" Offset="1"/>
+        			</RadialGradientBrush>
+        		</Ellipse.Fill>
+        	</Ellipse>
+        	<Border BorderBrush="#FFBC8710" BorderThickness="1" HorizontalAlignment="Left" Margin="0,10" Width="3" Background="#FFBC8710"/>
+        	<Border BorderBrush="#FFBC8710" BorderThickness="1" HorizontalAlignment="Right" Margin="0,10" Width="3" Background="#FFBC8710"/>
+        	<Border BorderBrush="#FFBC8710" BorderThickness="1" Height="3" Margin="10,0" VerticalAlignment="Top" Background="#FFBC8710"/>
+        	<Border BorderBrush="#FFBC8710" BorderThickness="1" Height="3" Margin="10,0" VerticalAlignment="Bottom" Background="#FFBC8710"/>
+        	<Border BorderBrush="#FFBC8710" BorderThickness="1" HorizontalAlignment="Left" Margin="2.176,0,0,3.538" Width="3" Height="1.529" VerticalAlignment="Bottom" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" d:LayoutRounding="Auto" Background="#FFBC8710">
+        		<Border.RenderTransform>
+        			<RotateTransform Angle="-41.793"/>
+        		</Border.RenderTransform>
+        	</Border>
+        	<Border BorderBrush="#FFBC8710" BorderThickness="1" HorizontalAlignment="Right" Margin="0,3.383,1.882,0" Width="3" Height="1.919" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" d:LayoutRounding="Auto" Background="#FFBC8710">
+        		<Border.RenderTransform>
+        			<RotateTransform Angle="-41.793"/>
+        		</Border.RenderTransform>
+        	</Border>
+        	<Border BorderBrush="#FFBC8710" BorderThickness="1" HorizontalAlignment="Left" Margin="1.928,3.723,0,0" Width="3" Height="1.587" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" d:LayoutRounding="Auto" Background="#FFBC8710">
+        		<Border.RenderTransform>
+        			<RotateTransform Angle="37.348"/>
+        		</Border.RenderTransform>
+        	</Border>
+        	<Border BorderBrush="#FFBC8710" BorderThickness="1" HorizontalAlignment="Right" Margin="0,0,2.197,3.291" Width="3" Height="1.651" VerticalAlignment="Bottom" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" d:LayoutRounding="Auto" Background="#FFBC8710">
+        		<Border.RenderTransform>
+        			<RotateTransform Angle="37.348"/>
+        		</Border.RenderTransform>
+        	</Border>
+        </Grid>
+        <Border x:Name="brdrYellow" BorderBrush="#FF8F8F8F" BorderThickness="1" CornerRadius="5" Background="#FFCEE21B" Visibility="Collapsed" />
+    	<Border x:Name="brdrRed" BorderBrush="Red" BorderThickness="1" CornerRadius="5" Background="#FFEF8169" Visibility="Collapsed"/>
+    </Grid>
+</UserControl>

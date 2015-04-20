@@ -1,0 +1,73 @@
+﻿<UserControl x:Class="DTCDev.Client.Cars.Controls.Controls.Reports.WorkTimeReport"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+              xmlns:converters="clr-namespace:DTCDev.Client.Cars.Controls.Controls"
+             d:DesignHeight="400" d:DesignWidth="567">
+
+    <UserControl.Resources>
+        <converters:DateModelToTimeConverter x:Key="dateConverter"/>
+        <converters:ReportPointTimeToTimeConverter x:Key="timeConverter"/>
+        <converters:TimeToTimeSpanConverter x:Key="tsConverter"/>
+    </UserControl.Resources>
+
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Margin="5">
+            <TextBlock Text="Вывести отчет для автомобиля: "/>
+            <TextBlock Text="{Binding Path=CarNumber}"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" >
+            <TextBlock Text="Даты - C:" Margin="10,10,0,5" />
+            <DatePicker SelectedDate="{Binding Path=DateStart, Mode=TwoWay}" Height="25" HorizontalAlignment="Left" Margin="5"  VerticalAlignment="Top" Width="120" />
+            <TextBlock Text="по:" Margin="10,10,0,5" />
+            <DatePicker SelectedDate="{Binding Path=DateStop, Mode=TwoWay}" Height="25" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" Width="120" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="2" >
+            <TextBlock Text="Рабочее время - C:" Margin="10,10,0,5" />
+            <ComboBox Height="25" ItemsSource="{Binding Path=TimeFrames}" HorizontalAlignment="Left" Margin="5" Name="dpFrom" VerticalAlignment="Top" Width="95" SelectedIndex="{Binding Path=SelectedIndexStart, Mode=TwoWay}" />
+            <TextBlock Text="по:" Margin="10,10,0,5" />
+            <ComboBox Height="25" ItemsSource="{Binding Path=TimeFrames}" HorizontalAlignment="Left" Margin="5" Name="dpTo" VerticalAlignment="Top" Width="90"  SelectedIndex="{Binding Path=SelectedIndexStop, Mode=TwoWay}" />
+            <Button Margin="5" Content="Запросить" Command="{Binding Path=GetDataCommand}" Width="100"/>
+            <Button Margin="5" Content="Экспорт" Command="{Binding ExportDataCommand}" Width="100"/>
+        </StackPanel>
+        <Grid Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="199*" />
+                <RowDefinition Height="30" />
+            </Grid.RowDefinitions>
+            <DataGrid AutoGenerateColumns="False" Margin="5" Name="dgCars" ItemsSource="{Binding Path=Data}" SelectedItem="{Binding Path=SelectedPoint, Mode=TwoWay}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Дата" Width="*" Binding="{Binding Path=Date, Converter={StaticResource dateConverter}}"/>
+                    <DataGridTextColumn Header="Пробег в раб." Binding="{Binding Path=DistWorkTime}"/>
+                    <DataGridTextColumn Header="Время в раб." Binding="{Binding Path=UsedInworkTime, Converter={StaticResource tsConverter}}"/>
+                    <DataGridTextColumn Header="Пробег в нераб." Binding="{Binding Path=DistUnworkTime}"/>
+                    <DataGridTextColumn Header="Время в нераб." Binding="{Binding Path=UsedInUnworkTime, Converter={StaticResource tsConverter}}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="84" />
+                    <ColumnDefinition Width="56" />
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="135" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Итого, км:" Margin="5"/>
+                <TextBlock Grid.Column="1" Margin="5" TextAlignment="Center" Text="{Binding Path=TotalDistance}"/>
+                <Button Visibility="{Binding Path=VisViewHistory}" Margin="5" Content="Этот день подробно" Grid.Column="4" Command="{Binding Path=ViewHistoryCommand}"/>
+            </Grid>
+        </Grid>
+        <!--<Grid Grid.RowSpan="3" x:Name="grdBusy" Visibility="Collapsed">
+            <my:BusyControl x:Name="bsyControl" Blinked="False" />
+        </Grid>-->
+    </Grid>
+</UserControl>

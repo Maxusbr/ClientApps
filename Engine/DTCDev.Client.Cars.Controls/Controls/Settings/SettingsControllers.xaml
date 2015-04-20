@@ -1,0 +1,93 @@
+﻿<UserControl x:Class="DTCDev.Client.Cars.Controls.Controls.Settings.SettingsControllers"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="500" Loaded="UserControl_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="52"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="317*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="76*"/>
+        </Grid.ColumnDefinitions>
+        <ListBox x:Name="lstCars" Margin="10" SelectionChanged="lstCars_SelectionChanged" DisplayMemberPath="Name" Grid.RowSpan="3"/>
+        <Grid Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="52"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="52"/>
+            </Grid.ColumnDefinitions>
+            <Border x:Name="brdrPlaceThis" BorderBrush="Blue" BorderThickness="1" Margin="2" Visibility="Collapsed"/>
+            <Ellipse x:Name="elpTarget" Fill="Blue" Margin="10" Visibility="Collapsed">
+                <Ellipse.Effect>
+                    <BlurEffect Radius="10"/>
+                </Ellipse.Effect>
+            </Ellipse>
+            <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/gas_station.png" Width="26" Height="26"/>
+            <TextBlock x:Name="txtLine" Text="Не задано" Grid.Column="1" Margin="6"/>
+            <TextBlock x:Name="txtValue" Text="0000" Grid.Column="1" Margin="6,30,6,6"/>
+            <TextBlock x:Name="txtCalculated" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Text="0 л." FontSize="16"/>
+            <Image x:Name="imgChange" Grid.Column="3" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/gear_wheel.png" Width="32" Height="32" Cursor="Hand" MouseLeftButtonUp="Image_MouseLeftButtonUp" Opacity="0.3"/>
+        </Grid>
+        <TextBlock Grid.Column="1" Foreground="#FF5B5B5B" Text="Чтобы указать линию как источник для топлива, перетащите ее на значок колонки" Grid.Row="1" TextWrapping="Wrap" FontStyle="Italic" />
+        <StackPanel x:Name="stkLines" Margin="0,20" Grid.Column="1" Grid.Row="2">
+
+        </StackPanel>
+        <Canvas x:Name="cnvMove" Grid.Column="1" Grid.RowSpan="3" Visibility="Collapsed"/>
+        <Grid x:Name="grdFuelSettings" Grid.Column="1" Grid.RowSpan="3" Background="White" Visibility="Collapsed" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="175*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="32"/>
+                <RowDefinition Height="32"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="Объем бака" VerticalAlignment="Center"/>
+            <TextBlock Text="Максимум" Grid.Row="1" VerticalAlignment="Center"/>
+            <TextBlock Text="Текущее" Grid.Row="2" VerticalAlignment="Center"/>
+            <TextBlock Text="Датчик" Grid.Row="3" VerticalAlignment="Center"/>
+            <TextBlock Text="Минимум" Grid.Row="4" VerticalAlignment="Center"/>
+
+            <TextBlock Text="л." VerticalAlignment="Center" Grid.Column="2"/>
+            <TextBlock Text="л." Grid.Row="2" VerticalAlignment="Center" Grid.Column="2"/>
+            
+            <Border x:Name="brdrTankError" Margin="6" BorderBrush="Red" BorderThickness="1" Grid.Column="1" Visibility="Collapsed"/>
+            <TextBox x:Name="txtTank" Grid.Column="1" Text="" Margin="7" TextChanged="txtTank_TextChanged"/>
+            <Border x:Name="brdrMaxError" Grid.Row="1" Margin="6" BorderBrush="Red" BorderThickness="1" Grid.Column="1" Visibility="Collapsed"/>
+            <TextBox x:Name="txtMax" Grid.Column="1" Grid.Row="1" Text="" Margin="7" TextChanged="txtTank_TextChanged"/>
+            <TextBox x:Name="txtCurr" Grid.Column="1" Grid.Row="2" Text="" Margin="7" TextChanged="txtTank_TextChanged"/>
+            <TextBlock x:Name="txtCurrSensor" Grid.Column="1" Grid.Row="3" Margin="7" Text="0"/>
+            <TextBox x:Name="txtMin" Grid.Column="1" Grid.Row="4" Text="" Margin="7" TextChanged="txtTank_TextChanged"/>
+            
+            <Grid Grid.Column="3" Grid.RowSpan="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Image VerticalAlignment="Center" HorizontalAlignment="Center" Width="24" Height="24" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/gas_station.png"/>
+                <Border Grid.Column="1" Margin="0,8" BorderThickness="1" BorderBrush="Blue">
+                    <Border x:Name="brdrCurrFuel" Margin="1" Background="Blue" VerticalAlignment="Bottom" Height="0"/>
+                </Border>
+                <TextBlock Margin="7" VerticalAlignment="Bottom" HorizontalAlignment="Right" Text="0 л" FontWeight="Bold"/>
+                <TextBlock x:Name="txtDispFullLit" Margin="7" VerticalAlignment="Top" HorizontalAlignment="Right" Text="0 л" FontWeight="Bold"/>
+                <TextBlock x:Name="txtdispEmpPop" Margin="7" VerticalAlignment="Bottom" Grid.Column="2" HorizontalAlignment="Left" Text="0" FontWeight="Bold"/>
+                <TextBlock x:Name="txtDispFullPop" Margin="7" VerticalAlignment="Top" Grid.Column="2" HorizontalAlignment="Left" Text="0" FontWeight="Bold"/>
+            </Grid>
+            <Button Grid.Row="5" Grid.Column="3" VerticalAlignment="Top" Content="Сохранить" Margin="10" Click="Button_Click"/>
+        </Grid>
+    </Grid>
+</UserControl>

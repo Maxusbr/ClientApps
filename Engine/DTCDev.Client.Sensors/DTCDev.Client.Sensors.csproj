@@ -1,0 +1,425 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3F69F1EA-7062-43D8-8CC6-B427B9969447}</ProjectGuid>
+    <OutputType>library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DTCDev.Client.Sensors</RootNamespace>
+    <AssemblyName>DTCDev.Client.Sensors</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Analog\AnalogValuePresenter.cs" />
+    <Compile Include="Analog\IAnalogSensor.cs" />
+    <Compile Include="Analog\Max\Help\AnalogViewModel.cs" />
+    <Compile Include="Analog\Max\Help\Arc.cs" />
+    <Compile Include="Analog\Max\MxAnalogDefaultControl.xaml.cs">
+      <DependentUpon>MxAnalogDefaultControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Analog\Max\MxAnalogDefaultNew.xaml.cs">
+      <DependentUpon>MxAnalogDefaultNew.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Analog\Max\MxCurrentControl.xaml.cs">
+      <DependentUpon>MxCurrentControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Analog\Max\MxLightnessControl.xaml.cs">
+      <DependentUpon>MxLightnessControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Analog\Max\MxTemperatureControl.xaml.cs">
+      <DependentUpon>MxTemperatureControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Analog\Max\MxWetnessControl.xaml.cs">
+      <DependentUpon>MxWetnessControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Analog\Min\AnalogMinViewModel.cs" />
+    <Compile Include="Analog\Min\BatteryControl.xaml.cs">
+      <DependentUpon>BatteryControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Analog\Min\BigShock.xaml.cs">
+      <DependentUpon>BigShock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Analog\Min\CurrentControl.xaml.cs">
+      <DependentUpon>CurrentControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Analog\Min\EngineOnControl.xaml.cs">
+      <DependentUpon>EngineOnControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Analog\Min\FuelLevel.xaml.cs">
+      <DependentUpon>FuelLevel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Analog\Min\LightnessControl.xaml.cs">
+      <DependentUpon>LightnessControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Analog\Min\OilPressure.xaml.cs">
+      <DependentUpon>OilPressure.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Analog\Min\RPMCounter.xaml.cs">
+      <DependentUpon>RPMCounter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Analog\Min\SmallShock.xaml.cs">
+      <DependentUpon>SmallShock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Analog\Min\SpeedControl.xaml.cs">
+      <DependentUpon>SpeedControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Analog\Min\TemperatureControl.xaml.cs">
+      <DependentUpon>TemperatureControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Analog\Min\WaterLevel.xaml.cs">
+      <DependentUpon>WaterLevel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Analog\Min\WaterSwitch.xaml.cs">
+      <DependentUpon>WaterSwitch.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Analog\Min\WetnessControl.xaml.cs">
+      <DependentUpon>WetnessControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Discret\DiscretValuePresenter.cs" />
+    <Compile Include="Discret\IDiscretSensor.cs" />
+    <Compile Include="Discret\Max\MxDoorControl.xaml.cs">
+      <DependentUpon>MxDoorControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Discret\Max\MxLeakageControl.xaml.cs">
+      <DependentUpon>MxLeakageControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Discret\Max\MxTrunkControl.xaml.cs">
+      <DependentUpon>MxTrunkControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Discret\Max\MxWindowControl.xaml.cs">
+      <DependentUpon>MxWindowControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Discret\Min\DiscretMinBasic.xaml.cs">
+      <DependentUpon>DiscretMinBasic.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Discret\Min\DiscretMinDoor.xaml.cs">
+      <DependentUpon>DiscretMinDoor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Discret\Min\DiscretMinLeakage.xaml.cs">
+      <DependentUpon>DiscretMinLeakage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Discret\Min\DiscretMinLock.xaml.cs">
+      <DependentUpon>DiscretMinLock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Discret\Min\DiscretMinMove.xaml.cs">
+      <DependentUpon>DiscretMinMove.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Discret\Min\DiscretMinSmoke.xaml.cs">
+      <DependentUpon>DiscretMinSmoke.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Discret\Min\DiscretMinTrunk.xaml.cs">
+      <DependentUpon>DiscretMinTrunk.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Discret\Min\DiscretMinWindow.xaml.cs">
+      <DependentUpon>DiscretMinWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ISensor.cs" />
+    <Compile Include="OBD\AccelerationSensor.xaml.cs">
+      <DependentUpon>AccelerationSensor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="OBD\EngineLoad.xaml.cs">
+      <DependentUpon>EngineLoad.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="OBD\EngineRPM.xaml.cs">
+      <DependentUpon>EngineRPM.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="OBD\EngineTemperature.xaml.cs">
+      <DependentUpon>EngineTemperature.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="OBD\FuelLevel.xaml.cs">
+      <DependentUpon>FuelLevel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="OBD\OBDSensorDetector.cs" />
+    <Compile Include="OBD\OBDSensorStatData.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="SensorLocator.cs" />
+    <Compile Include="SensorsTypeEnum.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Analog\Max\MxAnalogDefaultControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Analog\Max\MxAnalogDefaultNew.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Analog\Max\MxCurrentControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Analog\Max\MxLightnessControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Analog\Max\MxTemperatureControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Analog\Max\MxWetnessControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Analog\Min\BatteryControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Analog\Min\BigShock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Analog\Min\CurrentControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Analog\Min\EngineOnControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Analog\Min\FuelLevel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Analog\Min\LightnessControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Analog\Min\OilPressure.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Analog\Min\RPMCounter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Analog\Min\SmallShock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Analog\Min\SpeedControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Analog\Min\TemperatureControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Analog\Min\WaterLevel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Analog\Min\WaterSwitch.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Analog\Min\WetnessControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Discret\Max\MxDoorControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Discret\Max\MxLeakageControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Discret\Max\MxTrunkControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Discret\Max\MxWindowControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Discret\Min\DiscretMinBasic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Discret\Min\DiscretMinDoor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Discret\Min\DiscretMinLeakage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Discret\Min\DiscretMinLock.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Discret\Min\DiscretMinMove.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Discret\Min\DiscretMinSmoke.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Discret\Min\DiscretMinTrunk.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Discret\Min\DiscretMinWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="OBD\AccelerationSensor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="OBD\EngineLoad.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="OBD\EngineRPM.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="OBD\EngineTemperature.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="OBD\FuelLevel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\Engine.png" />
+    <Resource Include="Assets\Images\lock.png" />
+    <Resource Include="Assets\Images\unlock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Battery.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Battery_alarm.png" />
+    <Resource Include="Assets\Door.png" />
+    <Resource Include="Assets\Door_alarm.png" />
+    <Resource Include="Assets\Door_unwork.png" />
+    <Resource Include="Assets\Electric.png" />
+    <Resource Include="Assets\Electric_alarm.png" />
+    <Resource Include="Assets\Electric_unwork.png" />
+    <Resource Include="Assets\Errow_down.png" />
+    <Resource Include="Assets\Errow_up.png" />
+    <Resource Include="Assets\Link_off.png" />
+    <Resource Include="Assets\Link_on.png" />
+    <Resource Include="Assets\Lock.png" />
+    <Resource Include="Assets\Temperature.png" />
+    <Resource Include="Assets\Temperature_alarm.png" />
+    <Resource Include="Assets\Temperature_down.png" />
+    <Resource Include="Assets\Temperature_up.png" />
+    <Resource Include="Assets\Unlock.png" />
+    <Resource Include="Assets\WaterCounter.png" />
+    <Resource Include="Assets\WaterCounter_alarm.png" />
+    <Resource Include="Assets\Window.png" />
+    <Resource Include="Assets\Window_alarm.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\AnalogPresenter_degries.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\AnalogPresenter_arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Fire.png" />
+    <Resource Include="Assets\Fire_alarm.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Walker.png" />
+    <Resource Include="Assets\Walker_alarm.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\bag.png" />
+    <Resource Include="Assets\bagopen.png" />
+    <Resource Include="Assets\capot.png" />
+    <Resource Include="Assets\capotopen.png" />
+    <Resource Include="Assets\key.png" />
+    <Resource Include="Assets\keyoff.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\enigne.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\rpm.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\gas_station.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\gas_station.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Models\DTCDev.Models.DeviceSender\DTCDev.Models.DeviceSender.csproj">
+      <Project>{3bc2c930-6d31-43bf-a16f-a5f3b7a59240}</Project>
+      <Name>DTCDev.Models.DeviceSender</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="DTCDev.Client.Cars.Controls.Controls.Driver.DriversList"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:converter="clr-namespace:DTCDev.Client.BindingConvertors;assembly=DTCDev.Client"
+             mc:Ignorable="d" 
+             xmlns:Menu="clr-namespace:DTCDev.Client.Menu;assembly=DTCDev.Client"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <converter:BCIntToBool x:Key="boolConverter"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Menu:AEDControl x:Name="pnlAdd"
+                         AddClick="pnlAdd_AddClick"
+                         EditEnable="False"
+                         DeleteEnable="False"
+            DeleteCommand="{Binding ElementName=uc, Path=DeleteCommand}"
+            ChangeCommand="{Binding ElementName=uc, Path=ChangeCommand}"
+            />
+        <DataGrid Grid.Row="1" AutoGenerateColumns="False" ItemsSource="{Binding Path=Drivers}"
+                 SelectedItem="{Binding ElementName=uc, Path=SelectedDriver, Mode=TwoWay}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Фамилия" Width="*" Binding="{Binding FName}"/>
+                <DataGridTextColumn Header="Имя" Width="*" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Отчество" Width="*" Binding="{Binding SName}"/>
+                <DataGridTextColumn Header="Телефон" Width="120" Binding="{Binding Phone}"/>
+                <DataGridCheckBoxColumn Header="A" Binding="{Binding Category.A, Converter={StaticResource boolConverter}}"/>
+                <DataGridCheckBoxColumn Header="B" Binding="{Binding Category.B, Converter={StaticResource boolConverter}}"/>
+                <DataGridCheckBoxColumn Header="C" Binding="{Binding Category.C, Converter={StaticResource boolConverter}}"/>
+                <DataGridCheckBoxColumn Header="D" Binding="{Binding Category.D, Converter={StaticResource boolConverter}}"/>
+                <DataGridCheckBoxColumn Header="E" Binding="{Binding Category.E, Converter={StaticResource boolConverter}}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

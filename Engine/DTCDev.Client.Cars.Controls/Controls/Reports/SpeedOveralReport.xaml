@@ -1,0 +1,95 @@
+﻿<UserControl x:Class="DTCDev.Client.Cars.Controls.Controls.Reports.SpeedOveralReport"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             xmlns:converters="clr-namespace:DTCDev.Client.Cars.Controls.Controls"
+             d:DesignHeight="400" d:DesignWidth="700">
+
+    <UserControl.Resources>
+        <converters:DateModelToTimeConverter x:Key="dateConverter"/>
+        <converters:ReportPointTimeToTimeConverter x:Key="timeConverter"/>
+        <converters:TimeToTimeSpanConverter x:Key="tsConverter"/>
+        <converters:DistConverter x:Key="distConverter"/>
+    </UserControl.Resources>
+
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Margin="5">
+            <TextBlock Text="Вывести отчет для автомобиля: "/>
+            <TextBlock Text="{Binding Path=CarNumber}"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" >
+            <TextBlock Text="Даты - C:" Margin="10,10,0,5" />
+            <DatePicker SelectedDate="{Binding Path=DateStart, Mode=TwoWay}" Height="25" HorizontalAlignment="Left" Margin="5"  VerticalAlignment="Top" Width="120" />
+            <TextBlock Text="по:" Margin="10,10,0,5" />
+            <DatePicker SelectedDate="{Binding Path=DateStop, Mode=TwoWay}" Height="25" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" Width="120" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="2" >
+            <TextBlock Text="Максимальная скорость: " Margin="10,10,0,5" />
+            <TextBox Width="77" Margin="5" Text="{Binding Path=MaxSpeed, Mode=TwoWay}"/>
+            <Button Margin="5" Content="Запросить" Command="{Binding Path=GetDataCommand}" Width="100"/>
+            <Button Margin="5" Content="Экспорт" Command="{Binding ExportDataCommand}" Width="100"/>
+            <!--<CheckBox Margin="9" Content="С адресами"/>-->
+        </StackPanel>
+        <Grid Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="199*" />
+                <RowDefinition Height="30" />
+            </Grid.RowDefinitions>
+            <DataGrid AutoGenerateColumns="False" Margin="5" Name="dgCars" ItemsSource="{Binding Path=Result.Data}" SelectedItem="{Binding Path=SelectedPoint, Mode=TwoWay}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Дата" Width="80" Binding="{Binding Path=Date, Converter={StaticResource dateConverter}}"/>
+                    <DataGridTemplateColumn Header="Превышения" Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <ListBox ItemsSource="{Binding Path=Points}">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="70"/>
+                                                        <ColumnDefinition Width="50"/>
+                                                        <ColumnDefinition Width="100"/>
+                                                        <ColumnDefinition/>
+                                                        <ColumnDefinition/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="{Binding Path=Speed, StringFormat=' {0} км/ч'}"/>
+                                                    <TextBlock Grid.Column="1" Text="{Binding Path=TimeMove}"/>
+                                                    <TextBlock Grid.Column="2" Text="{Binding Path=DistanceMove, Converter={StaticResource distConverter}}"/>
+                                                    <TextBlock Grid.Column="3" Text="{Binding Path=StartAdress}"/>
+                                                    <TextBlock Grid.Column="4"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="84" />
+                    <ColumnDefinition Width="56" />
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="135" />
+                </Grid.ColumnDefinitions>
+                <Button Visibility="{Binding Path=VisViewHistory}" Margin="5" Content="Этот день подробно" Grid.Column="4" Command="{Binding Path=ViewHistoryCommand}"/>
+            </Grid>
+        </Grid>
+        <Grid Grid.RowSpan="4" Visibility="{Binding Path=VisWait}">
+            <Border Background="White" Opacity="0.3"/>
+            <TextBlock Text="{Binding Path=WaitText}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" FontWeight="Bold"/>
+        </Grid>
+    </Grid>
+</UserControl>

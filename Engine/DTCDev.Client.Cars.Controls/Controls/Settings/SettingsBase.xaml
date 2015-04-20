@@ -1,0 +1,68 @@
+﻿<UserControl x:Class="DTCDev.Client.Cars.Controls.Controls.Settings.SettingsBase"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" Loaded="UserControl_Loaded" >
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Margin="8" Orientation="Horizontal" x:Name="stkBack" Visibility="Collapsed">
+            <Image Width="32" Height="32" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/back.png" Cursor="Hand" MouseLeftButtonUp="Image_MouseLeftButtonUp"/>
+            <TextBlock Text="Назад" Margin="8,0" VerticalAlignment="Center"/>
+        </StackPanel>
+        <WrapPanel Grid.Row="1" Margin="8">
+            <Grid Width="200" Height="40" Margin="5" x:Name="grdCars" MouseLeftButtonUp="grdCars_MouseLeftButtonUp" Cursor="Hand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.ColumnSpan="2" Background="White" Opacity="0"/>
+                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/vw-beetle-icon.png" Width="33"/>
+                <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="Автомобили" VerticalAlignment="Center" FontSize="16" Margin="10,0,0,0"/>
+            </Grid>
+            <Grid Width="200" Height="40" Margin="5" x:Name="grdZones" MouseLeftButtonUp="grdZones_MouseLeftButtonUp" Cursor="Hand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.ColumnSpan="2" Background="White" Opacity="0"/>
+                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/SettingsMenu/area.png" Width="33"/>
+                <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="Зоны" VerticalAlignment="Center" FontSize="16" Margin="10,0,0,0"/>
+            </Grid>
+            <Grid Width="200" Height="40" Margin="5" x:Name="grdZonesToCar" MouseLeftButtonUp="grdZonesToCar_MouseLeftButtonUp" Cursor="Hand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.ColumnSpan="2" Background="White" Opacity="0"/>
+                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/SettingsMenu/car-icon.png" Width="33"/>
+                <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="Автомобили в зонах" VerticalAlignment="Center" FontSize="16" Margin="10,0,0,0"/>
+            </Grid>
+            <Grid Width="200" Height="40" Margin="5" x:Name="grdControlles" MouseLeftButtonUp="grdControllers_MouseLeftButtonUp" Cursor="Hand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.ColumnSpan="2" Background="White" Opacity="0"/>
+                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/gas_station.png" Width="33"/>
+                <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="Настройки линии топлива" VerticalAlignment="Center" FontSize="16" Margin="10,0,0,0"/>
+            </Grid>
+            <Grid Width="200" Height="40" Margin="5" x:Name="grdControllerLines" MouseLeftButtonUp="grdControllerLines_MouseLeftButtonUp" Cursor="Hand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.ColumnSpan="2" Background="White" Opacity="0"/>
+                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/SettingsMenu/device.png" Width="33"/>
+                <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="Настройки датчиков" VerticalAlignment="Center" FontSize="16" Margin="10,0,0,0"/>
+            </Grid>
+        </WrapPanel>
+        <Grid Grid.Row="1" x:Name="grdContent" Background="White" Visibility="Collapsed">
+            
+        </Grid>
+    </Grid>
+</UserControl>

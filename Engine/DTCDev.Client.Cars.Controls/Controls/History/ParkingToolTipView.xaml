@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="DTCDev.Client.Cars.Controls.Controls.History.ParkingToolTipView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             >
+    <Border BorderThickness="1" Padding="3">
+        <Grid >
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock TextWrapping="Wrap" Text="Время начала стоянки:"/>
+            <TextBlock TextWrapping="Wrap" Text="{Binding StrDateStart}" Grid.Column="1" Margin="5,0,0,0"/>
+            <TextBlock TextWrapping="Wrap" Text="Время окончания стоянки:" Grid.Row="1"/>
+            <TextBlock TextWrapping="Wrap" Text="{Binding StrDateEnd}" Grid.Row="1" Grid.Column="1" Margin="5,0,0,0"/>
+            <TextBlock TextWrapping="Wrap" Text="Общее время стоянки:" Grid.Row="2"/>
+            <TextBlock TextWrapping="Wrap" Text="{Binding TotallTime}" Grid.Row="2" Grid.Column="1" Margin="5,0,0,0"/>
+        </Grid>
+    </Border>
+</UserControl>

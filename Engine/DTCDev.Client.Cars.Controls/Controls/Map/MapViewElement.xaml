@@ -1,0 +1,41 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Car="clr-namespace:DTCDev.Client.Cars.Controls.Controls.Car" 
+             x:Class="DTCDev.Client.Cars.Controls.Controls.Map.MapViewElement" 
+             mc:Ignorable="d" 
+             Height="120" Width="120" RenderTransformOrigin="0.5,0.5" 
+            MouseEnter="UserControl_MouseEnter" 
+            MouseLeave="UserControl_MouseLeave" 
+            MouseLeftButtonDown="UserControl_MouseLeftButtonDown" 
+            MouseRightButtonDown="UserControl_MouseRightButtonDown">
+	<Grid>
+		<Grid x:Name="detail" Visibility="Collapsed" >
+			<Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/circle.png" Stretch="None"/>
+			<Border Background="Red" Width="22" Height="2" Margin="11,31,74,46" BorderBrush="#FF4477FF" BorderThickness="0" CornerRadius="1" RenderTransformOrigin="1.783,1.364">
+				<Border.RenderTransform>
+					<TransformGroup>
+						<RotateTransform Angle="{Binding Angle}"/>
+						<TranslateTransform X="2.937" Y="4.046"/>
+					</TransformGroup>
+				</Border.RenderTransform>
+			</Border>
+			<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" 
+				VerticalAlignment="Bottom" Margin="0,0,0,23" Foreground="White" Text="{Binding Name}"/>
+			<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" 
+				VerticalAlignment="Bottom" Foreground="White" Text="{Binding FuelLevel}" Margin="0,0,0,6"/>
+
+            <Car:LeftIndicatorView DataContext="{Binding LevelGsmInd}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,44,0,0"/>
+            <Car:RightIndicatorView DataContext="{Binding SateliteInd}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,44,0,0"/>
+			
+		</Grid>
+		<Border VerticalAlignment="Center" HorizontalAlignment="Center" Width="32" Height="32">
+			<Border.Background>
+				<ImageBrush ImageSource="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/vw-beetle-icon.png"/>
+			</Border.Background>
+
+		</Border>
+	</Grid>
+</UserControl>
