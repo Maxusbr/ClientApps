@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{17D29BC2-3BDE-4104-A96B-DB91C1DFA5E7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DTCDev.Models.CarsSending</RootNamespace>
+    <AssemblyName>DTCDev.Models.CarsSending</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\_MVC\KOT\packages\Newtonsoft.Json.6.0.6\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Car\CarAccHistoryModel.cs" />
+    <Compile Include="Car\CarDTCHistoryModel.cs" />
+    <Compile Include="Car\CarEnabledPIDs.cs" />
+    <Compile Include="Car\CarStateFullModel.cs" />
+    <Compile Include="Car\CarStateModel.cs" />
+    <Compile Include="Car\CarStateOBDModel.cs" />
+    <Compile Include="Car\CarWithSettingDevice.cs" />
+    <Compile Include="Car\OBDHistoryDataModel.cs" />
+    <Compile Include="Car\SCarData.cs" />
+    <Compile Include="Car\SCarModel.cs" />
+    <Compile Include="Car\SendFuelSettingsDataModel.cs" />
+    <Compile Include="Car\SetCarPidsModel.cs" />
+    <Compile Include="DriverModel.cs" />
+    <Compile Include="Navigation\SNaviData.cs" />
+    <Compile Include="Order\CarOrderModel.cs" />
+    <Compile Include="Order\WorkChangeModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Report\MialageReportModel.cs" />
+    <Compile Include="Report\ParkingReportModel.cs" />
+    <Compile Include="Report\ReportFueltModel.cs" />
+    <Compile Include="Report\ReportRequestBase.cs" />
+    <Compile Include="Report\ReportRequestSpeedOveral.cs" />
+    <Compile Include="Report\ReportsRequestWorkTime.cs" />
+    <Compile Include="Report\SpeedOveralReportModel.cs" />
+    <Compile Include="Report\SpeedReportModel.cs" />
+    <Compile Include="Report\WorkTimeReportModel.cs" />
+    <Compile Include="Sending\SendingCalcRequestModel.cs" />
+    <Compile Include="Sending\SendingClientsEnum.cs" />
+    <Compile Include="Service\BalanceReportDataModel.cs" />
+    <Compile Include="Service\MasterDataModel.cs" />
+    <Compile Include="ZoneDataModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\jquery-2.1.0.intellisense.js" />
+    <Content Include="Scripts\jquery-2.1.0.js" />
+    <Content Include="Scripts\jquery-2.1.0.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Scripts\jquery-2.1.0.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DTCDev.Models.CarBase\DTCDev.Models.CarBase.csproj">
+      <Project>{c6a37dea-e583-41eb-8d92-4c6e97c4b74e}</Project>
+      <Name>DTCDev.Models.CarBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DTCDev.Models\DTCDev.Models.csproj">
+      <Project>{ddd0ab63-faf8-4a78-9369-2481e912e641}</Project>
+      <Name>DTCDev.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

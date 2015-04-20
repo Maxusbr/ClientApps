@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5BD144F2-BC4A-4D4E-B191-101A681F6758}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DTCDev.Models.Cars</RootNamespace>
+    <AssemblyName>DTCDev.Models.Cars</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile136</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AbstractModels\AbstractCar.cs" />
+    <Compile Include="CarInfoModels\BodyModel.cs" />
+    <Compile Include="CarInfoModels\CarEngineTypeModel.cs" />
+    <Compile Include="CarInfoModels\CarEngineVolumeModel.cs" />
+    <Compile Include="CarInfoModels\CarExemplarModel.cs" />
+    <Compile Include="CarInfoModels\CarMarkModel.cs" />
+    <Compile Include="CarInfoModels\CarModelModel.cs" />
+    <Compile Include="CarInfoModels\CarTransmissionTypeModel.cs" />
+    <Compile Include="CarInfoModels\PartModel.cs" />
+    <Compile Include="CarInfoModels\WorkModel.cs" />
+    <Compile Include="CarPresenterModel.cs" />
+    <Compile Include="Cars\CarModel.cs" />
+    <Compile Include="Cars\CarsModel.cs" />
+    <Compile Include="Cars\CarWithWorksModel.cs" />
+    <Compile Include="Cars\CurrentStateModel.cs" />
+    <Compile Include="Cars\DateDataModel.cs" />
+    <Compile Include="Cars\DevicesModel.cs" />
+    <Compile Include="Cars\DistanceReportModel.cs" />
+    <Compile Include="Cars\FoldersModel.cs" />
+    <Compile Include="Cars\ModelCarModel.cs" />
+    <Compile Include="Cars\TimeDataModel.cs" />
+    <Compile Include="DriverModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShiftModel\ScheduleModel.cs" />
+    <Compile Include="ShiftModel\SchemeShiftModel.cs" />
+    <Compile Include="ShiftModel\ShiftModel.cs" />
+    <Compile Include="Users\UserSettingsModel.cs" />
+    <Compile Include="Users\UsersModel.cs" />
+    <Compile Include="Users\UsersRoleModel.cs" />
+    <Compile Include="VersionChecker.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
