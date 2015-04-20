@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{21331CBC-3023-4F3D-9525-C2AE18FA7396}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>M2B_Cars</RootNamespace>
+    <AssemblyName>M2B Cars</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <ExpressionBlendVersion>12.0.41212.0</ExpressionBlendVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Expression.Interactions" />
+    <Reference Include="Microsoft.Maps.MapControl">
+      <HintPath>..\..\..\packages\Microsoft.Maps.MapControl.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Maps.MapControl.Common">
+      <HintPath>..\..\..\packages\Microsoft.Maps.MapControl.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Maps.MapControl.WPF">
+      <HintPath>..\..\..\packages\Microsoft.Maps.MapControl.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="LoginWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LoginWindow.xaml.cs">
+      <DependentUpon>LoginWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Properties\DesignTimeResources.xaml" Condition="'$(DesignTime)'=='true' OR ('$(SolutionPath)'!='' AND Exists('$(SolutionPath)') AND '$(BuildingInsideVisualStudio)'!='true' AND '$(BuildingInsideExpressionBlend)'!='true')">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <ContainsDesignTimeResources>true</ContainsDesignTimeResources>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\bg.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\Menu\1360424224_Full_Screen.png" />
+    <Resource Include="Assets\Images\Menu\1360424251_Exit_Full_Screen.png" />
+    <Resource Include="Assets\Images\Menu\1366228638_Android-Settings.png" />
+    <Resource Include="Assets\Images\Menu\1366379076_users.png" />
+    <Resource Include="Assets\Images\Menu\1366732420_report.png" />
+    <Resource Include="Assets\Images\Menu\alert-icon.png" />
+    <Resource Include="Assets\Images\Menu\cars-icon.png" />
+    <Resource Include="Assets\Images\Menu\cars-list.png" />
+    <Resource Include="Assets\Images\Menu\Clock.png" />
+    <Resource Include="Assets\Images\Menu\folders.png" />
+    <Resource Include="Assets\Images\Menu\maps-icon.png" />
+    <Resource Include="Assets\Images\Menu\Occupations-Pilot-Military-Male-Dark-icon.png" />
+    <Resource Include="Assets\Images\Menu\pie-chart-icon.png" />
+    <Resource Include="Assets\Images\Menu\Scheduled_Tasks.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Engine\DTCDev.Client.Cars.Controls\DTCDev.Client.Cars.Controls.csproj">
+      <Project>{85eb380a-91fc-4379-a53e-7cc3e505562f}</Project>
+      <Name>DTCDev.Client.Cars.Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Engine\DTCDev.Client.Cars.Engine\DTCDev.Client.Cars.Engine.csproj">
+      <Project>{4a0aef23-4112-4a4d-998e-bb88ad24c0c9}</Project>
+      <Name>DTCDev.Client.Cars.Engine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Engine\DTCDev.Client.Cars.Manager\DTCDev.Client.Cars.Manager.csproj">
+      <Project>{acb82fb0-8a28-4b80-9d15-9f4961e8465b}</Project>
+      <Name>DTCDev.Client.Cars.Manager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Engine\DTCDev.Client.Controls\DTCDev.Client.Controls.Map.csproj">
+      <Project>{226f3575-b683-446d-a2f0-181291dc8787}</Project>
+      <Name>DTCDev.Client.Controls.Map</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Engine\DTCDev.Client.Sensors\DTCDev.Client.Sensors.csproj">
+      <Project>{3f69f1ea-7062-43d8-8cc6-b427b9969447}</Project>
+      <Name>DTCDev.Client.Sensors</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Engine\DTCDev.Client.ViewModel\DTCDev.Client.ViewModel.csproj">
+      <Project>{76c18809-1b91-41ee-901b-36db43e59fb1}</Project>
+      <Name>DTCDev.Client.ViewModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Engine\DTCDev.Client.Window\DTCDev.Client.Window.csproj">
+      <Project>{d416393c-1dad-484c-80a7-3cd25054b434}</Project>
+      <Name>DTCDev.Client.Window</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Engine\DTCDev.Client\DTCDev.Client.csproj">
+      <Project>{5b1ab74d-d7b5-4d1f-b4f8-d43dfecfc0cd}</Project>
+      <Name>DTCDev.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Engine\DTCDev\DTCDev.csproj">
+      <Project>{d839aa11-c210-446b-a41a-65c6020c4a33}</Project>
+      <Name>DTCDev</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Models\DTCDev.Models.CarBase\DTCDev.Models.CarBase.csproj">
+      <Project>{c6a37dea-e583-41eb-8d92-4c6e97c4b74e}</Project>
+      <Name>DTCDev.Models.CarBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Models\DTCDev.Models.CarsSending\DTCDev.Models.CarsSending.csproj">
+      <Project>{17d29bc2-3bde-4104-a96b-db91c1dfa5e7}</Project>
+      <Name>DTCDev.Models.CarsSending</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Models\DTCDev.Models.Cars\DTCDev.Models.Cars.csproj">
+      <Project>{5bd144f2-bc4a-4d4e-b191-101a681f6758}</Project>
+      <Name>DTCDev.Models.Cars</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Models\DTCDev.Models.DeviceSender\DTCDev.Models.DeviceSender.csproj">
+      <Project>{3bc2c930-6d31-43bf-a16f-a5f3b7a59240}</Project>
+      <Name>DTCDev.Models.DeviceSender</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Models\DTCDev.Models\DTCDev.Models.csproj">
+      <Project>{ddd0ab63-faf8-4a78-9369-2481e912e641}</Project>
+      <Name>DTCDev.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,48 @@
+﻿<UserControl x:Class="DTCDev.Client.Menu.AEDControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+            d:DesignHeight="34" d:DesignWidth="320" Height="34"
+    x:Name="uc"             
+             >
+
+    <Grid x:Name="LayoutRoot">
+        <Border>
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF505050" Offset="0" />
+                    <GradientStop Color="#FF505050" Offset="1" />
+                    <GradientStop Color="#FF292929" Offset="0.5" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <StackPanel Orientation="Horizontal">
+                <Grid x:Name="grdAdd" HorizontalAlignment="Left" Margin="4">
+                    <Image Width="26" Height="26" Source="/DTCDev.Client;component/Asserts/Content/Images/add.png" HorizontalAlignment="Left"/>
+                    <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" x:Name="hlpnkAdd" Content="Добавить" Margin="29,2,0,2"  
+                                     Foreground="#FF00CCFF" 
+                                     Command="{Binding ElementName=uc, Path=AddCommand}"
+                                    Click="hlpnkAdd_Click"
+                                     />
+                </Grid>
+                <Grid x:Name="grdEdit" Margin="4">
+                    <Image x:Name="imgEdit" Width="26" Height="26" Source="/DTCDev.Client;component/Asserts/Content/Images/edit.png" HorizontalAlignment="Left"/>
+                    <Button x:Name="hlpnkEdit" Content="Редактировать" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="30,2,0,2"  HorizontalAlignment="Left" Width="88" 
+                                     Foreground="#FF00CCFF" 
+                                     Command="{Binding ElementName=uc, Path=ChangeCommand}"
+                                     />
+                </Grid>
+                <Grid x:Name="grdDelete" HorizontalAlignment="Left" Margin="4" >
+                    <Image x:Name="imgDelete" Width="26" Height="26" Source="/DTCDev.Client;component/Asserts/Content/Images/delete.png" HorizontalAlignment="Left" d:LayoutOverrides="HorizontalAlignment"/>
+                    <Button x:Name="hlpnkDelete" Content="Удалить" Margin="30,2,0,2" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                                     HorizontalAlignment="Left" Width="59"  
+                                     Foreground="#FF00CCFF" 
+                                     Command="{Binding ElementName=uc, Path=DeleteCommand}"
+                                     />
+                </Grid>
+
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
