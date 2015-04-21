@@ -100,30 +100,31 @@ namespace M2B_Cars
 
         private void OpenLastWins(object sender)
         {
+            CreateDefaultWindows();
             var SM = windowsManger.GetSettingsWindows();
             _CarDetailsSM = SM.Where(w => !string.IsNullOrEmpty(w.LinkId));
             foreach (var el in SM.Where(w => string.IsNullOrEmpty(w.LinkId)))
             {
                 switch (el.Name)
                 {
-                    case "Автомобили":
-                        {
-                            var set = sender as SettingsModel;
-                            DTCDev.Client.Cars.Controls.Controls.Car.CarsView view = new DTCDev.Client.Cars.Controls.Controls.Car.CarsView();
-                            ShowWindowWithoutSave(600, 500, view, "Автомобили", true, "", set);
-                        }
-                        break;
-                    case "Карта":
-                        {
-                            var set = sender as SettingsModel;
-                            DTCDev.Client.Cars.Controls.Controls.Map.MapView view = new DTCDev.Client.Cars.Controls.Controls.Map.MapView();
-                            var mvm = view.DataContext as DTCDev.Client.Cars.Controls.ViewModels.Map.MapViewModel;
-                            if (mvm != null) mvm.PropertyChanged += MapView_PropertyChanged;
-                            if (ErrorLog.DataContext == null)
-                                ErrorLog.DataContext = DTCDev.Client.Cars.Controls.ViewModels.Car.CarZonesErrorViewModel.Instance;
-                            ShowWindowWithoutSave(600, 500, view, "Карта", true);
-                        }
-                        break;
+                    //case "Автомобили":
+                    //    {
+                    //        var set = sender as SettingsModel;
+                    //        DTCDev.Client.Cars.Controls.Controls.Car.CarsView view = new DTCDev.Client.Cars.Controls.Controls.Car.CarsView();
+                    //        ShowWindowWithoutSave(600, 500, view, "Автомобили", true, "", set);
+                    //    }
+                    //    break;
+                    //case "Карта":
+                    //    {
+                    //        var set = sender as SettingsModel;
+                    //        DTCDev.Client.Cars.Controls.Controls.Map.MapView view = new DTCDev.Client.Cars.Controls.Controls.Map.MapView();
+                    //        var mvm = view.DataContext as DTCDev.Client.Cars.Controls.ViewModels.Map.MapViewModel;
+                    //        if (mvm != null) mvm.PropertyChanged += MapView_PropertyChanged;
+                    //        if (ErrorLog.DataContext == null)
+                    //            ErrorLog.DataContext = DTCDev.Client.Cars.Controls.ViewModels.Car.CarZonesErrorViewModel.Instance;
+                    //        ShowWindowWithoutSave(600, 500, view, "Карта", true);
+                    //    }
+                    //    break;
                     case "Отчеты":
                         {
                             var set = sender as SettingsModel;
@@ -131,21 +132,21 @@ namespace M2B_Cars
                             ShowWindowWithoutSave(700, 400, reports, "Отчеты", false, "", set);
                         }
                         break;
-                    case "Трек":
-                        {
-                            var set = sender as SettingsModel;
-                            HistoryControl history = new HistoryControl();
-                            if (set != null)
-                            {
-                                var hvm = history.DataContext as DTCDev.Client.Cars.Controls.ViewModels.History.HistoryViewModel;
-                                if (hvm != null)
-                                {
-                                    hvm.SetDates(DateTime.Today, DateTime.Today + new TimeSpan(1, 0, 0, 0));
-                                }
-                            }
-                            ShowWindowWithoutSave(900, 600, history, "Трек", false, "", set);
-                        }
-                        break;
+                    //case "Трек":
+                    //    {
+                    //        var set = sender as SettingsModel;
+                    //        HistoryControl history = new HistoryControl();
+                    //        if (set != null)
+                    //        {
+                    //            var hvm = history.DataContext as DTCDev.Client.Cars.Controls.ViewModels.History.HistoryViewModel;
+                    //            if (hvm != null)
+                    //            {
+                    //                hvm.SetDates(DateTime.Today, DateTime.Today + new TimeSpan(1, 0, 0, 0));
+                    //            }
+                    //        }
+                    //        ShowWindowWithoutSave(900, 600, history, "Трек", false, "", set);
+                    //    }
+                    //    break;
                     case "Список водителей":
                         {
                             var set = sender as SettingsModel;
@@ -182,7 +183,20 @@ namespace M2B_Cars
         }
 
 
+        private void CreateDefaultWindows()
+        {
+            var maxH = windowsManger.ActualHeight-146;
+            var maxW = windowsManger.ActualWidth-10;
+            var view1 = new CarsView();
+            ShowDefaultWindow(maxW / 3-12, maxH, view1, "Автомобили", "");
 
+            var view2 = new DTCDev.Client.Cars.Controls.Controls.Map.MapView();
+            var mvm = view2.DataContext as DTCDev.Client.Cars.Controls.ViewModels.Map.MapViewModel;
+            if (mvm != null) mvm.PropertyChanged += MapView_PropertyChanged;
+            if (ErrorLog.DataContext == null)
+                ErrorLog.DataContext = DTCDev.Client.Cars.Controls.ViewModels.Car.CarZonesErrorViewModel.Instance;
+            ShowDefaultWindow(2 * maxW / 3, maxH, view2, "Карта", "", new Point(maxW / 3, 0));
+        }
 
         private WindowExemplar ShowWindow(int width, int height, UserControl control, string title, bool allowDuplicate, string info = "", SettingsModel sm = null)
         {
@@ -220,6 +234,21 @@ namespace M2B_Cars
             return exemplar;
         }
 
+        private WindowExemplar ShowDefaultWindow(double width, double height, UserControl control, string title, string info = "", Point point = default(Point))
+        {
+            var exemplar = new WindowExemplar(false, false, false)
+            {
+                Title = title + info,
+                SM = { LinkId = info },
+                Context = control,
+                WindowHeight = height,
+                WindowWidth = width,
+                CurrentPosition = point
+            };
+            windowsManger.OpenWindow(exemplar, point.X, point.Y, info);
+
+            return exemplar;
+        }
         void CarSelector_ViewCarDetails(DTCDev.Client.Cars.Engine.DisplayModels.DISP_Car car)
         {
             CarDetailsView details = new CarDetailsView(car);

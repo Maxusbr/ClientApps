@@ -40,12 +40,25 @@ namespace DTCDev.Client.Window
                 btnMaximize.Visibility = Visibility.Collapsed;
         }
 
+        public WindowExemplar(bool canUserResize, bool allowDuplicate, bool canUserClose)
+        {
+            InitializeComponent();
+            _allowDuplicate = allowDuplicate;
+            _canUserResize = canUserResize;
+            _canUserClose = canUserClose;
+            if (_canUserResize == false)
+                btnMaximize.Visibility = Visibility.Collapsed;
+            if (_canUserClose == false)
+                btnClose.Visibility = Visibility.Collapsed;
+        }
         public SettingsModel SM = new SettingsModel(){Left = 0, Top = 0, Width = 0, Height = 0, Maximize = false, Minimized = false};
         private double width = 0;
 
         private double height = 0;
 
         bool _canUserResize = true;
+
+        bool _canUserClose = true;
 
         bool _allowDuplicate = false;
 
