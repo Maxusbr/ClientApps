@@ -41,6 +41,5 @@ namespace DTCDev.Client.Cars.Engine.AppLogic
         public static event OnCarChangedHandler OnCarChanged;
         public static event OnCarChangedHandler ViewCarDetails;
 
-        public static bool OpenInNewWindow { get; set; }
     }
 }

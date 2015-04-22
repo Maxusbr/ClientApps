@@ -34,12 +34,9 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
 
         void CarSelector_OnCarChanged(DISP_Car car)
         {
-            if (CarSelector.OpenInNewWindow == false)
-            {
-                _currentCar.PropertyChanged -= car_PropertyChanged;
-                _currentCar = car;
-                _currentCar.PropertyChanged += car_PropertyChanged;
-            }
+            _currentCar.PropertyChanged -= car_PropertyChanged;
+            _currentCar = car;
+            _currentCar.PropertyChanged += car_PropertyChanged;
         }
 
         DISP_Car _currentCar;

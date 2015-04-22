@@ -1,4 +1,4 @@
-﻿<Window xmlns:Controls="clr-namespace:DTCDev.Client.Cars.Controls.Controls;assembly=DTCDev.Client.Cars.Controls"  
+﻿<Window xmlns:Map="clr-namespace:DTCDev.Client.Cars.Controls.Controls.Map;assembly=DTCDev.Client.Cars.Controls"  xmlns:Controls="clr-namespace:DTCDev.Client.Cars.Controls.Controls;assembly=DTCDev.Client.Cars.Controls"  
         xmlns:Win="clr-namespace:DTCDev.Client.Window;assembly=DTCDev.Client.Window"  
         x:Class="M2B_Cars.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -6,15 +6,8 @@
         xmlns:Car="clr-namespace:DTCDev.Client.Cars.Controls.Controls.Car;assembly=DTCDev.Client.Cars.Controls"
         Title="M2B Cars" Height="700" Width="1025" WindowState="Maximized" Loaded="Window_Loaded" Closed="Window_Closed">
     <Grid>
-        <Grid.Background>
-            <ImageBrush ImageSource="/M2B Cars;component/Assets/Images/bg.jpg" Stretch="UniformToFill"/>
-        </Grid.Background>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="279*"/>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="10"/>
-        </Grid.RowDefinitions>
-        <Win:WindowsManager Grid.RowSpan="3" x:Name="windowsManger" />
+
+        <!--<Win:WindowsManager Grid.RowSpan="3" x:Name="windowsManger" />
         <Win:FishEyePanel  Grid.Row="1" Width="300" Visibility="Collapsed">
             <Image Width="50" Cursor="Hand" MouseLeftButtonUp="Image_MouseLeftButtonUp" Source="Assets/Images/Menu/cars-list.png"/>
             <Image Width="50" Cursor="Hand" MouseLeftButtonUp="Image_MouseLeftButtonUp1" Source="Assets/Images/Menu/maps-icon.png"/>
@@ -22,7 +15,15 @@
             <Image Width="50" Cursor="Hand" MouseLeftButtonUp="Image_MouseLeftButtonUp_1" Source="Assets/Images/Menu/1366732420_report.png"/>
             <Image Width="50" Cursor="Hand" MouseLeftButtonUp="Image_MouseLeftButtonUp_3" Source="Assets/Images/Menu/Occupations-Pilot-Military-Male-Dark-icon.png"/>
             <Image Width="50" Cursor="Hand" MouseLeftButtonUp="Image_MouseLeftButtonUp_4" Source="Assets/Images/Menu/1366228638_Android-Settings.png"/>
-        </Win:FishEyePanel>
+        </Win:FishEyePanel>-->
+        <Grid x:Name="grdMain">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <Car:CarsView />
+            <Map:MapView Grid.Column="1" />
+        </Grid>
         <Car:CarZonesError x:Name="ErrorLog" Background="White" VerticalAlignment="Bottom" MaxHeight="150" Visibility="Collapsed"/>
         <Grid VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,20,0">
             <Grid.ColumnDefinitions>

@@ -6,13 +6,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Background="White">
-        <ListBox ItemsSource="{Binding Path=CarsList}" SelectedItem="{Binding Path=SelectedCar, Mode=TwoWay}" Margin="0,0,0,34">
+        <ListBox ItemsSource="{Binding Path=CarsList}" SelectedItem="{Binding Path=SelectedCar, Mode=TwoWay}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Car:CarViewElement CarExemplar="{Binding}" AddCommand="{Binding Path=SelectCommand}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <CheckBox Content="Открывать в новом окне" IsChecked="{Binding Path=OpenInNewWindow, Mode=TwoWay}" VerticalAlignment="Bottom" Margin="8"/>
     </Grid>
 </UserControl>

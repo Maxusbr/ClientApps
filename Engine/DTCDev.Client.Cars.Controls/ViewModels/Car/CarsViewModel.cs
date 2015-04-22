@@ -47,18 +47,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Car
             }
         }
 
-        private bool _openInNewWindow = false;
-        public bool OpenInNewWindow
-        {
-            get { return _openInNewWindow; }
-            set
-            {
-                _openInNewWindow = value;
-                this.OnPropertyChanged("OpenInNewWindow");
-                CarSelector.OpenInNewWindow = value;
-            }
-        }
-
 
 
 
