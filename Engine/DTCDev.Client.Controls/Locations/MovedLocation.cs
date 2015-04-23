@@ -21,6 +21,11 @@ namespace DTCDev.Client.Controls.Map
             }
         }
 
+        public MovedLocation()
+        {
+            Current = this;
+        }
+
         public MovedLocation(double latitude, double longitude)
             : base(latitude, longitude)
         {

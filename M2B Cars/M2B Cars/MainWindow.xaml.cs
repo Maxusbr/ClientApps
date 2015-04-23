@@ -103,7 +103,13 @@ namespace M2B_Cars
         }
 
 
-
+        private void AddEvents()
+        {
+            var mvm = MapView.DataContext as DTCDev.Client.Cars.Controls.ViewModels.Map.MapViewModel;
+            if (mvm != null) mvm.PropertyChanged += MapView_PropertyChanged;
+            if (ErrorLog.DataContext == null)
+                ErrorLog.DataContext = DTCDev.Client.Cars.Controls.ViewModels.Car.CarZonesErrorViewModel.Instance;
+        }
 
         void CarSelector_ViewCarDetails(DTCDev.Client.Cars.Engine.DisplayModels.DISP_Car car)
         {

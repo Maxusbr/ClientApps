@@ -16,6 +16,7 @@
              d:DesignHeight="580" d:DesignWidth="900" Loaded="UserControl_Loaded">
 
     <UserControl.Resources>
+        <Models:BoolToColorConverter x:Key="BoolToColorConverter"/>
         <Models:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <Storyboard x:Key="stbShowDate" x:Name="stbShowDate">
             <DoubleAnimation Storyboard.TargetName="grdSelectDate" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.5"/>
@@ -282,6 +283,136 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="PointItemStyle" TargetType="{x:Type Map:MapItem}">
+            <Setter Property="Map:MapPanel.Location" Value="{Binding Location}"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Map:MapItem}">
+                        <Canvas  Visibility="{Binding VisOnMap}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="Disabled"/>
+                                    <VisualState x:Name="MouseOver"/>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="SelectionStates">
+                                    <VisualState x:Name="Unselected"/>
+                                    <VisualState x:Name="Selected">
+                                        <Storyboard>
+                                            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Color)" Storyboard.TargetName="path">
+                                                <EasingColorKeyFrame KeyTime="0" Value="White"/>
+                                            </ColorAnimationUsingKeyFrames>
+                                            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path">
+                                                <EasingColorKeyFrame KeyTime="0" Value="#FFCDCDCD"/>
+                                            </ColorAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="selectiongroup">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="canvas">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="textBlock">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="SelectedUnfocused">
+                                        <Storyboard>
+                                            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Color)" Storyboard.TargetName="path">
+                                                <EasingColorKeyFrame KeyTime="0" Value="White"/>
+                                            </ColorAnimationUsingKeyFrames>
+                                            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path">
+                                                <EasingColorKeyFrame KeyTime="0" Value="#FFD8D8D8"/>
+                                            </ColorAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="selectiongroup">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="canvas">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="textBlock">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Canvas x:Name="selectiongroup" Canvas.Left="-43" Canvas.Top="-41" Opacity="0" Height="86" Width="88" Visibility="Hidden">
+                                <Path Fill="#7F272727" Opacity="1" Margin="0" Height="Auto" Canvas.Left="43" Canvas.Top="41">
+                                    <Path.Data>
+                                        <EllipseGeometry RadiusX="55" RadiusY="55"/>
+                                    </Path.Data>
+                                </Path>
+                                <Grid Opacity="0.2" Width="80" Margin="0" Height="1" Canvas.Left="3" Canvas.Top="40">
+                                    <Path Data="M10,0L37,0" Fill="{x:Null}" Height="Auto" Stretch="Fill" Stroke="White" Margin="52,0,0,0"/>
+                                    <Path Data="M10,0L37,0" Fill="{x:Null}" Height="Auto" Stretch="Fill" Stroke="White" Margin="0,0,52,0"/>
+                                </Grid>
+                                <Grid RenderTransformOrigin="0.5,0.5" Opacity="0.2" Width="80" Margin="0" Height="1" Canvas.Left="3" Canvas.Top="40">
+                                    <Grid.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform Angle="-60"/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </Grid.RenderTransform>
+                                    <Path Data="M10,0L37,0" Fill="{x:Null}" Height="Auto" Stretch="Fill" Stroke="White" Margin="52,0,0,0"/>
+                                    <Path Data="M10,0L37,0" Fill="{x:Null}" Height="Auto" Stretch="Fill" Stroke="White" Margin="0,0,52,0"/>
+                                </Grid>
+                                <Grid RenderTransformOrigin="0.5,0.5" Opacity="0.2" Width="80" Margin="0" Height="1" Canvas.Left="3" Canvas.Top="40">
+                                    <Grid.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform Angle="60"/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </Grid.RenderTransform>
+                                    <Path Data="M10,0L37,0" Fill="{x:Null}" Height="Auto" Stretch="Fill" Stroke="White" Margin="52,0,0,0"/>
+                                    <Path Data="M10,0L37,0" Fill="{x:Null}" Height="Auto" Stretch="Fill" Stroke="White" Margin="0,0,52,0"/>
+                                </Grid>
+                            </Canvas>
+                            <Path x:Name="path" StrokeThickness="2" Fill="Transparent" Stroke="{Binding InZone, Converter={StaticResource BoolToColorConverter}}" Visibility="Collapsed">
+                                <Path.Data>
+                                    <EllipseGeometry RadiusX="8" RadiusY="8"/>
+                                </Path.Data>
+                            </Path>
+                            <Canvas x:Name="canvas" Height="101" Canvas.Left="-50" Canvas.Top="-50" Width="100" Opacity="0" Visibility="Hidden">
+                                <Grid Opacity="1" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Stretch" Margin="0" Height="Auto" Canvas.Left="28">
+                                    <Rectangle x:Name="labelBackground" Fill="{x:Null}" Opacity="0.7"/>
+                                    <TextBlock Margin="2,0,2,0" Text="{Binding Name}" FontSize="10.667" TextTrimming="CharacterEllipsis" Width="40" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
+                                </Grid>
+                                <Grid Opacity="1" RenderTransformOrigin="0.5,0.5" Height="Auto" Canvas.Top="30" HorizontalAlignment="Left">
+                                    <Rectangle x:Name="labelBackground1" Fill="{x:Null}" Opacity="0.7"/>
+                                    <TextBlock Margin="2,0,2,0" Text="{Binding strSpeed}" FontSize="10.667" TextTrimming="CharacterEllipsis" Width="40" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
+                                </Grid>
+                                <Grid Opacity="1" RenderTransformOrigin="0.5,0.5" Height="Auto" Canvas.Left="57" Canvas.Top="30">
+                                    <Rectangle x:Name="labelBackground2" Fill="{x:Null}" Opacity="0.7"/>
+                                    <TextBlock Margin="2,0,2,0" Text="{Binding strLocation}" FontSize="10.667" TextTrimming="CharacterEllipsis" Width="40" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
+                                </Grid>
+                                <Grid Opacity="1" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Stretch" Margin="0" Height="Auto" Canvas.Left="28" Canvas.Top="82">
+                                    <Rectangle x:Name="labelBackground3" Fill="{x:Null}" Opacity="0.7"/>
+                                    <TextBlock Margin="2,0,2,0" Text="{Binding InZone}" FontSize="10.667" TextTrimming="CharacterEllipsis" Width="40" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
+                                </Grid>
+                                <Grid Opacity="1" RenderTransformOrigin="0.5,0.5" Height="Auto" Canvas.Top="53">
+                                    <Rectangle x:Name="labelBackground4" Fill="{x:Null}" Opacity="0.7"/>
+                                    <TextBlock Margin="2,0,2,0" Text="{Binding Name}" FontSize="10.667" TextTrimming="CharacterEllipsis" Width="40" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
+                                </Grid>
+                                <Grid Opacity="1" RenderTransformOrigin="0.5,0.5" Height="Auto" Canvas.Left="57" Canvas.Top="53" Width="Auto">
+                                    <Rectangle x:Name="labelBackground5" Fill="{x:Null}" Opacity="0.7"/>
+                                    <TextBlock Margin="2,0,2,0" Text="{Binding Name}" FontSize="10.667" TextTrimming="CharacterEllipsis" Width="40" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
+                                </Grid>
+                            </Canvas>
+                            <TextBlock x:Name="textBlock" TextWrapping="Wrap" Text="{Binding Adress}" Canvas.Left="-50" VerticalAlignment="Center" Canvas.Top="50" Width="100" TextAlignment="Center" Visibility="Hidden"/>
+                            <Map1:MapViewElement Canvas.Left="-60" Canvas.Top="-60" Visibility="{Binding VisOnMap}"/>
+                        </Canvas>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <!--<EventSetter Event="UIElement.TouchDown" Handler="MapItemTouchDown"/>-->
+        </Style>
     </UserControl.Resources>
 
     <UserControl.DataContext>
@@ -291,7 +422,7 @@
     <Grid x:Name="LayoutRoot" Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="0"/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -300,37 +431,38 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.ColumnSpan="5">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.ColumnSpan="5" Visibility="Collapsed">
             <TextBlock Text="Даты запроса:" Margin="5"/>
             <Button Content="{Binding SelectedDateText}" Margin="5,0" Width="100" VerticalAlignment="Center" Command="{Binding SelectedDateCommand}"/>
             <ToggleButton IsChecked="{Binding UseAccelleration, Mode=TwoWay}" HorizontalAlignment="Left" Content="Оптимизация" VerticalAlignment="Center" Margin="5,0" Width="100"/>
             <ToggleButton x:Name="checkBox" IsChecked="{Binding TablePackageView, Mode=TwoWay}" HorizontalAlignment="Left" Content="Таблица" VerticalAlignment="Center" Margin="5,0" Width="70"/>
-        </StackPanel>
-
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.ColumnSpan="5">
-            <TextBlock FontWeight="Bold" HorizontalAlignment="Right" Margin="0,6,10,6" Text="{Binding SelectedDevice}" Grid.ColumnSpan="3"/>
+            <TextBlock FontWeight="Bold" HorizontalAlignment="Right" Margin="0,6,10,6" Text="{Binding SelectedDevice}"/>
             <ToggleButton Content="Все дни" VerticalAlignment="Center" Margin="0,3,10,3" IsChecked="{Binding PeriodSet}" HorizontalAlignment="Right" Width="70"/>
             <ToggleButton Content="Детально" HorizontalAlignment="Right" Margin="0,3,10,3" VerticalAlignment="Center" Click="ToggleButton_Click"/>
         </StackPanel>
 
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.ColumnSpan="5"/>
+
         <TextBlock FontWeight="Bold" HorizontalAlignment="Right" Text="{Binding MapCenter, Mode=OneWay}" Visibility="Collapsed" Margin="0,0,82,0" Grid.Column="2"/>
 
         <!-- MAP -->
-        <Map:Map Grid.Row="1" Center="{Binding MapCenter}" ZoomLevel="{Binding Path=ZoomLevel}"
-                 TargetCenter="{Binding MapCenterUser, Mode=TwoWay}"
-                 TargetZoomLevel="{Binding Path=ZoomLevel}">
+        <Map:Map x:Name="Map" Center="{Binding MapCenter}" ZoomLevel="{Binding Path=ZoomLevel, Mode=TwoWay}"
+                 TargetCenter="{Binding MapCenterUser, Mode=TwoWay}" Grid.ColumnSpan="{Binding SpanMap}" Grid.RowSpan="2">
             <Map:MapItemsControl ItemsSource="{Binding ZoneSelect}" 
 				ItemTemplate="{StaticResource PolylineItemTemplate}" 
 				ItemContainerStyle="{StaticResource ZonesItemStyle}" Focusable="False" 
 				IsSynchronizedWithCurrentItem="False" IsEnabled="False"/>
-            <Map:MapColorLine Locations="{Binding Route}" StrokeThickness="3" Stroke="DarkGreen" IsClosed="False" />
-            <Map:MapColorLine Locations="{Binding WarningRoute}" StrokeThickness="3" Stroke="DarkOrange" IsClosed="False" />
-            <Map:MapColorLine Locations="{Binding ErrorRoute}" StrokeThickness="3" Stroke="DarkRed" IsClosed="False" />
-            <Map:MapColorLine Locations="{Binding OfflineRoute}" StrokeThickness="3" Stroke="Gray" IsClosed="False" />
-            <Map:MapItemsControl ItemsSource="{Binding Parkings}"  Focusable="True"  IsSynchronizedWithCurrentItem="False" 
-                                 IsEnabled="True" ItemContainerStyle="{DynamicResource ParkingItemStyle}" 
+            <Map:MapItemsControl x:Name="CarPoints" ItemsSource="{Binding Points}" 
+				ItemContainerStyle="{StaticResource PointItemStyle}" 
+				SelectedItem="{Binding Position}"/>
+            <Map:MapColorLine x:Name="RouteLine" Locations="{Binding Route}" StrokeThickness="3" Stroke="DarkGreen" IsClosed="False" Visibility="Collapsed" />
+            <Map:MapColorLine x:Name="WarningLine" Locations="{Binding WarningRoute}" StrokeThickness="3" Stroke="DarkOrange" IsClosed="False" Visibility="Collapsed" />
+            <Map:MapColorLine x:Name="ErrorLine" Locations="{Binding ErrorRoute}" StrokeThickness="3" Stroke="DarkRed" IsClosed="False" Visibility="Collapsed" />
+            <Map:MapColorLine x:Name="OfflineLine" Locations="{Binding OfflineRoute}" StrokeThickness="3" Stroke="Gray" IsClosed="False" Visibility="Collapsed" />
+            <Map:MapItemsControl x:Name="ParkingsPin" ItemsSource="{Binding Parkings}"  Focusable="True"  IsSynchronizedWithCurrentItem="False" 
+                                 IsEnabled="True" ItemContainerStyle="{DynamicResource ParkingItemStyle}" Visibility="Collapsed" 
                                  />
-            <Map:Pushpin Map:MapPanel.Location="{Binding Position.Location}" Background="{x:Null}" >
+            <Map:Pushpin x:Name="CarPin" Map:MapPanel.Location="{Binding Position.Location}" Background="{x:Null}" Visibility="Collapsed" >
                 <Map1:MapViewElement DataContext="{Binding Position}" Margin="-62,0,0,-77" Visibility="{Binding VisOnMap}"/>
             </Map:Pushpin>
             <Map:MapScale/>
@@ -349,7 +481,7 @@
             </Slider>
         </Grid>
 
-        <Border x:Name="brdrStat" Grid.Row="1" Margin="0,2,2,0" CornerRadius="2" BorderThickness="1" BorderBrush="LightGray" Background="White" VerticalAlignment="Top" HorizontalAlignment="Right" Width="300">
+        <Border x:Name="brdrStat" Margin="0,2,2,0" CornerRadius="2" BorderThickness="1" BorderBrush="LightGray" Background="White" VerticalAlignment="Top" HorizontalAlignment="Right" Width="300" Grid.RowSpan="2" Visibility="Collapsed">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="55"/>
@@ -385,7 +517,7 @@
             </Grid>
         </Border>
 
-        <Button x:Name="btnMinimize" Click="btnMinimize_Click" Height="16" Width="20" Style="{StaticResource btnMinimizeStyle}" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,2,2,0">
+        <Button x:Name="btnMinimize" Click="btnMinimize_Click" Height="16" Width="20" Style="{StaticResource btnMinimizeStyle}" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,2,2,0" Grid.RowSpan="2" Visibility="Collapsed">
             <Grid>
                 <Border VerticalAlignment="Bottom" Height="2" Background="Black" Margin="0,0,0,-5" HorizontalAlignment="Right" Width="10"/>
                 <Border Background="#FF00CCFF" Margin="0,0,1,-4" HorizontalAlignment="Right" Width="10" Height="2" VerticalAlignment="Bottom"/>
@@ -414,27 +546,37 @@
             </StackPanel>
         </Grid>
 
-        <Grid x:Name="grdService" Grid.Row="1" Grid.Column="2" Width="0" >
+        <Grid x:Name="grdService" Grid.Row="1" Grid.Column="2" Margin="0,30,0,0" Width="230" Visibility="Collapsed" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
             <!-- display time line-->
-            <Grid x:Name="grdGrapic" >
+
+            <Border BorderThickness="1" Background="White" Margin="0,-30,0,0" Opacity="0.8" Grid.RowSpan="3"/>
+            <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Top" Margin="20,0,0,0">
+                <Image Margin="3" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/Calendar-icon.png" ToolTipService.ToolTip="Отображаемая дата"/>
+                <Button Margin="13,3,3,3" Command="{Binding MoveBackwardCommand}" Style="{StaticResource feBtnStyle}">
+                    <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/Left-icon.png" Cursor="Hand" />
+                </Button>
+                <Button Content="{Binding SelectedDateText}" Margin="5,0" Width="100" VerticalAlignment="Center" Command="{Binding SelectedDateCommand}"/>
+                <!--<TextBlock Margin="10,6" Text="{Binding DisplayedHistoryDate, StringFormat=dd.MM.yyyy}"/>-->
+                <Button Margin="3" Style="{StaticResource feBtnStyle}" Command="{Binding MoveForwardCommand}">
+                    <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/Right-icon.png" Cursor="Hand" />
+                </Button>
+
+                <TextBlock Text="Текущее время: " Margin="6"/>
+                <TextBlock Text="{Binding CurrentSecondSelected, Converter={StaticResource timeConverter}}" Margin="6" />
+            </StackPanel>
+            <!-- display time line-->
+
+            <Grid x:Name="grdGrapic" Margin="20,0,0,0" Grid.Row="1" Visibility="Collapsed" >
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="28*" />
                 </Grid.RowDefinitions>
-                <StackPanel Orientation="Horizontal">
-                    <Image Margin="3" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/Calendar-icon.png" ToolTipService.ToolTip="Отображаемая дата"/>
-                    <Button Margin="13,3,3,3" Command="{Binding MoveBackwardCommand}" Style="{StaticResource feBtnStyle}">
-                        <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/Left-icon.png" Cursor="Hand" />
-                    </Button>
-                    <TextBlock Margin="10,6" Text="{Binding DisplayedHistoryDate, StringFormat=dd.MM.yyyy}"/>
-                    <Button Margin="3" Style="{StaticResource feBtnStyle}" Command="{Binding MoveForwardCommand}">
-                        <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/Right-icon.png" Cursor="Hand" />
-                    </Button>
-
-                    <TextBlock Text="Текущее время: " Margin="6"/>
-                    <TextBlock Text="{Binding CurrentSecondSelected, Converter={StaticResource timeConverter}}" Margin="6" />
-                </StackPanel>
                 <Image Margin="3" HorizontalAlignment="Left" Grid.Row="1" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/Time-icon.png" Width="24" ToolTipService.ToolTip="Отображаемое время"/>
 
                 <Grid Grid.Row="1" Margin="40,0,0,0">
@@ -537,17 +679,16 @@
                         <local:History_SatCount Grid.Row="1"  Height="30" Margin="57,0,30,0" x:Name="history_SatCount1" Data="{Binding DayStates}"/>
                         <TextBlock Grid.Row="1" Margin="40,0" HorizontalAlignment="Left" Height="23" MinWidth="10" VerticalAlignment="Center" Text="{Binding SelectedState.Sat}"/>
 
-                        <local:LinesHistoryPresenter Grid.Row="2" Data="{Binding Path=Lines}"/>
+                        <local:LinesHistoryPresenter Grid.Row="2" Data="{Binding Lines}"/>
 
-                        <local:OBDDataPresenter Grid.Row="3" Data="{Binding Path=OBDHistory}"/>
+                        <local:OBDDataPresenter Grid.Row="3" Data="{Binding OBDHistory}"/>
 
-                        <local:AccDataPresenter Grid.Row="4" Data="{Binding Path=AccHistory}"/>
+                        <local:AccDataPresenter Grid.Row="4" Data="{Binding AccHistory}"/>
                     </Grid>
                 </ScrollViewer>
-
             </Grid>
 
-            <Grid x:Name="grdList" Visibility="Collapsed">
+            <Grid x:Name="grdList" Margin="20,0,0,0" Grid.Row="1" Visibility="Collapsed">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"/>
                     <RowDefinition/>
@@ -584,20 +725,20 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
-
-            <local:PackagesView Data="{Binding Path=Lines}" Track="{Binding Path=DayStates}" Visibility="{Binding IsChecked, Converter={StaticResource BoolToVisibilityConverter}, ElementName=checkBox}" />
+            <local:PackagesView Data="{Binding Lines}" Track="{Binding DayStates}" Visibility="{Binding IsChecked, Converter={StaticResource BoolToVisibilityConverter}, ElementName=checkBox}" Margin="20,0,0,0" Grid.Row="1" />
+            <Grid x:Name="grdSelectDate"  Visibility="{Binding VisSelectDate}" VerticalAlignment="Top" >
+                <Border Background="White" Opacity="0.8"/>
+                <Calendar x:Name="calendar1" SelectedDatesChanged="Calendar_SelectedDatesChanged_1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,30,15,30"/>
+            </Grid>
+            <ToggleButton x:Name="tgbDetail" Content="Детально" HorizontalAlignment="Center" VerticalAlignment="Bottom" Click="ToggleButton_Click" Padding="5,1" Grid.Row="2" Margin="0,5"/>
         </Grid>
 
-        <Car:CarZonesError VerticalAlignment="Top" Grid.Row="2" DataContext="{Binding HistoryErrorVm}" Grid.ColumnSpan="3"/>
+        <Car:CarZonesError x:Name="_carZonesError" VerticalAlignment="Top" Grid.Row="2" DataContext="{Binding HistoryErrorVm}" Grid.ColumnSpan="3" Visibility="Collapsed"/>
 
-        <Grid Grid.Row="1" Grid.RowSpan="2" Visibility="{Binding VisLoad}" Grid.ColumnSpan="3">
+        <Grid Grid.Row="1" Grid.RowSpan="2" Visibility="{Binding VisLoad}" Grid.ColumnSpan="3" d:IsHidden="True">
             <Border Background="White" Opacity="0.5"/>
             <TextBlock Margin="6" Text="{Binding LoadingText}" FontSize="24" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Grid>
-
-        <Grid x:Name="grdSelectDate"  Visibility="{Binding VisSelectDate}" Grid.Row="1" Grid.ColumnSpan="3" >
-            <Border Background="White" Opacity="0.8"/>
-            <Calendar SelectionMode="SingleRange" x:Name="calendar1" SelectedDatesChanged="Calendar_SelectedDatesChanged_1"/>
-        </Grid>
+        <ToggleButton Content="История" VerticalAlignment="Top" Click="HistoryButton_Click" Padding="5,1" HorizontalAlignment="Center" Width="180" Grid.Row="1" Margin="0,10,0,0" Grid.ColumnSpan="2" Grid.Column="1"/>
     </Grid>
 </UserControl>

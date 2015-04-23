@@ -13,11 +13,11 @@ namespace DTCDev.Client.Controls.Map
         protected double longitude;
         private bool firstPoint = false;
 
-        public Location Current { get; set; }
+        //public Location Current { get; set; }
 
         public Location()
         {
-            Current = this;
+            //Current = this;
         }
 
         public Location(double latitude, double longitude, bool first = false)
@@ -25,7 +25,7 @@ namespace DTCDev.Client.Controls.Map
             Latitude = latitude;
             Longitude = longitude;
             firstPoint = first;
-            Current = this;
+            //Current = this;
         }
 
         public Location(Location el, bool first)
@@ -33,7 +33,7 @@ namespace DTCDev.Client.Controls.Map
             Latitude = el.Latitude;
             Longitude = el.Longitude;
             firstPoint = first;
-            Current = this;
+            //Current = this;
         }
 
         public double Latitude

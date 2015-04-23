@@ -23,8 +23,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
     /// </summary>
     public partial class HistoryControl : UserControl
     {
-        
-        HistoryViewModel hvm;
+        readonly HistoryViewModel _hvm;
 
         public HistoryControl()
         {
@@ -32,7 +31,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
 
             if (DesignerProperties.GetIsInDesignMode(this))
                 return;
-             hvm = this.DataContext as HistoryViewModel;
+             _hvm = this.DataContext as HistoryViewModel;
         }
 
         public HistoryControl(DateTime date)
@@ -41,9 +40,9 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
 
             if (DesignerProperties.GetIsInDesignMode(this))
                 return;
-            this.DataContext = hvm;
-            hvm.StartDate = date;
-            hvm.StopDate = date + new TimeSpan(1, 0, 0, 0);
+            this.DataContext = _hvm;
+            _hvm.StartDate = date;
+            _hvm.StopDate = date + new TimeSpan(1, 0, 0, 0);
         }
 
         void hvm_HideSelectDate(object sender, EventArgs e)
@@ -60,7 +59,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         {
             var calendar = sender as Calendar;
             if(calendar == null) return;
-            hvm.SetDates(calendar.SelectedDates.First(), calendar.SelectedDates.Last() + new TimeSpan(1, 0, 0, 0));
+            _hvm.SetDates(calendar.SelectedDates.First(), calendar.SelectedDates.Last() + new TimeSpan(1, 0, 0, 0));
             //if (calendar.SelectedDates.First() <= calendar.SelectedDates.Last())
             //{
                 
@@ -72,7 +71,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             //    hvm.StopDate = calendar.SelectedDates.First();
             //    hvm.StartDate = calendar.SelectedDates.Last() + new TimeSpan(1, 0, 0, 0);
             //}
-            hvm.VisSelectDate = Visibility.Collapsed;
+            _hvm.VisSelectDate = Visibility.Collapsed;
         }
 
         private void Image_MouseLeftButtonUp_1(object sender, MouseButtonEventArgs e)
@@ -117,36 +116,62 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            calendar1.DisplayDateEnd = DateTime.Now;
+            var dt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            calendar1.DisplayDateEnd = dt;
+            if (_hvm != null) _hvm.SetDates(dt, dt + new TimeSpan(1, 0, 0, 0));
         }
 
         bool _statDisplayed = true;
 
         private void btnMinimize_Click(object sender, RoutedEventArgs e)
         {
-            if (_statDisplayed)
-                brdrStat.Visibility = Visibility.Collapsed;
-            else
-                brdrStat.Visibility = Visibility.Visible;
+            brdrStat.Visibility = _statDisplayed ? Visibility.Collapsed : Visibility.Visible;
             _statDisplayed = !_statDisplayed;
         }
 
         private void ToggleButton_Click(object sender, RoutedEventArgs e)
         {
-            ToggleButton tb = sender as ToggleButton;
+            var tb = sender as ToggleButton;
+            if (tb == null) return;
             if (tb.IsChecked == true)
             {
                 grdService.Width = 450;
-                //Storyboard sb = this.FindResource("stbShowDetails") as Storyboard;
-                //sb.Begin();
+                grdGrapic.Visibility = Visibility.Visible;
+                _hvm.SpanMap = 2;
+                tb.Content = "Скрыть детали";
             }
             else
             {
-                grdService.Width = 0;
-                //Storyboard sb = this.FindResource("stbHideDetails") as Storyboard;
-                //sb.Begin();
+                grdService.Width = 230;
+                grdGrapic.Visibility = Visibility.Collapsed;
+                _hvm.SpanMap = 3;
+                tb.Content = "Детально";
             }
-            
+
+        }
+
+        private void HistoryButton_Click(object sender, RoutedEventArgs e)
+        {
+            var tgbtn = sender as ToggleButton;
+            if(tgbtn == null) return;
+            if (tgbtn.IsChecked == true)
+            {
+                tgbtn.Content = "Закрыть историю";
+                grdService.Visibility = Visibility.Visible;
+                CarPoints.Opacity = .5;
+                _hvm.EnableHistory = true;
+                _hvm.LoadData();
+            }
+            else
+            {
+                tgbtn.Content = "История";
+                grdService.Visibility = Visibility.Collapsed;
+                CarPoints.Opacity = 1;
+                _hvm.EnableHistory = false;
+            }
+            CarPin.Visibility = ParkingsPin.Visibility =
+            RouteLine.Visibility = WarningLine.Visibility = ErrorLine.Visibility = OfflineLine.Visibility =
+            btnMinimize.Visibility = brdrStat.Visibility = _carZonesError.Visibility = grdService.Visibility;
         }
     }
 }

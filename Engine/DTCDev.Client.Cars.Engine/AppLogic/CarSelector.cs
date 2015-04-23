@@ -19,6 +19,7 @@ namespace DTCDev.Client.Cars.Engine.AppLogic
             }
             set
             {
+                if(_selectedCar == value) return;
                 _selectedCar = value;
                 if (OnCarChanged != null)
                     OnCarChanged(_selectedCar);

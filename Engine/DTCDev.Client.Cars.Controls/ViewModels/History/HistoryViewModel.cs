@@ -20,8 +20,11 @@ using DTCDev.Client.Controls.Map;
 using DTCDev.Client.ViewModel;
 using DTCDev.Models.CarsSending.Car;
 using DTCDev.Models.CarsSending.Navigation;
+using Microsoft.Office.Interop.Excel;
 using RelayCommand = DTCDev.Client.ViewModel.RelayCommand;
 using DTCDev.Models;
+using Action = System.Action;
+using Application = System.Windows.Application;
 
 namespace DTCDev.Client.Cars.Controls.ViewModels.History
 {
@@ -29,6 +32,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
     {
         public HistoryViewModel()
         {
+            MapCenter = MapCenterUser = new Location(55.75, 37.62);
             CarSelector.OnCarChanged += CarSelector_OnCarChanged;
             HistoryHandler.Instance.LoadCompleted += Instance_LoadCompleted;
             HistoryHandler.Instance.DayRefreshed += Instance_DayRefreshed;
@@ -53,6 +57,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 Parkings.Add(new ParkingModel(DateTime.Today, new Location(55.76, 37.63)));
             }
             _zoneHandler = ZonesHandler.Instance;
+            _mapHandler = CarsHandler.Instance;
             if (!_zoneHandler.Zones.Any())
                 _zoneHandler.Update();
             dtm.Interval = new TimeSpan(0, 0, 0, 0, 100);
@@ -88,7 +93,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             RouteOpacited.Clear();
             Parkings.Clear();
         }
-
 
 
         #region Fields
@@ -137,6 +141,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         private readonly ZonesHandler _zoneHandler;
 
+        private readonly CarsHandler _mapHandler;
+
         private Location _currentLocation;
 
         private int SpdNormal = 90;
@@ -149,6 +155,12 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         private bool _tablePackageView = false;
 
+        private DISP_Car _selectedMapObject;
+
+        private int _spanMap = 3;
+
+        private bool _enableHistory = false;
+
         #endregion
 
 
@@ -156,6 +168,66 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         #region Properties
 
+        public bool EnableHistory
+        {
+            get
+            {
+                return _enableHistory;
+            }
+            set
+            {
+                _enableHistory = value;
+                this.OnPropertyChanged("EnableHistory");
+            }
+        }
+
+        public ObservableCollection<DISP_Car> Points
+        {
+            get { return _mapHandler.Cars; }
+        }
+
+        
+        public DISP_Car SelectedMapObject
+        {
+            get
+            {
+                return _selectedMapObject;
+            }
+            set
+            {
+                if (_selectedMapObject != value)
+                {
+                    if (_selectedMapObject != null)
+                    {
+                        _selectedMapObject.PropertyChanged -= selectedMapObject_PropertyChanged;
+                        _selectedMapObject.InZone = true;
+                    }
+
+                    _selectedMapObject = value;
+                    if (value != null)
+                    {
+                        MapCenter = MapCenterUser = this._selectedMapObject.Location;
+                        _selectedMapObject.PropertyChanged += selectedMapObject_PropertyChanged;
+                        //if (SelectedZone != null)
+                        //    GetMoreInfo(this._selectedMapObject);
+                    }
+                    OnPropertyChanged("SelectedMapObject");
+                }
+                CarSelector.SelectedCar = value;
+            }
+        }
+
+        void selectedMapObject_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (!e.PropertyName.Equals("Location")) return;
+            var obj = sender as DISP_Car;
+            if (obj != null)
+            {
+                MapCenter = MapCenterUser = obj.Location;
+                //if (SelectedZone != null)
+                //    GetMoreInfo(this.selectedMapObject);
+            }
+        }
 
         private MovedLocationCollection _roteOpacited = new MovedLocationCollection();
         public MovedLocationCollection RouteOpacited
@@ -605,7 +677,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
-        private int _zoomLevel = 12;
+        private int _zoomLevel = 11;
 
         public int ZoomLevel
         {
@@ -614,6 +686,16 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             {
                 _zoomLevel = value;
                 this.OnPropertyChanged("ZoomLevel");
+            }
+        }
+
+        public int SpanMap
+        {
+            get { return _spanMap; }
+            set
+            {
+                _spanMap = value;
+                this.OnPropertyChanged("SpanMap");
             }
         }
 
@@ -798,6 +880,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
+        
 
         #endregion PLAYER
 
@@ -826,15 +909,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         /// </summary>
         private void SelectDate()
         {
-            if (VisSelectDate == Visibility.Visible)
-            {
-                VisSelectDate = Visibility.Collapsed;
-            }
-            else
-            {
-                VisSelectDate = Visibility.Visible;
-            }
-
+            VisSelectDate = VisSelectDate == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
         }
 
         /// <summary>
@@ -861,7 +936,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             ZoneSelect.Clear();
             if (car != null)
             {
-                Position = new DISP_Car();
+                Position = EnableHistory ? new DISP_Car(): car;
                 Position.Car = new SCarModel()
                 {
                     CarNumber = car.Car.CarNumber,
@@ -889,16 +964,20 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         /// <summary>
         /// Create request for history data
         /// </summary>
-        private void LoadData()
+        public void LoadData()
         {
-            if (_startDate != null && _stopDate != null && CarSelector.SelectedCar != null && CarSelector.SelectedCar.Car.Id != String.Empty)
+            if(!EnableHistory) return;
+
+            if (CarSelector.SelectedCar != null && CarSelector.SelectedCar.Car.Id != String.Empty)
             {
                 VisLoad = Visibility.Visible;
+                GetCache();
                 HistoryHandler.Instance.StartLoadHistory(CarSelector.SelectedCar.Car.Id, _startDate, _stopDate, UseAccelleration);
             }
-            if (_startDate != null)
-                DisplayedHistoryDate = _startDate;
+            DisplayedHistoryDate = _startDate;
         }
+
+        
 
         //loading data of history completed
         void Instance_LoadCompleted(object sender, EventArgs e)
@@ -957,14 +1036,15 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 p.yy == _displayedHistoryDate.Year &&
                 p.Mnth == _displayedHistoryDate.Month &&
                 p.dd == _displayedHistoryDate.Day).ToList();
-            SortDataByDate();
+            SortDataByDate(true);
+            
             HistoryHandler.Instance.StartLoadDayLines(Position.Car.Id, _displayedHistoryDate);
             HistoryHandler.Instance.StartLoadOBD(Position.Car.Id, _displayedHistoryDate);
             HistoryHandler.Instance.StartLoadAcc(Position.Car.Id, _displayedHistoryDate);
             AccHistory = null;
         }
 
-        private void SortDataByDate()
+        private void SortDataByDate(bool savecache)
         {
             ClearRoutes();
 
@@ -1043,21 +1123,12 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                     if (StateDateTimeHelper.EqualInterval(StopDate, last))
                         _routesModel.Parkings.Add(new ParkingModel(StateDateTimeHelper.GetTime(last), StopDate, prev));
                 });
-                slowTask.ContinueWith(delegate
+                slowTask.ContinueWith(o =>
                 {
-                    UpdateCenter();
-                    UpdateErrorControl();
-                    MaxSpeed = DayStates.Max(p => p.Spd) / 10;
-                    RoundedSpeed = DayStates.Sum(p => p.Spd) / (10 * DayStates.Count());
-
-                    Distance = (int)dist;
-
-                    CarStateModel strt = DayStates.First();
-                    CarStateModel stp = DayStates.Last();
-                    DateTime dtStrt = new DateTime(1, 1, 1, strt.hh, strt.mm, 0);
-                    DateTime stStp = new DateTime(1, 1, 1, stp.hh, stp.mm, 0);
-                    StartTime = StateDateTimeHelper.GetTime(strt).ToString("HH:mm");
-                    StopTime = StateDateTimeHelper.GetTime(stp).ToString("HH:mm");
+                    ContinueSortData((int) dist);
+                    if (!savecache) return;
+                    var strt = DayStates.First();
+                    CacheRoute(string.Format("[{0}]-{1}-{2}-{3}", SelectedDevice, strt.dd, strt.Mnth, strt.yy), (int)dist);
                 });
                 slowTask.Start();
             }
@@ -1069,6 +1140,59 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 StartTime = "--:--";
                 StopTime = "--:--";
             }
+        }
+
+        private void ContinueSortData(int dist)
+        {
+            UpdateCenter();
+            UpdateErrorControl();
+            MaxSpeed = DayStates.Max(p => p.Spd) / 10;
+            RoundedSpeed = DayStates.Sum(p => p.Spd) / (10 * DayStates.Count());
+
+            Distance = dist;
+
+            var strt = DayStates.First();
+            var stp = DayStates.Last();
+            var dtStrt = new DateTime(1, 1, 1, strt.hh, strt.mm, 0);
+            var stStp = new DateTime(1, 1, 1, stp.hh, stp.mm, 0);
+            StartTime = StateDateTimeHelper.GetTime(strt).ToString("HH:mm");
+            StopTime = StateDateTimeHelper.GetTime(stp).ToString("HH:mm");
+        }
+
+        private void CacheRoute(string name, int dist)
+        {
+            var myDocs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\M2B\\Cache\\";
+            if (System.IO.Directory.Exists(myDocs) == false)
+                System.IO.Directory.CreateDirectory(myDocs);
+            if (System.IO.File.Exists(myDocs + name))
+                System.IO.File.Delete(myDocs + name);
+            using (var writer = new System.IO.StreamWriter(myDocs + name))
+            {
+                var xs = new System.Xml.Serialization.XmlSerializer(typeof(List<CarStateModel>));
+                xs.Serialize(writer, DayStates);
+            }
+        }
+
+        private void GetCache()
+        {
+            var myDocs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\M2B\\Cache\\";
+            var name = string.Format("[{0}]-{1}-{2}-{3}", SelectedDevice, _startDate.Day, _startDate.Month,
+                _startDate.Year);
+            if (!System.IO.File.Exists(myDocs + name)) return;
+            using (var reader = new System.IO.StreamReader(myDocs + name))
+            {
+                var xs = new System.Xml.Serialization.XmlSerializer(typeof(List<CarStateModel>));
+                var cr = xs.Deserialize(reader) as List<CarStateModel>;
+                if (cr == null) return;
+                DayStates = cr;
+                SortDataByDate(false);
+                VisLoad = Visibility.Collapsed;
+
+                Thread tr = new Thread(CalcAllDistance);
+                tr.Start();
+
+            }
+
         }
 
         private RouteSelect SortLocation(Location prev, Location loc, RouteSelect prevroute, int spd)
@@ -1408,7 +1532,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         private void ShowMaxSpeed()
         {
-            CarStateModel csm = DayStates.Where(p => p.Spd >= MaxSpeed * 10).FirstOrDefault();
+            var csm = DayStates.FirstOrDefault(p => p.Spd >= MaxSpeed * 10);
             if (csm != null)
             {
                 SelectedState = csm;
