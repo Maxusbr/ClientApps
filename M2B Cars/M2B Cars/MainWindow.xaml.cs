@@ -141,7 +141,8 @@ namespace M2B_Cars
         private void Image_MouseLeftButtonUp_1(object sender, MouseButtonEventArgs e)
         {
             var set = sender as SettingsModel;
-            ReportsList reports = new ReportsList();
+            ccContent.Content = new ReportsList();
+            ContentGrid.Visibility = Visibility.Visible;
             //ShowWindow(700, 400, reports, "Отчеты", false, "", set);
         }
 
@@ -190,6 +191,12 @@ namespace M2B_Cars
                                 brdrDisconnect.Visibility = Visibility.Collapsed;
                         }));
             }
+        }
+
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            ContentGrid.Visibility = Visibility.Collapsed;
+            ccContent.Content = null;
         }
     }
 }
