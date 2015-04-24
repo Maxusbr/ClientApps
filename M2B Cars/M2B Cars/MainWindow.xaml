@@ -7,7 +7,10 @@
         x:Class="M2B_Cars.MainWindow"
         Title="M2B Cars" Height="700" Width="1025" WindowState="Maximized" Loaded="Window_Loaded" Closed="Window_Closed">
     <Grid>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
         <!--<Win:WindowsManager Grid.RowSpan="3" x:Name="windowsManger" />
         <Win:FishEyePanel  Grid.Row="1" Width="300" Visibility="Collapsed">
             <Image Width="50" Cursor="Hand" MouseLeftButtonUp="Image_MouseLeftButtonUp" Source="Assets/Images/Menu/cars-list.png"/>
@@ -17,7 +20,7 @@
             <Image Width="50" Cursor="Hand" MouseLeftButtonUp="Image_MouseLeftButtonUp_3" Source="Assets/Images/Menu/Occupations-Pilot-Military-Male-Dark-icon.png"/>
             <Image Width="50" Cursor="Hand" MouseLeftButtonUp="Image_MouseLeftButtonUp_4" Source="Assets/Images/Menu/1366228638_Android-Settings.png"/>
         </Win:FishEyePanel>-->
-        <Grid x:Name="grdMain">
+        <Grid x:Name="grdMain" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition Height="Auto"/>
@@ -31,18 +34,18 @@
             <History:HistoryControl x:Name="HistoryControl" Grid.Column="1"/>
             <Car:CarZonesError x:Name="ErrorLog" Background="White" VerticalAlignment="Bottom" MaxHeight="150" Grid.ColumnSpan="2" Grid.Row="1" Visibility="Collapsed"/>
         </Grid>
-        <Grid VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0">
+        <Grid >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Controls:StateBaseControl VerticalAlignment="Center" HorizontalAlignment="Left" Grid.ColumnSpan="5" Height="36" Width="229" />
-            <Image Cursor="Hand" MouseLeftButtonUp="Image_MouseLeftButtonUp_1" Source="Assets/Images/Menu/1366732420_report.png" Grid.Column="2" Height="30" VerticalAlignment="Center" Margin="3"/>
-            <Image Cursor="Hand" MouseLeftButtonUp="Image_MouseLeftButtonUp_3" Source="Assets/Images/Menu/Occupations-Pilot-Military-Male-Dark-icon.png" Grid.Column="3" Height="30" VerticalAlignment="Center" Margin="3"/>
-            <Image Cursor="Hand" MouseLeftButtonUp="Image_MouseLeftButtonUp_4" Source="Assets/Images/Menu/1366228638_Android-Settings.png" Grid.Column="4" Height="30" VerticalAlignment="Center" Margin="3,3,20,3"/>
+            <Controls:StateBaseControl VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="5" Height="36" Width="100" />
+            <Image Cursor="Hand" MouseLeftButtonUp="Image_MouseLeftButtonUp_1" Source="Assets/Images/Menu/1366732420_report.png" Height="30" VerticalAlignment="Center" Margin="3"/>
+            <Image Cursor="Hand" MouseLeftButtonUp="Image_MouseLeftButtonUp_3" Source="Assets/Images/Menu/Occupations-Pilot-Military-Male-Dark-icon.png" Grid.Column="1" Height="30" VerticalAlignment="Center" Margin="3"/>
+            <Image Cursor="Hand" MouseLeftButtonUp="Image_MouseLeftButtonUp_4" Source="Assets/Images/Menu/1366228638_Android-Settings.png" Grid.Column="2" Height="30" VerticalAlignment="Center" Margin="3,3,20,3"/>
         </Grid>
         <Border Background="Gray" Opacity="0.5" x:Name="brdrDisconnect" Grid.RowSpan="3"/>
     </Grid>
