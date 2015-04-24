@@ -41,12 +41,32 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             HistoryHandler.Instance.AccLoaded += Instance_AccLoaded;
             bwPlayer.DoWork += bwPlayer_DoWork;
             bwPlayer.RunWorkerCompleted += bwPlayer_RunWorkerCompleted;
-
+            _zoneHandler = ZonesHandler.Instance;
+            _mapHandler = CarsHandler.Instance;
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
             {
-                Position = new DISP_Car();
+                
                 Position.Location =
                 MapCenter = MapCenterUser = new Location(55.75, 37.62);
+                Points.Add(
+                new DISP_Car
+                {
+                    Name = "Obj-1",
+                    Location = new Location(55.758, 37.76)
+                });
+                Points.Add(
+                    new DISP_Car
+                    {
+                        Name = "Obj-2",
+                        Location = new Location(55.75, 37.5)
+                    });
+                Points.Add(
+                    new DISP_Car
+                    {
+                        Name = "Obj-3",
+                        Location = new Location(55.8, 37.625)
+                    });
+                Position = Points[0];
                 Route.Add(new Location(55.75, 37.62, true));
                 Route.Add(new Location(55.73, 37.63));
                 Route.Add(new Location(55.73, 37.60));
@@ -56,8 +76,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 ErrorRoute.Add(new Location(55.76, 37.63));
                 Parkings.Add(new ParkingModel(DateTime.Today, new Location(55.76, 37.63)));
             }
-            _zoneHandler = ZonesHandler.Instance;
-            _mapHandler = CarsHandler.Instance;
+
             if (!_zoneHandler.Zones.Any())
                 _zoneHandler.Update();
             dtm.Interval = new TimeSpan(0, 0, 0, 0, 100);
@@ -526,7 +545,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             get { return _position; }
             set
             {
+                if (_position != null) _position.IsSelected = false;
                 _position = value;
+                _position.IsSelected = true;
                 this.OnPropertyChanged("Position");
                 if (value != null && value.Location != null)
                     MapCenter = MapCenterUser = value.Location;
@@ -936,7 +957,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             ZoneSelect.Clear();
             if (car != null)
             {
-                Position = EnableHistory ? new DISP_Car(): car;
+                Position = EnableHistory ? new DISP_Car() : CarSelector.SelectedCar;
                 Position.Car = new SCarModel()
                 {
                     CarNumber = car.Car.CarNumber,

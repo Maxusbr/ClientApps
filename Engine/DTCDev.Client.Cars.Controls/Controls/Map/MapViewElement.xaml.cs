@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DTCDev.Client.Cars.Engine.DisplayModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,35 @@ namespace DTCDev.Client.Cars.Controls.Controls.Map
         public MapViewElement()
         {
             InitializeComponent();
+        }
+
+        public bool IsSelected
+        {
+            get { return (bool)GetValue(CarSelectedProperty); }
+            set { SetValue(CarSelectedProperty, value); }
+        }
+
+        private static readonly DependencyProperty CarSelectedProperty = DependencyProperty.Register("IsSelected",
+            typeof(bool),
+            typeof(MapViewElement),
+            new PropertyMetadata(false, OnCarChanged));
+
+        private static void OnCarChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            var map = sender as MapViewElement;
+            if (map != null) map.CarChanged(sender, e);
+        }
+
+        private void CarChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            if ((bool)e.NewValue)
+            {
+                VisualStateManager.GoToState(this, "Selected", true);
+            }
+            else
+            {
+                VisualStateManager.GoToState(this, "Normal", false);
+            }
         }
 
         private bool _isClicked;
