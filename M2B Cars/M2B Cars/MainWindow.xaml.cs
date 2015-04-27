@@ -21,6 +21,7 @@ using DTCDev.Client.Cars.Engine.Handlers;
 using DTCDev.Client.Cars.Engine.Handlers.Cars;
 using DTCDev.Client.Window;
 using System.IO;
+using DTCDev.Client.Cars.Engine.AppLogic;
 
 namespace M2B_Cars
 {
@@ -45,13 +46,25 @@ namespace M2B_Cars
             DTCDev.Client.Cars.Engine.Handlers.UpdateDriver.Instance.Start();
             LoginHandler.Instance.LoginError += Instance_LoginError;
             LoginHandler.Instance.LoginComplete += Instance_LoginComplete;
-
+            CarSelector.OnCarChanged += CarSelector_OnCarChanged;
             FolderPrecreate();
 
             if (DTCDev.Client.Cars.Engine.Handlers.LoginHandler.Instance.IsParamsAdded == false)
             {
                 DisplayLogin();
             }
+        }
+
+        CarDetailsView _details;
+
+        void CarSelector_OnCarChanged(DTCDev.Client.Cars.Engine.DisplayModels.DISP_Car car)
+        {
+            if(_details==null)
+            {
+                _details = new CarDetailsView();
+                grdDetails.Children.Add(_details);
+            }
+            _details.UpdateCarData(car);
         }
 
         private void FolderPrecreate()
