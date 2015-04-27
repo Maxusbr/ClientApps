@@ -30,6 +30,8 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
 
         DISP_Car _currentCar;
 
+        public event EventHandler CloseMe;
+
         public void UpdateCarData(DISP_Car carData)
         {
             if (_currentCar != null)
@@ -53,6 +55,32 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
                 txtFuel.Text = _currentCar.OBD.Where(p => p.Key == "2F").First().Value + " %";
             else
                 txtFuel.Text = _currentCar.FuelLevel + " л.";
+
+            PIDConverter converter = new PIDConverter();
+            stkOBD.Children.Clear();
+            foreach (var item in _currentCar.OBD)
+            {
+                StackPanel stk = new StackPanel();
+                stk.Orientation = Orientation.Horizontal;
+                TextBlock txtText = new TextBlock();
+                txtText.TextWrapping = TextWrapping.Wrap;
+                txtText.Text = converter.GetPidInfo(item.Key);
+                stk.Children.Add(txtText);
+                txtText.Margin = new Thickness(2,5,2,5);
+
+                TextBlock txtVol = new TextBlock();
+                txtVol.FontWeight = FontWeights.Bold;
+                txtVol.Text = item.Value;
+                stk.Children.Add(txtVol);
+                stkOBD.Children.Add(stk);
+                txtVol.Margin = new Thickness(2, 5, 2, 5);
+            }
+        }
+
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            if (CloseMe != null)
+                CloseMe(this, new EventArgs());
         }
     }
 }

@@ -62,9 +62,17 @@ namespace M2B_Cars
             if(_details==null)
             {
                 _details = new CarDetailsView();
+                _details.CloseMe += _details_CloseMe;
                 grdDetails.Children.Add(_details);
             }
             _details.UpdateCarData(car);
+        }
+
+        void _details_CloseMe(object sender, EventArgs e)
+        {
+            _details.CloseMe -= _details_CloseMe;
+            grdDetails.Children.Clear();
+            _details = null;
         }
 
         private void FolderPrecreate()
@@ -165,7 +173,6 @@ namespace M2B_Cars
                     hvm.SetDates(DateTime.Today, DateTime.Today + new TimeSpan(1, 0, 0, 0));
                 }
             }
-            //ShowWindow(900, 600, history, "Трек", false, "", set);
         }
 
         private void Image_MouseLeftButtonUp_3(object sender, MouseButtonEventArgs e)
@@ -173,14 +180,13 @@ namespace M2B_Cars
             var set = sender as SettingsModel;
             ccContent.Content = new DriversControl();
             ContentGrid.Visibility = Visibility.Visible;
-            //ShowWindow(500, 400, driver, "Список водителей", false, "", set);
         }
 
         private void Image_MouseLeftButtonUp_4(object sender, MouseButtonEventArgs e)
         {
             var set = sender as SettingsModel;
-            SettingsBase control = new SettingsBase();
-            //ShowWindow(600, 500, control, "Настройки", false, "", set);
+            ccContent.Content = new SettingsBase();
+            ContentGrid.Visibility = Visibility.Visible;
         }
 
 

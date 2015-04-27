@@ -53,6 +53,7 @@
     <Compile Include="AppLogic\CarSelector.cs" />
     <Compile Include="AppLogic\DistanceCalculator.cs" />
     <Compile Include="AppLogic\GeoAdress.cs" />
+    <Compile Include="AppLogic\PIDConverter.cs" />
     <Compile Include="DisplayModels\DISP_Car.cs" />
     <Compile Include="DisplayModels\IndicatorPercentModel.cs" />
     <Compile Include="DisplayModels\VmPolyline.cs" />
