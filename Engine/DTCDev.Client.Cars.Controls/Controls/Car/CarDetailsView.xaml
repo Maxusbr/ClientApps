@@ -9,8 +9,39 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
              x:Class="DTCDev.Client.Cars.Controls.Controls.Car.CarDetailsView" 
              mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="400">
+             Height="200" d:DesignWidth="400">
     <Grid>
-        
+        <TabControl>
+            <TabItem Header="Текущие показатели">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="50"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="24"/>
+                        <RowDefinition Height="24"/>
+                        <RowDefinition Height="24"/>
+                        <RowDefinition Height="24"/>
+                        <RowDefinition Height="24"/>
+                        <RowDefinition Height="24"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock x:Name="txtDate" FontWeight="Bold" Grid.ColumnSpan="4" TextAlignment="Center"/>
+                    <TextBlock Text="Скорость" Grid.Row="1"/>
+                    <TextBlock x:Name="txtSpeed" Grid.Column="1" Grid.Row="1"/>
+                    <TextBlock Text="Кол-во спутников" Grid.Row="2"/>
+                    <TextBlock x:Name="txtSat" Grid.Column="1" Grid.Row="2"/>
+                    <TextBlock Text="Уровень топлива" Grid.Row="3"/>
+                    <TextBlock x:Name="txtFuel" Grid.Column="1" Grid.Row="3"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Настройки">
+                <Grid>
+                    
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </UserControl>

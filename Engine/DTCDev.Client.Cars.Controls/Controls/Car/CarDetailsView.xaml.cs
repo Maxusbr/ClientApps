@@ -28,9 +28,31 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
             InitializeComponent();
         }
 
+        DISP_Car _currentCar;
+
         public void UpdateCarData(DISP_Car carData)
         {
+            if (_currentCar != null)
+                _currentCar.PropertyChanged -= _currentCar_PropertyChanged;
+            _currentCar = carData;
+            _currentCar.PropertyChanged += _currentCar_PropertyChanged;
+            UpdateData();
+        }
 
+        void _currentCar_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            UpdateData();
+        }
+
+        private void UpdateData()
+        {
+            txtDate.Text = "Последняя связь - " + _currentCar.DateNavigation;
+            txtSpeed.Text = _currentCar.strSpeed;
+            txtSat.Text = _currentCar.CountSatelite.ToString();
+            if (_currentCar.OBD.Where(p => p.Key == "2F").FirstOrDefault() != null)
+                txtFuel.Text = _currentCar.OBD.Where(p => p.Key == "2F").First().Value + " %";
+            else
+                txtFuel.Text = _currentCar.FuelLevel + " л.";
         }
     }
 }
