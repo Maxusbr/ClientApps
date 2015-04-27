@@ -45,7 +45,6 @@ namespace M2B_Cars
             DTCDev.Client.Cars.Engine.Handlers.UpdateDriver.Instance.Start();
             LoginHandler.Instance.LoginError += Instance_LoginError;
             LoginHandler.Instance.LoginComplete += Instance_LoginComplete;
-            DTCDev.Client.Cars.Engine.AppLogic.CarSelector.ViewCarDetails += CarSelector_ViewCarDetails;
 
             FolderPrecreate();
 
@@ -100,12 +99,6 @@ namespace M2B_Cars
         private void Window_Closed(object sender, EventArgs e)
         {
             Environment.Exit(0);
-        }
-
-        void CarSelector_ViewCarDetails(DTCDev.Client.Cars.Engine.DisplayModels.DISP_Car car)
-        {
-            CarDetailsView details = new CarDetailsView(car);
-            //ShowWindow(400, 450, details, "Детально - ", false, car.Car.CarNumber);
         }
 
         private void Image_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)

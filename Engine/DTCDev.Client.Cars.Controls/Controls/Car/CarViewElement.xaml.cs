@@ -139,9 +139,6 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
                     imgSatOk.Visibility = Visibility.Visible;
                     imgSatErr.Visibility = Visibility.Collapsed;
                 }
-                //txtSat.Text = CarExemplar.Data.Navigation.Sattelites.ToString();
-                //imgSatErr.ToolTip = imgSatOk.ToolTip = "Спутников - " + CarExemplar.Data.Navigation.Sattelites.ToString();
-
                 DetectConnection(ts, car);
                 //car.Update();
 
@@ -282,23 +279,8 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
             }
         }
 
-
-        private static DependencyProperty AddCommandProperty = DependencyProperty.Register(
-    "AddCommand", typeof(ICommand), typeof(CarViewElement),
-    new PropertyMetadata(null));
-
-        public ICommand AddCommand
-        {
-            get { return (ICommand)GetValue(AddCommandProperty); }
-            set { SetValue(AddCommandProperty, value); }
-        }
-
-
-
         private void image1_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (AddCommand.CanExecute(this))
-                AddCommand.Execute(this);
         }
 
 

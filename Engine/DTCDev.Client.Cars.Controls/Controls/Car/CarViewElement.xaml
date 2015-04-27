@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DTCDev.Client.Cars.Controls.Controls.Car"
              mc:Ignorable="d" 
-             Height="32" d:DesignWidth="500" x:Name="control" Foreground="Black">
+             Height="Auto" d:DesignWidth="500" x:Name="control" Foreground="Black">
     <UserControl.ToolTip>
         <local:CarToolTipView />
     </UserControl.ToolTip>
@@ -33,7 +33,7 @@
     </UserControl.Triggers>
     <Grid >
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="32"/>
+            <ColumnDefinition Width="16"/>
             <ColumnDefinition Width="120"/>
             <ColumnDefinition Width="0"/>
             <ColumnDefinition Width="Auto"/>
@@ -41,9 +41,14 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
         <Border Grid.ColumnSpan="7" Background="White" Opacity="0.5"/>
-        <Image x:Name="image1" Width="24" Height="24" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/CarDetailsView/Actions-view-split-left-right-icon.png" Opacity="0" MouseLeftButtonUp="image1_MouseLeftButtonUp"/>
+        <Grid x:Name="image1" Width="10" Height="10" Opacity="0" MouseLeftButtonUp="image1_MouseLeftButtonUp">
+            <Path Data="M0,0 10,0 5,10" Fill="Black"/>
+        </Grid>
         <TextBlock FontSize="14" FontWeight="Bold" Text="{Binding ElementName=control, Path=CarExemplar.Car.CarNumber}" Margin="4,7" Grid.Column="1"/>
         <Image x:Name="imgSatOk" Grid.Column="2" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/gps.png" />
         <Image x:Name="imgSatErr" Grid.Column="2" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/gpsor.png" />
