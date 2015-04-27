@@ -99,6 +99,7 @@ namespace M2B_Cars
 
         private void Window_Closed(object sender, EventArgs e)
         {
+            Properties.Settings.Default.Save();
             Environment.Exit(0);
         }
 
@@ -164,7 +165,8 @@ namespace M2B_Cars
         private void Image_MouseLeftButtonUp_3(object sender, MouseButtonEventArgs e)
         {
             var set = sender as SettingsModel;
-            DriversControl driver = new DriversControl();
+            ccContent.Content = new DriversControl();
+            ContentGrid.Visibility = Visibility.Visible;
             //ShowWindow(500, 400, driver, "Список водителей", false, "", set);
         }
 
