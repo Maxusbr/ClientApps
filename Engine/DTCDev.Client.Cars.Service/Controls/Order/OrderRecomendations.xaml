@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="DTCDev.Client.Cars.Service.Controls.Order.OrderRecomendations"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="1000">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="200"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="150"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Margin="20,0" Text="Рекомендации - это то, что будет видеть автовладелец после заврешения техобслуживания в своем личном кабинете. Напишите сюда то, что нужно сделать с машиной в качестве напоминания" TextWrapping="Wrap"/>
+        <TextBox Grid.Row="1" Margin="20" TextWrapping="Wrap" Text="{Binding Path=OrderRecomendationEdited, Mode=TwoWay}"/>
+        <Button Grid.Column="1" Grid.Row="1" Command="{Binding Path=SaveOrderRecomendationCommand}" Content="Сохранить изменения" VerticalAlignment="Top" Margin="0,20" Click="Button_Click"/>
+        <Button Grid.Column="1" Grid.Row="1" Command="{Binding Path=UndoOrderRecomendationCommand}" Content="Спасибо, не надо" VerticalAlignment="Top" Margin="0,50,0,0" Click="Button_Click"/>
+    </Grid>
+</UserControl>

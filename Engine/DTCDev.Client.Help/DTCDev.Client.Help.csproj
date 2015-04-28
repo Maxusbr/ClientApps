@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5B1AB74D-D7B5-4D1F-B4F8-D43DFECFC0CD}</ProjectGuid>
+    <ProjectGuid>{CB3B751C-A41C-47D2-AECC-BADCD375CFD6}</ProjectGuid>
     <OutputType>library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DTCDev.Client</RootNamespace>
-    <AssemblyName>DTCDev.Client</AssemblyName>
+    <RootNamespace>DTCDev.Client.Help</RootNamespace>
+    <AssemblyName>DTCDev.Client.Help</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,7 +35,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -48,61 +48,14 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Asserts\BasicItemsMetroTheme.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Asserts\ButtonStyle.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Asserts\ColorsDictionary.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Busy\BusyControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Busy\BusyControlSmall.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="EditedCombobox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Menu\AEDControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Compile Include="BindingConvertors\BCDateTimeToDate.cs" />
-    <Compile Include="BindingConvertors\BCDateTimeToDateTimeRus.cs" />
-    <Compile Include="BindingConvertors\BCDecimalToMoney.cs" />
-    <Compile Include="BindingConvertors\BCIntToBool.cs" />
-    <Compile Include="BindingConvertors\BCIntToVisibility.cs" />
-    <Compile Include="BindingConvertors\BooleanToVisibilityConverter.cs" />
-    <Compile Include="BindingConvertors\BoolToValueConverter.cs" />
-    <Compile Include="Busy\BusyControl.xaml.cs">
-      <DependentUpon>BusyControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Busy\BusyControlSmall.xaml.cs">
-      <DependentUpon>BusyControlSmall.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="EditedCombobox.xaml.cs">
-      <DependentUpon>EditedCombobox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Menu\AEDControl.xaml.cs">
-      <DependentUpon>AEDControl.xaml</DependentUpon>
-    </Compile>
-    <Page Include="MultiSlider.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+    <Compile Include="DataModels\FileDataModel.cs" />
+    <Compile Include="DataModels\HelpMenuModel.cs" />
+    <Compile Include="Engine\ContentWorker.cs" />
+    <Compile Include="Engine\MenuWorker.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MultiSlider.xaml.cs">
-      <DependentUpon>MultiSlider.xaml</DependentUpon>
+    <Compile Include="HelpView.xaml.cs">
+      <DependentUpon>HelpView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -128,25 +81,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Asserts\Content\Images\add.png" />
-    <Resource Include="Asserts\Content\Images\delete.png" />
-    <Resource Include="Asserts\Content\Images\edit.png" />
-    <Resource Include="Asserts\Content\Images\folder.png" />
-    <Resource Include="Asserts\Content\Images\laugh.png" />
-    <Resource Include="Asserts\Content\Images\NewFolder.png" />
-    <Resource Include="Asserts\Content\Images\question.png" />
-    <Resource Include="Asserts\Content\Images\Redact.png" />
-    <Resource Include="Asserts\Content\Images\Trash.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Models\DTCDev.Models\DTCDev.Models.csproj">
-      <Project>{ddd0ab63-faf8-4a78-9369-2481e912e641}</Project>
-      <Name>DTCDev.Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DTCDev\DTCDev.csproj">
-      <Project>{d839aa11-c210-446b-a41a-65c6020c4a33}</Project>
-      <Name>DTCDev</Name>
-    </ProjectReference>
+    <Page Include="HelpView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

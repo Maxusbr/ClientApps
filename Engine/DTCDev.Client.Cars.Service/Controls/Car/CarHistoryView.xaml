@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="DTCDev.Client.Cars.Service.Controls.Car.CarHistoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="1000">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <DataGrid ItemsSource="{Binding Services}" Margin="10,11,10,10" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding CurentDate}" ClipboardContentBinding="{x:Null}" Header="Дата" Width="80" CellStyle="{DynamicResource DataGridCellStyle}"/>
+                <DataGridTextColumn Header="Заказ-наряд" Binding="{Binding OrderN}" Width="110"/>
+                <DataGridTextColumn Header="Пробег" Width="70" Binding="{Binding Path=DistanceToMake}"/>
+                <DataGridTextColumn Binding="{Binding Price}" Header="Стоимость работ" Width="140"/>
+                <DataGridTextColumn Header="Работа" Width="*" Binding="{Binding Path=Name}"/>
+                <DataGridTemplateColumn Header="Комментарий" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <TextBlock TextWrapping="Wrap" Text="{Binding Path=Comment}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Content="OK" HorizontalAlignment="Center" VerticalAlignment="Top" Width="75" Grid.Row="1" Margin="0,20,0,0" 
+                Command="{Binding CancelCommand, Mode=OneWay}"/>
+    </Grid>
+</UserControl>

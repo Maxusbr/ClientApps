@@ -1,0 +1,66 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DTCDev.Client.Cars.Service.Controls.Car" x:Class="DTCDev.Client.Cars.Service.Controls.Car.CarParamsView" 
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="1000" FontSize="16">
+    <TabControl>
+        <TabItem Header="История параметров">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="1">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Отображаемая дата" VerticalAlignment="Center" Margin="20,0"/>
+                        <DatePicker VerticalAlignment="Center" SelectedDate="{Binding DisplayedDate, Mode=TwoWay}" Width="150"/>
+                    </StackPanel>
+                </Grid>
+                <local:CarParamsPresenterControl Grid.Row="2" Margin="10" Data="{Binding Path=History}"/>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Настройка параметров">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="80"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Загрузка поддерживаемых PID-ов..." Margin="10"/>
+                <ListBox Grid.Row="1" Margin="20" ItemsSource="{Binding Path=PIDS}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <CheckBox VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Path=PIDEnabled, Mode=TwoWay}"/>
+                                <TextBlock Grid.Column="1" TextAlignment="Center" Text="{Binding PID}"/>
+                                <TextBlock Grid.Column="2" Text="{Binding Comment}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Button Grid.Row="2" Content="Сохранить изменения" HorizontalAlignment="Right" Command="{Binding Path=SavePidsCommand}" VerticalAlignment="Center" Margin="20"/>
+            </Grid>
+        </TabItem>
+        <TabItem Header="В реальном времени">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="342*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Получение параметров работы узлов (по указанному списку PID-ов) позволяет отследить их работу в режиме реального времени. При этом контроллер отправляет даные по мере их получения, а не раз в минуту, как в обычном режиме. Так же в этом режиме отключатеся вычисление максимального накопленного значения, и данные отображаются в том виде, в котором были прочитаны из авто. ВНИМАНИЕ! Так как режим приводит к резкому увеличению нагрузки на сервер, услуга является платной. Перед ее запуском убедитесь, что на Вашем счету достаточно средств. Услуга запускатеся на 10 минут, стоимость включения для одного автомобиля - 10 руб." Margin="10" TextWrapping="Wrap" FontStyle="Italic"  />
+                <Button Grid.Row="1" Content="Запустить опрос (10 руб)" Margin="10" HorizontalAlignment="Left"/>
+            </Grid>
+        </TabItem>
+    </TabControl>
+</UserControl>

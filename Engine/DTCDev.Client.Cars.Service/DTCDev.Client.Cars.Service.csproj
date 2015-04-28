@@ -1,0 +1,513 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3078558C-4936-428A-BA1E-EECF68469DC1}</ProjectGuid>
+    <OutputType>library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DTCDev.Client.Cars.Service</RootNamespace>
+    <AssemblyName>DTCDev.Client.Cars.Service</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MahApps.Metro">
+      <HintPath>..\..\CarServiceViewer\CarServiceViewer\packages\MahApps.Metro.0.14.0.0\lib\net40\MahApps.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework.Aero" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\CarServiceViewer\CarServiceViewer\packages\MahApps.Metro.0.14.0.0\lib\net40\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controls\CalendarControls\CalendarCarItem.xaml.cs">
+      <DependentUpon>CalendarCarItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Car\CarAddWorkView.xaml.cs">
+      <DependentUpon>CarAddWorkView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Car\CarAddWork_WorkList.xaml.cs">
+      <DependentUpon>CarAddWork_WorkList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Car\ParamsViewer\CarCurrentParamsViewer.xaml.cs">
+      <DependentUpon>CarCurrentParamsViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Car\CarDetailView.xaml.cs">
+      <DependentUpon>CarDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Car\CarDTCRowView.xaml.cs">
+      <DependentUpon>CarDTCRowView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Car\CarDTCView.xaml.cs">
+      <DependentUpon>CarDTCView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Car\CarHistoryView.xaml.cs">
+      <DependentUpon>CarHistoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Car\CarParamsPresenterControl.xaml.cs">
+      <DependentUpon>CarParamsPresenterControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Car\CarParamsView.xaml.cs">
+      <DependentUpon>CarParamsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Car\CarWorkInfoView.xaml.cs">
+      <DependentUpon>CarWorkInfoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Car\ParamsViewer\CarParamItem.xaml.cs">
+      <DependentUpon>CarParamItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Home\HomeItem.xaml.cs">
+      <DependentUpon>HomeItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Order\OrderRecomendations.xaml.cs">
+      <DependentUpon>OrderRecomendations.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Order\OrderWorkMapView.xaml.cs">
+      <DependentUpon>OrderWorkMapView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PrintControls\OrderReportPrintControl.xaml.cs">
+      <DependentUpon>OrderReportPrintControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PrintControls\PrintControl.xaml.cs">
+      <DependentUpon>PrintControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Convertors\DTCConverter.cs" />
+    <Compile Include="Convertors\OnLineConverter.cs" />
+    <Compile Include="Convertors\PlugConvertor.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="SideMenu\SideMenuHelp\HeaderLine.xaml.cs">
+      <DependentUpon>HeaderLine.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SideMenu\SideMenuHelp\LastCarItem.xaml.cs">
+      <DependentUpon>LastCarItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SideMenu\SM_Calendar.xaml.cs">
+      <DependentUpon>SM_Calendar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SideMenu\SM_Help.xaml.cs">
+      <DependentUpon>SM_Help.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SideMenu\SM_LastCars.xaml.cs">
+      <DependentUpon>SM_LastCars.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Slides\Clients\SlideClientsConnect.xaml.cs">
+      <DependentUpon>SlideClientsConnect.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Slides\Clients\SlideClientsList.xaml.cs">
+      <DependentUpon>SlideClientsList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Slides\Clients\SlideClientsStat.xaml.cs">
+      <DependentUpon>SlideClientsStat.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Slides\Reports\SlideReportOrders.xaml.cs">
+      <DependentUpon>SlideReportOrders.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Slides\Settings\SlideSettingsPersonal.xaml.cs">
+      <DependentUpon>SlideSettingsPersonal.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Slides\Settings\SlideSettingsWorkDic.xaml.cs">
+      <DependentUpon>SlideSettingsWorkDic.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Slides\SlideAddCar.xaml.cs">
+      <DependentUpon>SlideAddCar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Slides\SlideCalendar.xaml.cs">
+      <DependentUpon>SlideCalendar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Slides\SlideCarsInfo.xaml.cs">
+      <DependentUpon>SlideCarsInfo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Slides\SlideCarsList.xaml.cs">
+      <DependentUpon>SlideCarsList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Slides\SlideHome.xaml.cs">
+      <DependentUpon>SlideHome.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Slides\SlideOrdersList.xaml.cs">
+      <DependentUpon>SlideOrdersList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Slides\SlideReports.xaml.cs">
+      <DependentUpon>SlideReports.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Slides\SlideSettings.xaml.cs">
+      <DependentUpon>SlideSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Slides\Settings\SlideSettingsWorks.xaml.cs">
+      <DependentUpon>SlideSettingsWorks.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Slides\SlideStart.xaml.cs">
+      <DependentUpon>SlideStart.xaml</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Models\DTCDev.Models.CarBase\DTCDev.Models.CarBase.csproj">
+      <Project>{c6a37dea-e583-41eb-8d92-4c6e97c4b74e}</Project>
+      <Name>DTCDev.Models.CarBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Models\DTCDev.Models.CarsSending\DTCDev.Models.CarsSending.csproj">
+      <Project>{17d29bc2-3bde-4104-a96b-db91c1dfa5e7}</Project>
+      <Name>DTCDev.Models.CarsSending</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Models\DTCDev.Models\DTCDev.Models.csproj">
+      <Project>{ddd0ab63-faf8-4a78-9369-2481e912e641}</Project>
+      <Name>DTCDev.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\De.TorstenMandelkow.MetroChart.WPF\De.TorstenMandelkow.MetroChart.WPF.csproj">
+      <Project>{4ab4b0db-780c-48b9-a642-8e527353d957}</Project>
+      <Name>De.TorstenMandelkow.MetroChart.WPF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DTCDev.Client.Cars.Service.Engine\DTCDev.Client.Cars.Service.Engine.csproj">
+      <Project>{6fb4e0f7-81ef-435c-b562-1261fef6f201}</Project>
+      <Name>DTCDev.Client.Cars.Service.Engine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DTCDev.Client.Help\DTCDev.Client.Help.csproj">
+      <Project>{cb3b751c-a41c-47d2-aecc-badcd375cfd6}</Project>
+      <Name>DTCDev.Client.Help</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DTCDev.Client.ViewModel\DTCDev.Client.ViewModel.csproj">
+      <Project>{76c18809-1b91-41ee-901b-36db43e59fb1}</Project>
+      <Name>DTCDev.Client.ViewModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DTCDev.Client\DTCDev.Client.csproj">
+      <Project>{5b1ab74d-d7b5-4d1f-b4f8-d43dfecfc0cd}</Project>
+      <Name>DTCDev.Client</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Assets\Resource.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Assets\Themes\LightTheme\LightTemeStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\CalendarControls\CalendarCarItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Car\CarAddWorkView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Car\CarAddWork_WorkList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Car\ParamsViewer\CarCurrentParamsViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Car\CarDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Car\CarDTCRowView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Car\CarDTCView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Car\CarHistoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Car\CarParamsPresenterControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Car\CarParamsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Car\CarWorkInfoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Car\ParamsViewer\CarParamItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Home\HomeItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Order\OrderRecomendations.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Order\OrderWorkMapView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PrintControls\OrderReportPrintControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PrintControls\PrintControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SideMenu\SideMenuHelp\HeaderLine.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SideMenu\SideMenuHelp\LastCarItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SideMenu\SM_Calendar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SideMenu\SM_Help.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SideMenu\SM_LastCars.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Slides\Clients\SlideClientsConnect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Slides\Clients\SlideClientsList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Slides\Clients\SlideClientsStat.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Slides\Reports\SlideReportOrders.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Slides\Settings\SlideSettingsPersonal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Slides\Settings\SlideSettingsWorkDic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Slides\SlideAddCar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Slides\SlideCalendar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Slides\SlideCarsInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Slides\SlideCarsList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Slides\SlideHome.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Slides\SlideOrdersList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Slides\SlideReports.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Slides\SlideSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Slides\Settings\SlideSettingsWorks.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Slides\SlideStart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\binders.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\instapaper.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\bg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\engine.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\engineSM.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\speedometer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\pencil.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\AED\add_list.png" />
+    <Resource Include="Assets\Images\AED\apply.png" />
+    <Resource Include="Assets\Images\AED\trash.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\CarMarks\Acura.png" />
+    <Resource Include="Assets\CarMarks\Alfa Romeo.png" />
+    <Resource Include="Assets\CarMarks\Aston Martin.png" />
+    <Resource Include="Assets\CarMarks\Audi.png" />
+    <Resource Include="Assets\CarMarks\Bentley.png" />
+    <Resource Include="Assets\CarMarks\BMW.png" />
+    <Resource Include="Assets\CarMarks\Bugatti.png" />
+    <Resource Include="Assets\CarMarks\Buick.png" />
+    <Resource Include="Assets\CarMarks\Cadillac.png" />
+    <Resource Include="Assets\CarMarks\Chery.png" />
+    <Resource Include="Assets\CarMarks\Chevrolet.png" />
+    <Resource Include="Assets\CarMarks\Chrysler.png" />
+    <Resource Include="Assets\CarMarks\Citroen.png" />
+    <Resource Include="Assets\CarMarks\Dacia.png" />
+    <Resource Include="Assets\CarMarks\Daewoo.png" />
+    <Resource Include="Assets\CarMarks\Dodge.png" />
+    <Resource Include="Assets\CarMarks\Ferrari.png" />
+    <Resource Include="Assets\CarMarks\Fiat.png" />
+    <Resource Include="Assets\CarMarks\Ford.png" />
+    <Resource Include="Assets\CarMarks\GAZ.png" />
+    <Resource Include="Assets\CarMarks\Holden.png" />
+    <Resource Include="Assets\CarMarks\Honda.png" />
+    <Resource Include="Assets\CarMarks\Hyundai.png" />
+    <Resource Include="Assets\CarMarks\Infiniti.png" />
+    <Resource Include="Assets\CarMarks\Jaguar.png" />
+    <Resource Include="Assets\CarMarks\Jeep.png" />
+    <Resource Include="Assets\CarMarks\Kia.png" />
+    <Resource Include="Assets\CarMarks\Lada.png" />
+    <Resource Include="Assets\CarMarks\Lamborghini.png" />
+    <Resource Include="Assets\CarMarks\Lancia.png" />
+    <Resource Include="Assets\CarMarks\Land Rover.png" />
+    <Resource Include="Assets\CarMarks\Lexus.png" />
+    <Resource Include="Assets\CarMarks\Lotus.png" />
+    <Resource Include="Assets\CarMarks\Maserati.png" />
+    <Resource Include="Assets\CarMarks\Maybach.png" />
+    <Resource Include="Assets\CarMarks\Mazda.png" />
+    <Resource Include="Assets\CarMarks\Mercedes.png" />
+    <Resource Include="Assets\CarMarks\Mercury.png" />
+    <Resource Include="Assets\CarMarks\Mini.png" />
+    <Resource Include="Assets\CarMarks\Mitsubishi.png" />
+    <Resource Include="Assets\CarMarks\Nissan.png" />
+    <Resource Include="Assets\CarMarks\Opel.png" />
+    <Resource Include="Assets\CarMarks\Pagani.png" />
+    <Resource Include="Assets\CarMarks\Peugeot.png" />
+    <Resource Include="Assets\CarMarks\Pontiac.png" />
+    <Resource Include="Assets\CarMarks\Porshe.png" />
+    <Resource Include="Assets\CarMarks\Renault.png" />
+    <Resource Include="Assets\CarMarks\Rolls Royce.png" />
+    <Resource Include="Assets\CarMarks\Rover.png" />
+    <Resource Include="Assets\CarMarks\Saab.png" />
+    <Resource Include="Assets\CarMarks\Scion.png" />
+    <Resource Include="Assets\CarMarks\Seat.png" />
+    <Resource Include="Assets\CarMarks\Skoda.png" />
+    <Resource Include="Assets\CarMarks\Ssang Yong.png" />
+    <Resource Include="Assets\CarMarks\Subaru.png" />
+    <Resource Include="Assets\CarMarks\Suzuki.png" />
+    <Resource Include="Assets\CarMarks\Toyota.png" />
+    <Resource Include="Assets\CarMarks\Vauxhall.png" />
+    <Resource Include="Assets\CarMarks\Volkswagen.png" />
+    <Resource Include="Assets\CarMarks\Volvo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\car.png" />
+    <Resource Include="Assets\Images\user.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\checkEngineImage.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\money.jpg" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

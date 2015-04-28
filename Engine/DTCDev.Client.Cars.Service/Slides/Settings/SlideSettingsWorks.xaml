@@ -1,0 +1,91 @@
+﻿<UserControl x:Class="DTCDev.Client.Cars.Service.Slides.Settings.SlideSettingsWorks"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" FontSize="18"
+             d:DesignHeight="500" d:DesignWidth="1200">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <ComboBox VerticalAlignment="Center" Grid.Column="2" Grid.Row="1" ItemsSource="{Binding Marks}" 
+                      SelectedItem="{Binding Mark, Mode=TwoWay}"/>
+            <TextBlock Visibility="{Binding Path=MarkView}" TextWrapping="Wrap" Text="Марка:" VerticalAlignment="Center" Grid.Row="1"   FontStyle="Italic" Margin="10,0,50,0"/>
+            <ComboBox VerticalAlignment="Center" Grid.Column="2" Grid.Row="2" ItemsSource="{Binding Models}" 
+                      SelectedItem="{Binding Model, Mode=TwoWay}"/>
+            <TextBlock Visibility="{Binding Path=ModelView}" TextWrapping="Wrap" Text="Модель:" VerticalAlignment="Center" Grid.Row="2"   FontStyle="Italic" Margin="10,0,50,0"/>
+            <ComboBox VerticalAlignment="Center" Grid.Column="2" Margin="0" Grid.Row="3" ItemsSource="{Binding Bodies}" 
+                      SelectedItem="{Binding Body, Mode=TwoWay}"/>
+            <TextBlock Visibility="{Binding Path=BodyView}" TextWrapping="Wrap" Text="Тип кузова:" VerticalAlignment="Center" Grid.Row="3"   FontStyle="Italic" Margin="10,0,50,0"/>
+            <ComboBox VerticalAlignment="Center" Grid.Column="2" Grid.Row="4" ItemsSource="{Binding EngineTypes}" 
+                      SelectedItem="{Binding EngineType, Mode=TwoWay}"/>
+            <TextBlock Visibility="{Binding Path=EngineView}" TextWrapping="Wrap" Text="Тип двигателя:" VerticalAlignment="Center" Grid.Row="4"   FontStyle="Italic" Margin="10,0,50,0"/>
+            <ComboBox VerticalAlignment="Center" Grid.Column="2" Grid.Row="5" ItemsSource="{Binding EngineVolumes}" 
+                      SelectedItem="{Binding EngineVolume, Mode=TwoWay}"/>
+            <TextBlock Visibility="{Binding Path=EngineVolView}" TextWrapping="Wrap" Text="Объем двигателя:" VerticalAlignment="Center" Grid.Row="5"   FontStyle="Italic" Margin="10,0,50,0"/>
+            <ComboBox VerticalAlignment="Center" Grid.Column="2" Margin="0" Grid.Row="6" 
+                      ItemsSource="{Binding TransmissionTypes}" SelectedItem="{Binding TransmissionType, Mode=TwoWay}"/>
+            <TextBlock Visibility="{Binding Path=TransmissionView}" TextWrapping="Wrap" Text="Тип КПП:" VerticalAlignment="Center" Grid.Row="6"   FontStyle="Italic" Margin="10,0,50,0"/>
+        </Grid>
+        <Grid Grid.Column="1" Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition/>
+                <RowDefinition Height="150"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="Для этой машины"/>
+            <DataGrid AutoGenerateColumns="False" Grid.Row="1" ItemsSource="{Binding Path=CarWorks}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Назване" Binding="{Binding Path=Name}" Width="*"/>
+                    <DataGridTextColumn Header="Пробег" Width="80" Binding="{Binding Path=PeriodicDistance}"/>
+                    <DataGridTextColumn Header="Мес." Width="80" Binding="{Binding Path=PeriodicMonth}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.ColumnSpan="2" Text="{Binding Path=SelectedWorkText}"/>
+                <TextBlock Grid.Row="1" Text="Периодичность, км"/>
+                <TextBlock Grid.Row="2" Text="Периодичность, мес"/>
+
+                <TextBox Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="150" Text="{Binding Path=AddedDistance, Mode=TwoWay}"/>
+                <TextBox Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Width="150" Text="{Binding Path=AddedPeriodic, Mode=TwoWay}"/>
+
+                <Button Grid.Row="3" Command="{Binding Path=AddWorkToCarCommand}" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Добавить"/>
+            </Grid>
+        </Grid>
+        <Grid Grid.Column="2" Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition/>
+                <RowDefinition Height="100"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="Общий список работ"/>
+            <ComboBox Grid.Row="1" Margin="10" ItemsSource="{Binding Path=WorkTypes}" DisplayMemberPath="Name" SelectedItem="{Binding Path=SelectedWorkType, Mode=TwoWay}"/>
+            <ListBox Grid.Row="2" Margin="10" ItemsSource="{Binding Path=Works}" DisplayMemberPath="Name" SelectedItem="{Binding Path=SelectedWork, Mode=TwoWay}"/>
+        </Grid>
+    </Grid>
+</UserControl>
