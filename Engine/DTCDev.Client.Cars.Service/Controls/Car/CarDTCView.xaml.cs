@@ -1,4 +1,5 @@
-﻿using DTCDev.Client.Cars.Service.Engine.Handlers;
+﻿using DTCDev.Client.Busy;
+using DTCDev.Client.Cars.Service.Engine.Handlers;
 using DTCDev.Client.Cars.Service.Engine.Storage;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,8 @@ namespace DTCDev.Client.Cars.Service.Controls.Car
 
         void Instance_CarDTCMonthLoaded(List<Models.CarsSending.Car.CarDTCHistoryModel> data)
         {
+            ccBusy.Visibility = Visibility.Collapsed;
+            ccBusy.Content = null;
             DisplayErrorsList(data);
         }
 
@@ -129,6 +132,8 @@ namespace DTCDev.Client.Cars.Service.Controls.Car
             CarsHandler.Instance.GetDTCErrors(_car.CarModel.CarNumber, dt.Year, dt.Month);
             imgLeft.Visibility = Visibility.Visible;
             imgRight.Visibility = txtDate.Visibility = Visibility.Visible;
+            ccBusy.Visibility = Visibility.Visible;
+            ccBusy.Content = new MacBusyControl { IsWaiting = true };
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)

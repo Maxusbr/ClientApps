@@ -54,5 +54,6 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
+        <ContentControl Grid.RowSpan="3" Grid.ColumnSpan="3" x:Name="ccBusy" Visibility="Collapsed"/>
     </Grid>
 </UserControl>
