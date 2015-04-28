@@ -62,10 +62,6 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\BusyIndicator.xaml.cs">
-      <DependentUpon>BusyIndicator.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Controls\Car\CarDetailsView.xaml.cs">
       <DependentUpon>CarDetailsView.xaml</DependentUpon>
     </Compile>
@@ -207,10 +203,6 @@
     <Compile Include="ViewModels\Reports\SpeedOveralReportViewModel.cs" />
     <Compile Include="ViewModels\Reports\SpeedReportViewModel.cs" />
     <Compile Include="ViewModels\Reports\WorkTimeReportViewModel.cs" />
-    <Page Include="Controls\BusyIndicator.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\Car\CarDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

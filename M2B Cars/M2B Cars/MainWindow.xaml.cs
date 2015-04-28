@@ -23,6 +23,7 @@ using DTCDev.Client.Cars.Engine.Handlers.Cars;
 using DTCDev.Client.Window;
 using System.IO;
 using DTCDev.Client.Cars.Engine.AppLogic;
+using DTCDev.Client.Busy;
 
 namespace M2B_Cars
 {
@@ -68,7 +69,7 @@ namespace M2B_Cars
 
         void _login_TryLogin(object sender, EventArgs e)
         {
-            LayoutRoot.Content = new BusyIndicator { IsWaiting = true };
+            LayoutRoot.Content = new MacBusyControl { IsWaiting = true };
             LoginHandler.Instance.SetLogin(_login.Login, _login.Password);
             LoginHandler.Instance.StartAuth();            
         }
