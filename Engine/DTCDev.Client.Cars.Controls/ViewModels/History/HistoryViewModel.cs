@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
+using System.Xml.Serialization;
 using DTCDev.Client.Cars.Controls.Helpers;
 using DTCDev.Client.Cars.Controls.Models;
 using DTCDev.Client.Cars.Controls.ViewModels.Car;
@@ -45,7 +47,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             _mapHandler = CarsHandler.Instance;
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
             {
-                
+
                 Position.Location =
                 MapCenter = MapCenterUser = new Location(55.75, 37.62);
                 Points.Add(
@@ -98,7 +100,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             Lines = model;
         }
 
-       
+
 
         /// <summary>
         /// Clear all routes for map
@@ -205,7 +207,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             get { return _mapHandler.Cars; }
         }
 
-        
+
         public DISP_Car SelectedMapObject
         {
             get
@@ -901,7 +903,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
-        
+
 
         #endregion PLAYER
 
@@ -987,7 +989,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         /// </summary>
         public void LoadData()
         {
-            if(!EnableHistory) return;
+            if (!EnableHistory) return;
 
             if (CarSelector.SelectedCar != null && CarSelector.SelectedCar.Car.Id != String.Empty)
             {
@@ -998,7 +1000,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             DisplayedHistoryDate = _startDate;
         }
 
-        
+
 
         //loading data of history completed
         void Instance_LoadCompleted(object sender, EventArgs e)
@@ -1058,7 +1060,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 p.Mnth == _displayedHistoryDate.Month &&
                 p.dd == _displayedHistoryDate.Day).ToList();
             SortDataByDate(true);
-            
+
             HistoryHandler.Instance.StartLoadDayLines(Position.Car.Id, _displayedHistoryDate);
             HistoryHandler.Instance.StartLoadOBD(Position.Car.Id, _displayedHistoryDate);
             HistoryHandler.Instance.StartLoadAcc(Position.Car.Id, _displayedHistoryDate);
@@ -1094,6 +1096,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                     foreach (var item in DayStates)
                     {
                         var itemtime = StateDateTimeHelper.GetTime(item);
+                        var spantime = itemtime-StateDateTimeHelper.GetTime(first);
                         var loc = new Location
                         {
                             Latitude = item.Lt / 10000.0,
@@ -1121,10 +1124,18 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                                 if (_routesModel.Parkings.Count > 0)
                                     _routesModel.Parkings[_routesModel.Parkings.Count - 1].SetEndDates(itemtime);
                             }
-                            curroute = SortLocation(prev, loc, curroute, item.Spd);
-                            dist += dc.Calculate(first, item);
-                            prev = loc;
-
+                            var curdist = dc.Calculate(first, item);
+                            var spd =1000 * curdist/spantime.TotalSeconds;
+                            if (item.Spd > 0 && Math.Abs(curdist) > .001 && !(foundParking && isParking))
+                            {
+                                if (spd > 35)
+                                {
+                                    var trrr = 0;
+                                }
+                                curroute = SortLocation(prev, loc, curroute, item.Spd);
+                                dist += curdist;
+                                prev = loc;
+                            }
                             first = item;
                         }
                         RouteOpacited.Add(new MovedLocation(loc)
@@ -1146,7 +1157,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 });
                 slowTask.ContinueWith(o =>
                 {
-                    ContinueSortData((int) dist);
+                    ContinueSortData((int)dist);
                     if (!savecache) return;
                     var strt = DayStates.First();
                     CacheRoute(string.Format("[{0}]-{1}-{2}-{3}", SelectedDevice, strt.dd, strt.Mnth, strt.yy), (int)dist);
@@ -1187,10 +1198,17 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 System.IO.Directory.CreateDirectory(myDocs);
             if (System.IO.File.Exists(myDocs + name))
                 System.IO.File.Delete(myDocs + name);
-            using (var writer = new System.IO.StreamWriter(myDocs + name))
+            try
             {
-                var xs = new System.Xml.Serialization.XmlSerializer(typeof(List<CarStateModel>));
-                xs.Serialize(writer, DayStates);
+                using (var writer = new StreamWriter(myDocs + name))
+                {
+                    var xs = new XmlSerializer(typeof(List<CarStateModel>));
+                    xs.Serialize(writer, DayStates);
+                }
+            }
+            catch (Exception)
+            {
+                
             }
         }
 
@@ -1223,9 +1241,11 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             {
                 loc.FirstPoint = false;
                 AddToRoute(loc, prevroute);
-                AddToRoute(new Location(prev, true), curroute);
+                //if(spd > 0)
+                    AddToRoute(new Location(prev, true), curroute);
             }
-            AddToRoute(loc, curroute);
+            //if(spd > 0)
+                AddToRoute(loc, curroute);
             return curroute;
         }
 

@@ -351,8 +351,7 @@
 				IsSynchronizedWithCurrentItem="False" IsEnabled="False"/>
             <Map:MapItemsControl x:Name="CarPoints" ItemsSource="{Binding Points}" 
 				ItemContainerStyle="{StaticResource PointItemStyle}" 
-				SelectedItem="{Binding Position, Mode=TwoWay}">
-            </Map:MapItemsControl>
+				SelectedItem="{Binding Position, Mode=TwoWay}"/>
             <Map:MapColorLine x:Name="RouteLine" Locations="{Binding Route}" StrokeThickness="3" Stroke="DarkGreen" IsClosed="False" Visibility="Collapsed" />
             <Map:MapColorLine x:Name="WarningLine" Locations="{Binding WarningRoute}" StrokeThickness="3" Stroke="DarkOrange" IsClosed="False" Visibility="Collapsed" />
             <Map:MapColorLine x:Name="ErrorLine" Locations="{Binding ErrorRoute}" StrokeThickness="3" Stroke="DarkRed" IsClosed="False" Visibility="Collapsed" />
