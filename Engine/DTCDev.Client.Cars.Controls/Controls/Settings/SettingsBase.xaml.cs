@@ -43,14 +43,6 @@ namespace DTCDev.Client.Cars.Controls.Controls.Settings
             stkBack.Visibility = Visibility.Visible;
         }
 
-        private void grdCars_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            SettingsCars control = new SettingsCars();
-            grdContent.Children.Add(control);
-            grdContent.Visibility = Visibility.Visible;
-            stkBack.Visibility = Visibility.Visible;
-        }
-
         private void grdZones_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             SettingsZones control = new SettingsZones();

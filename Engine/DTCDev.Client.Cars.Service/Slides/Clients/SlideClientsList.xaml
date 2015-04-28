@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="DTCDev.Client.Cars.Service.Slides.Clients.SlideClientsList"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800"  >
+    <Grid>
+        <Grid Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MaxWidth="400"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBox VerticalAlignment="Top"/>
+            <DataGrid Margin="0,50,0,0" ItemsSource="{Binding Path=Clients}" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ФИО" Width="*" Binding="{Binding Path=Nm}"/>
+                    <DataGridTextColumn Header="Телефон" Width="120" Binding="{Binding Path=Ph}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</UserControl>

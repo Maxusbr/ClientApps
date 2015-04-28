@@ -15,15 +15,6 @@
             <TextBlock Text="Назад" Margin="8,0" VerticalAlignment="Center"/>
         </StackPanel>
         <WrapPanel Grid.Row="1" Margin="8">
-            <Grid Width="200" Height="40" Margin="5" x:Name="grdCars" MouseLeftButtonUp="grdCars_MouseLeftButtonUp" Cursor="Hand">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="40"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Border Grid.ColumnSpan="2" Background="White" Opacity="0"/>
-                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/vw-beetle-icon.png" Width="33"/>
-                <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="Автомобили" VerticalAlignment="Center" FontSize="16" Margin="10,0,0,0"/>
-            </Grid>
             <Grid Width="200" Height="40" Margin="5" x:Name="grdZones" MouseLeftButtonUp="grdZones_MouseLeftButtonUp" Cursor="Hand">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="40"/>

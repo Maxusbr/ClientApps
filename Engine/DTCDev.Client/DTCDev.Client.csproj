@@ -68,6 +68,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Busy\MacBusyControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="EditedCombobox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -88,6 +92,9 @@
     </Compile>
     <Compile Include="Busy\BusyControlSmall.xaml.cs">
       <DependentUpon>BusyControlSmall.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Busy\MacBusyControl.xaml.cs">
+      <DependentUpon>MacBusyControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="EditedCombobox.xaml.cs">
       <DependentUpon>EditedCombobox.xaml</DependentUpon>

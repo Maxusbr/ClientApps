@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="DTCDev.Client.Cars.Service.Controls.PrintControls.OrderReportPrintControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             Height="Auto" Width="800" Loaded="UserControl_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>   
+        <TextBlock Text="Отчет о закрытых заказ-нарядах" FontSize="20" Margin="10" TextAlignment="Center"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="30,10">
+            <TextBlock Text="Период: " FontSize="14"/>
+            <TextBlock x:Name="txtFrom" FontSize="14"/>
+            <TextBlock Text=" - " FontSize="14"/>
+            <TextBlock x:Name="txtTo" FontSize="14"/>
+        </StackPanel>
+        <StackPanel x:Name="stkDataReport" Grid.Row="2" Margin="30"/>
+        <TextBlock Text="M2B Car Center" Grid.Row="3" Margin="40,5"/>
+    </Grid>
+</UserControl>

@@ -1,0 +1,15 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Help="clr-namespace:DTCDev.Client.Help;assembly=DTCDev.Client.Help" x:Class="DTCDev.Client.Cars.Service.SideMenu.SM_Help" 
+             mc:Ignorable="d" 
+            xmlns:SideMenuHelp="clr-namespace:DTCDev.Client.Cars.Service.SideMenu.SideMenuHelp"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Border BorderBrush="#FFD0D1D7" BorderThickness="2,0,2,0"/>
+        <Help:HelpView Margin="5,30,5,5"/>
+        <SideMenuHelp:HeaderLine x:Name="headerLine" HeaderText="Помощь" VerticalAlignment="Top" CloseClick="headerLine_CloseClick"/>
+    </Grid>
+</UserControl>

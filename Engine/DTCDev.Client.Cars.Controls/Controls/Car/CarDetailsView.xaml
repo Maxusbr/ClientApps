@@ -51,8 +51,24 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Настройки">
-                <Grid>
-
+                <Grid Margin="10,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="28"/>
+                        <RowDefinition Height="28"/>
+                        <RowDefinition Height="28"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="1" Text="Название" Margin="6"/>
+                    <TextBlock Grid.Row="2" Text="VIN" Margin="6"/>
+                    <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Path=Name, Mode=TwoWay}" Margin="4"/>
+                    <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Path=VIN, Mode=TwoWay}" Margin="4"/>
+                    <Button Grid.Column="1" Grid.Row="3" Content="Сохранить" Command="{Binding Path=SaveSettingsCommand}" Margin="20,3"/>
                 </Grid>
             </TabItem>
         </TabControl>

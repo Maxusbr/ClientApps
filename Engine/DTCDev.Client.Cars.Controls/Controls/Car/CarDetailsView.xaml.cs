@@ -23,9 +23,11 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
     /// </summary>
     public partial class CarDetailsView : UserControl
     {
+        CarDetailsViewModel _vm = new CarDetailsViewModel();
         public CarDetailsView()
         {
             InitializeComponent();
+            this.DataContext = _vm;
         }
 
         DISP_Car _currentCar;
@@ -39,6 +41,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
             _currentCar = carData;
             _currentCar.PropertyChanged += _currentCar_PropertyChanged;
             UpdateData();
+            _vm.CAR = carData;
         }
 
         void _currentCar_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

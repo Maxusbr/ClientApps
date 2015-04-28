@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="DTCDev.Client.Cars.Service.Slides.SlideCarsInfo"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="1000"  >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Марка" Margin="16"/>
+        <TextBlock Text="Модель" Margin="16" Grid.Row="1"/>
+        <TextBlock Text="Двигатель" Margin="16" Grid.Row="2"/>
+        <TextBlock Text="Тип интерфейса" Margin="16" Grid.Row="4"/>
+        <TextBlock Text="Список поддерживаемых автомобилем команд" Margin="16" Grid.Row="5" Grid.ColumnSpan="2"/>
+
+        <ComboBox Grid.Column="1" Width="200" HorizontalAlignment="Left" Margin="10,10,0,10" ItemsSource="{Binding Marks}" 
+                      SelectedItem="{Binding Mark, Mode=TwoWay}"/>
+        <ComboBox Grid.Column="1" Grid.Row="1" Width="200" HorizontalAlignment="Left" Margin="10,10,0,10" ItemsSource="{Binding Models}" 
+                      SelectedItem="{Binding Model, Mode=TwoWay}"/>
+        <ComboBox Grid.Column="1" Grid.Row="2" Width="200" HorizontalAlignment="Left" Margin="10,10,0,10" ItemsSource="{Binding Engins}" 
+                      SelectedItem="{Binding Engine, Mode=TwoWay}"/>
+        <TextBlock Grid.Column="1" Text="{Binding Path=ProtocolName}" Margin="16" Grid.Row="4"/>
+        <DataGrid Grid.Row="6" Grid.ColumnSpan="2" Margin="15" AutoGenerateColumns="False" ItemsSource="{Binding Path=PIDS}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="PID ID" Binding="{Binding Path=PID}"/>
+                <DataGridTextColumn Header="Расшифровка" Width="*" Binding="{Binding Path=Comment}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>
