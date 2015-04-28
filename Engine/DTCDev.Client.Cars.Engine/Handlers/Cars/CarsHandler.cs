@@ -317,6 +317,12 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
                 foreach (var item in settings)
                 {
                     Settings.Add(item);
+                    DISP_Car car = _cars.Where(p => p.ID == item.DID).FirstOrDefault();
+                    if(car!=null)
+                    {
+                        car.Name = item.CarName;
+                        car.VIN = item.VIN;
+                    }
                 }
                 if (SettingsLoaded != null)
                     SettingsLoaded(this, new EventArgs());

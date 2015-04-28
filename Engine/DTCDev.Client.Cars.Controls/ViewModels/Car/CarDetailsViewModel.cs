@@ -6,6 +6,8 @@ using System.Windows;
 using DTCDev.Client.Cars.Engine.DisplayModels;
 using DTCDev.Client.Controls.Map;
 using DTCDev.Client.ViewModel;
+using DTCDev.Models.CarBase.CarStatData;
+using DTCDev.Client.Cars.Engine.Handlers.Cars;
 
 namespace DTCDev.Client.Cars.Controls.ViewModels.Car
 {
@@ -13,48 +15,72 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Car
     {
         public CarDetailsViewModel()
         {
-            MapCenter = new Location(55.75, 37.62);
+            
         }
 
-        private Location mapCenter;
-        public Location MapCenter
-        {
-            get { return mapCenter; }
-            set
-            {
-                if (mapCenter != value)
-                {
-                    mapCenter = value;
-                    OnPropertyChanged("MapCenter");
-                }
-            }
-        }
-
-        private Location mapCenterUser;
-        public Location MapCenterUser
-        {
-            get { return mapCenterUser; }
-            set
-            {
-                if (mapCenterUser != value)
-                {
-                    mapCenterUser = value;
-                    OnPropertyChanged("MapCenterUser");
-                }
-            }
-        }
-
-        DISP_Car _car;
-        public DISP_Car Car
+        private DISP_Car _car;
+        public DISP_Car CAR
         {
             get { return _car; }
             set
             {
-                if (_car == value) return;
                 _car = value;
-                OnPropertyChanged("Car");
+                this.OnPropertyChanged("CAR");
+                UpdateData();
             }
         }
 
+        private string _name;
+
+        public string Name
+        {
+            get { return _name; }
+            set
+            {
+                _name = value;
+                this.OnPropertyChanged("Name");
+            }
+        }
+
+        private string _vin;
+
+        public string VIN
+        {
+            get { return _vin; }
+            set
+            {
+                _vin = value;
+                this.OnPropertyChanged("VIN");
+            }
+        }
+
+        private void UpdateData()
+        {
+            if (CAR == null)
+                return;
+            Name = CAR.Name;
+            VIN = CAR.VIN;
+        }
+
+        private RelayCommand _saveSettingsCommand;
+
+        public RelayCommand SaveSettingsCommand
+        {
+            get
+            {
+                if (_saveSettingsCommand == null)
+                    _saveSettingsCommand = new RelayCommand(a=>SaveSettings());
+                return _saveSettingsCommand;
+            }
+        }
+
+        private void SaveSettings()
+        {
+            CarSettings settings = new CarSettings();
+            settings.DID = CAR.ID;
+            settings.CarName = Name;
+            settings.VIN = VIN;
+            CarsHandler.Instance.SaveCarSettings(settings);
+        }
     }
 }

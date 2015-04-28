@@ -207,7 +207,6 @@
     <Compile Include="ViewModels\Reports\SpeedOveralReportViewModel.cs" />
     <Compile Include="ViewModels\Reports\SpeedReportViewModel.cs" />
     <Compile Include="ViewModels\Reports\WorkTimeReportViewModel.cs" />
-    <Compile Include="ViewModels\Settings\SettingsCarsViewModel.cs" />
     <Page Include="Controls\BusyIndicator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -348,18 +347,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Settings\SettingsCars.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Compile Include="Controls\Car\CarsView.xaml.cs">
       <DependentUpon>CarsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Car\CarViewElement.xaml.cs">
       <DependentUpon>CarViewElement.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Settings\SettingsCars.xaml.cs">
-      <DependentUpon>SettingsCars.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\Settings\SettingsCarsToZone.xaml">
       <SubType>Designer</SubType>
