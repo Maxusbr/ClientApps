@@ -5,11 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DTCDev.Client.Cars.Controls.Controls.Car"
              mc:Ignorable="d" 
-             Height="32" d:DesignWidth="500" x:Name="control" Foreground="Black">
-    <UserControl.ToolTip>
+             Height="Auto" d:DesignWidth="500" x:Name="control" Foreground="Black">
+    <!--<UserControl.ToolTip>
         <local:CarToolTipView />
-    </UserControl.ToolTip>
-    <UserControl.Resources>
+    </UserControl.ToolTip>-->
+    <!--<UserControl.Resources>
         <Storyboard x:Key="stbShowDetails">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="image1">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
@@ -22,39 +22,44 @@
                 <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
-    </UserControl.Resources>
-    <UserControl.Triggers>
+    </UserControl.Resources>-->
+    <!--<UserControl.Triggers>
         <EventTrigger RoutedEvent="Mouse.MouseEnter">
             <BeginStoryboard Storyboard="{StaticResource stbShowDetails}"/>
         </EventTrigger>
         <EventTrigger RoutedEvent="Mouse.MouseLeave">
             <BeginStoryboard Storyboard="{StaticResource stbHideDetails}"/>
         </EventTrigger>
-    </UserControl.Triggers>
+    </UserControl.Triggers>-->
     <Grid >
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="32"/>
-            <ColumnDefinition Width="120"/>
             <ColumnDefinition Width="0"/>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="32"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="32"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
         <Border Grid.ColumnSpan="7" Background="White" Opacity="0.5"/>
-        <Image x:Name="image1" Width="24" Height="24" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/CarDetailsView/Actions-view-split-left-right-icon.png" Opacity="0" MouseLeftButtonUp="image1_MouseLeftButtonUp"/>
         <TextBlock FontSize="14" FontWeight="Bold" Text="{Binding ElementName=control, Path=CarExemplar.Car.CarNumber}" Margin="4,7" Grid.Column="1"/>
         <Image x:Name="imgSatOk" Grid.Column="2" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/gps.png" />
         <Image x:Name="imgSatErr" Grid.Column="2" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/gpsor.png" />
-        <TextBlock x:Name="txtSatLastUpdate" Grid.Column="3" TextWrapping="Wrap" MaxWidth="50"/>
         <Grid Grid.Column="4" x:Name="grdOnLine" >
             <Image x:Name="imgConnectionOff" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/off.png"/>
             <Image x:Name="imgConnection1" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/onone.png" Visibility="Collapsed"/>
             <Image x:Name="imgConnection2" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/ontw.png" Visibility="Collapsed"/>
             <Image x:Name="imgConnection3" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/onth.png" Visibility="Collapsed"/>
         </Grid>
-        <TextBlock Grid.Column="5" x:Name="txtLastUpdate" Text="Очень давно" TextWrapping="Wrap" Width="50"/>
+        <Grid Grid.Column="5" Width="32" x:Name="grdTime">
+            <Image x:Name="imgConnect" Width="20" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/connect.png"/>
+            <Image x:Name="imgOldConnect" Width="20"  Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/clock_red.png"/>
+            <Image x:Name="imgNoConnect" Width="20"  Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/clock yellow.png"/>
+        </Grid>
         <Grid Grid.Column="6">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="32"/>

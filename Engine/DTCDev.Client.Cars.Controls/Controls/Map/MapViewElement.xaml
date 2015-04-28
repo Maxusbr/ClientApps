@@ -11,8 +11,7 @@
              Height="120" Width="120" RenderTransformOrigin="0.5,0.5" 
             MouseEnter="UserControl_MouseEnter" 
             MouseLeave="UserControl_MouseLeave" 
-            MouseLeftButtonDown="UserControl_MouseLeftButtonDown" 
-            MouseRightButtonDown="UserControl_MouseRightButtonDown">
+            MouseLeftButtonDown="UserControl_MouseLeftButtonDown" >
 	<Grid>
 		<VisualStateManager.VisualStateGroups>
 			<VisualStateGroup x:Name="VisualStateGroup">

@@ -22,6 +22,7 @@ using DTCDev.Client.Cars.Engine.Handlers;
 using DTCDev.Client.Cars.Engine.Handlers.Cars;
 using DTCDev.Client.Window;
 using System.IO;
+using DTCDev.Client.Cars.Engine.AppLogic;
 
 namespace M2B_Cars
 {
@@ -49,8 +50,7 @@ namespace M2B_Cars
             DTCDev.Client.Cars.Engine.Handlers.UpdateDriver.Instance.Start();
             LoginHandler.Instance.LoginError += Instance_LoginError;
             LoginHandler.Instance.LoginComplete += Instance_LoginComplete;
-            DTCDev.Client.Cars.Engine.AppLogic.CarSelector.ViewCarDetails += CarSelector_ViewCarDetails;
-
+            CarSelector.OnCarChanged += CarSelector_OnCarChanged;
             FolderPrecreate();
 
             if (DTCDev.Client.Cars.Engine.Handlers.LoginHandler.Instance.IsParamsAdded == false)
@@ -71,6 +71,26 @@ namespace M2B_Cars
             LayoutRoot.Content = new BusyIndicator { IsWaiting = true };
             LoginHandler.Instance.SetLogin(_login.Login, _login.Password);
             LoginHandler.Instance.StartAuth();            
+        }
+
+        CarDetailsView _details;
+
+        void CarSelector_OnCarChanged(DTCDev.Client.Cars.Engine.DisplayModels.DISP_Car car)
+        {
+            if(_details==null)
+            {
+                _details = new CarDetailsView();
+                _details.CloseMe += _details_CloseMe;
+                grdDetails.Children.Add(_details);
+            }
+            _details.UpdateCarData(car);
+        }
+
+        void _details_CloseMe(object sender, EventArgs e)
+        {
+            _details.CloseMe -= _details_CloseMe;
+            grdDetails.Children.Clear();
+            _details = null;
         }
 
         private void FolderPrecreate()
@@ -109,12 +129,6 @@ namespace M2B_Cars
         {
             Properties.Settings.Default.Save();
             Environment.Exit(0);
-        }
-
-        void CarSelector_ViewCarDetails(DTCDev.Client.Cars.Engine.DisplayModels.DISP_Car car)
-        {
-            CarDetailsView details = new CarDetailsView(car);
-            //ShowWindow(400, 450, details, "Детально - ", false, car.Car.CarNumber);
         }
 
         private void Image_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -167,7 +181,6 @@ namespace M2B_Cars
                     hvm.SetDates(DateTime.Today, DateTime.Today + new TimeSpan(1, 0, 0, 0));
                 }
             }
-            //ShowWindow(900, 600, history, "Трек", false, "", set);
         }
 
         private void Image_MouseLeftButtonUp_3(object sender, MouseButtonEventArgs e)
@@ -175,14 +188,13 @@ namespace M2B_Cars
             var set = sender as SettingsModel;
             ccContent.Content = new DriversControl();
             ContentGrid.Visibility = Visibility.Visible;
-            //ShowWindow(500, 400, driver, "Список водителей", false, "", set);
         }
 
         private void Image_MouseLeftButtonUp_4(object sender, MouseButtonEventArgs e)
         {
             var set = sender as SettingsModel;
-            SettingsBase control = new SettingsBase();
-            //ShowWindow(600, 500, control, "Настройки", false, "", set);
+            ccContent.Content = new SettingsBase();
+            ContentGrid.Visibility = Visibility.Visible;
         }
 
 

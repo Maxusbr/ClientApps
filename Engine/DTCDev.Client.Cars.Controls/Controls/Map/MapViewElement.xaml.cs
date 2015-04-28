@@ -54,7 +54,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Map
             }
         }
 
-        private bool _isClicked;
+        private bool _isClicked = false;
 
         private void UserControl_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
@@ -69,14 +69,11 @@ namespace DTCDev.Client.Cars.Controls.Controls.Map
 
         private void UserControl_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            detail.Visibility = Visibility.Visible;
-            _isClicked = true;
-        }
-
-        private void UserControl_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            detail.Visibility = Visibility.Collapsed;
-            _isClicked = false;
+            if (_isClicked)
+                detail.Visibility = Visibility.Collapsed;
+            else
+                detail.Visibility = Visibility.Visible;
+            _isClicked = ! _isClicked;
         }
     }
 }

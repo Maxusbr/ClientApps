@@ -9,7 +9,7 @@
         <ListBox ItemsSource="{Binding Path=CarsList}" SelectedItem="{Binding Path=SelectedCar, Mode=TwoWay}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Car:CarViewElement CarExemplar="{Binding}" AddCommand="{Binding Path=SelectCommand}" />
+                    <Car:CarViewElement CarExemplar="{Binding}"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

@@ -26,86 +26,61 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
         public CarDetailsView()
         {
             InitializeComponent();
-            CarSelector.OnCarChanged += CarSelector_OnCarChanged;
-            if(_viewModel == null)
-                _viewModel = new CarDetailsViewModel();
-            this.DataContext = _viewModel;
-        }
-
-        void CarSelector_OnCarChanged(DISP_Car car)
-        {
-            _currentCar.PropertyChanged -= car_PropertyChanged;
-            _currentCar = car;
-            _currentCar.PropertyChanged += car_PropertyChanged;
         }
 
         DISP_Car _currentCar;
-        int _lastAngle = -30;
-        private CarDetailsViewModel _viewModel;
 
+        public event EventHandler CloseMe;
 
-        public CarDetailsView(DISP_Car car)
+        public void UpdateCarData(DISP_Car carData)
         {
-            InitializeComponent();
-            _currentCar = car;
-            _currentCar.PropertyChanged += car_PropertyChanged;
-            if (_viewModel == null)
-                _viewModel = new CarDetailsViewModel();
-            _viewModel.Car = car;
-            this.DataContext = _viewModel;
-            _viewModel.MapCenter = _viewModel.MapCenterUser = _currentCar.Location;
+            if (_currentCar != null)
+                _currentCar.PropertyChanged -= _currentCar_PropertyChanged;
+            _currentCar = carData;
+            _currentCar.PropertyChanged += _currentCar_PropertyChanged;
+            UpdateData();
         }
 
-        void car_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        void _currentCar_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "Data")
-            {
-                UpdateData();
-            }
-
+            UpdateData();
         }
 
         private void UpdateData()
         {
-            int angle = _currentCar.Data.Navigation.Speed / 10;
-            angle = angle - 30;
-            angRotate.Angle = angle;
-            _lastAngle = angle;
-            _viewModel.MapCenter = _viewModel.MapCenterUser = _currentCar.Location;
-            if (_currentCar.OBD != null)
-            {
-                DISP_Car.EOBDData _rpmOBD = _currentCar.OBD.Where(p => p.Key == "0C").FirstOrDefault();
-                if (_rpmOBD != null)
-                {
-                    int i=0;
-                    Int32.TryParse(_rpmOBD.Value, out i);
-                    double rpmAngle = i * 0.03f;
-                    angRPM.Angle = rpmAngle;
-                }
-            }
-            brdrSatMax.Visibility = brdrSatMid.Visibility = brdrSatMin.Visibility = Visibility.Collapsed;
-            if (_currentCar.Data.Navigation.Sattelites < 5)
-            {
-                brdrSatMin.Visibility = Visibility.Visible;
-            }
-            else if (_currentCar.Data.Navigation.Sattelites >= 5 && _currentCar.Data.Navigation.Sattelites < 10)
-            {
-                brdrSatMid.Visibility = brdrSatMin.Visibility = Visibility.Visible;
-            }
+            txtDate.Text = "Последняя связь - " + _currentCar.DateNavigation;
+            txtSpeed.Text = _currentCar.strSpeed;
+            txtSat.Text = _currentCar.CountSatelite.ToString();
+            if (_currentCar.OBD.Where(p => p.Key == "2F").FirstOrDefault() != null)
+                txtFuel.Text = _currentCar.OBD.Where(p => p.Key == "2F").First().Value + " %";
             else
+                txtFuel.Text = _currentCar.FuelLevel + " л.";
+
+            PIDConverter converter = new PIDConverter();
+            stkOBD.Children.Clear();
+            foreach (var item in _currentCar.OBD)
             {
-                brdrSatMax.Visibility = brdrSatMid.Visibility = brdrSatMin.Visibility = Visibility.Visible;
+                StackPanel stk = new StackPanel();
+                stk.Orientation = Orientation.Horizontal;
+                TextBlock txtText = new TextBlock();
+                txtText.TextWrapping = TextWrapping.Wrap;
+                txtText.Text = converter.GetPidInfo(item.Key);
+                stk.Children.Add(txtText);
+                txtText.Margin = new Thickness(2,5,2,5);
+
+                TextBlock txtVol = new TextBlock();
+                txtVol.FontWeight = FontWeights.Bold;
+                txtVol.Text = item.Value;
+                stk.Children.Add(txtVol);
+                stkOBD.Children.Add(stk);
+                txtVol.Margin = new Thickness(2, 5, 2, 5);
             }
         }
 
-        private void CreateAnimation(int angle)
+        private void btnClose_Click(object sender, RoutedEventArgs e)
         {
-            DoubleAnimation dbAscending = new DoubleAnimation((double)_lastAngle, (double)angle, new Duration(TimeSpan.FromMilliseconds(300)));
-            Storyboard storyboard = new Storyboard();
-            storyboard.Children.Add(dbAscending);
-            Storyboard.SetTarget(dbAscending, brdrSpeed);
-            Storyboard.SetTargetProperty(dbAscending, new PropertyPath(RotateTransform.AngleProperty));
-            storyboard.Begin();
+            if (CloseMe != null)
+                CloseMe(this, new EventArgs());
         }
     }
 }

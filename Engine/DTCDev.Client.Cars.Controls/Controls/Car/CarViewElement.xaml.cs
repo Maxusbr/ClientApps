@@ -60,6 +60,8 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
             if (e.PropertyName == "Sensors")
             {
                 DisplayState(CarExemplar);
+                if (_details != null)
+                    _details.UpdateCarData(CarExemplar);
             }
         }
 
@@ -71,6 +73,8 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
                 DisplayOBD((DISP_Car)sender);
                 DisplayAccelerometer((DISP_Car)sender);
                 DisplaySensors((DISP_Car)sender);
+                if (_details != null)
+                    _details.UpdateCarData(CarExemplar);
             }
         }
 
@@ -96,26 +100,23 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
                 // TODO исправить серверное время
                 TimeSpan ts = DateTime.UtcNow - dt;
                 TimeSpan tsUtc = DateTime.Now - DateTime.UtcNow;
+                imgConnect.Visibility = Visibility.Collapsed;
+                imgOldConnect.Visibility = Visibility.Collapsed;
+                imgNoConnect.Visibility = Visibility.Collapsed;
+
+                grdTime.ToolTip = (dt + tsUtc).ToString("dd.MM.yy HH.mm.ss");
 
                 if ((ts.TotalMinutes > 10 && ts.TotalDays<60) || TCPConnection.Instance.IsConnected == false)
                 {
-                    txtLastUpdate.Text = (dt + tsUtc).ToString("dd.MM.yy HH.mm.ss");
-                    txtLastUpdate.Visibility = Visibility.Visible;
-                    txtSatLastUpdate.Visibility = Visibility.Visible;
-                    //grdOnLine.ToolTip = null;
+                    imgOldConnect.Visibility = Visibility.Visible;
                 }
                 else if (ts.TotalDays >= 60)
                 {
-                    txtLastUpdate.Text = "Очень давно";
-                    txtLastUpdate.Visibility = Visibility.Visible;
-                    txtSatLastUpdate.Visibility = Visibility.Visible;
+                    imgNoConnect.Visibility = Visibility.Visible;
                 }
                 else
                 {
-                    txtLastUpdate.Text = "";
-                    txtLastUpdate.Visibility = Visibility.Collapsed;
-                    txtSatLastUpdate.Visibility = Visibility.Collapsed;
-                    //grdOnLine.ToolTip = (dt + tsUtc).ToString("dd.MM.yy HH.mm.ss");
+                    imgConnect.Visibility = Visibility.Visible;
 
                 }
                 txtSpeed.Text = (CarExemplar.Data.Navigation.Speed/10).ToString();
@@ -139,11 +140,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
                     imgSatOk.Visibility = Visibility.Visible;
                     imgSatErr.Visibility = Visibility.Collapsed;
                 }
-                //txtSat.Text = CarExemplar.Data.Navigation.Sattelites.ToString();
-                //imgSatErr.ToolTip = imgSatOk.ToolTip = "Спутников - " + CarExemplar.Data.Navigation.Sattelites.ToString();
-
                 DetectConnection(ts, car);
-                //car.Update();
 
                 DisplayFuel(car);
             }
@@ -282,24 +279,8 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
             }
         }
 
+        CarDetailsView _details;
 
-        private static DependencyProperty AddCommandProperty = DependencyProperty.Register(
-    "AddCommand", typeof(ICommand), typeof(CarViewElement),
-    new PropertyMetadata(null));
-
-        public ICommand AddCommand
-        {
-            get { return (ICommand)GetValue(AddCommandProperty); }
-            set { SetValue(AddCommandProperty, value); }
-        }
-
-
-
-        private void image1_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            if (AddCommand.CanExecute(this))
-                AddCommand.Execute(this);
-        }
 
 
     }
