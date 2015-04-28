@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DTCDev.Client.Cars.Controls.Controls;
 using DTCDev.Client.Cars.Controls.Controls.Car;
 using DTCDev.Client.Cars.Controls.Controls.Driver;
 using DTCDev.Client.Cars.Controls.Controls.History;
@@ -38,6 +39,9 @@ namespace M2B_Cars
         {
             Thread tr = new Thread(threadDisconnect);
             tr.Start();
+            _login = new LoginControl();
+            _login.TryLogin += _login_TryLogin;
+            _login.CancelLogin+=_login_CancelLogin;
             CarsHandler.Instance.Init();
             CarBaseHandler.Instance.Init();
             //CarsHandler.Instance.CarsRefreshed += Instance_CarsRefreshed;
@@ -55,6 +59,20 @@ namespace M2B_Cars
             }
         }
 
+        private void _login_CancelLogin(object sender, EventArgs e)
+        {
+
+            MessageBox.Show("Перед работой с приложением необходимо авторизоваться. Приложение будет закрыто, попробуйте еще раз");
+            this.Close();
+        }
+
+        void _login_TryLogin(object sender, EventArgs e)
+        {
+            LayoutRoot.Content = new BusyIndicator { IsWaiting = true };
+            LoginHandler.Instance.SetLogin(_login.Login, _login.Password);
+            LoginHandler.Instance.StartAuth();            
+        }
+
         private void FolderPrecreate()
         {
             string myDocs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -68,19 +86,7 @@ namespace M2B_Cars
 
         private void DisplayLogin()
         {
-            LoginWindow window = new LoginWindow();
-            window.Owner = this;
-            window.ShowDialog();
-            if (window.IsLogin == false)
-            {
-                MessageBox.Show("Перед работой с приложением необходимо авторизоваться. Приложение будет закрыто, попробуйте еще раз");
-                this.Close();
-            }
-            else
-            {
-                DTCDev.Client.Cars.Engine.Handlers.LoginHandler.Instance.SetLogin(window.Login, window.Password);
-                DTCDev.Client.Cars.Engine.Handlers.LoginHandler.Instance.StartAuth();
-            }
+            LayoutRoot.Content = _login;
         }
 
         void Instance_LoginError(object sender, EventArgs e)
@@ -90,8 +96,10 @@ namespace M2B_Cars
         }
 
         private bool _firstOpenWidowsCompleted = false;
+        private LoginControl _login;
         void Instance_LoginComplete(object sender, EventArgs e)
         {
+            LayoutRoot.Visibility = Visibility.Collapsed;
             if (_firstOpenWidowsCompleted == true)
                 return;
         }

@@ -13,7 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
-    <ExpressionBlendVersion>12.0.41212.0</ExpressionBlendVersion>
+    <ExpressionBlendVersion>12.0.51020.0</ExpressionBlendVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -62,6 +62,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\BusyIndicator.xaml.cs">
+      <DependentUpon>BusyIndicator.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Controls\Car\CarDetailsView.xaml.cs">
       <DependentUpon>CarDetailsView.xaml</DependentUpon>
     </Compile>
@@ -125,6 +129,9 @@
     </Compile>
     <Compile Include="Controls\History\StateDatePresenter.xaml.cs">
       <DependentUpon>StateDatePresenter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\LoginControl.xaml.cs">
+      <DependentUpon>LoginControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Map\MapView.xaml.cs">
       <DependentUpon>MapView.xaml</DependentUpon>
@@ -201,6 +208,10 @@
     <Compile Include="ViewModels\Reports\SpeedReportViewModel.cs" />
     <Compile Include="ViewModels\Reports\WorkTimeReportViewModel.cs" />
     <Compile Include="ViewModels\Settings\SettingsCarsViewModel.cs" />
+    <Page Include="Controls\BusyIndicator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Car\CarDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -290,6 +301,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\History\StateDatePresenter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\LoginControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

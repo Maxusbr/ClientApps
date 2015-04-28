@@ -1,0 +1,96 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	x:Class="DTCDev.Client.Cars.Controls.Controls.BusyIndicator"
+	x:Name="UserControl" Foreground="White"
+	>
+    <UserControl.Resources>
+        <Storyboard x:Key="PATH_WaitStoryboard" RepeatBehavior="Forever">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(RotateTransform.Angle)" 
+                                           Storyboard.TargetName="PATH_CanvasLoader1">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="360"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </UserControl.Resources>
+    <Border Background="Gray" Opacity="0.5" x:Name="brdrDisconnect">
+        <Grid
+			x:Name="PATH_RootLoader"
+			VerticalAlignment="Center"
+			HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+            <Grid.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="0.3" ScaleY="0.3"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Grid.RenderTransform>
+            <ContentPresenter
+				x:Name="PATH_Framework" />
+            <Grid
+				x:Name="PATH_BusyIndicatorLoader"
+				Visibility="Visible">
+                <Grid>
+                    <Canvas
+						x:Name="PATH_CanvasLoader1"
+						Visibility="Visible"
+						Background="#00000000"
+						RenderTransformOrigin="0.5,0.5"
+						Width="150"
+						Height="150">
+                        <Canvas.RenderTransform>
+                            <TransformGroup>
+                                <RotateTransform/>
+                            </TransformGroup>
+                        </Canvas.RenderTransform>
+                        <Ellipse
+										
+							Height="30"
+							Canvas.Left="61"
+							Canvas.Top="1"
+							Width="29" Fill="{Binding Foreground, ElementName=UserControl}" />
+                        <Ellipse Fill="{Binding Foreground, ElementName=UserControl}"
+							Height="30"
+							Canvas.Left="104"
+							Canvas.Top="17"
+							Width="30" Opacity="0.3" />
+                        <Ellipse Fill="{Binding Foreground, ElementName=UserControl}"
+							Height="29"
+							Canvas.Left="120"
+							Canvas.Top="61"
+							Width="30" Opacity="0.4" />
+                        <Ellipse Fill="{Binding Foreground, ElementName=UserControl}"
+							Height="30"
+							Canvas.Left="104"
+							Canvas.Top="104"
+							Width="30" Opacity="0.5" />
+                        <Ellipse Fill="{Binding Foreground, ElementName=UserControl}"
+							Height="30"
+							Canvas.Left="61"
+							Canvas.Top="120"
+							Width="29" Opacity="0.6" />
+                        <Ellipse Fill="{Binding Foreground, ElementName=UserControl}"
+							Height="30"
+							Canvas.Top="104"
+							Width="30"
+							Canvas.Left="17" Opacity="0.7" />
+                        <Ellipse Fill="{Binding Foreground, ElementName=UserControl}"
+							Height="29"
+							Canvas.Top="61"
+							Width="30"
+							Canvas.Left="1" Opacity="0.8" />
+                        <Ellipse Fill="{Binding Foreground, ElementName=UserControl}"
+							Height="30"
+							Canvas.Top="17"
+							Width="30"
+							Canvas.Left="17" Opacity="0.9" />
+                    </Canvas>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Border>
+</UserControl>
