@@ -85,7 +85,7 @@ namespace DTCDev.Client.Cars.Service.Controls.Car
             if (_car == null)
                 return;
             DisplayErrorsList(_car.Errors);
-            
+
         }
 
         private void chkLast_Checked(object sender, RoutedEventArgs e)
@@ -157,24 +157,33 @@ namespace DTCDev.Client.Cars.Service.Controls.Car
         {
             var printDialog = new PrintDialog();
             if (printDialog.ShowDialog() != true) return;
-            var myPanel = new StackPanel{Orientation = Orientation.Vertical, HorizontalAlignment = HorizontalAlignment.Stretch};
-            myPanel.Children.Add(new TextBlock { Text = "Статистика по ошибкам", TextAlignment = TextAlignment.Center,
-                FontSize = 16, FontWeight = FontWeights.Bold});
+            var myPanel = new StackPanel { Orientation = Orientation.Vertical, HorizontalAlignment = HorizontalAlignment.Stretch };
             myPanel.Children.Add(new TextBlock
             {
-                Text = string.Format("Госномер: {0}, марка: {1}, модель автомобиля: {2}", 
-                _car.CarModel.CarNumber, _car.CarModel.Mark, _car.CarModel.Model), 
-                TextAlignment = TextAlignment.Center, FontSize = 14});
-            
+                Text = "Статистика по ошибкам",
+                TextAlignment = TextAlignment.Center,
+                FontSize = 16,
+                FontWeight = FontWeights.Bold,
+                Margin = new Thickness(0, 0, 0, 10)
+            });
+            myPanel.Children.Add(new TextBlock
+            {
+                Text = string.Format("Госномер: {0}, марка: {1}, модель автомобиля: {2}",
+                _car.CarModel.CarNumber, _car.CarModel.Mark, _car.CarModel.Model),
+                TextAlignment = TextAlignment.Center,
+                FontSize = 14,
+                Margin = new Thickness(0, 0, 0, 15)
+            });
+
             var trr = new DataGrid { AutoGenerateColumns = false, HorizontalAlignment = HorizontalAlignment.Stretch };
-            var wd = new DataGridLength(1, DataGridLengthUnitType.Auto);
-            trr.Columns.Add(new DataGridTextColumn { Header = "Номер ошибки", Binding = new Binding("ID"), Width = wd});
+            var wd = new DataGridLength(1, DataGridLengthUnitType.Star);
+            trr.Columns.Add(new DataGridTextColumn { Header = "Номер ошибки", Binding = new Binding("ID"), Width = wd });
             trr.Columns.Add(new DataGridTextColumn { Header = "Кол-во", Binding = new Binding("Count"), Width = wd });
             trr.Columns.Add(new DataGridTextColumn { Header = "Зафикисирована", Binding = new Binding("LastDate"), Width = wd });
             trr.ItemsSource = dtgrdErrorsStat.ItemsSource;
             myPanel.Children.Add(trr);
 
-            //myPanel.Measure(new Size(printDialog.PrintableAreaWidth, printDialog.PrintableAreaHeight));
+            myPanel.Measure(new Size(printDialog.PrintableAreaWidth, printDialog.PrintableAreaHeight));
             //myPanel.Arrange(new Rect(new Point(0, 0), myPanel.DesiredSize));
             printDialog.PrintVisual(myPanel, "Статистика по ошибкам");
         }
