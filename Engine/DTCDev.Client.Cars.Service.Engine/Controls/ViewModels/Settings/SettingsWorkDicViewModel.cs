@@ -267,7 +267,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             if (SelectedWork == null && SelectedOtherWork == null)
                 EditPartWorksEnabled = false;
             else
+            {
                 EditPartWorksEnabled = true;
+                SpecificationDataStorage.Instance.GetWorkParts((SelectedWork ?? SelectedOtherWork).idWork);
+            }
         }
 
         public ObservableCollection<PartWorkDataModel> PartWorks { get; set; }

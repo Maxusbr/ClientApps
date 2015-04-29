@@ -31,7 +31,10 @@
 			<Button Content="Отмена" HorizontalAlignment="Left" Margin="23,10,0,0" Grid.Row="2" 
 				VerticalAlignment="Top" Width="75" Grid.Column="1"
 				Command="{Binding CancelComand}"/>
+            <Button Content="Демо" HorizontalAlignment="Center" Margin="0,10,0,0" Grid.Row="2" 
+				VerticalAlignment="Top" Width="75" Command="{Binding DemoLoginCommand}" 
+				CommandParameter="{Binding ElementName=TxtPassword}" />
 
-		</Grid>
+        </Grid>
 	</Border>
 </UserControl>

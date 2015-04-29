@@ -63,6 +63,18 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             get { return _cancelComand ?? (_cancelComand = new RelayCommand(OnCancel)); }
         }
 
+        private RelayCommand _demologinCommand;
+        public RelayCommand DemoLoginCommand
+        {
+            get { return _demologinCommand ?? (_demologinCommand = new RelayCommand(OnDemoLogin)); }
+        }
+
+        private void OnDemoLogin(object obj)
+        {
+            LoginHandler.Instance.SetLogin("demo", "demo123");
+            LoginHandler.Instance.StartAuth();
+        }
+
         private void OnCancel(object obj)
         {
             OnLoginCancel();

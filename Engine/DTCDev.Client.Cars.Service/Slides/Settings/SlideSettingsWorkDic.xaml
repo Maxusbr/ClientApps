@@ -93,7 +93,7 @@
                         <DataGridTextColumn Header="н/ч" Width="50" Binding="{Binding Hours}"/>
                     </DataGrid.Columns>
                 </DataGrid>
-                <Grid Grid.Row="2" Background="White" Visibility="{Binding Path=VisAddPartWorks}">
+                <Grid Grid.Row="2" Background="White" Visibility="{Binding Path=VisAddPartWorks}" d:IsHidden="True">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30"/>
                         <RowDefinition/>

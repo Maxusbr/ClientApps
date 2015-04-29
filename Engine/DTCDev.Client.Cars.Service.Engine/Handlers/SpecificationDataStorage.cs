@@ -247,6 +247,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             CarBaseHandler.Instance.GetWorkParts(workID, carNumber);
         }
 
+        public void GetWorkParts(int workID)
+        {
+            CarBaseHandler.Instance.GetWorkParts(workID);
+        }
 
 
         public void SetMarks(List<KVPBase> data)

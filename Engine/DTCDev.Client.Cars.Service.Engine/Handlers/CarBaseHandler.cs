@@ -202,6 +202,15 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             SendRequest("TT" + JsonConvert.SerializeObject(model));
         }
 
+        public void GetWorkParts(int idWork)
+        {
+            WorksWithFlagDataModel model = new WorksWithFlagDataModel
+            {
+                id = idWork
+            };
+            SendRequest("TT" + JsonConvert.SerializeObject(model));
+        }
+
 
         private void SendRequest(string req)
         {
