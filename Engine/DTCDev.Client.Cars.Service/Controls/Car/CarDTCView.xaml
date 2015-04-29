@@ -39,7 +39,7 @@
         <ScrollViewer Grid.Row="1" Margin="20" >
             <StackPanel x:Name="stkErrors"/>
         </ScrollViewer>
-        <Grid Grid.Column="2" Grid.Row="1">
+        <Grid Grid.Column="2" Grid.Row="1" HorizontalAlignment="Right">
             <Grid.RowDefinitions>
                 <RowDefinition Height="25"/>
                 <RowDefinition Height="20"/>
@@ -54,6 +54,9 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
+        <Button ToolTip="Распечатать статистику по ошибкам" Click="Button_Print_Click" Style="{DynamicResource MetroCircleButtonStyle}" HorizontalAlignment="Right" Width="48" Height="48" Grid.Row="1" VerticalAlignment="Top" Grid.Column="2">
+            <Image Source="/DTCDev.Client.Cars.Service;component/Assets/Images/binders.png" Width="24"/>
+        </Button>
         <ContentControl Grid.RowSpan="3" Grid.ColumnSpan="3" x:Name="ccBusy" Visibility="Collapsed"/>
     </Grid>
 </UserControl>
