@@ -204,6 +204,7 @@
                             <Image Source="Imgs/6.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
+                    <MenuItem Header="Стоимость работ" Padding="7"/>
                 </MenuItem>
                 <MenuItem Header="ПОМОЩЬ" Padding="10,2"  Click="MenuItem_ClickHelpChange"/>
             </Menu>

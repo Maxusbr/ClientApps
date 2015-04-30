@@ -157,6 +157,9 @@
     <Compile Include="Slides\Settings\SlideSettingsWorkDic.xaml.cs">
       <DependentUpon>SlideSettingsWorkDic.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Slides\Settings\SlideWorksSettings.xaml.cs">
+      <DependentUpon>SlideWorksSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Slides\SlideAddCar.xaml.cs">
       <DependentUpon>SlideAddCar.xaml</DependentUpon>
     </Compile>
@@ -355,6 +358,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Slides\Settings\SlideSettingsWorkDic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Slides\Settings\SlideWorksSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
