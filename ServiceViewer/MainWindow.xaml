@@ -206,7 +206,10 @@
                     </MenuItem>
                     <MenuItem Header="Стоимость работ" Padding="7"/>
                 </MenuItem>
-                <MenuItem Header="ПОМОЩЬ" Padding="10,2"  Click="MenuItem_ClickHelpChange"/>
+                <MenuItem Header="ПОМОЩЬ" Padding="10,2" >
+                    <MenuItem Header="Справка" Padding="10,2" Click="MenuItem_ClickHelpChange"/>
+                    <MenuItem Header="Задать вопрос" Padding="10,2" Click="MenuItem_ClickFeedback"/>
+                </MenuItem>
             </Menu>
             <Grid x:Name="grdContent" Grid.Row="1" Grid.Column="1"/>
             <Grid Grid.Row="1">

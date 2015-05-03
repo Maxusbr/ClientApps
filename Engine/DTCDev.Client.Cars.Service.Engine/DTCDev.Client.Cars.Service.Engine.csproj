@@ -118,6 +118,7 @@
     <Compile Include="Handlers\CarBaseHandler.cs" />
     <Compile Include="Handlers\CarsHandler.cs" />
     <Compile Include="Handlers\ClientsHandler.cs" />
+    <Compile Include="Handlers\CommunicationsHandler.cs" />
     <Compile Include="Handlers\CompanyHandler.cs" />
     <Compile Include="Handlers\OrdersHandler.cs" />
     <Compile Include="Handlers\PersonalHandler.cs" />

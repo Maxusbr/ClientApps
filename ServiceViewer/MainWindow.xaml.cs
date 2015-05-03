@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DTCDev.Client.Cars.Service;
 using DTCDev.Client.Cars.Service.Controls;
 using DTCDev.Client.Cars.Service.Controls.Car;
 using DTCDev.Client.Cars.Service.Engine.Controls.View;
@@ -330,6 +331,14 @@ namespace CarServiceViewer
             SlideReportOrders view = new SlideReportOrders();
             grdContent.Children.Clear();
             grdContent.Children.Add(view);
+        }
+
+        private void MenuItem_ClickFeedback(object sender, RoutedEventArgs e)
+        {
+            var help = new SM_Feedback {Width = 250};
+            help.CloseClick += help_CloseClick;
+            grd2_1.Children.Clear();
+            grd2_1.Children.Add(help);
         }
     }
 }
