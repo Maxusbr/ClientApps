@@ -5,7 +5,7 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:sideMenuHelp="clr-namespace:DTCDev.Client.Cars.Service.SideMenu.SideMenuHelp"
 	mc:Ignorable="d"
-	x:Class="DTCDev.Client.Cars.Service.SM_Feedback"
+	x:Class="DTCDev.Client.Cars.Service.SideMenu.SM_Feedback"
 	x:Name="UserControl"
 	>
 

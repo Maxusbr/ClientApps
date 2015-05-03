@@ -335,10 +335,18 @@ namespace CarServiceViewer
 
         private void MenuItem_ClickFeedback(object sender, RoutedEventArgs e)
         {
-            var help = new SM_Feedback {Width = 250};
-            help.CloseClick += help_CloseClick;
+            var feedback = new SM_Feedback { Width = 250 };
+            feedback.CloseClick += help_CloseClick;
             grd2_1.Children.Clear();
-            grd2_1.Children.Add(help);
+            grd2_1.Children.Add(feedback);
+        }
+
+        private void MenuItem_ClickControllers(object sender, RoutedEventArgs e)
+        {
+            var controllers = new SM_Controllers { Width = 250 };
+            controllers.CloseClick += help_CloseClick;
+            grd2_1.Children.Clear();
+            grd2_1.Children.Add(controllers);
         }
     }
 }

@@ -209,6 +209,7 @@
                 <MenuItem Header="ПОМОЩЬ" Padding="10,2" >
                     <MenuItem Header="Справка" Padding="10,2" Click="MenuItem_ClickHelpChange"/>
                     <MenuItem Header="Задать вопрос" Padding="10,2" Click="MenuItem_ClickFeedback"/>
+                    <MenuItem Header="Заказать контроллеры" Padding="10,2" Click="MenuItem_ClickControllers"/>
                 </MenuItem>
             </Menu>
             <Grid x:Name="grdContent" Grid.Row="1" Grid.Column="1"/>

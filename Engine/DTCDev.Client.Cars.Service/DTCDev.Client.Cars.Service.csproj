@@ -134,6 +134,9 @@
     <Compile Include="SideMenu\SM_Calendar.xaml.cs">
       <DependentUpon>SM_Calendar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SideMenu\SM_Controllers.xaml.cs">
+      <DependentUpon>SM_Controllers.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SideMenu\SM_Feedback.xaml.cs">
       <DependentUpon>SM_Feedback.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -333,6 +336,10 @@
     <Page Include="SideMenu\SM_Calendar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SideMenu\SM_Controllers.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="SideMenu\SM_Feedback.xaml">
       <SubType>Designer</SubType>

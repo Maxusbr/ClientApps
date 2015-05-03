@@ -8,9 +8,9 @@ namespace DTCDev.Client.Cars.Service.SideMenu
 	/// <summary>
 	/// Логика взаимодействия для SM_Feedback.xaml
 	/// </summary>
-	public partial class SM_Feedback : UserControl
+	public partial class SM_Controllers : UserControl
 	{
-		public SM_Feedback()
+        public SM_Controllers()
 		{
 			this.InitializeComponent();
 		}
@@ -26,30 +26,27 @@ namespace DTCDev.Client.Cars.Service.SideMenu
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Send();
-            tbMessage.Text = string.Empty;
-            cbTheme.SelectedIndex = -1;
+            tbCount.Text = tbMessage.Text = string.Empty;
         }
 
 	    private void Send()
 	    {
-	        CommunicationsHandler.Instance.SendMessage(cbTheme.SelectedIndex, tbMessage.Text);
+	        var cnt = 0;
+            int.TryParse(tbCount.Text, out cnt);
+            if(cnt == 0) return;
+            CommunicationsHandler.Instance.SendMessage(cnt, tbMessage.Text);
 	    }
-
-        private void cbTheme_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            UpdateEnableButton();
-        }
-
-        private void tbMessage_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            UpdateEnableButton();
-        }
 
 	    private void UpdateEnableButton()
-	    {
-	        btnSend.IsEnabled = !string.IsNullOrEmpty(tbMessage.Text) 
-                //&& tbMessage.Text.Length > 10 
-                && cbTheme.SelectedIndex != -1;
+        {
+            var cnt = 0;
+            int.TryParse(tbCount.Text, out cnt);
+            btnSend.IsEnabled = cnt > 0;
 	    }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            UpdateEnableButton();
+        }
 	}
 }
