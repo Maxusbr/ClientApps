@@ -90,7 +90,26 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
 
         void Instance_LoadOtherWorkListComplete(object sender, EventArgs e)
         {
-            OtherFilterWorks();
+            WorkTreeModel model = WorksTree.Where(p => p.id == -2).First();
+            foreach (var item in model.Items)
+            {
+                item.Items.Clear();
+                List<WorksInfoDataModel> temp = SpecificationDataStorage.Instance.OtherWorkList.Where(p => p.id_Class == item.id).ToList();
+                foreach (var w in temp)
+                {
+                    item.Items.Add(new WorkTreeModel
+                    {
+                        Cost = w.Cost,
+                        id = w.id,
+                        id_Class = w.id_Class,
+                        idWork = w.idWork,
+                        Name = w.Name,
+                        NH = w.NH,
+                        NHD = w.NHD,
+                        WGUID = w.WGUID
+                    });
+                }
+            }
         }
 
 
