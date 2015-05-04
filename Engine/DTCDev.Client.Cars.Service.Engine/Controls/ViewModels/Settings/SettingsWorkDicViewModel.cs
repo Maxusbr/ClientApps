@@ -37,7 +37,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             SpecificationDataStorage.Instance.LoadWorkListComplete += Instance_LoadWorkListComplete;
             SpecificationDataStorage.Instance.PartsWorksLoadComplete += Instance_PartsWorksLoadComplete;
             SpecificationDataStorage.Instance.LoadWorkTypesComplete += Instance_LoadWorkTypesComplete;
-            FilterWorks();
             OtherFilterWorks();
             FilterPartWorks();
         }
@@ -115,6 +114,18 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
 
         public ObservableCollection<WorkTreeModel> WorksTree { get; set; }
 
+        private WorkTreeModel _selectedWorkTree;
+
+        public WorkTreeModel SelectedWorkTree
+        {
+            get { return _selectedWorkTree; }
+            set
+            {
+                _selectedWorkTree = value;
+                this.OnPropertyChanged("SelectedWorkTree");
+            }
+        }
+
 
 
         #region PERIODIC
@@ -129,7 +140,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             {
                 _selectedWorkType = value;
                 this.OnPropertyChanged("SelectedWorkType");
-                FilterWorks();
                 CheckAllowAddWork();
             }
         }
@@ -182,20 +192,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
         public RelayCommand AddWorkCommand { get { return _addWorkCommand ?? (_addWorkCommand = new RelayCommand(AddWork)); } }
 
 
-
-
-        private void FilterWorks()
-        {
-            Works.Clear();
-            if (SelectedWorkType != null)
-                foreach (var item in SpecificationDataStorage.Instance.WorkList)
-                {
-                    if (item.id_Class == SelectedWorkType.id)
-                        Works.Add(item);
-                }
-            else
-                SpecificationDataStorage.Instance.WorkList.ToList().ForEach(a => Works.Add(a));
-        }
 
         private void CheckAllowAddWork()
         {

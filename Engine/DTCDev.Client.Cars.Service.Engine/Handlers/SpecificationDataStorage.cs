@@ -50,29 +50,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
 
 
 
-        public delegate void GetInfoHandler(int idPearent);
-        public delegate void GetSubInfoHandler(int idModel, int idPearent);
-        public event EventHandler GetMarks;
-        public event GetInfoHandler GetModels;
-        public event GetInfoHandler GetBodies;
-        public event GetSubInfoHandler GetEngines;
-        public event GetSubInfoHandler GetEnginesByModel;
-        public event GetSubInfoHandler GetEngineTypes;
-        public event GetSubInfoHandler GetTransTypes;
-        public event GetSubInfoHandler GetCarStatInfo;
-
-        public delegate void GetCarWorksHandler(int idModel, int idEngine, int idBody, int idEngineType, int idTransmission);
-        public event GetCarWorksHandler GetCarWorksEvent;
-
-        public event EventHandler GetWorkTypes;
-        public event EventHandler GetWorksList;
-
-        public delegate void AddWorkNameHandler(int idType, string name);
-        public event AddWorkNameHandler AddWorkNameEvent;
-
-        public delegate void AddWorkToCarHandler(AddWorkTocarModel model);
-        public event AddWorkToCarHandler AddWorkEvent;
-
         public event EventHandler LoadCarStatComplete;
         public event EventHandler LoadWorkListComplete;
         public event EventHandler LoadOtherWorkListComplete;
@@ -155,44 +132,42 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
 
         private void CallLoadMarks()
         {
-            if (GetMarks != null)
-                GetMarks(this, new EventArgs());
+            CarBaseHandler.Instance.GetMarks();
         }
 
         private void CallLoadModels()
         {
-            if (GetModels != null && SelectedMark != null)
-                GetModels(SelectedMark.id);
+            if (SelectedMark != null)
+                CarBaseHandler.Instance.GetModels(SelectedMark.id);
         }
 
         private void CallLoadEngines()
         {
-            if (GetEngines != null && SelectedModel != null && SelectedEngineType != null)
-                GetEngines(SelectedModel.id, SelectedEngineType.id);
+            if (SelectedModel != null && SelectedEngineType != null)
+                CarBaseHandler.Instance.GetEngines(SelectedModel.id, SelectedEngineType.id);
         }
 
         private void CallLoadBodies()
         {
-            if (GetBodies != null && SelectedModel != null)
-                GetBodies(_selectedModel.id);
+            if (SelectedModel != null)
+                CarBaseHandler.Instance.GetBodies(_selectedModel.id);
         }
 
         private void CallLoadEngineTypes()
         {
-            if (GetEngineTypes != null && SelectedModel != null && SelectedBody != null)
-                GetEngineTypes(SelectedModel.id, SelectedBody.id);
+            if (SelectedModel != null && SelectedBody != null)
+                CarBaseHandler.Instance.GetEngineTypes(SelectedModel.id, SelectedBody.id);
         }
 
         private void CallLoadTrans()
         {
-            if (GetTransTypes != null && SelectedModel != null && SelectedEngineVolume != null)
-                GetTransTypes(SelectedModel.id, SelectedEngineVolume.id);
+            if (SelectedModel != null && SelectedEngineVolume != null)
+                CarBaseHandler.Instance.GetTransTypes(SelectedModel.id, SelectedEngineVolume.id);
         }
 
         private void CallLoadCarWorks()
         {
-            if (GetCarWorksEvent != null)
-                GetCarWorksEvent(_selectedModel.id, _selectedEngine.id, _selectedBody.id, SelectedEngineType.id, SelectedTransmission.id);
+            CarBaseHandler.Instance.GetCarWorksEvent(_selectedModel.id, _selectedEngine.id, _selectedBody.id, SelectedEngineType.id, SelectedTransmission.id);
         }
 
         public void Update()
@@ -203,8 +178,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
 
         public void UpdateWorks()
         {
-            if (GetWorksList != null)
-                GetWorksList(this, new EventArgs());
+            CarBaseHandler.Instance.GetWorksList(this, new EventArgs());
         }
 
         public void UpdateOtherWorks()
@@ -219,8 +193,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
 
         public void UpdateWorkTypes()
         {
-            if (GetWorkTypes != null)
-                GetWorkTypes(this, new EventArgs());
+                CarBaseHandler.Instance.GetWorkTypes(this, new EventArgs());
         }
 
         public void UpdateWorkParts()
@@ -241,6 +214,11 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
         public void GetWorkParts(int workID, string carNumber, bool periodic)
         {
             CarBaseHandler.Instance.GetWorkParts(workID, carNumber, periodic);
+        }
+
+        public void GetWorkParts(int workID, bool periodic)
+        {
+
         }
 
         public void GetWorkParts(int workID, string carNumber)
@@ -362,8 +340,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
 
         public void AddNewWorkName(string name, int typeID)
         {
-            if (AddWorkNameEvent != null)
-                AddWorkNameEvent(typeID, name);
+                CarBaseHandler.Instance.AddWorkNameEvent(typeID, name);
         }
 
         public void AddWorkToCar(int model, int transmission, int body, int engine, int engineType, string WorkName, int periodic, int distance)
@@ -379,22 +356,20 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                 Transmission = transmission,
                 WorkName = WorkName
             };
-            if (AddWorkEvent != null)
-                AddWorkEvent(req);
+                CarBaseHandler.Instance.AddWorkEvent(req);
         }
 
 
 
         public void GetEnginesDataByModel(KVPBase model)
         {
-            if (GetEnginesByModel != null && model!=null)
-                GetEnginesByModel(model.id, 0);
+            if (model!=null)
+                CarBaseHandler.Instance.GetEnginesByModel(model.id, 0);
         }
 
         public void GetCarInfo(int idModel, int idEngine)
         {
-            if (GetCarStatInfo != null)
-                GetCarStatInfo(idModel, idEngine);
+            CarBaseHandler.Instance.GetCarStatInfo(idModel, idEngine);
         }
     }
 }

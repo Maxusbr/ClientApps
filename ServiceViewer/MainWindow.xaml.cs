@@ -100,7 +100,6 @@ namespace CarServiceViewer
         {
             DisplayStartPage();
             menu.Visibility = Visibility.Visible;
-            CarBaseHandler.Instance.Init();
             CarStorage.Instance.Start();
             PersonalHandler.Instance.GetUserData();
             grdLogin.Visibility = Visibility.Collapsed;
