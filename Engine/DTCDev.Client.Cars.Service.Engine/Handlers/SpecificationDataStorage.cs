@@ -216,11 +216,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             CarBaseHandler.Instance.GetWorkParts(workID, carNumber, periodic);
         }
 
-        public void GetWorkParts(int workID, bool periodic)
-        {
-
-        }
-
         public void GetWorkParts(int workID, string carNumber)
         {
             CarBaseHandler.Instance.GetWorkParts(workID, carNumber);
