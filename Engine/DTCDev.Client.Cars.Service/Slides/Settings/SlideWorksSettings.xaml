@@ -1,11 +1,122 @@
-﻿<UserControl x:Class="DTCDev.Client.Cars.Service.Slides.Settings.SlideWorksSettings"
+﻿<UserControl
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             xmlns:settings="clr-namespace:DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings;assembly=DTCDev.Client.Cars.Service.Engine" 
+             xmlns:convertors="clr-namespace:DTCDev.Client.BindingConvertors;assembly=DTCDev.Client" 
+             x:Class="DTCDev.Client.Cars.Service.Slides.Settings.SlideWorksSettings" 
+             mc:Ignorable="d" d:DesignHeight="650" d:DesignWidth="1200"
+             >
+    <UserControl.Resources>
+        <convertors:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <settings:SlideWorksSettingsViewModel/>
+    </UserControl.DataContext>
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Border Grid.Column="1" Style="{DynamicResource borderBlueDeviderStyle}" Margin="0,20" Grid.RowSpan="3" Width="2" />
+        <Grid IsEnabled="{Binding EditPartWorksEnabled}" Margin="20,0,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Список авто" Grid.Row="1" FontWeight="Bold"/>
+            <ListBox Grid.Row="3" ItemsSource="{Binding Cars}" DisplayMemberPath="CarModel" SelectedItem="{Binding SelectedCar, Mode=TwoWay}"/>
+        </Grid>
+        <Grid Margin="20,0,0,0" Grid.Row="1" Visibility="{Binding VisAllowAddAuto, Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid VerticalAlignment="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+                <RadioButton Content="Для всех" IsChecked="{Binding SelectedAllCars, Mode=TwoWay}"/>
+                <RadioButton Grid.Row="1" Content="Для модели" IsChecked="{Binding SelectedModelCars, Mode=TwoWay}"/>
+                <ComboBox ItemsSource="{Binding Marks}" SelectedItem="{Binding Mark, Mode=TwoWay}" DisplayMemberPath="Name" Margin="0,10,0,0" Grid.Row="2"/>
+                <ComboBox Grid.Row="3" Margin="0,10,0,0" ItemsSource="{Binding Models}" SelectedItem="{Binding Model, Mode=TwoWay}" DisplayMemberPath="Name"/>
+            </Grid>
+        </Grid>
+        <Grid Grid.Column="2"  Grid.RowSpan="3" Margin="0,0,20,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition/>
+                <RowDefinition Height="72"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="280"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Технологическая карта работ" Grid.Row="1" Grid.ColumnSpan="3" FontWeight="Bold"/>
+            <Border Grid.Column="1" Grid.Row="2" Style="{DynamicResource borderBlueDeviderStyle}" Margin="29,20" />
+            <Grid Grid.Row="2" Margin="0,20">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding CarWorks}" SelectedItem="{Binding SelectedCarWorks, Mode=TwoWay}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Наименование" Binding="{Binding Name}" Width="*"/>
+                        <DataGridTextColumn Header="стоимость работы" Binding="{Binding PeriodicDistance}" Width="SizeToHeader"/>
+                        <DataGridTextColumn Header="стоимость зап. частей" Binding="{Binding PeriodicDistance}" Width="SizeToHeader"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Grid VerticalAlignment="Top" Grid.Row="1" Margin="0" IsEnabled="{Binding EnableEditCarWorks}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Наименование:" VerticalAlignment="Center" Margin="0,20,0,0"/>
+                    <TextBox Text="{Binding SelectedCarWorks.Name, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="2" Margin="0,20,0,0"/>
+                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Стоимость работы:" VerticalAlignment="Center" Grid.Row="1" Margin="0,20,0,0"/>
+                    <TextBox Text="{Binding SelectedCarWorks.CostWork, Mode=TwoWay}" VerticalAlignment="Center" Grid.ColumnSpan="3" Grid.Column="2" Grid.Row="1" Margin="0,20,0,0"/>
+                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Стоимость зап. частей:" VerticalAlignment="Center" Grid.Row="2" Margin="0,20,0,0"/>
+                    <TextBox Text="{Binding SelectedCarWorks.CostParts, Mode=TwoWay}" VerticalAlignment="Center" Grid.ColumnSpan="3" Grid.Column="2" Grid.Row="2" Margin="0,20,0,0"/>
+                </Grid>
+            </Grid>
+            <Grid Grid.Column="2" Grid.Row="2" Margin="0,20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Общий список работ"/>
+                <ComboBox Grid.Row="1" ItemsSource="{Binding WorkTypes}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedWorkType, Mode=TwoWay}" VerticalAlignment="Center"/>
+                <ListBox Grid.Row="2" Margin="0" ItemsSource="{Binding Works}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedWork, Mode=TwoWay}"/>
+                <Button Content="Добавить работу" Command="{Binding AddWorkCommand}" IsEnabled="{Binding IsEnableAddWork}" VerticalAlignment="Bottom" Grid.Row="3"/>
+            </Grid>
+        </Grid>
+        <Button Content="{Binding NameAddCommand}"  Command="{Binding AddCarCommand}" VerticalAlignment="Bottom" Grid.Row="2" Margin="20,0,0,20"/>
+        <Button Grid.Row="2" Width="52" Grid.Column="2" HorizontalAlignment="Right" Height="52" VerticalAlignment="Top" IsEnabled="{Binding CompleteSaveEnabled}" Command="{Binding CompleteSaveCommand}" Grid.RowSpan="2" Margin="0,0,20,20">
+            <Image Source="/DTCDev.Client.Cars.Service;component/Assets/Images/AED/apply.png"/>
+        </Button>
     </Grid>
 </UserControl>

@@ -38,5 +38,10 @@ namespace DTCDev.Models.CarBase.CarList
 
         [JsonProperty(PropertyName = "j")]
         public int ID { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("{1} {2} ({0})", CarNumber, Mark, Model);
+        }
     }
 }
