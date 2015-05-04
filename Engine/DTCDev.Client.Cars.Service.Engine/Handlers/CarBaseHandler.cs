@@ -22,52 +22,35 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             _instance = this;
         }
 
-        public void Init()
-        {
-            SpecificationDataStorage.Instance.GetMarks += Instance_GetMarks;
-            SpecificationDataStorage.Instance.GetModels += Instance_GetModels;
-            SpecificationDataStorage.Instance.GetBodies += Instance_GetBodies;
-            SpecificationDataStorage.Instance.GetEngineTypes += Instance_GetEngineTypes;
-            SpecificationDataStorage.Instance.GetEngines += Instance_GetEngines;
-            SpecificationDataStorage.Instance.GetTransTypes += Instance_GetTransTypes;
-            SpecificationDataStorage.Instance.GetCarWorksEvent += Instance_GetCarWorksEvent;
-            SpecificationDataStorage.Instance.GetWorksList += Instance_GetWorksList;
-            SpecificationDataStorage.Instance.GetWorkTypes += Instance_GetWorkTypes;
-            SpecificationDataStorage.Instance.AddWorkNameEvent += Instance_AddWorkNameEvent;
-            SpecificationDataStorage.Instance.GetCarStatInfo += Instance_GetCarStatInfo;
-            SpecificationDataStorage.Instance.GetEnginesByModel += Instance_GetEnginesByModel;
-            SpecificationDataStorage.Instance.AddWorkEvent += Instance_AddWorkEvent;
-        }
-
         #region Request handlers
 
 
-        void Instance_GetMarks(object sender, EventArgs e)
+        public void GetMarks()
         {
             SendRequest("TA");
         }
 
-        void Instance_GetModels(int idPearent)
+        public void GetModels(int idPearent)
         {
             SendRequest("TB" + idPearent.ToString());
         }
 
-        void Instance_GetBodies(int idPearent)
+        public void GetBodies(int idPearent)
         {
             SendRequest("TC" + idPearent.ToString());
         }
 
-        void Instance_GetEngineTypes(int idModel, int idPearent)
+        public void GetEngineTypes(int idModel, int idPearent)
         {
             SendRequest("TD" + idModel.ToString() + ";" + idPearent.ToString());
         }
 
-        void Instance_GetEngines(int idModel, int idPearent)
+        public void GetEngines(int idModel, int idPearent)
         {
             SendRequest("TE" + idModel.ToString() + ";" + idPearent.ToString());
         }
 
-        void Instance_GetTransTypes(int idModel, int idPearent)
+        public void GetTransTypes(int idModel, int idPearent)
         {
             SendRequest("TF" + idModel.ToString() + ";" + idPearent.ToString());
         }
@@ -78,7 +61,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
         private int _idEngineType;
         private int _idTransmission;
 
-        void Instance_GetCarWorksEvent(int idModel, int idEngine, int idBody, int idEngineType, int idTransmission)
+        public void GetCarWorksEvent(int idModel, int idEngine, int idBody, int idEngineType, int idTransmission)
         {
             _idModel = idModel;
             _idEngine = idEngine;
@@ -102,17 +85,17 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                 SendRequest("TG" + row);
         }
 
-        void Instance_GetWorkTypes(object sender, EventArgs e)
+        public void GetWorkTypes(object sender, EventArgs e)
         {
            SendRequest("TI");
         }
 
-        void Instance_GetWorksList(object sender, EventArgs e)
+        public void GetWorksList(object sender, EventArgs e)
         {
             SendRequest("TH");
         }
 
-        void Instance_AddWorkNameEvent(int idType, string name)
+        public void AddWorkNameEvent(int idType, string name)
         {
                 AddingWorkNameModel model = new AddingWorkNameModel
                 {
@@ -123,18 +106,18 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                 SendRequest("TJ" + req);
         }
 
-        void Instance_GetCarStatInfo(int idModel, int idPearent)
+        public void GetCarStatInfo(int idModel, int idPearent)
         {
             SendRequest("TK" + idModel.ToString()+";"+idPearent.ToString());
         }
 
 
-        void Instance_GetEnginesByModel(int idModel, int idPearent)
+        public void GetEnginesByModel(int idModel, int idPearent)
         {
                 SendRequest("TL"+idModel.ToString());
         }
 
-        void Instance_AddWorkEvent(AddWorkTocarModel model)
+        public void AddWorkEvent(AddWorkTocarModel model)
         {
                 SendRequest("TM" + JsonConvert.SerializeObject(model));
         }
@@ -177,6 +160,12 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             SendRequest("TS" + req);
         }
 
+        /// <summary>
+        /// Получить состав работ для автомобиля
+        /// </summary>
+        /// <param name="idWork">идетификатор работы</param>
+        /// <param name="carNumber">номер автомобиля</param>
+        /// <param name="periodic">является ли работа периодической</param>
         public void GetWorkParts(int idWork, string carNumber, bool periodic)
         {
             WorksWithFlagDataModel model = new WorksWithFlagDataModel
@@ -191,6 +180,11 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             SendRequest("TT" + JsonConvert.SerializeObject(model));
         }
 
+        /// <summary>
+        /// Получить состав работы для автомобиля
+        /// </summary>
+        /// <param name="idWork">идентификатор работы</param>
+        /// <param name="carNumber">номер автомобиля</param>
         public void GetWorkParts(int idWork, string carNumber)
         {
             WorksWithFlagDataModel model = new WorksWithFlagDataModel
@@ -202,6 +196,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             SendRequest("TT" + JsonConvert.SerializeObject(model));
         }
 
+        /// <summary>
+        /// получить состав работы
+        /// </summary>
+        /// <param name="idWork">идентификатор работы</param>
         public void GetWorkParts(int idWork)
         {
             WorksWithFlagDataModel model = new WorksWithFlagDataModel

@@ -15,6 +15,17 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
     {
         public SettingsWorkDicViewModel()
         {
+            WorksTree = new ObservableCollection<WorkTreeModel>();
+            WorksTree.Add(new WorkTreeModel
+                {
+                    Name = "Периодические",
+                    id = -1
+                });
+            WorksTree.Add(new WorkTreeModel
+                {
+                    Name = "Остальные",
+                    id = -2
+                });
             Works = new ObservableCollection<WorksInfoDataModel>();
             PartWorks = new ObservableCollection<PartWorkDataModel>();
             OtherWorks = new ObservableCollection<WorksInfoDataModel>();
@@ -25,9 +36,37 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             SpecificationDataStorage.Instance.LoadOtherWorkListComplete += Instance_LoadOtherWorkListComplete;
             SpecificationDataStorage.Instance.LoadWorkListComplete += Instance_LoadWorkListComplete;
             SpecificationDataStorage.Instance.PartsWorksLoadComplete += Instance_PartsWorksLoadComplete;
-            FilterWorks();
+            SpecificationDataStorage.Instance.LoadWorkTypesComplete += Instance_LoadWorkTypesComplete;
+            SpecificationDataStorage.Instance.LoadWorkPartsListComplete += Instance_LoadWorkPartsListComplete;
             OtherFilterWorks();
             FilterPartWorks();
+        }
+
+        void Instance_LoadWorkPartsListComplete(List<WorksInfoDataModel> data)
+        {
+            PartsWithWorks.Clear();
+            foreach (var item in data)
+            {
+                PartWorkWithHoursModel model = new PartWorkWithHoursModel(item);
+                PartsWithWorks.Add(model);
+            }
+        }
+
+        void Instance_LoadWorkTypesComplete(object sender, EventArgs e)
+        {
+            foreach (var item in WorksTree)
+            {
+                item.Items.Clear();
+                foreach (var wt in SpecificationDataStorage.Instance.WorkTypes)
+                {
+                    item.Items.Add(new WorkTreeModel
+                        {
+                            id = wt.id,
+                            Name = wt.Name,
+                            WGUID = "WT"
+                        });
+                }
+            }
         }
 
         void Instance_PartsWorksLoadComplete(object sender, EventArgs e)
@@ -37,13 +76,78 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
 
         void Instance_LoadWorkListComplete(object sender, EventArgs e)
         {
-            FilterWorks();
+            WorkTreeModel model = WorksTree.Where(p => p.id == -1).First();
+            foreach (var item in model.Items)
+            {
+                item.Items.Clear();
+                List<WorksInfoDataModel> temp = SpecificationDataStorage.Instance.WorkList.Where(p => p.id_Class == item.id).ToList();
+                foreach (var w in temp)
+                {
+                    item.Items.Add(new WorkTreeModel
+                    {
+                        Cost = w.Cost,
+                        id = w.id,
+                        id_Class = w.id_Class,
+                        idWork = w.idWork,
+                        Name = w.Name,
+                        NH = w.NH,
+                        NHD = w.NHD,
+                        WGUID = w.WGUID
+                    });
+                }
+            }
         }
 
         void Instance_LoadOtherWorkListComplete(object sender, EventArgs e)
         {
-            OtherFilterWorks();
+            WorkTreeModel model = WorksTree.Where(p => p.id == -2).First();
+            foreach (var item in model.Items)
+            {
+                item.Items.Clear();
+                List<WorksInfoDataModel> temp = SpecificationDataStorage.Instance.OtherWorkList.Where(p => p.id_Class == item.id).ToList();
+                foreach (var w in temp)
+                {
+                    item.Items.Add(new WorkTreeModel
+                    {
+                        Cost = w.Cost,
+                        id = w.id,
+                        id_Class = w.id_Class,
+                        idWork = w.idWork,
+                        Name = w.Name,
+                        NH = w.NH,
+                        NHD = w.NHD,
+                        WGUID = w.WGUID
+                    });
+                }
+            }
         }
+
+
+        public ObservableCollection<WorkTreeModel> WorksTree { get; set; }
+
+        private WorkTreeModel _selectedWorkTree;
+
+        public WorkTreeModel SelectedWorkTree
+        {
+            get { return _selectedWorkTree; }
+            set
+            {
+                _selectedWorkTree = value;
+                this.OnPropertyChanged("SelectedWorkTree");
+                if (value != null)
+                {
+                    if (value.id_Class > 0)
+                    {
+                        SpecificationDataStorage.Instance.GetWorkParts(value.id);
+                    }
+                    else
+                        PartWorks.Clear();
+                }
+                else
+                    PartWorks.Clear();
+            }
+        }
+
 
 
         #region PERIODIC
@@ -58,7 +162,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             {
                 _selectedWorkType = value;
                 this.OnPropertyChanged("SelectedWorkType");
-                FilterWorks();
                 CheckAllowAddWork();
             }
         }
@@ -111,20 +214,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
         public RelayCommand AddWorkCommand { get { return _addWorkCommand ?? (_addWorkCommand = new RelayCommand(AddWork)); } }
 
 
-
-
-        private void FilterWorks()
-        {
-            Works.Clear();
-            if (SelectedWorkType != null)
-                foreach (var item in SpecificationDataStorage.Instance.WorkList)
-                {
-                    if (item.id_Class == SelectedWorkType.id)
-                        Works.Add(item);
-                }
-            else
-                SpecificationDataStorage.Instance.WorkList.ToList().ForEach(a => Works.Add(a));
-        }
 
         private void CheckAllowAddWork()
         {
@@ -776,6 +865,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             public PartWorkWithHoursModel(WorksInfoDataModel model)
             {
                 Model = model;
+                Hours = model.NH / 10.0m;
             }
 
             public event EventHandler HoursChanged;
@@ -798,5 +888,16 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
                 }
             }
         }
+
+    }
+
+    public class WorkTreeModel : WorksInfoDataModel
+    {
+        public WorkTreeModel()
+        {
+            this.Items = new ObservableCollection<WorkTreeModel>();
+        }
+
+        public ObservableCollection<WorkTreeModel> Items { get; set; }
     }
 }

@@ -20,10 +20,17 @@ namespace DTCDev.Client.Cars.Service.Slides.Settings
     /// </summary>
     public partial class SlideSettingsWorkDic : UserControl
     {
+        SettingsWorkDicViewModel _vm = new SettingsWorkDicViewModel();
+
         public SlideSettingsWorkDic()
         {
             InitializeComponent();
-            this.DataContext = new SettingsWorkDicViewModel();
+            this.DataContext = _vm;
+        }
+
+        private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            _vm.SelectedWorkTree = (WorkTreeModel)e.NewValue;
         }
     }
 }
