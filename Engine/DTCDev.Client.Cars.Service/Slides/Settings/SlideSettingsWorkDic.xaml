@@ -62,7 +62,7 @@
             </Grid>
         </Grid>
         <Grid Margin="20">
-            <TreeView ItemsSource="{Binding Path=WorksTree}">
+            <TreeView ItemsSource="{Binding Path=WorksTree}" SelectedItemChanged="TreeView_SelectedItemChanged">
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Items}">
                         <TextBlock Text="{Binding Path=Name}"/>
