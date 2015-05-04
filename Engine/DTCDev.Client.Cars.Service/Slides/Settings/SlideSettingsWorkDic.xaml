@@ -63,11 +63,16 @@
         </Grid>
         <Grid Margin="20">
             <TreeView ItemsSource="{Binding Path=WorksTree}">
-                <TreeView.Resources>
-                    <HierarchicalDataTemplate ItemsSource="{Binding Path=Items}" DataType="x:Type self:WorkTreeModel">
-                        <TreeViewItem Header="{Binding Path=Name}"/>
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Items}">
+                        <TextBlock Text="{Binding Path=Name}"/>
+                        <HierarchicalDataTemplate.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=Name}"/>
+                            </DataTemplate>
+                        </HierarchicalDataTemplate.ItemTemplate>
                     </HierarchicalDataTemplate>
-                </TreeView.Resources>
+                </TreeView.ItemTemplate>
             </TreeView>
         </Grid>
         <Grid Grid.Column="2" IsEnabled="{Binding Path=EditPartWorksEnabled}">
