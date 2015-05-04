@@ -25,10 +25,38 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
         {
             try
             {
-                var model = new DicDataModel {ID = id, Data = message};
-                TCPConnection.Instance.SendData("F" + JsonConvert.SerializeObject(model));
+                var model = new DicDataModel { ID = id, Data = message };
+                TCPConnection.Instance.SendData("FA" + JsonConvert.SerializeObject(model));
             }
             catch { }
         }
+
+        public void AddOrder(int count, string msg)
+        {
+            try
+            {
+                var model = new DicDataModel { ID = count, Data = msg };
+                TCPConnection.Instance.SendData("FB" + JsonConvert.SerializeObject(model));
+            }
+            catch { }
+        }
+
+
+
+
+
+
+
+        #region TCP
+
+        public void Split(char fx, string row)
+        {
+            switch (fx)
+            {
+
+            }
+        }
+
+        #endregion TCP
     }
 }

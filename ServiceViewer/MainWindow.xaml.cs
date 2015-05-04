@@ -312,6 +312,7 @@ namespace CarServiceViewer
             SM_Help help = new SM_Help();
             help.Width = 250;
             help.CloseClick += help_CloseClick;
+            grd2_1.Children.Clear();
             grd2_1.Children.Add(help);
         }
 

@@ -34,7 +34,7 @@ namespace DTCDev.Client.Cars.Service.SideMenu
 	        var cnt = 0;
             int.TryParse(tbCount.Text, out cnt);
             if(cnt == 0) return;
-            CommunicationsHandler.Instance.SendMessage(cnt, tbMessage.Text);
+            CommunicationsHandler.Instance.AddOrder(cnt, tbMessage.Text);
 	    }
 
 	    private void UpdateEnableButton()

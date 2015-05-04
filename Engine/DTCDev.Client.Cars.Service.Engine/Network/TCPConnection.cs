@@ -153,18 +153,20 @@ namespace DTCDev.Client.Cars.Service.Engine.Network
                 string row = msg.Substring(2);
                 if (px == 'a' || px == 'A')
                     LoginHandler.Instance.Split(fx, row);
-                if (px == 'b' || px == 'B')
+                else if (px == 'b' || px == 'B')
                     CarsHandler.Instance.Split(fx, row);
-                if (px == 'c' || px == 'C')
+                else if (px == 'c' || px == 'C')
                     ClientsHandler.Instance.Split(fx, row);
-                if (px == 'd' || px == 'D')
+                else if (px == 'd' || px == 'D')
                     OrdersHandler.Instance.Split(fx, row);
-                if (px == 'r' || px == 'R')
+                else if (px == 'r' || px == 'R')
                     ReportsHandler.Instance.Split(fx, row);
-                if (px == 'u' || px == 'U')
+                else if (px == 'u' || px == 'U')
                     PersonalHandler.Instance.Split(fx, row);
-                if (px == 't' || px == 'T')
+                else if (px == 't' || px == 'T')
                     CarBaseHandler.Instance.Split(fx, row);
+                else if (px == 'f' || px == 'F')
+                    CommunicationsHandler.Instance.Split(fx, row);
             }
         }
 
