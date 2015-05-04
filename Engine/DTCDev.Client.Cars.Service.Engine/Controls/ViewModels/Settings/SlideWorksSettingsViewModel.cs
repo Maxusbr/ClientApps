@@ -28,7 +28,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             }
         }
 
-
         private readonly SpecificationDataStorage _storage = SpecificationDataStorage.Instance;
         private readonly CarStorage _carstorage = CarStorage.Instance;
 
@@ -49,11 +48,11 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             }
         }
 
-        private readonly ObservableCollection<WorksInfoDataCostModel> _carWorks = new ObservableCollection<WorksInfoDataCostModel>();
-        public ObservableCollection<WorksInfoDataCostModel> CarWorks { get { return _carWorks; } }
+        private readonly ObservableCollection<WorksInfoDataCostViewModel> _carWorks = new ObservableCollection<WorksInfoDataCostViewModel>();
+        public ObservableCollection<WorksInfoDataCostViewModel> CarWorks { get { return _carWorks; } }
 
-        private WorksInfoDataCostModel _selectedCarWorks = null;
-        public WorksInfoDataCostModel SelectedCarWorks
+        private WorksInfoDataCostViewModel _selectedCarWorks = null;
+        public WorksInfoDataCostViewModel SelectedCarWorks
         {
             get { return _selectedCarWorks; }
             set
@@ -191,14 +190,20 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             }
         }
 
+        private bool _completeSaveEnabled = false;
+        public bool CompleteSaveEnabled
+        {
+            get { return _completeSaveEnabled; }
+            set
+            {
+                _completeSaveEnabled = value;
+                OnPropertyChanged("CompleteSaveEnabled");
+            }
+        }
+
         public bool IsEnableAddWork
         {
             get { return SelectedWork != null; }
-        }
-
-        public bool CompleteSaveEnabled
-        {
-            get { return CarWorks.Count > 0; }
         }
 
         private const string NameAddCar = "Добавить новый авто";
@@ -228,7 +233,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
 
         private void Save(object parameter)
         {
-
+            CompleteSaveEnabled = false;
         }
 
         private RelayCommand _addWorkCommand;
@@ -239,14 +244,23 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
 
         private void AddWork(object parameter)
         {
-            var model = new WorksInfoDataCostModel {Name = SelectedWork.Name, IdWork = SelectedWork.idWork};
+            var model = new WorksInfoDataCostViewModel { Name = SelectedWork.Name, IdWork = SelectedWork.idWork };
             if(SelectedCar != null)
             {
                 model.Mark = SelectedCar.CarModel.Mark;
                 model.Mark = SelectedCar.CarModel.Model;
             }
+            model.PropertyChanged += model_PropertyChanged;
             CarWorks.Add(model);
+            CompleteSaveEnabled = true;
             SelectedCarWorks = model;
+        }
+
+        private void model_PropertyChanged(object sender, EventArgs e)
+        {
+            var model = sender as WorksInfoDataCostViewModel;
+            if(model == null) return;
+            model.IsChanged = CompleteSaveEnabled = true;
         }
 
         private RelayCommand _addCarCommand;
@@ -260,6 +274,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             VisAllowAddAuto = NameAddCommand.Equals(NameAddCar);
             NameAddCommand = NameAddCommand.Equals(NameAddCar) ? NameAdd : NameAddCar;
         }
-        
+ 
     }
 }

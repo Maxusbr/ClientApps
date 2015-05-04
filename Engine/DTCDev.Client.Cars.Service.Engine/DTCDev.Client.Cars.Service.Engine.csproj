@@ -91,6 +91,7 @@
     <Compile Include="Controls\ViewModels\Settings\SettingsWorkDicViewModel.cs" />
     <Compile Include="Controls\ViewModels\Settings\SettingsWorksViewModel.cs" />
     <Compile Include="Controls\ViewModels\Settings\SlideWorksSettingsViewModel.cs" />
+    <Compile Include="Controls\ViewModels\Settings\WorksInfoDataCostViewModel.cs" />
     <Compile Include="Controls\ViewModels\ShowHistoryViewModel.cs" />
     <Compile Include="Controls\ViewModels\SlideCarInfoViewModel.cs" />
     <Compile Include="Controls\ViewModels\Slides\SlideCarsListViewModel.cs" />
