@@ -209,20 +209,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             SendRequest("TT" + JsonConvert.SerializeObject(model));
         }
 
-        /// <summary>
-        /// Получить состав работы
-        /// </summary>
-        /// <param name="idWork">идентификатор работы</param>
-        /// <param name="periodic">является работа периодичной или нет</param>
-        public void GetWorkParts(int idWork, bool periodic)
-        {
-            WorksWithFlagDataModel model = new WorksWithFlagDataModel
-            {
-                id = idWork
-            };
-            SendRequest("TU" + JsonConvert.SerializeObject(model));
-        }
-
 
         private void SendRequest(string req)
         {

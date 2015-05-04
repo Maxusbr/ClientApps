@@ -37,8 +37,19 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             SpecificationDataStorage.Instance.LoadWorkListComplete += Instance_LoadWorkListComplete;
             SpecificationDataStorage.Instance.PartsWorksLoadComplete += Instance_PartsWorksLoadComplete;
             SpecificationDataStorage.Instance.LoadWorkTypesComplete += Instance_LoadWorkTypesComplete;
+            SpecificationDataStorage.Instance.LoadWorkPartsListComplete += Instance_LoadWorkPartsListComplete;
             OtherFilterWorks();
             FilterPartWorks();
+        }
+
+        void Instance_LoadWorkPartsListComplete(List<WorksInfoDataModel> data)
+        {
+            PartsWithWorks.Clear();
+            foreach (var item in data)
+            {
+                PartWorkWithHoursModel model = new PartWorkWithHoursModel(item);
+                PartsWithWorks.Add(model);
+            }
         }
 
         void Instance_LoadWorkTypesComplete(object sender, EventArgs e)
@@ -123,6 +134,17 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             {
                 _selectedWorkTree = value;
                 this.OnPropertyChanged("SelectedWorkTree");
+                if (value != null)
+                {
+                    if (value.id_Class > 0)
+                    {
+                        SpecificationDataStorage.Instance.GetWorkParts(value.id);
+                    }
+                    else
+                        PartWorks.Clear();
+                }
+                else
+                    PartWorks.Clear();
             }
         }
 
@@ -843,6 +865,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             public PartWorkWithHoursModel(WorksInfoDataModel model)
             {
                 Model = model;
+                Hours = model.NH / 10.0m;
             }
 
             public event EventHandler HoursChanged;
