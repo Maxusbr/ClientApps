@@ -15,6 +15,17 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
     {
         public SettingsWorkDicViewModel()
         {
+            WorksTree = new ObservableCollection<WorkTreeModel>();
+            WorksTree.Add(new WorkTreeModel
+                {
+                    Name = "Периодические",
+                    id = -1
+                });
+            WorksTree.Add(new WorkTreeModel
+                {
+                    Name = "Остальные",
+                    id = -2
+                });
             Works = new ObservableCollection<WorksInfoDataModel>();
             PartWorks = new ObservableCollection<PartWorkDataModel>();
             OtherWorks = new ObservableCollection<WorksInfoDataModel>();
@@ -25,9 +36,27 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             SpecificationDataStorage.Instance.LoadOtherWorkListComplete += Instance_LoadOtherWorkListComplete;
             SpecificationDataStorage.Instance.LoadWorkListComplete += Instance_LoadWorkListComplete;
             SpecificationDataStorage.Instance.PartsWorksLoadComplete += Instance_PartsWorksLoadComplete;
+            SpecificationDataStorage.Instance.LoadWorkTypesComplete += Instance_LoadWorkTypesComplete;
             FilterWorks();
             OtherFilterWorks();
             FilterPartWorks();
+        }
+
+        void Instance_LoadWorkTypesComplete(object sender, EventArgs e)
+        {
+            foreach (var item in WorksTree)
+            {
+                item.Items.Clear();
+                foreach (var wt in SpecificationDataStorage.Instance.WorkTypes)
+                {
+                    item.Items.Add(new WorkTreeModel
+                        {
+                            id = wt.id,
+                            Name = wt.Name,
+                            WGUID = "WT"
+                        });
+                }
+            }
         }
 
         void Instance_PartsWorksLoadComplete(object sender, EventArgs e)
@@ -44,6 +73,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
         {
             OtherFilterWorks();
         }
+
+
+        public ObservableCollection<WorkTreeModel> WorksTree { get; set; }
+
 
 
         #region PERIODIC
@@ -798,5 +831,16 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
                 }
             }
         }
+
+    }
+
+    public class WorkTreeModel : WorksInfoDataModel
+    {
+        public WorkTreeModel()
+        {
+            this.Items = new ObservableCollection<WorkTreeModel>();
+        }
+
+        public ObservableCollection<WorkTreeModel> Items { get; set; }
     }
 }
