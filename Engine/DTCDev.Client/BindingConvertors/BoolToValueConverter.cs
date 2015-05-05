@@ -38,4 +38,6 @@ namespace DTCDev.Client.BindingConvertors
     public class BoolToBitmapImageConverter : BoolToValueConverter<BitmapImage> { }
 
     public class BoolToVisibilityConverter : BoolToValueConverter<Visibility> { }
+
+    public class BoolToBrushConverter : BoolToValueConverter<Brush> { }
 }

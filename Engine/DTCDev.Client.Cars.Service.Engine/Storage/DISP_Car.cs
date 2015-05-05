@@ -161,5 +161,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Storage
             else
                 ErrorsVis = Visibility.Collapsed;
         }
+
+        public string MarkModelName
+        {
+            get { return string.Format("{0} {1}", CarModel.Mark, CarModel.Model); }
+        }
     }
 }

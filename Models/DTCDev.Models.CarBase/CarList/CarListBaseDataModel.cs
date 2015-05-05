@@ -43,5 +43,11 @@ namespace DTCDev.Models.CarBase.CarList
         {
             return string.Format("{1} {2} ({0})", CarNumber, Mark, Model);
         }
+        
+        [JsonIgnore]
+        public string MarkModelName
+        {
+            get{return string.Format("{0} {1} ", Mark, Model);}
+        }
     }
 }

@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Data;
+using System.Xml;
 using DTCDev.Client.Cars.Service.Engine.Handlers;
 using DTCDev.Client.Cars.Service.Engine.Storage;
 using DTCDev.Client.ViewModel;
@@ -22,19 +24,23 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             _storage.UpdateWorkTypes();
             _carstorage.LoadComplete += _carstorage_LoadComplete;
             _storage.LoadModelsComplete += _storage_LoadModelsComplete;
-
+            _storage.LoadWorkPartsListComplete += Instance_LoadWorkPartsListComplete;
+            Cars.Add(new CarListBaseDataModel { Mark = AllCar, ID = 0, Model = "" });
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
             {
-                Cars.Add(new DISP_Car{ CarModel = new CarListBaseDataModel{CarNumber = "qqqq", Mark = "Audio", Model = "A3"}});
+                Cars.Add(new CarListBaseDataModel { CarNumber = "qqqq", Mark = "Audio", Model = "A3" });
+                CarWorks.Add(new WorksInfoDataCostViewModel { Name = "To All", Model = "", Mark = AllCar, ID = 0 });
+                CarWorks.Add(new WorksInfoDataCostViewModel { Name = "To Audi", Model = "A4", Mark = "Audi", ID = 1 });
             }
         }
 
+        private const string AllCar = "Для всех авто";
         private readonly SpecificationDataStorage _storage = SpecificationDataStorage.Instance;
         private readonly CarStorage _carstorage = CarStorage.Instance;
 
         public ObservableCollection<KVPBase> Marks { get { return _storage.Marks; } }
         public ObservableCollection<KVPBase> Models { get { return _storage.Models; } }
-        
+
         public ObservableCollection<KVPBase> WorkTypes { get { return _storage.WorkTypes; } }
 
         public ObservableCollection<WorksInfoDataModel> Works
@@ -62,6 +68,21 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
                 _selectedCarWorks = value;
                 OnPropertyChanged("SelectedCarWorks");
                 OnPropertyChanged("EnableEditCarWorks");
+                if (value != null)
+                    Mark = Marks.FirstOrDefault(o => o.Name.Equals(value.Mark));
+            }
+        }
+
+        private CollectionViewSource _carWorksView;
+        public ICollectionView CarWorksView
+        {
+            get
+            {
+                if (_carWorksView == null)
+                {
+                    _carWorksView = new CollectionViewSource { Source = CarWorks };
+                }
+                return _carWorksView.View;
             }
         }
 
@@ -70,16 +91,17 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             OnPropertyChanged("Cars");
         }
 
-        public List<DISP_Car> Cars
+        private readonly ObservableCollection<CarListBaseDataModel> _cars = new ObservableCollection<CarListBaseDataModel>();
+        public ObservableCollection<CarListBaseDataModel> Cars
         {
             get
             {
-                return _carstorage.Cars;
+                return _cars;
             }
         }
 
-        private DISP_Car _selectedCar = null;
-        public DISP_Car SelectedCar
+        private CarListBaseDataModel _selectedCar = null;
+        public CarListBaseDataModel SelectedCar
         {
             get { return _selectedCar; }
             set
@@ -87,27 +109,32 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
                 if (_selectedCar == value) return;
                 _selectedCar = value;
                 OnPropertyChanged("SelectedCar");
-                if(value == null)
-                {
-                    return;
-                }
+                if (value == null) return;
+                Mark = Model = null;
                 FiltrMark();
             }
         }
 
         private void FiltrMark()
         {
-            SelectedAllCars = SelectedCar == null;
-            SelectedModelCars = !SelectedAllCars;
-            if(SelectedCar == null) return;
-            Mark = Marks.FirstOrDefault(o => o.Name.Equals(SelectedCar.CarModel.Mark));
+            Mark = Marks.FirstOrDefault(o => o.Name.Equals(SelectedCar.Mark));
+            CarWorksView.Filter = o =>
+            {
+                var el = o as WorksInfoDataCostViewModel;
+                if (el == null) return false;
+                if (SelectedCar.Mark.Equals(AllCar) || el.Mark.Equals(AllCar)) return true;
+                return el.Mark.Equals(SelectedCar.Mark) && el.Model.Equals(SelectedCar.Model);
+            };
+            CarWorksView.Refresh();
         }
 
 
         private void _storage_LoadModelsComplete(object sender, EventArgs e)
         {
-            if (SelectedCar == null) return;
-            Model = Models.FirstOrDefault(o => o.Name.Equals(SelectedCar.CarModel.Model));
+            if (SelectedCar != null && !SelectedCar.Mark.Equals(AllCar))
+                Model = Models.FirstOrDefault(o => o.Name.Equals(SelectedCar.Model));
+            if (SelectedCarWorks != null)
+                Model = Models.FirstOrDefault(o => o.Name.Equals(SelectedCarWorks.Model));
         }
 
         public KVPBase Mark
@@ -118,6 +145,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
                 if (_storage.SelectedMark == value) return;
                 _storage.SelectedMark = value;
                 OnPropertyChanged("Mark");
+                SelectedAllCars = value == null;
+                SelectedModelCars = !SelectedAllCars;
             }
         }
 
@@ -136,7 +165,11 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
         private void UpdateCarWork()
         {
             if (SelectedCarWorks == null) return;
-            if (Mark != null) SelectedCarWorks.Mark = Mark.Name;
+            if (Mark != null)
+            {
+                SelectedCarWorks.Mark = Mark.Name;
+                SelectedCarWorks.IsRoot = SelectedCarWorks.Mark.Equals(AllCar);
+            }
             if (Model != null) SelectedCarWorks.Model = Model.Name;
         }
 
@@ -148,14 +181,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             {
                 _selectedAllCars = value;
                 OnPropertyChanged("SelectedAllCars");
-                if(value) DeselectMarkModel();
+                if (value) Model = Mark = null;
             }
-        }
-
-        private void DeselectMarkModel()
-        {
-            SelectedCar = null;
-            Model = Mark = null;
         }
 
         private bool _selectedModelCars = false;
@@ -166,7 +193,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             {
                 _selectedModelCars = value;
                 OnPropertyChanged("SelectedModelCars");
-                //SetCarEnabled();
             }
         }
 
@@ -213,7 +239,18 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
                 _selectedWork = value;
                 OnPropertyChanged("SelectedWork");
                 OnPropertyChanged("IsEnableAddWork");
+                NHCost = 0;
+                NH = "";
+                if (value != null)
+                    SpecificationDataStorage.Instance.GetWorkParts(value.id);
             }
+        }
+
+        private void Instance_LoadWorkPartsListComplete(List<WorksInfoDataModel> data)
+        {
+            var sum = data.Sum(model => model.NH)/10.0;
+            NH = sum > 0 ? sum.ToString(): "";
+            NHCost = (int)(sum * UserSettingsStorage.Instance.UserSettings.PersonModel.NHCost);
         }
 
         private bool _completeSaveEnabled = false;
@@ -260,10 +297,16 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
         private void Save(object parameter)
         {
             CompleteSaveEnabled = false;
-            foreach (var model in CarWorks.Where(o => o.IsChanged).Select(Newtonsoft.Json.JsonConvert.SerializeObject))
+            foreach (var el in CarWorks.Where(o => o.IsChanged))
             {
+                el.IsRoot = el.Mark.Equals(AllCar);
+                var car = Cars.FirstOrDefault(o => o.Mark.Equals(el.Mark) && o.Model.Equals(el.Model));
+                if (car == null) Cars.Add(new CarListBaseDataModel { Mark = el.Mark, Model = el.Model, ID = Cars.Count });
+                var model = Newtonsoft.Json.JsonConvert.SerializeObject(el);
                 var res = model;
             }
+            CarWorks.Where(w => w.IsChanged).ToList().ForEach(o => o.IsChanged = false);
+            SelectedCarWorks = null;
         }
 
         private RelayCommand _addWorkCommand;
@@ -274,23 +317,39 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
 
         private void AddWork(object parameter)
         {
-            var model = new WorksInfoDataCostViewModel { Name = SelectedWork.Name, IdWork = SelectedWork.idWork, IsChanged = true};
-            if (Mark != null) model.Mark = Mark.Name;
-            if (Model != null) model.Model = Model.Name;
+            var model = new WorksInfoDataCostViewModel
+            {
+                Name = SelectedWork.Name,
+                IdWork = SelectedWork.idWork,
+                IsChanged = true,
+                Mark = Mark != null ? Mark.Name : AllCar,
+                Model = Model != null ? Model.Name : "",
+                ID = CarWorks.Count,
+                CostWork = NHCost
+            };
+            model.IsRoot = model.Mark.Equals(AllCar);
+            var exist = CarWorks.FirstOrDefault(o => o.Equals(model));
+            CompleteSaveEnabled = true;
+            if (exist != null)
+            {
+                SelectedCarWorks = exist;
+                return;
+            }
             model.PropertyChanged += model_PropertyChanged;
             CarWorks.Add(model);
-            CompleteSaveEnabled = true;
             SelectedCarWorks = model;
         }
 
         private void model_PropertyChanged(object sender, EventArgs e)
         {
             var model = sender as WorksInfoDataCostViewModel;
-            if(model == null) return;
+            if (model == null) return;
             model.IsChanged = CompleteSaveEnabled = true;
         }
 
         private RelayCommand _addCarCommand;
+
+
         public RelayCommand AddCarCommand
         {
             get { return _addCarCommand ?? (_addCarCommand = new RelayCommand(AddCar)); }
@@ -302,6 +361,31 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             VisAllowAddAuto = NameAddCommand.Equals(NameAddCar);
             NameAddCommand = NameAddCommand.Equals(NameAddCar) ? NameAdd : NameAddCar;
         }
- 
+
+        private string _nh;
+        public string NH
+        {
+            get
+            {
+                return string.IsNullOrEmpty(_nh) || _nh.Equals("0") ? "": string.Format("количество нормо-часов - {0}", _nh);
+            }
+            set
+            {
+                _nh = value;
+                OnPropertyChanged("NH");
+            }
+        }
+
+        private int _nhCost;
+        public int NHCost
+        {
+            get { return _nhCost; }
+            set
+            {
+                _nhCost = value;
+                
+                OnPropertyChanged("NHCost");
+            }
+        }
     }
 }

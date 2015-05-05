@@ -16,19 +16,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
         private int _costWork;
         private int _costParts;
 
-        public WorksInfoDataCostViewModel() { }
-
-        public WorksInfoDataCostViewModel(WorksInfoDataCostModel model)
-        {
-            ID = model.Id;
-            IdWork = model.IdWork;
-            Name = model.Name;
-            Mark = model.Mark;
-            Model = model.Model;
-            CostWork = model.CostWork;
-            CostParts = model.CostParts;
-        }
-
         [JsonProperty(PropertyName = "A")]
         public int ID { get; set; }
 
@@ -86,5 +73,16 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
 
         [JsonIgnore]
         public override string DisplayName { get; set; }
+
+        [JsonIgnore]
+        public bool IsRoot { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var model = obj as WorksInfoDataCostViewModel;
+            if(model == null) return false;
+            return model.Mark != null && model.Model != null  && 
+                Mark.Equals(model.Mark) && Model.Equals(model.Model) && Name.Equals(model.Name);
+        }
     }
 }

@@ -53,31 +53,4 @@ namespace DTCDev.Models.CarBase.CarStatData
         [JsonProperty(PropertyName = "G")]
         public int IsPeriodic { get; set; }
     }
-
-    [JsonObject]
-    public class WorksInfoDataCostModel
-    {
-        [JsonProperty(PropertyName = "A")]
-        public int Id { get; set; }
-
-        [JsonProperty(PropertyName = "B")]
-        public string Name { get; set; }
-
-        [JsonProperty(PropertyName = "C")]
-        public int IdWork { get; set; }
-
-        [JsonProperty(PropertyName = "D")]
-        public string Mark { get; set; }
-
-        [JsonProperty(PropertyName = "E")]
-        public string Model { get; set; }
-
-        [JsonProperty(PropertyName = "M")]
-        public int CostWork { get; set; }
-
-        [JsonProperty(PropertyName = "N")]
-        public int CostParts { get; set; }
-
-    }
-
 }

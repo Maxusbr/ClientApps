@@ -6,9 +6,10 @@
              xmlns:settings="clr-namespace:DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings;assembly=DTCDev.Client.Cars.Service.Engine" 
              xmlns:convertors="clr-namespace:DTCDev.Client.BindingConvertors;assembly=DTCDev.Client" 
              x:Class="DTCDev.Client.Cars.Service.Slides.Settings.SlideWorksSettings" 
-             mc:Ignorable="d" d:DesignHeight="650" d:DesignWidth="1200"
+             mc:Ignorable="d" d:DesignHeight="650" d:DesignWidth="1600"
              >
     <UserControl.Resources>
+        <convertors:BoolToBrushConverter x:Key="BoolToBrushConverter" TrueValue="{StaticResource LightGray2}"/>
         <convertors:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </UserControl.Resources>
     <UserControl.DataContext>
@@ -26,7 +27,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Border Grid.Column="1" Style="{DynamicResource borderBlueDeviderStyle}" Margin="0,20" Grid.RowSpan="3" Width="2" />
-        <Grid IsEnabled="{Binding EditPartWorksEnabled}" Margin="20,0,0,0">
+        <Grid Margin="20,0,0,20" Grid.Row="0" Grid.RowSpan="3">
             <Grid.RowDefinitions>
                 <RowDefinition Height="20"/>
                 <RowDefinition Height="20"/>
@@ -37,24 +38,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <TextBlock Text="Список авто" Grid.Row="1" FontWeight="Bold"/>
-            <ListBox Grid.Row="3" ItemsSource="{Binding Cars}" DisplayMemberPath="CarModel" SelectedItem="{Binding SelectedCar, Mode=TwoWay}"/>
-        </Grid>
-        <Grid Margin="20,0,0,20" Grid.Row="1" Visibility="{Binding VisAllowAddAuto, Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Top" Grid.RowSpan="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Grid VerticalAlignment="Top">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="40"/>
-                </Grid.RowDefinitions>
-                <RadioButton Content="Для всех" IsChecked="{Binding SelectedAllCars, Mode=TwoWay}"/>
-                <RadioButton Grid.Row="1" Content="Для модели" IsChecked="{Binding SelectedModelCars, Mode=TwoWay}"/>
-                <ComboBox ItemsSource="{Binding Marks}" SelectedItem="{Binding Mark, Mode=TwoWay}" DisplayMemberPath="Name" Margin="0,10,0,0" Grid.Row="2"/>
-                <ComboBox Grid.Row="3" Margin="0,10,0,0" ItemsSource="{Binding Models}" SelectedItem="{Binding Model, Mode=TwoWay}" DisplayMemberPath="Name"/>
-            </Grid>
+            <ListBox Grid.Row="3" ItemsSource="{Binding Cars}" DisplayMemberPath="MarkModelName" SelectedItem="{Binding SelectedCar, Mode=TwoWay}"/>
         </Grid>
         <Grid Grid.Column="2"  Grid.RowSpan="3" Margin="0,0,20,0">
             <Grid.RowDefinitions>
@@ -68,47 +52,110 @@
                 <ColumnDefinition Width="60"/>
                 <ColumnDefinition Width="280"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Технологическая карта работ" Grid.Row="1" Grid.ColumnSpan="3" FontWeight="Bold"/>
+            <TextBlock Text="Перечень работ" Grid.Row="1" Grid.ColumnSpan="3" FontWeight="Bold"/>
             <Border Grid.Column="1" Grid.Row="2" Style="{DynamicResource borderBlueDeviderStyle}" Margin="29,20" />
             <Grid Grid.Row="2" Margin="0,20">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding CarWorks}" SelectedItem="{Binding SelectedCarWorks, Mode=TwoWay}">
+                <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding CarWorksView}" SelectedItem="{Binding SelectedCarWorks, Mode=TwoWay}" RowStyle="{DynamicResource DataGridRowStyle1}" CanUserAddRows="False" CanUserResizeRows="False" >
+                    <DataGrid.Resources>
+                        <Style x:Key="DataGridRowStyle1" TargetType="{x:Type DataGridRow}">
+                            <Setter Property="Foreground" Value="{DynamicResource BlackBrush}"/>
+                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="Background" Value="{Binding IsRoot, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource AccentColorBrush}"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource AccentSelectedColorBrush}"/>
+                                </Trigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsSelected" Value="True"/>
+                                        <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="Background" Value="{DynamicResource AccentColorBrush2}"/>
+                                </MultiTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True"/>
+                                        <Condition Binding="{Binding SelectionUnit, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type DataGrid}}}" Value="FullRow"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value="{DynamicResource AccentColorBrush3}"/>
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True"/>
+                                        <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource Self}}" Value="True"/>
+                                        <Condition Binding="{Binding SelectionUnit, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type DataGrid}}}" Value="CellOrRowHeader"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" Value="{DynamicResource AccentColorBrush3}"/>
+                                </MultiDataTrigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Foreground" Value="{DynamicResource GrayBrush7}"/>
+                                </Trigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsEnabled" Value="False"/>
+                                        <Condition Property="IsSelected" Value="True"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="Background" Value="{DynamicResource GrayBrush7}"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource AccentSelectedColorBrush}"/>
+                                </MultiTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Наименование" Binding="{Binding Name}" Width="*"/>
-                        <DataGridTextColumn Header="Марка" Binding="{Binding Mark}" Width="SizeToHeader"/>
-                        <DataGridTextColumn Header="Модель" Binding="{Binding Model}" Width="SizeToHeader"/>
-                        <DataGridTextColumn Header="стоимость работы" Binding="{Binding CostWork}" Width="SizeToHeader"/>
-                        <DataGridTextColumn Header="стоимость зап. частей" Binding="{Binding CostParts}" Width="SizeToHeader"/>
+                        <DataGridTextColumn Header="Марка" Binding="{Binding Mark}" Width="SizeToCells" MinWidth="82"/>
+                        <DataGridTextColumn Header="Модель" Binding="{Binding Model}" Width="SizeToHeader" MinWidth="73"/>
+                        <DataGridTextColumn Header="работы" Binding="{Binding CostWork}" Width="SizeToHeader" MinWidth="69"/>
+                        <DataGridTextColumn Header="з/ч" Binding="{Binding CostParts}" Width="SizeToHeader" MinWidth="42"/>
                     </DataGrid.Columns>
                 </DataGrid>
-                <Grid VerticalAlignment="Top" Grid.Row="1" Margin="0" IsEnabled="{Binding EnableEditCarWorks}">
+                <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="10"/>
                         <ColumnDefinition/>
-                        <ColumnDefinition Width="10"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="10"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Наименование:" VerticalAlignment="Center" Margin="0,25,0,5"/>
-                    <TextBox Text="{Binding SelectedCarWorks.Name, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="2" Margin="0,20,0,0" IsEnabled="False"/>
-                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Стоимость работы:" VerticalAlignment="Center" Grid.Row="1" Margin="0,25,0,5"/>
-                    <TextBox Text="{Binding SelectedCarWorks.CostWork, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="2" Grid.Row="1" Margin="0,20,0,0"/>
-                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Стоимость зап. частей:" VerticalAlignment="Center" Grid.Row="2" Margin="0,25,0,5"/>
-                    <TextBox Text="{Binding SelectedCarWorks.CostParts, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="2" Grid.Row="2" Margin="0,20,0,0"/>
-                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Марка:" VerticalAlignment="Center" Grid.Column="4" Margin="0,20,0,0"/>
-                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Модель:" VerticalAlignment="Center" Grid.Row="1" Grid.Column="4" Margin="0,20,0,0"/>
-                    <TextBox Text="{Binding Mark.Name}" VerticalAlignment="Center" Grid.Column="6" Margin="0,20,0,0" IsEnabled="False"/>
-                    <TextBox Text="{Binding Model.Name}" VerticalAlignment="Center" Grid.Column="6" Grid.Row="1" Margin="0,20,0,0" IsEnabled="False"/>
+                    <Grid VerticalAlignment="Top" Margin="0" IsEnabled="{Binding EnableEditCarWorks}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Наименование:" VerticalAlignment="Center" Margin="0,25,0,5"/>
+                        <TextBox Text="{Binding SelectedCarWorks.Name, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="2" Margin="0,20,0,0" IsEnabled="False"/>
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Стоимость работы:" VerticalAlignment="Center" Grid.Row="1" Margin="0,25,0,5"/>
+                        <TextBox Text="{Binding SelectedCarWorks.CostWork, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="2" Grid.Row="1" Margin="0,20,0,0"/>
+                        <TextBlock TextWrapping="Wrap" Text="{Binding NH}" VerticalAlignment="Top" Grid.Row="1" Grid.Column="2"/>
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Стоимость зап. частей:" VerticalAlignment="Center" Grid.Row="3" Margin="0,25,0,5"/>
+                        <TextBox Text="{Binding SelectedCarWorks.CostParts, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="2" Grid.Row="3" Margin="0,20,0,0"/>
+                    </Grid>
+                    <Grid VerticalAlignment="Top" Margin="0" Grid.Column="1" Height="183">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <RadioButton Content="Для всех" IsChecked="{Binding SelectedAllCars, Mode=TwoWay}" Grid.Column="2" Margin="0,27,0,0"/>
+                        <RadioButton Content="Для модели" IsChecked="{Binding SelectedModelCars, Mode=TwoWay}" Grid.Column="2" Grid.Row="1" Margin="0,27,0,0"/>
+                        <ComboBox ItemsSource="{Binding Marks}" SelectedItem="{Binding Mark, Mode=TwoWay}" DisplayMemberPath="Name" Grid.Column="2" Grid.Row="2" Margin="0,20,0,0" Visibility="{Binding SelectedModelCars, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        <ComboBox ItemsSource="{Binding Models}" SelectedItem="{Binding Model, Mode=TwoWay}" DisplayMemberPath="Name" Grid.Column="2" Grid.Row="3" Margin="0,20,0,0" Visibility="{Binding SelectedModelCars, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    </Grid>
                 </Grid>
             </Grid>
             <Grid Grid.Column="2" Grid.Row="2" Margin="0,20">
