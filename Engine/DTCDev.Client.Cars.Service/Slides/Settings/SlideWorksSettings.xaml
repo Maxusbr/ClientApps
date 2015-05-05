@@ -39,7 +39,7 @@
             <TextBlock Text="Список авто" Grid.Row="1" FontWeight="Bold"/>
             <ListBox Grid.Row="3" ItemsSource="{Binding Cars}" DisplayMemberPath="CarModel" SelectedItem="{Binding SelectedCar, Mode=TwoWay}"/>
         </Grid>
-        <Grid Margin="20,0,0,0" Grid.Row="1" Visibility="{Binding VisAllowAddAuto, Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Top">
+        <Grid Margin="20,0,0,20" Grid.Row="1" Visibility="{Binding VisAllowAddAuto, Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Top" Grid.RowSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
@@ -87,18 +87,26 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="10"/>
                         <ColumnDefinition/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Наименование:" VerticalAlignment="Center" Margin="0,20,0,0"/>
+                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Наименование:" VerticalAlignment="Center" Margin="0,25,0,5"/>
                     <TextBox Text="{Binding SelectedCarWorks.Name, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="2" Margin="0,20,0,0" IsEnabled="False"/>
-                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Стоимость работы:" VerticalAlignment="Center" Grid.Row="1" Margin="0,20,0,0"/>
+                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Стоимость работы:" VerticalAlignment="Center" Grid.Row="1" Margin="0,25,0,5"/>
                     <TextBox Text="{Binding SelectedCarWorks.CostWork, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="2" Grid.Row="1" Margin="0,20,0,0"/>
-                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Стоимость зап. частей:" VerticalAlignment="Center" Grid.Row="2" Margin="0,20,0,0"/>
+                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Стоимость зап. частей:" VerticalAlignment="Center" Grid.Row="2" Margin="0,25,0,5"/>
                     <TextBox Text="{Binding SelectedCarWorks.CostParts, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="2" Grid.Row="2" Margin="0,20,0,0"/>
+                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Марка:" VerticalAlignment="Center" Grid.Column="4" Margin="0,20,0,0"/>
+                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Модель:" VerticalAlignment="Center" Grid.Row="1" Grid.Column="4" Margin="0,20,0,0"/>
+                    <TextBox Text="{Binding Mark.Name}" VerticalAlignment="Center" Grid.Column="6" Margin="0,20,0,0" IsEnabled="False"/>
+                    <TextBox Text="{Binding Model.Name}" VerticalAlignment="Center" Grid.Column="6" Grid.Row="1" Margin="0,20,0,0" IsEnabled="False"/>
                 </Grid>
             </Grid>
             <Grid Grid.Column="2" Grid.Row="2" Margin="0,20">
@@ -114,7 +122,7 @@
                 <Button Content="Добавить работу" Command="{Binding AddWorkCommand}" IsEnabled="{Binding IsEnableAddWork}" VerticalAlignment="Bottom" Grid.Row="3"/>
             </Grid>
         </Grid>
-        <Button Content="{Binding NameAddCommand}"  Command="{Binding AddCarCommand}" VerticalAlignment="Bottom" Grid.Row="2" Margin="20,0,0,20"/>
+        <Button Content="{Binding NameAddCommand}"  Command="{Binding AddCarCommand}" VerticalAlignment="Bottom" Grid.Row="2" Margin="20,0,0,20" Visibility="Collapsed"/>
         <Button Grid.Row="2" Width="52" Grid.Column="2" HorizontalAlignment="Right" Height="52" VerticalAlignment="Top" IsEnabled="{Binding CompleteSaveEnabled}" Command="{Binding CompleteSaveCommand}" Grid.RowSpan="2" Margin="0,0,20,20">
             <Image Source="/DTCDev.Client.Cars.Service;component/Assets/Images/AED/apply.png"/>
         </Button>

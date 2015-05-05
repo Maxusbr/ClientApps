@@ -21,6 +21,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             _storage.UpdateWorks();
             _storage.UpdateWorkTypes();
             _carstorage.LoadComplete += _carstorage_LoadComplete;
+            _storage.LoadModelsComplete += _storage_LoadModelsComplete;
 
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
             {
@@ -86,8 +87,27 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
                 if (_selectedCar == value) return;
                 _selectedCar = value;
                 OnPropertyChanged("SelectedCar");
-                OnPropertyChanged("CompleteSaveEnabled");
+                if(value == null)
+                {
+                    return;
+                }
+                FiltrMark();
             }
+        }
+
+        private void FiltrMark()
+        {
+            SelectedAllCars = SelectedCar == null;
+            SelectedModelCars = !SelectedAllCars;
+            if(SelectedCar == null) return;
+            Mark = Marks.FirstOrDefault(o => o.Name.Equals(SelectedCar.CarModel.Mark));
+        }
+
+
+        private void _storage_LoadModelsComplete(object sender, EventArgs e)
+        {
+            if (SelectedCar == null) return;
+            Model = Models.FirstOrDefault(o => o.Name.Equals(SelectedCar.CarModel.Model));
         }
 
         public KVPBase Mark
@@ -128,8 +148,14 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             {
                 _selectedAllCars = value;
                 OnPropertyChanged("SelectedAllCars");
-                //SetCarEnabled();
+                if(value) DeselectMarkModel();
             }
+        }
+
+        private void DeselectMarkModel()
+        {
+            SelectedCar = null;
+            Model = Mark = null;
         }
 
         private bool _selectedModelCars = false;
@@ -271,6 +297,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
 
         private void AddCar(object obj)
         {
+            SelectedCar = null;
             VisAllowAddAuto = NameAddCommand.Equals(NameAddCar);
             NameAddCommand = NameAddCommand.Equals(NameAddCar) ? NameAdd : NameAddCar;
         }
