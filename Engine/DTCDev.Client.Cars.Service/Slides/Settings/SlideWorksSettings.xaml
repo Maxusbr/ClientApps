@@ -78,6 +78,8 @@
                 <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding CarWorks}" SelectedItem="{Binding SelectedCarWorks, Mode=TwoWay}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Наименование" Binding="{Binding Name}" Width="*"/>
+                        <DataGridTextColumn Header="Марка" Binding="{Binding Mark}" Width="SizeToHeader"/>
+                        <DataGridTextColumn Header="Модель" Binding="{Binding Model}" Width="SizeToHeader"/>
                         <DataGridTextColumn Header="стоимость работы" Binding="{Binding CostWork}" Width="SizeToHeader"/>
                         <DataGridTextColumn Header="стоимость зап. частей" Binding="{Binding CostParts}" Width="SizeToHeader"/>
                     </DataGrid.Columns>

@@ -81,7 +81,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
                 OnPropertyChanged("CostParts");
             }
         }
-
+        [JsonIgnore]
         public bool IsChanged { get; set; }
+
+        [JsonIgnore]
+        public override string DisplayName { get; set; }
     }
 }

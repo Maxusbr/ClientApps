@@ -115,10 +115,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             get { return _storage.SelectedMark; }
             set
             {
-                //if (value != null)
-                //    MarkView = Visibility.Collapsed;
-                //else
-                //    MarkView = Visibility.Visible;
                 if (_storage.SelectedMark == value) return;
                 _storage.SelectedMark = value;
                 OnPropertyChanged("Mark");
@@ -130,14 +126,18 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             get { return _storage.SelectedModel; }
             set
             {
-                //if (value != null)
-                //    ModelView = Visibility.Collapsed;
-                //else
-                //    ModelView = Visibility.Visible;
                 if (_storage.SelectedModel == value) return;
                 _storage.SelectedModel = value;
                 OnPropertyChanged("Model");
+                UpdateCarWork();
             }
+        }
+
+        private void UpdateCarWork()
+        {
+            if (SelectedCarWorks == null) return;
+            if (Mark != null) SelectedCarWorks.Mark = Mark.Name;
+            if (Model != null) SelectedCarWorks.Model = Model.Name;
         }
 
         private bool _selectedAllCars = true;
@@ -260,6 +260,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
         private void Save(object parameter)
         {
             CompleteSaveEnabled = false;
+            foreach (var model in CarWorks.Where(o => o.IsChanged).Select(Newtonsoft.Json.JsonConvert.SerializeObject))
+            {
+                var res = model;
+            }
         }
 
         private RelayCommand _addWorkCommand;
@@ -270,12 +274,9 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
 
         private void AddWork(object parameter)
         {
-            var model = new WorksInfoDataCostViewModel { Name = SelectedWork.Name, IdWork = SelectedWork.idWork };
-            if(SelectedCar != null)
-            {
-                model.Mark = SelectedCar.CarModel.Mark;
-                model.Mark = SelectedCar.CarModel.Model;
-            }
+            var model = new WorksInfoDataCostViewModel { Name = SelectedWork.Name, IdWork = SelectedWork.idWork, IsChanged = true};
+            if (Mark != null) model.Mark = Mark.Name;
+            if (Model != null) model.Model = Model.Name;
             model.PropertyChanged += model_PropertyChanged;
             CarWorks.Add(model);
             CompleteSaveEnabled = true;
