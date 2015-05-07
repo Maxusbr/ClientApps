@@ -62,6 +62,10 @@
     <Compile Include="Controls\CalendarControls\CalendarCarItem.xaml.cs">
       <DependentUpon>CalendarCarItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CalendarControls\TimeSelectControl.xaml.cs">
+      <DependentUpon>TimeSelectControl.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Controls\Car\CarAddWorkView.xaml.cs">
       <DependentUpon>CarAddWorkView.xaml</DependentUpon>
     </Compile>
@@ -160,6 +164,10 @@
     <Compile Include="Slides\Reports\SlideReportOrders.xaml.cs">
       <DependentUpon>SlideReportOrders.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Slides\Settings\SlidePostSettings.xaml.cs">
+      <DependentUpon>SlidePostSettings.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Slides\Settings\SlideSettingsPersonal.xaml.cs">
       <DependentUpon>SlideSettingsPersonal.xaml</DependentUpon>
     </Compile>
@@ -255,6 +263,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\CalendarControls\CalendarCarItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\CalendarControls\TimeSelectControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -367,6 +379,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Slides\Reports\SlideReportOrders.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Slides\Settings\SlidePostSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

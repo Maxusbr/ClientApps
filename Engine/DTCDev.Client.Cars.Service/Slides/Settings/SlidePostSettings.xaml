@@ -1,0 +1,48 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:local="clr-namespace:DTCDev.Client.Cars.Service"
+	xmlns:calendarControls="clr-namespace:DTCDev.Client.Cars.Service.Controls.CalendarControls"
+	xmlns:Settings="clr-namespace:DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings;assembly=DTCDev.Client.Cars.Service.Engine"
+	mc:Ignorable="d"
+	x:Class="DTCDev.Client.Cars.Service.SlidePostSettings"
+	x:Name="UserControl"
+	d:DesignWidth="640" d:DesignHeight="450">
+
+    <UserControl.DataContext>
+        <Settings:SlidePostViewModel/>
+    </UserControl.DataContext>
+
+    <Grid x:Name="LayoutRoot">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock TextWrapping="Wrap" Text="Настройка постов" Grid.ColumnSpan="4" Margin="10"/>
+        <ListBox Grid.Row="1" MinWidth="200" Margin="10,0,10,40" Grid.RowSpan="4" Grid.Column="0"  DisplayMemberPath="DisplayName"
+                 ItemsSource="{Binding ListPost}" SelectedItem="{Binding SelectedPost, Mode=TwoWay}"/>
+        <Border Style="{DynamicResource borderBlueDeviderStyle}" Width="2" Grid.Row="1" Margin="20,0" Grid.RowSpan="4" Grid.Column="1" />
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Название поста:" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2" Margin="0,0,0,10"/>
+        <TextBox TextWrapping="Wrap" Grid.Row="1" Grid.Column="3" Margin="20,0,20,10" VerticalAlignment="Center" IsEnabled="{Binding EnableEditPost}" Text="{Binding SelectedPost.Name, Mode=TwoWay}"/>
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Тип поста:" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" Margin="0,0,0,10"/>
+        <ComboBox VerticalAlignment="Center" Grid.Row="2" Margin="20,0,20,10" Grid.Column="3" IsEnabled="{Binding EnableEditPost}" ItemsSource="{Binding ListTypePost}" SelectedItem="{Binding SelectedPost.PostType, Mode=TwoWay}"/>
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="3" Grid.Column="2" Margin="0,0,0,10"><Run Text="Время работы:"/></TextBlock>
+        <calendarControls:TimeSelectControl VerticalAlignment="Top" Grid.Row="3" Grid.Column="3" Margin="20,0" IsEnabled="{Binding EnableEditPost}" StartTime="{Binding StartWorkTime, Mode=TwoWay}" EndTime="{Binding EndWorkTime, Mode=TwoWay}" />
+        <Button VerticalAlignment="Bottom" Grid.Row="4" Margin="10,0" Content="Добавить" Height="26" Command="{Binding AddPostCommand}"/>
+        <Button Grid.Row="5" Width="52" Grid.Column="3" HorizontalAlignment="Right" Height="52" VerticalAlignment="Top" IsEnabled="{Binding CompleteSaveEnabled}" Command="{Binding CompleteSaveCommand}" Margin="0,0,20,20">
+            <Image Source="/DTCDev.Client.Cars.Service;component/Assets/Images/AED/apply.png"/>
+        </Button>
+    </Grid>
+</UserControl>

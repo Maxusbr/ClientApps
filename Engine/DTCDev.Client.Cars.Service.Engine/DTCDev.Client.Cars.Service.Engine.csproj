@@ -86,10 +86,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controls\ViewModels\Settings\AccessSettingsViewModel.cs" />
+    <Compile Include="Controls\ViewModels\Settings\PostViewModel.cs" />
     <Compile Include="Controls\ViewModels\Settings\SettingsPersonalViewModel.cs" />
     <Compile Include="Controls\ViewModels\Settings\SettingsViewModel.cs" />
     <Compile Include="Controls\ViewModels\Settings\SettingsWorkDicViewModel.cs" />
     <Compile Include="Controls\ViewModels\Settings\SettingsWorksViewModel.cs" />
+    <Compile Include="Controls\ViewModels\Settings\SlidePostViewModel.cs" />
     <Compile Include="Controls\ViewModels\Settings\SlideWorksSettingsViewModel.cs" />
     <Compile Include="Controls\ViewModels\Settings\WorksInfoDataCostViewModel.cs" />
     <Compile Include="Controls\ViewModels\ShowHistoryViewModel.cs" />
