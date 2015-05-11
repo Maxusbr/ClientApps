@@ -158,17 +158,21 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Reports
             }
             else
             {
-                DateTime start = new DateTime(DateTime.Now.Year,SelectedMonth, 1);
-                if (SelectedMonth < 11)
+                try
                 {
-                    DateTime stop = new DateTime(DateTime.Now.Year, SelectedMonth + 1, 1);
-                    ReportsHandler.Instance.GetOrdersReport(start, stop);
+                    DateTime start = new DateTime(DateTime.Now.Year, SelectedMonth, 1);
+                    if (SelectedMonth < 11)
+                    {
+                        DateTime stop = new DateTime(DateTime.Now.Year, SelectedMonth + 1, 1);
+                        ReportsHandler.Instance.GetOrdersReport(start, stop);
+                    }
+                    else
+                    {
+                        DateTime stop = new DateTime(DateTime.Now.Year + 1, 1, 1);
+                        ReportsHandler.Instance.GetOrdersReport(start, stop);
+                    }
                 }
-                else
-                {
-                    DateTime stop = new DateTime(DateTime.Now.Year + 1, 1, 1);
-                    ReportsHandler.Instance.GetOrdersReport(start, stop);
-                }
+                catch { }
             }
         }
     }
