@@ -83,33 +83,38 @@ namespace DTCDev.Client.Cars.Service.Engine.Storage
         }
 
 
-
         public DISP_Car GetCarByCarNumber(string number)
         {
             return _cars.Where(p => p.CarModel.CarNumber == number).FirstOrDefault();
         }
 
+        /// <summary>
+        /// Generate request for get car details
+        /// </summary>
+        /// <param name="carNumber"></param>
         public void GetCarDetails(string carNumber)
         {
             CarsHandler.Instance.GetCarDetails(carNumber);
-            if (_carNumbers.IndexOf(carNumber) != -1)
+
+            //update last viewed cars list
+            if (_lastCarNumbers.IndexOf(carNumber) != -1)
                 return;
-            _carNumbers.Add(carNumber);
-            if (_carNumbers.Count() > 10)
-                _carNumbers.RemoveAt(0);
-            UserSettingsStorage.Instance.UserSettings.LastCarNumbers = _carNumbers;
+            _lastCarNumbers.Add(carNumber);
+            if (_lastCarNumbers.Count() > 10)
+                _lastCarNumbers.RemoveAt(0);
+            UserSettingsStorage.Instance.UserSettings.LastCarNumbers = _lastCarNumbers;
             if (LastCarsUpdated != null)
                 LastCarsUpdated(this, new EventArgs());
         }
 
-        private List<string> _carNumbers = new List<string>();
+        private List<string> _lastCarNumbers = new List<string>();
 
         public List<string> LastCarNumbers
         {
-            get { return _carNumbers; }
+            get { return _lastCarNumbers; }
             set
             {
-                _carNumbers = value;
+                _lastCarNumbers = value;
             }
         }
 
@@ -204,13 +209,19 @@ namespace DTCDev.Client.Cars.Service.Engine.Storage
 
 
 
-
+        /// <summary>
+        /// Метод для периодического поллинга параметров автомобиля
+        /// </summary>
         private void TrOnLineUpdater()
         {
             while (true)
             {
                 Thread.Sleep(10000);
+                //запрашиваем последнее время обновления параметров
                 CarsHandler.Instance.GetLastUpdatedTime();
+                Thread.Sleep(10000);
+                //запрашиваем список ошибок для всех автомобилей
+                CarsHandler.Instance.GetCarsErrors();
             }
         }
 

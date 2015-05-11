@@ -164,6 +164,12 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             catch { }
         }
 
+        /// <summary>
+        /// Получить список ошибок для автомобиля
+        /// </summary>
+        /// <param name="carNumber">номер автомобиля</param>
+        /// <param name="year">год</param>
+        /// <param name="month">месяц</param>
         public void GetDTCErrors(string carNumber, int year, int month)
         {
             try
@@ -173,6 +179,13 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             catch { }
         }
 
+        /// <summary>
+        /// Показать историю OBD II параметров
+        /// </summary>
+        /// <param name="did">идентификатор устройства</param>
+        /// <param name="year">год</param>
+        /// <param name="month">месц</param>
+        /// <param name="day">день</param>
         public void GetOBDHistory(string did, int year, int month, int day)
         {
             try
@@ -184,6 +197,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             catch { }
         }
 
+        /// <summary>
+        /// Запросить список параметров для автомобиля
+        /// </summary>
+        /// <param name="carNumber"></param>
         public void GetCarPidList(string carNumber)
         {
             try
@@ -193,6 +210,9 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             catch { }
         }
 
+        /// <summary>
+        /// получить последнее время обновления данных от автомобиля
+        /// </summary>
         public void GetLastUpdatedTime()
         {
             try
@@ -203,7 +223,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
 
         }
 
-        private void GetCarsErrors()
+        /// <summary>
+        /// Получить список ошибок для автомобиля
+        /// </summary>
+        public void GetCarsErrors()
         {
             try
             {
@@ -212,6 +235,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             catch { }
         }
 
+        /// <summary>
+        /// Указать новый список параметров для автомобиля
+        /// </summary>
+        /// <param name="model"></param>
         public void SendCarNewPids(SetCarPidsModel model)
         {
             try
