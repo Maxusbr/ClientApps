@@ -95,15 +95,19 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             SendRequest("TH");
         }
 
-        public void AddWorkNameEvent(int idType, string name)
+        public void AddWorkNameEvent(int idType, string name, bool isPeriodic)
         {
-                AddingWorkNameModel model = new AddingWorkNameModel
-                {
-                    idType = idType,
-                    Name = name
-                };
-                string req = JsonConvert.SerializeObject(model);
-                SendRequest("TJ" + req);
+            AddingWorkNameModel model = new AddingWorkNameModel
+            {
+                idType = idType,
+                Name = name
+            };
+            if (isPeriodic)
+                model.isPeriodic = 1;
+            else
+                model.isPeriodic = 0;
+            string req = JsonConvert.SerializeObject(model);
+            SendRequest("TJ" + req);
         }
 
         public void GetCarStatInfo(int idModel, int idPearent)
@@ -120,22 +124,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
         public void AddWorkEvent(AddWorkTocarModel model)
         {
                 SendRequest("TM" + JsonConvert.SerializeObject(model));
-        }
-
-        public void UpdateOtherWorks()
-        {
-                SendRequest("TN");
-        }
-
-        public void AddOtherWorkName(string name, int idType)
-        {
-                AddingWorkNameModel model = new AddingWorkNameModel
-                {
-                    idType = idType,
-                    Name = name
-                };
-                string req = JsonConvert.SerializeObject(model);
-                SendRequest("TO" + req);
         }
 
         public void UpdatePartsWorks()
@@ -281,14 +269,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                 case 'M':
                     CallLoadCarWorks();
                     break;
-                case'n':
-                case'N':
-                    FillOtherWorksList(row);
-                    break;
-                case 'o':
-                case 'O':
-                    FillOtherWorksList(row);
-                    break;
                 case 'p':
                 case'P':
                     FillWorkParts(row);
@@ -403,12 +383,14 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
         {
             try
             {
-                UpdateOtherWorks();
                 List<WorksInfoDataModel> data = JsonConvert.DeserializeObject<List<WorksInfoDataModel>>(row);
                 if (data == null) return;
                 if (Application.Current != null)
                     Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                        SpecificationDataStorage.Instance.SetWorksList(data)));
+                        {
+                            SpecificationDataStorage.Instance.SetWorksList(data.Where(p=>p.isPeriodic==1).ToList());
+                            SpecificationDataStorage.Instance.SetOtherCarWorks(data.Where(p => p.isPeriodic == 0).ToList());
+                        }));
             }
             catch { }
         }

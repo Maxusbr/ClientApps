@@ -26,9 +26,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
                     Name = "Остальные",
                     id = -2
                 });
-            Works = new ObservableCollection<WorksInfoDataModel>();
             PartWorks = new ObservableCollection<PartWorkDataModel>();
-            OtherWorks = new ObservableCollection<WorksInfoDataModel>();
             PartsWithWorks = new ObservableCollection<PartWorkWithHoursModel>();
             SpecificationDataStorage.Instance.UpdateWorkTypes();
             SpecificationDataStorage.Instance.UpdateWorks();
@@ -38,7 +36,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             SpecificationDataStorage.Instance.PartsWorksLoadComplete += Instance_PartsWorksLoadComplete;
             SpecificationDataStorage.Instance.LoadWorkTypesComplete += Instance_LoadWorkTypesComplete;
             SpecificationDataStorage.Instance.LoadWorkPartsListComplete += Instance_LoadWorkPartsListComplete;
-            OtherFilterWorks();
             FilterPartWorks();
         }
 
@@ -176,47 +173,9 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             {
                 _selectedWorkType = value;
                 this.OnPropertyChanged("SelectedWorkType");
-                CheckAllowAddWork();
             }
         }
 
-
-
-
-
-        #region PERIODIC
-
-        
-
-
-        public ObservableCollection<WorksInfoDataModel> Works { get; set; }
-
-        private WorksInfoDataModel _selectedWork;
-        public WorksInfoDataModel SelectedWork
-        {
-            get { return _selectedWork; }
-            set
-            {
-                _selectedWork = value;
-                this.OnPropertyChanged("SelectedWork");
-                if (value != null)
-                {
-                    SelectedOtherWork = null;
-                    CheckPartsEnabled();
-                }
-            }
-        }
-
-        private Visibility _visAllowAddWork = Visibility.Collapsed;
-        public Visibility VisAllowAddWork
-        {
-            get { return _visAllowAddWork; }
-            set
-            {
-                _visAllowAddWork = value;
-                this.OnPropertyChanged("VisAllowAddWork");
-            }
-        }
 
         private string _addWorkText = "";
         public string AddWorkText
@@ -229,144 +188,23 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             }
         }
 
-
-
-
-
         private RelayCommand _addWorkCommand;
         public RelayCommand AddWorkCommand { get { return _addWorkCommand ?? (_addWorkCommand = new RelayCommand(AddWork)); } }
 
 
 
-        private void CheckAllowAddWork()
-        {
-            if (SelectedWorkType == null)
-                VisAllowAddWork = Visibility.Collapsed;
-            else
-                VisAllowAddWork = Visibility.Visible;
-        }
-
         private void AddWork(object sender)
         {
-            if(SelectedWorkType!=null)
+            if (SelectedWorkType != null)
                 if (AddWorkText.Length > 2)
                 {
-                    SpecificationDataStorage.Instance.AddNewWorkName(AddWorkText, SelectedWorkType.id);
+                    SpecificationDataStorage.Instance.AddNewWorkName(AddWorkText, SelectedWorkType.id, CheckedPeriodic);
                     AddWorkText = "";
 
                 }
         }
 
 
-        #endregion PERIODIC
-
-
-
-
-
-        #region APERIODIC
-
-        public ObservableCollection<KVPBase> OtherWorkTypes { get { return SpecificationDataStorage.Instance.WorkTypes; } }
-
-        private KVPBase _otherSelectedWorkType;
-        public KVPBase OtherSelectedWorkType
-        {
-            get { return _otherSelectedWorkType; }
-            set
-            {
-                _otherSelectedWorkType = value;
-                this.OnPropertyChanged("OtherSelectedWorkType");
-                OtherFilterWorks();
-                OtherCheckAllowAddWork();
-            }
-        }
-
-        public ObservableCollection<WorksInfoDataModel> OtherWorks { get; set; }
-
-        private WorksInfoDataModel _selectedOtherWork;
-        public WorksInfoDataModel SelectedOtherWork
-        {
-            get { return _selectedOtherWork; }
-            set
-            {
-                _selectedOtherWork = value;
-                this.OnPropertyChanged("SelectedOtherWork");
-                if (value != null)
-                {
-                    SelectedWork = null;
-                    CheckPartsEnabled();
-                }
-            }
-        }
-
-        private Visibility _visOtherAllowAddWork = Visibility.Collapsed;
-        public Visibility VisOtherAllowAddWork
-        {
-            get { return _visOtherAllowAddWork; }
-            set
-            {
-                _visOtherAllowAddWork = value;
-                this.OnPropertyChanged("VisOtherAllowAddWork");
-            }
-        }
-
-        private string _addOtherWorkText = "";
-        public string AddOtherWorkText
-        {
-            get { return _addOtherWorkText; }
-            set
-            {
-                _addOtherWorkText = value;
-                this.OnPropertyChanged("AddOtherWorkText");
-            }
-        }
-
-
-
-
-
-        private RelayCommand _addOtherWorkCommand;
-        public RelayCommand AddOtherWorkCommand { get { return _addOtherWorkCommand ?? (_addOtherWorkCommand = new RelayCommand(AddOtherWork)); } }
-
-
-
-
-        private void OtherFilterWorks()
-        {
-            OtherWorks.Clear();
-            if (SpecificationDataStorage.Instance.OtherWorkList.Count() < 1)
-                return;
-            if (OtherSelectedWorkType != null)
-                foreach (var item in SpecificationDataStorage.Instance.OtherWorkList)
-                {
-                    if (item.id_Class == OtherSelectedWorkType.id)
-                        OtherWorks.Add(item);
-                }
-            else
-                SpecificationDataStorage.Instance.OtherWorkList.ToList().ForEach(a => OtherWorks.Add(a));
-        }
-
-        private void OtherCheckAllowAddWork()
-        {
-            if (OtherSelectedWorkType == null)
-                VisOtherAllowAddWork = Visibility.Collapsed;
-            else
-                VisOtherAllowAddWork = Visibility.Visible;
-        }
-
-        private void AddOtherWork(object sender)
-        {
-            if (OtherSelectedWorkType != null)
-                if (AddOtherWorkText.Length > 2)
-                {
-                    SpecificationDataStorage.Instance.AddOtherWorkName(AddOtherWorkText, OtherSelectedWorkType.id);
-                    AddOtherWorkText = "";
-
-                }
-        }
-
-
-        #endregion APERIODIC
 
 
 
@@ -374,16 +212,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
 
         #region PARTWORKS
 
-        private void CheckPartsEnabled()
-        {
-            if (SelectedWork == null && SelectedOtherWork == null)
-                EditPartWorksEnabled = false;
-            else
-            {
-                EditPartWorksEnabled = true;
-                SpecificationDataStorage.Instance.GetWorkParts((SelectedWork ?? SelectedOtherWork).idWork);
-            }
-        }
 
         public ObservableCollection<PartWorkDataModel> PartWorks { get; set; }
         public ObservableCollection<PartWorkWithHoursModel> PartsWithWorks { get; set; }
@@ -805,18 +633,18 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
         private void CompleteSave(object sender)
         {
             CarPartsWorkModel request = new CarPartsWorkModel();
-            if (SelectedWork != null)
-            {
-                request.IDWork = SelectedWork.id;
-                request.Periodic = 1;
-            }
-            else if (SelectedOtherWork != null)
-            {
-                request.IDWork = SelectedOtherWork.id;
-                request.Periodic = 0;
-            }
-            else
-                return;
+            //if (SelectedWork != null)
+            //{
+            //    request.IDWork = SelectedWork.id;
+            //    request.Periodic = 1;
+            //}
+            //else if (SelectedOtherWork != null)
+            //{
+            //    request.IDWork = SelectedOtherWork.id;
+            //    request.Periodic = 0;
+            //}
+            //else
+            //    return;
             foreach (var item in PartsWithWorks)
             {
                 request.Parts.Add(new CarPartsWorkModel.PartsTime

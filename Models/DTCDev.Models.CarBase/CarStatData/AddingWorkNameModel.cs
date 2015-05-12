@@ -14,5 +14,8 @@ namespace DTCDev.Models.CarBase.CarStatData
 
         [JsonProperty(PropertyName = "B")]
         public string Name { get; set; }
+
+        [JsonProperty(PropertyName="C")]
+        public int isPeriodic { get; set; }
     }
 }

@@ -182,16 +182,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             CarBaseHandler.Instance.GetWorksList(this, new EventArgs());
         }
 
-        public void UpdateOtherWorks()
-        {
-            CarBaseHandler.Instance.UpdateOtherWorks();
-        }
-
-        public void AddOtherWorkName(string name, int typeID)
-        {
-            CarBaseHandler.Instance.AddOtherWorkName(name, typeID);
-        }
-
         public void UpdateWorkTypes()
         {
                 CarBaseHandler.Instance.GetWorkTypes(this, new EventArgs());
@@ -336,9 +326,9 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
 
 
 
-        public void AddNewWorkName(string name, int typeID)
+        public void AddNewWorkName(string name, int typeID, bool periodic)
         {
-                CarBaseHandler.Instance.AddWorkNameEvent(typeID, name);
+                CarBaseHandler.Instance.AddWorkNameEvent(typeID, name, periodic);
         }
 
         public void AddWorkToCar(int model, int transmission, int body, int engine, int engineType, string WorkName, int periodic, int distance)
