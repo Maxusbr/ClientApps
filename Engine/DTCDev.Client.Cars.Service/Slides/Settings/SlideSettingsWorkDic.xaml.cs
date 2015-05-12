@@ -28,9 +28,27 @@ namespace DTCDev.Client.Cars.Service.Slides.Settings
             this.DataContext = _vm;
         }
 
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            grdAddWork.Visibility = Visibility.Collapsed;
+            grdworks.Visibility = Visibility.Visible;
+        }
+
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             _vm.SelectedWorkTree = (WorkTreeModel)e.NewValue;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            grdAddWork.Visibility = Visibility.Visible;
+            grdworks.Visibility = Visibility.Collapsed;
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            grdAddWork.Visibility = Visibility.Collapsed;
+            grdworks.Visibility = Visibility.Visible;
         }
     }
 }

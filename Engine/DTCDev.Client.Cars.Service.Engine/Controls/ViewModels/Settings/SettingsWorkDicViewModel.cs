@@ -148,13 +148,27 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             }
         }
 
-
-
-        #region PERIODIC
+        private bool _checkedPeriodic = true;
+        
+        /// <summary>
+        /// Добавление работы. Периодическая работа или нет
+        /// </summary>
+        public bool CheckedPeriodic
+        {
+            get { return _checkedPeriodic; }
+            set
+            {
+                _checkedPeriodic = value;
+                this.OnPropertyChanged("CheckedPeriodic");
+            }
+        }
 
         public ObservableCollection<KVPBase> WorkTypes { get { return SpecificationDataStorage.Instance.WorkTypes; } }
 
         private KVPBase _selectedWorkType;
+        /// <summary>
+        /// выбранная категория работ для добавления
+        /// </summary>
         public KVPBase SelectedWorkType
         {
             get { return _selectedWorkType; }
@@ -165,6 +179,15 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
                 CheckAllowAddWork();
             }
         }
+
+
+
+
+
+        #region PERIODIC
+
+        
+
 
         public ObservableCollection<WorksInfoDataModel> Works { get; set; }
 
