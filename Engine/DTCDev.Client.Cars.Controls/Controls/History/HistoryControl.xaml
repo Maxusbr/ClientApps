@@ -318,17 +318,18 @@
 
     <Grid x:Name="LayoutRoot" Background="White">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="26"/>
-            <RowDefinition Height="344*" />
+            <RowDefinition Height="0"/>
+            <RowDefinition />
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.ColumnSpan="5" Visibility="Collapsed">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Visibility="Collapsed" Margin="0,0,0,580" Grid.RowSpan="2" Width="0">
             <TextBlock Text="Даты запроса:" Margin="5"/>
             <Button Content="{Binding SelectedDateText}" Margin="5,0" Width="100" VerticalAlignment="Center" Command="{Binding SelectedDateCommand}"/>
             <ToggleButton IsChecked="{Binding UseAccelleration, Mode=TwoWay}" HorizontalAlignment="Left" Content="Оптимизация" VerticalAlignment="Center" Margin="5,0" Width="100"/>
@@ -338,13 +339,13 @@
             <ToggleButton Content="Детально" HorizontalAlignment="Right" Margin="0,3,10,3" VerticalAlignment="Center" Click="ToggleButton_Click"/>
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.ColumnSpan="5"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="2" Margin="0,0,0,580" Grid.RowSpan="2" Width="0" Grid.ColumnSpan="2"/>
 
-        <TextBlock FontWeight="Bold" HorizontalAlignment="Right" Text="{Binding MapCenter, Mode=OneWay}" Visibility="Collapsed" Margin="0,0,82,0" Grid.Column="2"/>
+        <TextBlock FontWeight="Bold" HorizontalAlignment="Right" Text="{Binding MapCenter, Mode=OneWay}" Visibility="Collapsed" Margin="0,0,82,580" Grid.RowSpan="2" Width="0" Grid.Column="1"/>
 
         <!-- MAP -->
         <Map:Map x:Name="Map" Center="{Binding MapCenter}" ZoomLevel="{Binding Path=ZoomLevel, Mode=TwoWay}"
-                 TargetCenter="{Binding MapCenterUser, Mode=TwoWay}" Grid.ColumnSpan="{Binding SpanMap}" Grid.RowSpan="2">
+                 TargetCenter="{Binding MapCenterUser, Mode=TwoWay}" Grid.RowSpan="2" Grid.ColumnSpan="2">
             <Map:MapItemsControl ItemsSource="{Binding ZoneSelect}" 
 				ItemTemplate="{StaticResource PolylineItemTemplate}" 
 				ItemContainerStyle="{StaticResource ZonesItemStyle}" Focusable="False" 
@@ -378,7 +379,7 @@
             </Slider>
         </Grid>
 
-        <Border x:Name="brdrStat" Margin="0,2,2,0" CornerRadius="2" BorderThickness="1" BorderBrush="LightGray" Background="White" VerticalAlignment="Top" HorizontalAlignment="Right" Width="300" Grid.RowSpan="2" Visibility="Collapsed">
+        <Border x:Name="brdrStat" Margin="0,1,2,0" CornerRadius="2" BorderThickness="1" BorderBrush="LightGray" Background="White" VerticalAlignment="Top" HorizontalAlignment="Right" Width="300" Visibility="Collapsed" Height="0" Grid.Row="1" Grid.Column="1">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="55"/>
@@ -414,7 +415,7 @@
             </Grid>
         </Border>
 
-        <Button x:Name="btnMinimize" Click="btnMinimize_Click" Height="16" Width="20" Style="{StaticResource btnMinimizeStyle}" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,2,2,0" Grid.RowSpan="2" Visibility="Collapsed">
+        <Button x:Name="btnMinimize" Click="btnMinimize_Click" Height="16" Width="20" Style="{StaticResource btnMinimizeStyle}" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,1,2,0" Visibility="Collapsed" Grid.Row="1" Grid.Column="1">
             <Grid>
                 <Border VerticalAlignment="Bottom" Height="2" Background="Black" Margin="0,0,0,-5" HorizontalAlignment="Right" Width="10"/>
                 <Border Background="#FF00CCFF" Margin="0,0,1,-4" HorizontalAlignment="Right" Width="10" Height="2" VerticalAlignment="Bottom"/>
@@ -426,7 +427,7 @@
 
 
 
-        <Grid Grid.Row="2" Visibility="Collapsed" Grid.ColumnSpan="3" Margin="0,0,0,52">
+        <Grid Grid.Row="2" Visibility="Collapsed" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="216" />
                 <ColumnDefinition Width="284*" />
@@ -443,7 +444,7 @@
             </StackPanel>
         </Grid>
 
-        <Grid x:Name="grdService" Grid.Row="1" Grid.Column="2" Margin="0,30,0,0" Width="230" Visibility="Collapsed" >
+        <Grid x:Name="grdService" Grid.Row="1" Grid.Column="2" Margin="0,30,0,0" Visibility="Collapsed" Grid.ColumnSpan="2" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -452,20 +453,6 @@
             <!-- display time line-->
 
             <Border BorderThickness="1" Background="White" Margin="0,-30,0,0" Opacity="0.8" Grid.RowSpan="3"/>
-            <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Top" Margin="20,0,0,0">
-                <Image Margin="3" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/Calendar-icon.png" ToolTipService.ToolTip="Отображаемая дата"/>
-                <Button Margin="13,3,3,3" Command="{Binding MoveBackwardCommand}" Style="{StaticResource feBtnStyle}">
-                    <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/Left-icon.png" Cursor="Hand" />
-                </Button>
-                <Button Content="{Binding SelectedDateText}" Margin="5,0" Width="100" VerticalAlignment="Center" Command="{Binding SelectedDateCommand}"/>
-                <!--<TextBlock Margin="10,6" Text="{Binding DisplayedHistoryDate, StringFormat=dd.MM.yyyy}"/>-->
-                <Button Margin="3" Style="{StaticResource feBtnStyle}" Command="{Binding MoveForwardCommand}">
-                    <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/Right-icon.png" Cursor="Hand" />
-                </Button>
-
-                <TextBlock Text="Текущее время: " Margin="6"/>
-                <TextBlock Text="{Binding CurrentSecondSelected, Converter={StaticResource timeConverter}}" Margin="6" />
-            </StackPanel>
             <!-- display time line-->
 
             <Grid x:Name="grdGrapic" Margin="20,0,0,0" Grid.Row="1" Visibility="Collapsed" >
@@ -630,12 +617,16 @@
             <ToggleButton x:Name="tgbDetail" Content="Детально" HorizontalAlignment="Center" VerticalAlignment="Bottom" Click="ToggleButton_Click" Padding="5,1" Grid.Row="2" Margin="0,5"/>
         </Grid>
 
-        <Car:CarZonesError x:Name="_carZonesError" VerticalAlignment="Top" Grid.Row="2" DataContext="{Binding HistoryErrorVm}" Grid.ColumnSpan="3" Visibility="Collapsed"/>
-
-        <Grid Grid.Row="1" Grid.RowSpan="2" Visibility="{Binding VisLoad}" Grid.ColumnSpan="3" d:IsHidden="True">
-            <Border Background="White" Opacity="0.5"/>
-            <TextBlock Margin="6" Text="{Binding LoadingText}" FontSize="24" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Grid x:Name="grdHistoryWork" Grid.Row="1" Grid.Column="1" Visibility="Collapsed" MouseEnter="grdHistoryWork_MouseEnter" MouseLeave="grdHistoryWork_MouseLeave">
+            <DataGrid ItemsSource="{Binding Path=HistoryRows}" AutoGenerateColumns="False" SelectedItem="{Binding Path=SelectedHistoryRow, Mode=TwoWay}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Path=StringDate}" Header="Дата" Width="*"/>
+                    <DataGridTextColumn Binding="{Binding Path=Mileage}" Header="Пробег"/>
+                </DataGrid.Columns>
+            </DataGrid>
         </Grid>
-        <ToggleButton Content="История" VerticalAlignment="Top" Click="HistoryButton_Click" Padding="5,1" HorizontalAlignment="Center" Width="180" Grid.Row="1" Margin="0,10,0,0" Grid.ColumnSpan="2" Grid.Column="1"/>
+
+        <Car:CarZonesError x:Name="_carZonesError" VerticalAlignment="Top" Grid.Row="2" DataContext="{Binding HistoryErrorVm}" Visibility="Collapsed" Height="0" Grid.ColumnSpan="2"/>
+
     </Grid>
 </UserControl>

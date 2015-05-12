@@ -182,6 +182,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         private bool _enableHistory = false;
 
+        private ObservableCollection<LoadedHistoryRows> _historyRows = new ObservableCollection<LoadedHistoryRows>();
+
+        private LoadedHistoryRows _selectedRow;
         #endregion
 
 
@@ -205,6 +208,25 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         public ObservableCollection<DISP_Car> Points
         {
             get { return _mapHandler.Cars; }
+        }
+
+        /// <summary>
+        /// Список загруженных дат
+        /// </summary>
+        public ObservableCollection<LoadedHistoryRows> HistoryRows
+        {
+            get { return _historyRows; }
+        }
+
+        public LoadedHistoryRows SelectedHistoryRow
+        {
+            get { return _selectedRow; }
+            set
+            {
+                _selectedRow = value;
+                this.OnPropertyChanged("SelectedHistoryRow");
+                SortData();
+            }
         }
 
 
@@ -428,30 +450,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 _selectedDevice = value;
                 OnPropertyChanged("SelectedDevice");
                 LoadData();
-            }
-        }
-
-        /// <summary>
-        /// Text for display loading status text
-        /// </summary>
-        public string LoadingText
-        {
-            get { return _loadedText; }
-            set
-            {
-                _loadedText = value;
-                this.OnPropertyChanged("LoadingText");
-            }
-        }
-
-        private Visibility _visLoad = Visibility.Collapsed;
-        public Visibility VisLoad
-        {
-            get { return _visLoad; }
-            set
-            {
-                _visLoad = value;
-                this.OnPropertyChanged("VisLoad");
             }
         }
 
@@ -752,35 +750,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         }
 
 
-        private RelayCommand _moveBackwardCommand;
-        /// <summary>
-        /// command for minese displayed histroy date
-        /// </summary>
-        public RelayCommand MoveBackwardCommand
-        {
-            get
-            {
-                if (_moveBackwardCommand == null)
-                    _moveBackwardCommand = new RelayCommand(a => MoveDateBackward());
-                return _moveBackwardCommand;
-            }
-        }
-
-
-        private RelayCommand _moveForwardCommand;
-        /// <summary>
-        /// command for plus displayed history date
-        /// </summary>
-        public RelayCommand MoveForwardCommand
-        {
-            get
-            {
-                if (_moveForwardCommand == null)
-                    _moveForwardCommand = new RelayCommand(a => MoveDateForward());
-                return _moveForwardCommand;
-            }
-        }
-
         private RelayCommand _moveTimeBackwardUpCommand;
         public RelayCommand MoveTimeBackwardUpCommand
         {
@@ -993,11 +962,12 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
             if (CarSelector.SelectedCar != null && CarSelector.SelectedCar.Car.Id != String.Empty)
             {
-                VisLoad = Visibility.Visible;
+                SelectedHistoryRow = null;
+                HistoryRows.Clear();
                 GetCache();
-                HistoryHandler.Instance.StartLoadHistory(CarSelector.SelectedCar.Car.Id, _startDate, _stopDate, UseAccelleration);
+                HistoryHandler.Instance.StartLoadHistory(CarSelector.SelectedCar.Car.Id, DateTime.Now-TimeSpan.FromDays(30), DateTime.Now, UseAccelleration);
             }
-            DisplayedHistoryDate = _startDate;
+            //DisplayedHistoryDate = _startDate;
         }
 
 
@@ -1005,61 +975,38 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         //loading data of history completed
         void Instance_LoadCompleted(object sender, EventArgs e)
         {
-            LoadingText = "";
             SortData();
-
-            VisLoad = Visibility.Collapsed;
 
             Thread tr = new Thread(CalcAllDistance);
             tr.Start();
         }
 
         //refreshed one day history
-        void Instance_DayRefreshed(DateTime day)
+        void Instance_DayRefreshed(DateTime day, List<CarStateModel> data)
         {
-            LoadingText = day.ToString("dd.MM.yyyy");
-        }
-
-        /// <summary>
-        /// change displayed date for view history to plus
-        /// </summary>
-        private void MoveDateForward()
-        {
-            if (PeriodSet) return;
-            if (_displayedHistoryDate < _stopDate)
+            LoadedHistoryRows r = new LoadedHistoryRows
+                {
+                    Date = day,
+                    Data = data
+                };
+            DistanceCalculator dc = new DistanceCalculator();
+            for (int i = 0; i < data.Count()-1; i++)
             {
-                DisplayedHistoryDate = DisplayedHistoryDate + new TimeSpan(1, 0, 0, 0);
+                r.Mileage += dc.Calculate(data[i], data[i + 1]);
             }
-            else
-                DisplayedHistoryDate = _stopDate;
-            SortData();
+            HistoryRows.Add(r);
         }
 
-        /// <summary>
-        /// change displayed date for view history to minese
-        /// </summary>
-        private void MoveDateBackward()
-        {
-            if (PeriodSet) return;
-            if (_displayedHistoryDate > _startDate)
-                DisplayedHistoryDate = DisplayedHistoryDate - new TimeSpan(1, 0, 0, 0);
-            else
-                DisplayedHistoryDate = _startDate;
-            SortData();
-        }
 
         private void SortData()
         {
-            if (HistoryHandler.Instance.HistoryMessages == null)
+            if (SelectedHistoryRow == null)
                 return;
-            if (PeriodSet)
-                DayStates = HistoryHandler.Instance.HistoryMessages.ToList();
             else
-                DayStates = HistoryHandler.Instance.HistoryMessages.Where(p =>
-                p.yy == _displayedHistoryDate.Year &&
-                p.Mnth == _displayedHistoryDate.Month &&
-                p.dd == _displayedHistoryDate.Day).ToList();
-            SortDataByDate(true);
+            {
+                DayStates = SelectedHistoryRow.Data;
+                SortDataByDate(true);
+            }
 
             HistoryHandler.Instance.StartLoadDayLines(Position.Car.Id, _displayedHistoryDate);
             HistoryHandler.Instance.StartLoadOBD(Position.Car.Id, _displayedHistoryDate);
@@ -1225,7 +1172,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 if (cr == null) return;
                 DayStates = cr;
                 SortDataByDate(false);
-                VisLoad = Visibility.Collapsed;
 
                 Thread tr = new Thread(CalcAllDistance);
                 tr.Start();
@@ -1598,5 +1544,29 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             Error, None
         };
 
+
+        public class LoadedHistoryRows
+        {
+            public DateTime Date{get;set;}
+
+            public string StringDate { get { return Date.ToString("dd.MM.yyyy"); } }
+
+            private double _mileage;
+
+            public double Mileage
+            {
+                get { return Math.Round(_mileage, 2); }
+                set
+                {
+                    _mileage = value;
+                }
+            }
+
+            public int MiddleSpeed{get;set;}
+
+            public List<CarStateModel> Data { get; set; }
+
+
+        }
     }
 }

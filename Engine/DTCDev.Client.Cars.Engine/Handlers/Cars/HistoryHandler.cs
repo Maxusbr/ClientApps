@@ -44,7 +44,7 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
         }
 
 
-        public delegate void dayRefreshed(DateTime day);
+        public delegate void dayRefreshed(DateTime day, List<CarStateModel> data);
         public event dayRefreshed DayRefreshed;
 
         public delegate void LinesLoadedHandler(LinesDataModel model);
@@ -162,7 +162,7 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
                         {
                             
                             if (DayRefreshed != null)
-                                DayRefreshed(currentAsked);
+                                DayRefreshed(currentAsked, data);
                         }));
 
                 ThreadGetter();
@@ -337,7 +337,7 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
                 return;
 
             currentDeviceID = deviceID;
-            currentAsked = start;
+            currentAsked = stop;
             startDate = start;
             stopDate = stop;
             //Thread tr = new Thread(ThreadGetter);
@@ -351,7 +351,7 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
         {
             try
             {
-                if (currentAsked > stopDate)
+                if (currentAsked < startDate)
                 {
                     historyMessages.ForEach(o => o.DevID = currentDeviceID);
                     //for (int i = 0; i < historyMessages.Count(); i++)
@@ -377,7 +377,7 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
                     request += "0";
                     TCPConnection.Instance.SendData("CA" + request);
                 }
-                currentAsked += new TimeSpan(1, 0, 0, 0);
+                currentAsked -= TimeSpan.FromDays(1);
             }
             catch { }
         }

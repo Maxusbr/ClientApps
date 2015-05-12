@@ -150,28 +150,39 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
 
         }
 
-        private void HistoryButton_Click(object sender, RoutedEventArgs e)
+        bool _displayHistory=false;
+
+        public void HistoryButton_Click()
         {
-            var tgbtn = sender as ToggleButton;
-            if(tgbtn == null) return;
-            if (tgbtn.IsChecked == true)
+            if (_displayHistory == false)
             {
-                tgbtn.Content = "Закрыть историю";
-                grdService.Visibility = Visibility.Visible;
+                //grdService.Visibility = Visibility.Visible;
                 CarPoints.Opacity = .5;
                 _hvm.EnableHistory = true;
                 _hvm.LoadData();
+                grdHistoryWork.Visibility = Visibility.Visible;
             }
             else
             {
-                tgbtn.Content = "История";
-                grdService.Visibility = Visibility.Collapsed;
+                //grdService.Visibility = Visibility.Collapsed;
                 CarPoints.Opacity = 1;
                 _hvm.EnableHistory = false;
+                grdHistoryWork.Visibility = Visibility.Collapsed;
             }
+            _displayHistory = !_displayHistory;
             CarPin.Visibility = ParkingsPin.Visibility =
             RouteLine.Visibility = WarningLine.Visibility = ErrorLine.Visibility = OfflineLine.Visibility =
-            btnMinimize.Visibility = brdrStat.Visibility = _carZonesError.Visibility = grdService.Visibility;
+            btnMinimize.Visibility = brdrStat.Visibility = _carZonesError.Visibility = grdHistoryWork.Visibility;
+        }
+
+        private void grdHistoryWork_MouseEnter(object sender, MouseEventArgs e)
+        {
+            grdHistoryWork.Opacity = 1;
+        }
+
+        private void grdHistoryWork_MouseLeave(object sender, MouseEventArgs e)
+        {
+            grdHistoryWork.Opacity = 0.4f;
         }
     }
 }

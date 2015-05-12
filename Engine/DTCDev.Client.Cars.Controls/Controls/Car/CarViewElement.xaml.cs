@@ -16,6 +16,7 @@ using DTCDev.Client.Cars.Engine.Handlers;
 using DTCDev.Client.Sensors;
 using DTCDev.Models.CarsSending.Car;
 using DTCDev.Client.Sensors.OBD;
+using DTCDev.Client.Cars.Engine.AppLogic;
 
 namespace DTCDev.Client.Cars.Controls.Controls.Car
 {
@@ -60,8 +61,6 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
             if (e.PropertyName == "Sensors")
             {
                 DisplayState(CarExemplar);
-                if (_details != null)
-                    _details.UpdateCarData(CarExemplar);
             }
         }
 
@@ -73,8 +72,6 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
                 DisplayOBD((DISP_Car)sender);
                 DisplayAccelerometer((DISP_Car)sender);
                 DisplaySensors((DISP_Car)sender);
-                if (_details != null)
-                    _details.UpdateCarData(CarExemplar);
             }
         }
 
@@ -279,7 +276,13 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
             }
         }
 
-        CarDetailsView _details;
+
+        public event EventHandler DisplayDetails;
+
+        private void image1_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            CarSelector.ViewCarDetailsCar = this.CarExemplar;
+        }
 
 
 

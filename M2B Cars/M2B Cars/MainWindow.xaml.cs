@@ -52,12 +52,25 @@ namespace M2B_Cars
             LoginHandler.Instance.LoginError += Instance_LoginError;
             LoginHandler.Instance.LoginComplete += Instance_LoginComplete;
             CarSelector.OnCarChanged += CarSelector_OnCarChanged;
+            CarSelector.ViewCarDetails += CarSelector_ViewCarDetails;
             FolderPrecreate();
 
             if (DTCDev.Client.Cars.Engine.Handlers.LoginHandler.Instance.IsParamsAdded == false)
             {
                 DisplayLogin();
             }
+        }
+
+        void CarSelector_ViewCarDetails(DTCDev.Client.Cars.Engine.DisplayModels.DISP_Car car)
+        {
+            if (_details == null)
+            {
+                _details = new CarDetailsView();
+                _details.CloseMe += _details_CloseMe;
+                grdDetails.Children.Add(_details);
+            }
+
+            _details.UpdateCarData(car);
         }
 
         private void _login_CancelLogin(object sender, EventArgs e)
@@ -78,13 +91,10 @@ namespace M2B_Cars
 
         void CarSelector_OnCarChanged(DTCDev.Client.Cars.Engine.DisplayModels.DISP_Car car)
         {
-            if(_details==null)
+            if (_details != null)
             {
-                _details = new CarDetailsView();
-                _details.CloseMe += _details_CloseMe;
-                grdDetails.Children.Add(_details);
+                _details.UpdateCarData(car);
             }
-            _details.UpdateCarData(car);
         }
 
         void _details_CloseMe(object sender, EventArgs e)
@@ -220,6 +230,11 @@ namespace M2B_Cars
         {
             ContentGrid.Visibility = Visibility.Collapsed;
             ccContent.Content = null;
+        }
+
+        private void Image_MouseLeftButtonUp_5(object sender, MouseButtonEventArgs e)
+        {
+            HistoryControl.HistoryButton_Click();
         }
     }
 }
