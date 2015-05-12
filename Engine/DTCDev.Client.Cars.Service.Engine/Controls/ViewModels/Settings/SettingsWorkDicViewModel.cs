@@ -47,6 +47,12 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
                 PartWorkWithHoursModel model = new PartWorkWithHoursModel(item);
                 PartsWithWorks.Add(model);
             }
+            //Если для работы указаны составляющие, то не даем их редактировать. В противном случае - разрешаем редактирование
+            if (data.Count() < 1)
+                EditPartWorksEnabled = true;
+            else
+                EditPartWorksEnabled = false;
+            VisAddPartWorks = Visibility.Collapsed;
         }
 
         void Instance_LoadWorkTypesComplete(object sender, EventArgs e)
@@ -212,8 +218,14 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
 
         #region PARTWORKS
 
-
+        /// <summary>
+        /// Список всех возможных частей работ
+        /// </summary>
         public ObservableCollection<PartWorkDataModel> PartWorks { get; set; }
+
+        /// <summary>
+        /// Список частей работ для выбранной работы
+        /// </summary>
         public ObservableCollection<PartWorkWithHoursModel> PartsWithWorks { get; set; }
 
         private Visibility _visAddPartWorks = Visibility.Collapsed;
@@ -633,18 +645,13 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
         private void CompleteSave(object sender)
         {
             CarPartsWorkModel request = new CarPartsWorkModel();
-            //if (SelectedWork != null)
-            //{
-            //    request.IDWork = SelectedWork.id;
-            //    request.Periodic = 1;
-            //}
-            //else if (SelectedOtherWork != null)
-            //{
-            //    request.IDWork = SelectedOtherWork.id;
-            //    request.Periodic = 0;
-            //}
-            //else
-            //    return;
+            if (SelectedWorkTree != null)
+            {
+                request.IDWork = SelectedWorkTree.id;
+                request.Periodic = SelectedWorkTree.isPeriodic;
+            }
+            else
+                return;
             foreach (var item in PartsWithWorks)
             {
                 request.Parts.Add(new CarPartsWorkModel.PartsTime

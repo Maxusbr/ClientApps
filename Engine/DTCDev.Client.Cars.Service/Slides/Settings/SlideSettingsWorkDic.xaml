@@ -81,7 +81,7 @@
             <Grid Grid.Row="2" Margin="0,20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="20"/>
-                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="40"/>
                     <RowDefinition/>
                     <RowDefinition Height="20"/>
                     <RowDefinition Height="20"/>
@@ -89,10 +89,10 @@
                 </Grid.RowDefinitions>
                 <TextBlock Text="Операции"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1">
-                    <Button Width="52" Height="52" Margin="5,0" Command="{Binding Path=AddPartWorksCommand}">
+                    <Button Width="32" Height="32" Margin="5,0" Command="{Binding Path=AddPartWorksCommand}">
                         <Image Source="/DTCDev.Client.Cars.Service;component/Assets/Images/AED/add_list.png" Width="32"/>
                     </Button>
-                    <Button Width="52" Height="52" Margin="5,0" IsEnabled="{Binding Path=DeletePartEnabled}" Command="{Binding Path=DeletePartCommand}">
+                    <Button Width="32" Height="32" Margin="5,0" IsEnabled="{Binding Path=DeletePartEnabled}" Command="{Binding Path=DeletePartCommand}">
                         <Image Source="/DTCDev.Client.Cars.Service;component/Assets/Images/AED/trash.png" Width="32"/>
                     </Button>
                 </StackPanel>
@@ -170,7 +170,7 @@
                 </Grid>
             </Grid>
 
-            <Button Grid.Row="3" Width="52" Grid.Column="2" HorizontalAlignment="Right" Height="52" VerticalAlignment="Top" Margin="20,0" IsEnabled="{Binding Path=CompleteSaveEnabled}" Command="{Binding Path=CompleteSaveCommand}">
+            <Button Grid.Row="3" Width="32" Grid.Column="2" HorizontalAlignment="Right" Height="32" VerticalAlignment="Top" Margin="20,0" IsEnabled="{Binding Path=CompleteSaveEnabled}" Command="{Binding Path=CompleteSaveCommand}">
                 <Image Source="/DTCDev.Client.Cars.Service;component/Assets/Images/AED/apply.png"/>
             </Button>
         </Grid>

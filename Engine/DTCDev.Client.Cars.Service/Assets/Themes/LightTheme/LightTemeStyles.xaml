@@ -24,4 +24,8 @@
         <Setter Property="BorderBrush" Value="{StaticResource DarkRed1}"/>
         <Setter Property="BorderThickness" Value="2"/>
     </Style>
+    <Style x:Key="btnImageStyle" TargetType="{x:Type Button}">
+        <Setter Property="Width" Value="32"/>
+        <Setter Property="Height" Value="32"/>
+    </Style>
 </ResourceDictionary>
