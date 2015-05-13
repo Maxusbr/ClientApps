@@ -27,6 +27,7 @@ using RelayCommand = DTCDev.Client.ViewModel.RelayCommand;
 using DTCDev.Models;
 using Action = System.Action;
 using Application = System.Windows.Application;
+using Newtonsoft.Json;
 
 namespace DTCDev.Client.Cars.Controls.ViewModels.History
 {
@@ -118,7 +119,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         #region Fields
 
-        private string _selectedDateText = "Не установлено";
 
         private DateTime _startDate;
 
@@ -131,8 +131,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         private DateTime _displayedHistoryDate;
 
         private List<CarStateModel> _dayStates = new List<CarStateModel>();
-
-        private Visibility _visSelectDate = Visibility.Collapsed;
 
         private int _currentSecondSelected = 0;
 
@@ -151,10 +149,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         private int _maxSpeed = 0;
 
         private int _distance = 0;
-
-        private string _startTime = "--:--";
-
-        private string _stopTime = "--:--";
 
         private CarZoneHistoryErrorViewModel _historyErrorVm = new CarZoneHistoryErrorViewModel();
 
@@ -191,6 +185,16 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
 
         #region Properties
+
+        public string LoadedText
+        {
+            get { return _loadedText; }
+            set
+            {
+                _loadedText = value;
+                this.OnPropertyChanged("LoadedText");
+            }
+        }
 
         public bool EnableHistory
         {
@@ -392,16 +396,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
-        public string SelectedDateText
-        {
-            get { return _selectedDateText; }
-            set
-            {
-                _selectedDateText = value;
-                this.OnPropertyChanged("SelectedDateText");
-            }
-        }
-
         public DateTime StartDate
         {
             get { return _startDate; }
@@ -485,16 +479,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 List<PackageViewModel> answer = new List<PackageViewModel>();
 
                 return DayStates.Select(o => new PackageViewModel(o)).ToList();
-            }
-        }
-
-        public Visibility VisSelectDate
-        {
-            get { return _visSelectDate; }
-            set
-            {
-                _visSelectDate = value;
-                this.OnPropertyChanged("VisSelectDate");
             }
         }
 
@@ -646,34 +630,14 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
-        private int _distanceAll = 0;
-        public int DistanceAll
+        private double _distanceAll = 0;
+        public double DistanceAll
         {
-            get { return _distanceAll; }
+            get { return Math.Round(_distanceAll, 2); }
             set
             {
                 _distanceAll = value;
                 this.OnPropertyChanged("DistanceAll");
-            }
-        }
-
-        public string StartTime
-        {
-            get { return _startTime; }
-            set
-            {
-                _startTime = value;
-                this.OnPropertyChanged("StartTime");
-            }
-        }
-
-        public string StopTime
-        {
-            get { return _stopTime; }
-            set
-            {
-                _stopTime = value;
-                this.OnPropertyChanged("StopTime");
             }
         }
 
@@ -735,20 +699,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         #region Commands
 
-        private RelayCommand _selectDateCommand;
-        /// <summary>
-        /// Date is selected
-        /// </summary>
-        public RelayCommand SelectedDateCommand
-        {
-            get
-            {
-                if (_selectDateCommand == null)
-                    _selectDateCommand = new RelayCommand(a => SelectDate());
-                return _selectDateCommand;
-            }
-        }
+        private RelayCommand _loadNext10Command;
 
+        public RelayCommand LoadNext10Command { get { return _loadNext10Command ?? (_loadNext10Command = new RelayCommand(a => LoadNext10Days())); }}
 
         private RelayCommand _moveTimeBackwardUpCommand;
         public RelayCommand MoveTimeBackwardUpCommand
@@ -897,11 +850,21 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         #region Private Functions
 
         /// <summary>
-        /// Validate event to change selected date and hide "select date" panel
+        /// Метод запроса истории еще за 10 дней
         /// </summary>
-        private void SelectDate()
+        private void LoadNext10Days()
         {
-            VisSelectDate = VisSelectDate == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+            if (!EnableHistory) return;
+
+            if (CarSelector.SelectedCar != null && CarSelector.SelectedCar.Car.Id != String.Empty)
+            {
+                int days = 10;
+                for (int i = 0; i < days; i++)
+                {
+                    GetCache(_lastLoadedDate - TimeSpan.FromDays(i+1));
+                }
+                HistoryHandler.Instance.StartLoadHistory(CarSelector.SelectedCar.Car.Id, _lastLoadedDate - TimeSpan.FromDays(days+1), _lastLoadedDate - TimeSpan.FromDays(1), UseAccelleration);
+            }
         }
 
         /// <summary>
@@ -915,8 +878,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             displayedDate += " - ";
             if (_stopDate != null)
                 displayedDate += _stopDate.ToString("dd.MM.yyyy");
-
-            SelectedDateText = displayedDate;
         }
 
 
@@ -964,10 +925,21 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             {
                 SelectedHistoryRow = null;
                 HistoryRows.Clear();
-                GetCache();
-                HistoryHandler.Instance.StartLoadHistory(CarSelector.SelectedCar.Car.Id, DateTime.Now-TimeSpan.FromDays(30), DateTime.Now, UseAccelleration);
+                DistanceAll = 0;
+                DayStates.Clear();
+                Route.Clear();
+                WarningRoute.Clear();
+                OfflineRoute.Clear();
+                ErrorRoute.Clear();
+                Parkings.Clear();
+                int days = 30;
+                for (int i = 0; i < 30; i++)
+                {
+                    GetCache(DateTime.Now - TimeSpan.FromDays(i));
+                }
+                //Загружаем историю за последние 30 дней
+                HistoryHandler.Instance.StartLoadHistory(CarSelector.SelectedCar.Car.Id, DateTime.Now-TimeSpan.FromDays(days), DateTime.Now, UseAccelleration);
             }
-            //DisplayedHistoryDate = _startDate;
         }
 
 
@@ -975,26 +947,22 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         //loading data of history completed
         void Instance_LoadCompleted(object sender, EventArgs e)
         {
-            SortData();
-
-            Thread tr = new Thread(CalcAllDistance);
-            tr.Start();
+            LoadedText = "Обновление завершено";
         }
+
+        /// <summary>
+        /// Дата, на каоторой остановилась загрузка
+        /// </summary>
+        private DateTime _lastLoadedDate = DateTime.Now;
 
         //refreshed one day history
         void Instance_DayRefreshed(DateTime day, List<CarStateModel> data)
         {
-            LoadedHistoryRows r = new LoadedHistoryRows
-                {
-                    Date = day,
-                    Data = data
-                };
-            DistanceCalculator dc = new DistanceCalculator();
-            for (int i = 0; i < data.Count()-1; i++)
-            {
-                r.Mileage += dc.Calculate(data[i], data[i + 1]);
-            }
-            HistoryRows.Add(r);
+            BuildHistoryRow(data, day);
+
+            CacheRoute(string.Format("[{0}]-{1}-{2}-{3}", CarSelector.SelectedCar.ID, day.Day, day.Month, day.Year), data);
+            _lastLoadedDate = day;
+            LoadedText = "Обновляю " + day.ToString("dd.MM.yy");
         }
 
 
@@ -1107,7 +1075,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                     ContinueSortData((int)dist);
                     if (!savecache) return;
                     var strt = DayStates.First();
-                    CacheRoute(string.Format("[{0}]-{1}-{2}-{3}", SelectedDevice, strt.dd, strt.Mnth, strt.yy), (int)dist);
                 });
                 slowTask.Start();
             }
@@ -1116,8 +1083,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 MaxSpeed = 0;
                 RoundedSpeed = 0;
                 Distance = 0;
-                StartTime = "--:--";
-                StopTime = "--:--";
             }
         }
 
@@ -1134,11 +1099,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             var stp = DayStates.Last();
             var dtStrt = new DateTime(1, 1, 1, strt.hh, strt.mm, 0);
             var stStp = new DateTime(1, 1, 1, stp.hh, stp.mm, 0);
-            StartTime = StateDateTimeHelper.GetTime(strt).ToString("HH:mm");
-            StopTime = StateDateTimeHelper.GetTime(stp).ToString("HH:mm");
         }
 
-        private void CacheRoute(string name, int dist)
+        private void CacheRoute(string name, List<CarStateModel> data)
         {
             var myDocs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\M2B\\Cache\\";
             if (System.IO.Directory.Exists(myDocs) == false)
@@ -1149,8 +1112,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             {
                 using (var writer = new StreamWriter(myDocs + name))
                 {
-                    var xs = new XmlSerializer(typeof(List<CarStateModel>));
-                    xs.Serialize(writer, DayStates);
+                    string row = JsonConvert.SerializeObject(data);
+                    writer.WriteLine(row);
                 }
             }
             catch (Exception)
@@ -1159,25 +1122,58 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
-        private void GetCache()
+        private void GetCache(DateTime date)
         {
-            var myDocs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\M2B\\Cache\\";
-            var name = string.Format("[{0}]-{1}-{2}-{3}", SelectedDevice, _startDate.Day, _startDate.Month,
-                _startDate.Year);
-            if (!System.IO.File.Exists(myDocs + name)) return;
-            using (var reader = new System.IO.StreamReader(myDocs + name))
+            try
             {
-                var xs = new System.Xml.Serialization.XmlSerializer(typeof(List<CarStateModel>));
-                var cr = xs.Deserialize(reader) as List<CarStateModel>;
-                if (cr == null) return;
-                DayStates = cr;
-                SortDataByDate(false);
+                var myDocs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\M2B\\Cache\\";
+                var name = string.Format("[{0}]-{1}-{2}-{3}", CarSelector.SelectedCar.ID, date.Day, date.Month, date.Year);
+                if (!System.IO.File.Exists(myDocs + name)) return;
+                using (var reader = new System.IO.StreamReader(myDocs + name))
+                {
+                    var xs = new System.Xml.Serialization.XmlSerializer(typeof(List<CarStateModel>));
+                    var cr = JsonConvert.DeserializeObject<List<CarStateModel>>(reader.ReadToEnd());
+                    if (cr == null) return;
+                    BuildHistoryRow(cr, date);
+                    SortDataByDate(false);
 
-                Thread tr = new Thread(CalcAllDistance);
-                tr.Start();
-
+                }
             }
+            catch { }
+        }
 
+        private void BuildHistoryRow(List<CarStateModel> data, DateTime date)
+        {
+            LoadedHistoryRows r = new LoadedHistoryRows();
+            r.Date = date;
+            r.Data = data;
+            try
+            {
+                DistanceCalculator dc = new DistanceCalculator();
+                for (int i = 0; i < data.Count() - 1; i++)
+                {
+                    r.Mileage += dc.Calculate(data[i], data[i + 1]);
+                }
+            }
+            catch { }
+
+            bool replaced = false;
+            for (int i = 0; i < HistoryRows.Count(); i++)
+            {
+                if(HistoryRows[i].StringDate==r.StringDate)
+                {
+                    DistanceAll -= HistoryRows[i].Mileage;
+                    HistoryRows.RemoveAt(i);
+                    HistoryRows.Insert(i, r);
+                    replaced = true;
+                    DistanceAll += r.Mileage;
+                }
+            }
+            if (replaced == false)
+            {
+                HistoryRows.Add(r);
+                DistanceAll += r.Mileage;
+            }
         }
 
         private RouteSelect SortLocation(Location prev, Location loc, RouteSelect prevroute, int spd)
@@ -1253,20 +1249,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
-        private void CalcAllDistance()
-        {
-            double dist = 0;
-            DistanceCalculator dc = new DistanceCalculator();
-            for (int i = 1; i < HistoryHandler.Instance.HistoryMessages.Count(); i++)
-            {
-                dist += dc.Calculate(HistoryHandler.Instance.HistoryMessages[i - 1].Lt / 10000.0, HistoryHandler.Instance.HistoryMessages[i].Lt / 10000.0, HistoryHandler.Instance.HistoryMessages[i - 1].Ln / 10000.0, HistoryHandler.Instance.HistoryMessages[i].Ln / 10000.0);
-            }
-            if (Application.Current != null)
-                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                    {
-                        DistanceAll = (int)dist;
-                    }));
-        }
 
 
 

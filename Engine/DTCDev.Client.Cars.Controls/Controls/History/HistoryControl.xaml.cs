@@ -55,24 +55,6 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             //stbShowDate.Begin();
         }
 
-        private void Calendar_SelectedDatesChanged_1(object sender, SelectionChangedEventArgs e)
-        {
-            var calendar = sender as Calendar;
-            if(calendar == null) return;
-            _hvm.SetDates(calendar.SelectedDates.First(), calendar.SelectedDates.Last() + new TimeSpan(1, 0, 0, 0));
-            //if (calendar.SelectedDates.First() <= calendar.SelectedDates.Last())
-            //{
-                
-            //    hvm.StartDate = ;
-            //    hvm.StopDate = ;
-            //}
-            //else
-            //{
-            //    hvm.StopDate = calendar.SelectedDates.First();
-            //    hvm.StartDate = calendar.SelectedDates.Last() + new TimeSpan(1, 0, 0, 0);
-            //}
-            _hvm.VisSelectDate = Visibility.Collapsed;
-        }
 
         private void Image_MouseLeftButtonUp_1(object sender, MouseButtonEventArgs e)
         {
@@ -116,9 +98,6 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            var dt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-            calendar1.DisplayDateEnd = dt;
-            if (_hvm != null) _hvm.SetDates(dt, dt + new TimeSpan(1, 0, 0, 0));
         }
 
         bool _statDisplayed = true;

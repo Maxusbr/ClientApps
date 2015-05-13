@@ -610,20 +610,29 @@
                 </DataGrid>
             </Grid>
             <local:PackagesView Data="{Binding Lines}" Track="{Binding DayStates}" Visibility="{Binding IsChecked, Converter={StaticResource BoolToVisibilityConverter}, ElementName=checkBox}" Margin="20,0,0,0" Grid.Row="1" />
-            <Grid x:Name="grdSelectDate"  Visibility="{Binding VisSelectDate}" VerticalAlignment="Top" >
-                <Border Background="White" Opacity="0.8"/>
-                <Calendar x:Name="calendar1" SelectedDatesChanged="Calendar_SelectedDatesChanged_1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,30,15,30"/>
-            </Grid>
             <ToggleButton x:Name="tgbDetail" Content="Детально" HorizontalAlignment="Center" VerticalAlignment="Bottom" Click="ToggleButton_Click" Padding="5,1" Grid.Row="2" Margin="0,5"/>
         </Grid>
 
-        <Grid x:Name="grdHistoryWork" Grid.Row="1" Grid.Column="1" Visibility="Collapsed" MouseEnter="grdHistoryWork_MouseEnter" MouseLeave="grdHistoryWork_MouseLeave">
-            <DataGrid ItemsSource="{Binding Path=HistoryRows}" AutoGenerateColumns="False" SelectedItem="{Binding Path=SelectedHistoryRow, Mode=TwoWay}">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Path=StringDate}" Header="Дата" Width="*"/>
-                    <DataGridTextColumn Binding="{Binding Path=Mileage}" Header="Пробег"/>
-                </DataGrid.Columns>
-            </DataGrid>
+        <Grid x:Name="grdHistoryWork" Visibility="Collapsed" Grid.Row="1" Background="White" Grid.Column="1"  MouseEnter="grdHistoryWork_MouseEnter" MouseLeave="grdHistoryWork_MouseLeave">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="80"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding Path=LoadedText}" Margin="10" VerticalAlignment="Top"/>
+                <DataGrid Margin="10,40,10,40" ItemsSource="{Binding Path=HistoryRows}" AutoGenerateColumns="False" SelectedItem="{Binding Path=SelectedHistoryRow, Mode=TwoWay}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding Path=StringDate}" Header="Дата" Width="*"/>
+                        <DataGridTextColumn Binding="{Binding Path=Mileage}" Header="Пробег"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <TextBlock Text="{Binding Path=DistanceAll}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="20"/>
+                <Button Content="Загрузить еще 10 дней" Command="{Binding Path=LoadNext10Command}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10"/>
+            </Grid>
         </Grid>
 
         <Car:CarZonesError x:Name="_carZonesError" VerticalAlignment="Top" Grid.Row="2" DataContext="{Binding HistoryErrorVm}" Visibility="Collapsed" Height="0" Grid.ColumnSpan="2"/>
