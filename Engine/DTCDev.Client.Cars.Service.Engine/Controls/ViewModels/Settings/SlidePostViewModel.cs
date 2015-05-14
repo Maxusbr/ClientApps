@@ -5,12 +5,15 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using DTCDev.Client.Cars.Service.Engine.Handlers;
 using DTCDev.Client.ViewModel;
 
 namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
 {
     public class SlidePostViewModel : ViewModelBase
     {
+        private readonly PostsHandler _handler = PostsHandler.Instance;
+
         public SlidePostViewModel()
         {
             ListTypePost.Add("Type 1"); ListTypePost.Add("Type 2"); ListTypePost.Add("Type 3");
@@ -20,11 +23,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             }
         }
 
-        private readonly List<string> _listTypePost = new List<string>();
-        public List<string> ListTypePost { get { return _listTypePost; } }
-
-        private readonly ObservableCollection<PostViewModel> _listPost = new ObservableCollection<PostViewModel>();
-        public ObservableCollection<PostViewModel> ListPost { get { return _listPost; } }
+        public List<string> ListTypePost { get { return _handler.ListTypePost; } }
+        public ObservableCollection<PostViewModel> ListPost { get { return _handler.ListPost; } }
 
         private PostViewModel _selectedPost;
         public PostViewModel SelectedPost
@@ -87,7 +87,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
 
         private void AddPost(object sender)
         {
-            var el = new PostViewModel { Name = "Новый пост " + ListPost.Count, PostType = "Type 1", StartWorkTime = 8, EndWorkTime = 17 };
+            var el = new PostViewModel { ID = ListPost.Count, Name = "Новый пост " + ListPost.Count, PostType = "Type 1", StartWorkTime = 8, EndWorkTime = 17 };
             el.PropertyChanged += post_PropertyChanged;
             ListPost.Add(el);
             SelectedPost = el;
