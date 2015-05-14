@@ -1157,6 +1157,24 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 }
             }
             catch { }
+            if (data.Count() > 0)
+            {
+                try
+                {
+                    r.MiddleSpeed = data.Sum(p => p.Spd) / 10 / data.Count();
+                    List<CarStateModel> moving = data.Where(p => p.Spd > 10).ToList();
+                    int hStart = moving.Min(p => p.hh);
+                    int minStart = moving.Where(p => p.hh == hStart).Min(p => p.mm);
+                    int hStop = moving.Max(p => p.hh);
+                    int mStop = moving.Where(p => p.hh == hStop).Max(p => p.mm);
+
+                    r.Start = hStart.ToString() + ":" + minStart.ToString();
+                    r.Stop = hStop.ToString() + ":" + mStop.ToString();
+
+
+                }
+                catch { }
+            }
 
             bool replaced = false;
             for (int i = 0; i < HistoryRows.Count(); i++)
@@ -1549,7 +1567,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
             public List<CarStateModel> Data { get; set; }
 
+            public string Start { get; set; }
 
+            public string Stop { get; set; }
         }
     }
 }
