@@ -15,6 +15,7 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -28,8 +29,8 @@
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Время выполнения:" VerticalAlignment="Top" Grid.Row="6" Margin="0,5,0,20"/>
         <local:DateTimePicker SelectedDate="{Binding DateWork, Mode=TwoWay}" VerticalAlignment="Top" Grid.Row="1"
                               Grid.Column="1" Margin="10,0,0,0"/>
-        <TextBox Text="{Binding User.Nm}" VerticalAlignment="Top" Grid.Column="1" Grid.Row="2" Margin="10,0,0,0"/>
-        <TextBox Text="{Binding Car.MarkModelName, Mode=OneWay}" VerticalAlignment="Top" Grid.Column="1" Grid.Row="3" Margin="10,0,0,0"/>
+        <TextBox Text="{Binding UserName}" VerticalAlignment="Top" Grid.Column="1" Grid.Row="2" Margin="10,0,0,0"/>
+        <ComboBox VerticalAlignment="Top" Margin="10,0,0,0" Grid.Row="3" Grid.Column="1" ItemsSource="{Binding Cars}" DisplayMemberPath="CarModel" SelectedItem="{Binding Car}"/>
         <TextBox TextWrapping="Wrap" Text="{Binding Comment, Mode=TwoWay}" VerticalAlignment="Top" Grid.Column="1" Grid.Row="5" Margin="10,0,0,0"/>
         <TextBox TextWrapping="Wrap" Text="{Binding NH}" VerticalAlignment="Top" Grid.Column="1" Grid.Row="6" Margin="10,0,0,0"/>
     </Grid>

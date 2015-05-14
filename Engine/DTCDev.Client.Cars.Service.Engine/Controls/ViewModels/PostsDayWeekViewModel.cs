@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings;
+using DTCDev.Client.Cars.Service.Engine.Handlers;
 using DTCDev.Client.ViewModel;
 using DTCDev.Models.CarBase.CarList;
 using DTCDev.Models.User;
@@ -12,37 +13,32 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
 {
     public class PostsDayWeekViewModel : ViewModelBase
     {
+        private readonly PostsHandler _handler = PostsHandler.Instance;
         public PostsDayWeekViewModel()
         {
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
             {
 
             }
-            var el = new PostOrdersViewModel(new PostViewModel { Name = "Post #1", StartWorkTime = 8, EndWorkTime = 17 });
-            el.Orders.Add(new OrderViewModel
+            AddPostOrders();
+        }
+
+        private void AddPostOrders()
+        {
+            foreach (var post in _handler.ListPost)
             {
-                ID = el.Orders.Count,
-                User = new UserLightModel { Nm = "User 1" },
-                Car = new CarListBaseDataModel { CarNumber = "Demo1", Mark = "Audio", Model = "A3" },
-                DateWork = DateTime.Now
-            });
-            el.Orders.Add(new OrderViewModel
-            {
-                ID = el.Orders.Count,
-                User = new UserLightModel { Nm = "User 2" },
-                Car = new CarListBaseDataModel { CarNumber = "Demo1", Mark = "Audio", Model = "A5" },
-                DateWork = DateTime.Now + new TimeSpan(1, 0, 0)
-            });
-            ListPostOrder.Add(el);
-            el = new PostOrdersViewModel(new PostViewModel { Name = "Post #2", StartWorkTime = 9, EndWorkTime = 18 });
-            el.Orders.Add(new OrderViewModel
-            {
-                ID = el.Orders.Count,
-                User = new UserLightModel { Nm = "User 3" },
-                Car = new CarListBaseDataModel { CarNumber = "Demo2", Mark = "Audio", Model = "A5" },
-                DateWork = DateTime.Now - new TimeSpan(1, 0, 0)
-            });
-            ListPostOrder.Add(el);
+                var el = ListPostOrder.FirstOrDefault(o => o.Post != null && o.Post.ID == post.ID);
+                var added = el == null;
+                if (added) el = new PostOrdersViewModel(post);
+                foreach (var order in _handler.Orders.Where(o => o.PostID == el.Post.ID))
+                {
+                    el.Update(order);
+                }
+                if (added)
+                    ListPostOrder.Add(el);
+                else 
+                    el.Update(post);
+            }
         }
 
         readonly ObservableCollection<PostOrdersViewModel> _listPostOrder = new ObservableCollection<PostOrdersViewModel>();
@@ -61,7 +57,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
         {
             get
             {
-                return ListPostOrder.Count == 0 ? 8 : ListPostOrder.Max(o => o.Post.EndWorkTime);
+                return ListPostOrder.Count == 0 ? 17 : ListPostOrder.Max(o => o.Post.EndWorkTime);
             }
         }
 

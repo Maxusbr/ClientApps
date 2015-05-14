@@ -35,5 +35,32 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             get { return _selectedOrder; }
             set { _selectedOrder = value; }
         }
+
+        internal void Update(OrderViewModel ord)
+        {
+            var order = Orders.FirstOrDefault(o => o.ID == ord.ID);
+            if (order == null)
+            {
+                //ord.IsCompleteSaved += Order_IsCompleteSaved;
+                Orders.Add(ord);
+            }
+            else
+                order.Update(ord);
+        }
+
+        private void Order_IsCompleteSaved(object sender, EventArgs e)
+        {
+            
+        }
+
+        internal void Update(PostViewModel post)
+        {
+            if(post == null) return;
+            Post.IsChange = post.IsChange;
+            Post.Name = post.Name;
+            Post.PostType = post.PostType;
+            Post.StartWorkTime = post.StartWorkTime;
+            Post.EndWorkTime = post.EndWorkTime;
+        }
     }
 }

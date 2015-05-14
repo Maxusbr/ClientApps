@@ -61,12 +61,30 @@ namespace DTCDev.Client.Cars.Service.Controls.CalendarControls
             var time = TimeSpan.Parse(e.AddedCells[0].Column.Header.ToString());
             var dt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
             if(vm == null) return;
-            var order = vm.Orders.FirstOrDefault(el => el.DateWork >= dt + time && el.DateWork < dt + time + new TimeSpan(0, 30, 0)) ??
-                        new OrderViewModel{ DateWork =  dt + time};
+            var order = vm.Orders.FirstOrDefault(el => el.DateWork >= dt + time && el.DateWork < dt + time + new TimeSpan(0, 30, 0));
+            if(order == null)
+            {
+                order =new OrderViewModel{ DateWork =  dt + time, PostID = vm.Post.ID};
+                vm.Orders.Add(order);
+            }
+            order.PropertyChanged -= order_PropertyChanged;
+            order.PropertyChanged += order_PropertyChanged;
             var detail = new CardOrder {DataContext = order};
             ccDetail.Content = detail;
             tbPost.Text = vm.Post.Name;
             gDetail.Visibility = Visibility.Visible;
+        }
+
+        void order_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            SaveButton.IsEnabled = true;
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateUI();
+            SaveButton.IsEnabled = false;
+            gDetail.Visibility = Visibility.Collapsed;
         }
     }
 
