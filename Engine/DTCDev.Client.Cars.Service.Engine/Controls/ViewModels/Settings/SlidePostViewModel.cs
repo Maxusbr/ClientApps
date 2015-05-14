@@ -16,10 +16,9 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
 
         public SlidePostViewModel()
         {
-            ListTypePost.Add("Type 1"); ListTypePost.Add("Type 2"); ListTypePost.Add("Type 3");
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
             {
-
+                ListTypePost.Add("Type 1"); ListTypePost.Add("Type 2"); ListTypePost.Add("Type 3");
             }
         }
 

@@ -80,17 +80,6 @@ namespace DTCDev.Client.Cars.Service.Controls.CalendarControls
             UpdateUI();
         }
 
-        void order_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-
-        }
-
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
-        {
-            
-
-
-        }
     }
 
 
