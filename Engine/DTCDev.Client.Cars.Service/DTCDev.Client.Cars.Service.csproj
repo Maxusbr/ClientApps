@@ -62,15 +62,6 @@
     <Compile Include="Controls\CalendarControls\CalendarCarItem.xaml.cs">
       <DependentUpon>CalendarCarItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\CalendarControls\CardOrder.xaml.cs">
-      <DependentUpon>CardOrder.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\CalendarControls\DateTimePicker.xaml.cs">
-      <DependentUpon>DateTimePicker.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\CalendarControls\PostsDayWeekViewControl.xaml.cs">
-      <DependentUpon>PostsDayWeekViewControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\CalendarControls\TimeSelectControl.xaml.cs">
       <DependentUpon>TimeSelectControl.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -272,18 +263,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\CalendarControls\CalendarCarItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\CalendarControls\CardOrder.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\CalendarControls\DateTimePicker.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\CalendarControls\PostsDayWeekViewControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

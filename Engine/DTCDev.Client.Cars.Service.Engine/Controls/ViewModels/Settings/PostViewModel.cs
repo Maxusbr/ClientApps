@@ -8,8 +8,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
 {
     public class PostViewModel : ViewModelBase
     {
-        public int ID { get; set; }
-
         private string _name = string.Empty;
         public string Name
         {

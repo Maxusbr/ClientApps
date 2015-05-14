@@ -80,8 +80,6 @@
     <Compile Include="Controls\ViewModels\LoginViewModel.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Controls\ViewModels\OrderViewModel.cs" />
-    <Compile Include="Controls\ViewModels\PostOrdersViewModel.cs" />
     <Compile Include="Controls\ViewModels\Reports\OrderReportViewModel.cs" />
     <Compile Include="Controls\ViewModels\Reports\ReportsViewModel.cs" />
     <Compile Include="Controls\ViewModels\ServiceViewModel.cs">
@@ -98,7 +96,6 @@
     <Compile Include="Controls\ViewModels\Settings\WorksInfoDataCostViewModel.cs" />
     <Compile Include="Controls\ViewModels\ShowHistoryViewModel.cs" />
     <Compile Include="Controls\ViewModels\SlideCarInfoViewModel.cs" />
-    <Compile Include="Controls\ViewModels\PostsDayWeekViewModel.cs" />
     <Compile Include="Controls\ViewModels\Slides\SlideCarsListViewModel.cs" />
     <Compile Include="Controls\ViewModels\Slides\SlideClientsConnectViewModel.cs" />
     <Compile Include="Controls\ViewModels\Slides\SlideHomeViewModel.cs" />
@@ -129,7 +126,6 @@
     <Compile Include="Handlers\CompanyHandler.cs" />
     <Compile Include="Handlers\OrdersHandler.cs" />
     <Compile Include="Handlers\PersonalHandler.cs" />
-    <Compile Include="Handlers\PostsHandler.cs" />
     <Compile Include="Handlers\ReportsHandler.cs" />
     <Compile Include="Handlers\SettingsLoader.cs" />
     <Compile Include="Handlers\SpecificationDataStorage.cs" />

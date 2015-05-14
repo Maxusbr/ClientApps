@@ -197,11 +197,6 @@
                             <Image Source="Imgs/4.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Состояния постов" Padding="7" Click="menuItem_ListPost">
-                        <MenuItem.Icon>
-                            <Image Source="Imgs/4.png"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
                 </MenuItem>
                 <MenuItem Header="НАСТРОЙКИ" Padding="10,2">
                     <MenuItem Header="Настройки сервиса" Padding="7" Click="menuItem_ClickPersonalSettings">

@@ -1104,12 +1104,13 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         private void CacheRoute(string name, List<CarStateModel> data)
         {
             var myDocs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\M2B\\Cache\\";
+            try
+            {
             if (System.IO.Directory.Exists(myDocs) == false)
                 System.IO.Directory.CreateDirectory(myDocs);
             if (System.IO.File.Exists(myDocs + name))
                 System.IO.File.Delete(myDocs + name);
-            try
-            {
+
                 using (var writer = new StreamWriter(myDocs + name))
                 {
                     string row = JsonConvert.SerializeObject(data);
