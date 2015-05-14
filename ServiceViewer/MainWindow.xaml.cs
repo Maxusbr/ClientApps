@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DTCDev.Client.Cars.Service;
 using DTCDev.Client.Cars.Service.Controls;
+using DTCDev.Client.Cars.Service.Controls.CalendarControls;
 using DTCDev.Client.Cars.Service.Controls.Car;
 using DTCDev.Client.Cars.Service.Engine.Controls.View;
 using DTCDev.Client.Cars.Service.Engine.Controls.ViewModels;
@@ -352,6 +353,13 @@ namespace CarServiceViewer
         private void menuItem_ClickSlideWorksSettings(object sender, RoutedEventArgs e)
         {
             var view = new SlideWorksSettings();
+            grdContent.Children.Clear();
+            grdContent.Children.Add(view);
+        }
+
+        private void menuItem_ListPost(object sender, RoutedEventArgs e)
+        {
+            var view = new PostsDayWeekViewControl();
             grdContent.Children.Clear();
             grdContent.Children.Add(view);
         }
