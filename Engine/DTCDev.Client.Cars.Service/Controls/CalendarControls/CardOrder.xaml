@@ -33,5 +33,6 @@
         <ComboBox VerticalAlignment="Top" Margin="10,0,0,0" Grid.Row="3" Grid.Column="1" ItemsSource="{Binding Cars}" DisplayMemberPath="CarModel" SelectedItem="{Binding Car}"/>
         <TextBox TextWrapping="Wrap" Text="{Binding Comment, Mode=TwoWay}" VerticalAlignment="Top" Grid.Column="1" Grid.Row="5" Margin="10,0,0,0"/>
         <TextBox TextWrapping="Wrap" Text="{Binding NH}" VerticalAlignment="Top" Grid.Column="1" Grid.Row="6" Margin="10,0,0,0"/>
+        <Button x:Name="SaveButton" Content="Сохранить" VerticalAlignment="Top" Grid.Row="7" Command="{Binding SaveCommand}" IsEnabled="{Binding IsChanged}" Grid.ColumnSpan="2" Margin="20,20,20,0" />
     </Grid>
 </UserControl>

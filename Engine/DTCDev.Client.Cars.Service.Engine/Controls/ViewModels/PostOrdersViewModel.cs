@@ -45,7 +45,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
                 Orders.Add(ord);
             }
             else
-                order.Update(ord);
+                order.UpdateOrder(ord);
         }
 
         private void Order_IsCompleteSaved(object sender, EventArgs e)

@@ -21,6 +21,7 @@ namespace DTCDev.Client.Cars.Service.Controls.CalendarControls
     public partial class PostsDayWeekViewControl : UserControl
     {
         readonly PostsDayWeekViewModel _vm;
+
         public PostsDayWeekViewControl()
         {
             InitializeComponent();
@@ -31,7 +32,7 @@ namespace DTCDev.Client.Cars.Service.Controls.CalendarControls
 
         private void UpdateUI()
         {
-            
+
             PostList.Columns.Clear();
 
             PostList.Columns.Add(new DataGridTextColumn { Header = "Название поста", Binding = new Binding("Post.Name") });
@@ -56,35 +57,39 @@ namespace DTCDev.Client.Cars.Service.Controls.CalendarControls
 
         private void PostList_SelectedCellsChanged(object sender, System.Windows.Controls.SelectedCellsChangedEventArgs e)
         {
-            if (e.AddedCells == null || e.AddedCells.Count == 0 ) return;
+            if (e.AddedCells == null || e.AddedCells.Count == 0) return;
             var vm = e.AddedCells[0].Item as PostOrdersViewModel;
-            var time = TimeSpan.Parse(e.AddedCells[0].Column.Header.ToString());
-            var dt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-            if(vm == null) return;
-            var order = vm.Orders.FirstOrDefault(el => el.DateWork >= dt + time && el.DateWork < dt + time + new TimeSpan(0, 30, 0));
-            if(order == null)
-            {
-                order =new OrderViewModel{ DateWork =  dt + time, PostID = vm.Post.ID};
-                vm.Orders.Add(order);
-            }
-            order.PropertyChanged -= order_PropertyChanged;
-            order.PropertyChanged += order_PropertyChanged;
-            var detail = new CardOrder {DataContext = order};
+            if (vm == null) return;
+            var dateWork = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day) +
+                TimeSpan.Parse(e.AddedCells[0].Column.Header.ToString());
+            var order = new OrderViewModel(vm.Orders.FirstOrDefault(el => el.DateWork >= dateWork && el.DateWork < dateWork + new TimeSpan(0, 30, 0)) ??
+                      new OrderViewModel { DateWork = dateWork, PostID = vm.Post.ID, IsChanged = false, ID = vm.Orders.Count});
+            order.IsCompleteSaved += OrderOnIsCompleteSaved;
+            var detail = new CardOrder { DataContext = order };
             ccDetail.Content = detail;
             tbPost.Text = vm.Post.Name;
             gDetail.Visibility = Visibility.Visible;
         }
 
+        private void OrderOnIsCompleteSaved(object sender, EventArgs eventArgs)
+        {
+            var order = sender as OrderViewModel;
+            if (order == null) return;
+            _vm.UpdateOrders(order);
+            gDetail.Visibility = Visibility.Collapsed;
+            UpdateUI();
+        }
+
         void order_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            SaveButton.IsEnabled = true;
+
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            UpdateUI();
-            SaveButton.IsEnabled = false;
-            gDetail.Visibility = Visibility.Collapsed;
+            
+
+
         }
     }
 
@@ -103,7 +108,7 @@ namespace DTCDev.Client.Cars.Service.Controls.CalendarControls
             var cell = values[0] as DataGridCell;
             var vm = values[1] as PostOrdersViewModel;
             if (cell == null || vm == null) return FalseValue;
-            
+
             var time = TimeSpan.Parse(cell.Column.Header.ToString());
             var dt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
             if (time < new TimeSpan(vm.Post.StartWorkTime, 0, 0) || time > new TimeSpan(vm.Post.EndWorkTime, 0, 0))
@@ -115,7 +120,9 @@ namespace DTCDev.Client.Cars.Service.Controls.CalendarControls
             {
                 vm.SelectedOrder = el.ID;
                 cell.IsEnabled = true;
-                cell.ToolTip = string.Format("{0} ({1})", el.User != null ? el.User.Nm : "User", el.Car.MarkModelName);
+                cell.ToolTip = string.Format("{0} ({1})",
+                    el.User != null ? el.User.Nm : "User",
+                    el.Car != null ? el.Car.MarkModelName : "");
                 return TrueValue;
             }
             return FalseValue;

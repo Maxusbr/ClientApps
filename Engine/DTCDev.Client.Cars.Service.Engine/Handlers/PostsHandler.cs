@@ -60,7 +60,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                 PostID = 1,
                 User = new UserLightModel { Nm = "User 1" },
                 Car =new DISP_Car{CarModel = new CarListBaseDataModel { CarNumber = "Demo1", Mark = "Audio", Model = "A3" }},
-                DateWork = DateTime.Now
+                DateWork = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day)  + new TimeSpan(12, 0, 0), 
+                IsChanged = false
             });
             Orders.Add(new OrderViewModel
             {
@@ -68,7 +69,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                 PostID = 1,
                 User = new UserLightModel { Nm = "User 2" },
                 Car = new DISP_Car{CarModel = new CarListBaseDataModel { CarNumber = "Demo2", Mark = "Audio", Model = "A4" }},
-                DateWork = DateTime.Now + new TimeSpan(1, 0, 0)
+                DateWork = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day) + new TimeSpan(13, 0, 0),
+                IsChanged = false
             });
             Orders.Add(new OrderViewModel
             {
@@ -76,8 +78,14 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                 PostID = 2,
                 User = new UserLightModel { Nm = "User 3" },
                 Car = new DISP_Car{CarModel = new CarListBaseDataModel { CarNumber = "Demo3", Mark = "Audio", Model = "A5" }},
-                DateWork = DateTime.Now - new TimeSpan(1, 0, 0)
+                DateWork = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day) + new TimeSpan(14, 30, 0),
+                IsChanged = false
             });
+        }
+
+        internal void Save(OrderViewModel model)
+        {
+
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows;
 using DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings;
 using DTCDev.Client.Cars.Service.Engine.Handlers;
+using DTCDev.Client.Cars.Service.Engine.Network;
 using DTCDev.Client.Cars.Service.Engine.Storage;
 using DTCDev.Client.ViewModel;
 using DTCDev.Models.CarBase.CarList;
@@ -20,13 +21,32 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
         private readonly SpecificationDataStorage _storage = SpecificationDataStorage.Instance;
         private readonly CarStorage _carStorage = CarStorage.Instance;
         private DateTime _dateWork;
-        private UserLightModel _user = new UserLightModel{ Nm = ""};
+        private UserLightModel _user;
         private DISP_Car _car;
         private string _comment;
         private readonly ObservableCollection<WorksInfoDataModel> _selectedWorks = new ObservableCollection<WorksInfoDataModel>();
-        private ObservableCollection<DISP_Car> _cars;
         private double _nh;
 
+        public OrderViewModel(OrderViewModel model)
+        {
+            UpdateOrder(model);
+            model.WorksList.ToList().ForEach(o => WorksList.Add(o));
+        }
+
+        internal void UpdateOrder(OrderViewModel model)
+        {
+            ID = model.ID;
+            PostID = model.PostID;
+            _car = model.Car;
+            _comment = model.Comment;
+            _dateWork = model.DateWork;
+            _isChanged = model.IsChanged;
+            _nh = model.NH;
+            _user = model.User;
+
+            _selectedWorks.Clear();
+            model.SelectedWorks.ToList().ForEach(o => _selectedWorks.Add(o));
+        }
 
         public OrderViewModel()
         {
@@ -36,28 +56,15 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
                 User = new UserLightModel { Nm = "User 1" };
                 Car = new DISP_Car{ CarModel = { CarNumber = "Demo2", Mark = "Audio", Model = "A5" }};
                 DateWork = DateTime.Now;
+                IsChanged = false;
             }
-            _carStorage.LoadComplete += _carStorage_LoadComplete;
-
-            ReloadCarList();
-        }
-
-        private void _carStorage_LoadComplete(object sender, EventArgs e)
-        {
-            ReloadCarList();
-        }
-
-        private void ReloadCarList()
-        {
-            Cars.Clear();
-            _carStorage.Cars.ForEach(o => Cars.Add(o));
         }
 
         public ObservableCollection<WorksInfoDataModel> WorksList { get { return _storage.WorkList; } }
 
         public ObservableCollection<WorksInfoDataModel> SelectedWorks { get { return _selectedWorks; } }
 
-        public ObservableCollection<DISP_Car> Cars { get { return _cars ?? (_cars = new ObservableCollection<DISP_Car>()); } }
+        public List<DISP_Car> Cars { get { return _carStorage.Cars; } }
 
 
         public int ID { get; set; }
@@ -69,6 +76,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             get { return _dateWork; }
             set
             {
+                IsChanged = _dateWork != value;
                 _dateWork = value;
                 OnPropertyChanged("DateWork");
             }
@@ -79,6 +87,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             get { return _user; }
             set
             {
+                IsChanged = _user != value;
                 _user = value;
                 OnPropertyChanged("User");
             }
@@ -86,9 +95,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
 
         public string UserName
         {
-            get { return _user.Nm; }
+            get { return _user != null ? _user.Nm : ""; }
             set
             {
+                IsChanged = (_user ?? (_user = new UserLightModel())).Nm != value;
                 _user.Nm = value;
                 OnPropertyChanged("UserName");
             }
@@ -99,6 +109,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             get { return _car; }
             set
             {
+                IsChanged = _car != value;
                 _car = value;
                 OnPropertyChanged("Car");
             }
@@ -109,6 +120,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             get { return _comment; }
             set
             {
+                IsChanged = _comment != value;
                 _comment = value;
                 OnPropertyChanged("Comment");
             }
@@ -119,46 +131,40 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             get { return _nh; }
             set
             {
+                IsChanged = _nh != value;
                 _nh = value;
                 OnPropertyChanged("NH");
             }
         }
 
-        //private RelayCommand _completeSaveCommand;
-        //public RelayCommand SaveCommand
-        //{
-        //    get { return _completeSaveCommand ?? (_completeSaveCommand = new RelayCommand(CompleteSave)); }
-        //}
+        private RelayCommand _completeSaveCommand;
+        private bool _isChanged;
 
-        //public event EventHandler IsCompleteSaved;
-        //protected virtual void CompleteSave(object sender)
-        //{
-        //    if (IsCompleteSaved != null) IsCompleteSaved(this, EventArgs.Empty);
-        //}
-
-        internal void Update(OrderViewModel ord)
+        public RelayCommand SaveCommand
         {
-            NH = ord.NH;
-            User = ord.User;
-            Car = ord.Car;
-            Comment = ord.Comment;
-            DateWork = ord.DateWork;
-            foreach (var el in ord.SelectedWorks)
+            get { return _completeSaveCommand ?? (_completeSaveCommand = new RelayCommand(CompleteSave)); }
+        }
+
+        public event EventHandler IsCompleteSaved;
+        protected virtual void CompleteSave(object sender)
+        {
+            if (IsCompleteSaved != null) IsCompleteSaved(this, EventArgs.Empty);
+        }
+
+        public bool IsChanged
+        {
+            get { return _isChanged; }
+            set
             {
-                var work = SelectedWorks.FirstOrDefault(o => o.idWork == el.idWork);
-                if (work == null)
-                    SelectedWorks.Add(el);
-                else
-                {
-                    work.Cost = el.Cost;
-                    work.NH = el.NH;
-                    work.NHD = el.NHD;
-                    work.Name = el.Name;
-                    work.WGUID = el.WGUID;
-                    work.id_Class = el.id_Class;
-                    work.isPeriodic = el.isPeriodic;
-                }
+                _isChanged = value;
+                OnPropertyChanged("IsChanged");
             }
+        }
+
+        public override bool Equals(object obj)
+        {
+            var order = obj as OrderViewModel;
+            return order != null && order.PostID == PostID && order.ID == ID;
         }
     }
 }

@@ -76,5 +76,18 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
         {
             get { return SelectedItem != null && SelectedItem.Post != null ? SelectedItem.Post.Name : ""; }
         }
+
+        public void UpdateOrders(OrderViewModel model)
+        {
+            var pos = ListPostOrder.FirstOrDefault(o => o.Post.ID == model.PostID);
+            if(pos == null) return;
+            var ord = pos.Orders.FirstOrDefault(o => o.Equals(model));
+            model.IsChanged = false;
+            if (ord == null)
+                pos.Orders.Add(model);
+            else
+                ord.UpdateOrder(model);
+            _handler.Save(model);
+        }
     }
 }
