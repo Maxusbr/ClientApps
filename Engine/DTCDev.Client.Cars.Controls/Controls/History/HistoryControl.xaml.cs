@@ -163,5 +163,6 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         {
             grdHistoryWork.Opacity = 0.4f;
         }
+
     }
 }

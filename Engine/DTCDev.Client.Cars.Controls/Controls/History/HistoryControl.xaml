@@ -30,6 +30,12 @@
         <Storyboard x:Key="stbHideDetails" Storyboard.TargetName="grdService" Storyboard.TargetProperty="(Grid.Width)">
             <DoubleAnimation From="450" To="0" Duration="0:0:0.5"/>
         </Storyboard>
+        <Storyboard x:Key="stbOpenToolBar" Storyboard.TargetName="grdToolbar" Storyboard.TargetProperty="(Grid.Width)">
+            <DoubleAnimation From="40" To="180" Duration="0:0:0.2"/>
+        </Storyboard>
+        <Storyboard x:Key="stbCloseToolBar" Storyboard.TargetName="grdToolbar" Storyboard.TargetProperty="(Grid.Width)">
+            <DoubleAnimation From="180" To="40" Duration="0:0:0.2"/>
+        </Storyboard>
         <Style TargetType="{x:Type Button}" x:Key="feBtnStyle">
             <Setter Property="Background" Value="#FF1F3B53"/>
             <Setter Property="Foreground" Value="#FF000000"/>
@@ -613,25 +619,56 @@
             <ToggleButton x:Name="tgbDetail" Content="Детально" HorizontalAlignment="Center" VerticalAlignment="Bottom" Click="ToggleButton_Click" Padding="5,1" Grid.Row="2" Margin="0,5"/>
         </Grid>
 
-        <Grid x:Name="grdHistoryWork" Visibility="Collapsed" Grid.Row="1" Background="White" Grid.Column="1"  MouseEnter="grdHistoryWork_MouseEnter" MouseLeave="grdHistoryWork_MouseLeave">
+        <Grid x:Name="grdHistoryWork" Grid.Row="1" Background="White" Grid.Column="1"  MouseEnter="grdHistoryWork_MouseEnter" MouseLeave="grdHistoryWork_MouseLeave">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="80"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="{Binding Path=LoadedText}" Margin="10" VerticalAlignment="Top"/>
-                <DataGrid Margin="10,40,10,40" ItemsSource="{Binding Path=HistoryRows}" AutoGenerateColumns="False" SelectedItem="{Binding Path=SelectedHistoryRow, Mode=TwoWay}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="{Binding Path=LoadedText}" Margin="10,10,10,0" VerticalAlignment="Top"/>
+                <DataGrid Margin="10,7,70,40" ItemsSource="{Binding Path=HistoryRows}" AutoGenerateColumns="False" SelectedItem="{Binding Path=SelectedHistoryRow, Mode=TwoWay}" Grid.Row="2">
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding Path=StringDate}" Header="Дата" Width="*"/>
                         <DataGridTextColumn Binding="{Binding Path=Mileage}" Header="Пробег"/>
+                        <DataGridTextColumn Binding="{Binding Path=MiddleSpeed}" Header="Ср. скорость"/>
+                        <DataGridTextColumn Binding="{Binding Path=Start}" Header="Начало"/>
+                        <DataGridTextColumn Binding="{Binding Path=Stop}" Header="Окончание"/>
                     </DataGrid.Columns>
                 </DataGrid>
-                <TextBlock Text="{Binding Path=DistanceAll}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="20"/>
-                <Button Content="Загрузить еще 10 дней" Command="{Binding Path=LoadNext10Command}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10"/>
+                <TextBlock Text="{Binding Path=DistanceAll}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,19,20" Grid.Row="2"/>
+                <Button Content="Загрузить еще 10 дней" Command="{Binding Path=LoadNext10Command}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,10" Grid.Row="2"/>
+                <Grid Margin="0,7,10,40" Width="40" HorizontalAlignment="Right" x:Name="grdToolbar" Background="LightGray" Grid.Row="2">
+                    <Grid.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource stbOpenToolBar}"/>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource stbCloseToolBar}"/>
+                        </EventTrigger>
+                    </Grid.Triggers>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="40"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Width="34" Height="34" Grid.Column="1">
+                        <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/way.png"/>
+                    </Button>
+                    <TextBlock TextWrapping="Wrap" FontStyle="Italic" Margin="5" Text="Пробег автомобиля за несколько дней"/>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid x:Name="grdDistance">
+                        
+                    </Grid>
+                </Grid>
             </Grid>
         </Grid>
 

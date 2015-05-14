@@ -118,16 +118,13 @@
   <ItemGroup>
     <Resource Include="Assets\Images\Menu\1360424224_Full_Screen.png" />
     <Resource Include="Assets\Images\Menu\1360424251_Exit_Full_Screen.png" />
-    <Resource Include="Assets\Images\Menu\1366228638_Android-Settings.png" />
     <Resource Include="Assets\Images\Menu\1366379076_users.png" />
-    <Resource Include="Assets\Images\Menu\1366732420_report.png" />
     <Resource Include="Assets\Images\Menu\alert-icon.png" />
     <Resource Include="Assets\Images\Menu\cars-icon.png" />
     <Resource Include="Assets\Images\Menu\cars-list.png" />
     <Resource Include="Assets\Images\Menu\Clock.png" />
     <Resource Include="Assets\Images\Menu\folders.png" />
     <Resource Include="Assets\Images\Menu\maps-icon.png" />
-    <Resource Include="Assets\Images\Menu\Occupations-Pilot-Military-Male-Dark-icon.png" />
     <Resource Include="Assets\Images\Menu\pie-chart-icon.png" />
     <Resource Include="Assets\Images\Menu\Scheduled_Tasks.png" />
   </ItemGroup>
@@ -191,6 +188,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Images\Menu\history.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\Menu\reports.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\Menu\drivers.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\Menu\settings.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
