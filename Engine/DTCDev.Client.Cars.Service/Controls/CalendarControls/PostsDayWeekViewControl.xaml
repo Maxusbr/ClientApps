@@ -1,0 +1,135 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ViewModels="clr-namespace:DTCDev.Client.Cars.Service.Engine.Controls.ViewModels;assembly=DTCDev.Client.Cars.Service.Engine" 
+             xmlns:BindingConvertors="clr-namespace:DTCDev.Client.BindingConvertors;assembly=DTCDev.Client"
+             xmlns:calendarControls="clr-namespace:DTCDev.Client.Cars.Service.Controls.CalendarControls"
+             x:Class="DTCDev.Client.Cars.Service.Controls.CalendarControls.PostsDayWeekViewControl" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="1000">
+    <UserControl.Resources>
+        <Style x:Key="DataGridCellSelectedStyle" TargetType="{x:Type DataGridCell}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{DynamicResource Blue1}" SnapsToDevicePixels="True">
+                            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                </Trigger>
+                <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                    <Setter Property="BorderBrush" Value="{DynamicResource {x:Static DataGrid.FocusBorderBrushKey}}"/>
+                </Trigger>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsSelected" Value="true"/>
+                        <Condition Property="Selector.IsSelectionActive" Value="false"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                </MultiTrigger>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="DataGridCellClearStyle" TargetType="{x:Type DataGridCell}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+                            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                </Trigger>
+                <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                    <Setter Property="BorderBrush" Value="{DynamicResource {x:Static DataGrid.FocusBorderBrushKey}}"/>
+                </Trigger>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsSelected" Value="true"/>
+                        <Condition Property="Selector.IsSelectionActive" Value="false"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                </MultiTrigger>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <calendarControls:BoolToStyleConverter x:Key="BoolToStyleConverter" TrueValue="{StaticResource Blue1}" FalseValue="Transparent" DesibleValue="{StaticResource LightGray2}" />
+        <Style x:Key="StyleCell" TargetType="{x:Type DataGridCell}">
+            <Setter Property="Background" >
+                <Setter.Value>
+                    <MultiBinding Converter="{StaticResource BoolToStyleConverter}" >
+                        <Binding RelativeSource="{RelativeSource Self}"/>
+                        <Binding Path="." />
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <ViewModels:PostsDayWeekViewModel/>
+    </UserControl.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Состояния постов" VerticalAlignment="Top" Margin="20,20,0,20"/>
+
+        <DataGrid x:Name="PostList" AutoGenerateColumns="False" ItemsSource="{Binding ListPostOrder}" Grid.Row="1" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" SelectionUnit="Cell" SelectionMode="Single" Margin="20,0" CanUserDeleteRows="False" CanUserResizeRows="False" GridLinesVisibility="All" HorizontalAlignment="Left" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Название поста" Binding="{Binding Post.Name}" ClipboardContentBinding="{x:Null}"/>
+                <DataGridTemplateColumn ClipboardContentBinding="{x:Null}" Header="8:00" CellStyle="{DynamicResource StyleCell}" />
+                <DataGridTemplateColumn ClipboardContentBinding="{x:Null}" Header="8:30" CellStyle="{DynamicResource StyleCell}" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <Grid x:Name="gDetail" Grid.Column="1" Margin="20,0" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="tbPost" Text=" спост 1" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,5,0,20"/>
+
+            <ContentControl x:Name="ccDetail" Grid.Row="1" />
+            <Button x:Name="SaveButton" Content="Сохранить" VerticalAlignment="Top" Grid.Row="2" Click="SaveButton_Click" IsEnabled="False" Margin="0,10,0,0" />
+
+        </Grid>
+
+    </Grid>
+</UserControl>
