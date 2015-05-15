@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Data;
 using DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings;
 using DTCDev.Client.Cars.Service.Engine.Handlers;
 using DTCDev.Client.Cars.Service.Engine.Network;
@@ -19,6 +20,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
     public class OrderViewModel : ViewModelBase
     {
         private readonly SpecificationDataStorage _storage = SpecificationDataStorage.Instance;
+        private readonly PostsHandler _handler = PostsHandler.Instance;
         private readonly CarStorage _carStorage = CarStorage.Instance;
         private DateTime _dateWork;
         private UserLightModel _user;
@@ -31,6 +33,19 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
         {
             UpdateOrder(model);
             model.WorksList.ToList().ForEach(o => WorksList.Add(o));
+            SelectedWorks.CollectionChanged += SelectedWorks_CollectionChanged;
+            _storage.LoadWorkListComplete += _storage_LoadWorkListComplete;
+            _storage.UpdateWorks();
+        }
+
+        void _storage_LoadWorkListComplete(object sender, EventArgs e)
+        {
+            
+        }
+
+        void SelectedWorks_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            IsChanged = true;
         }
 
         internal void UpdateOrder(OrderViewModel model)
@@ -54,7 +69,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             {
                 ID = 1;
                 User = new UserLightModel { Nm = "User 1" };
-                Car = new DISP_Car{ CarModel = { CarNumber = "Demo2", Mark = "Audio", Model = "A5" }};
+                Car = new DISP_Car { CarModel = { CarNumber = "Demo2", Mark = "Audio", Model = "A5" } };
                 DateWork = DateTime.Now;
                 IsChanged = false;
             }
@@ -87,21 +102,30 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             get { return _user; }
             set
             {
+                if (value != null && value.Equals(_user)) return;
                 IsChanged = _user != value;
                 _user = value;
                 OnPropertyChanged("User");
+                OnPropertyChanged("UserName");
+            }
+        }
+
+        private UserLightModel _selectedUser;
+        public UserLightModel SelectedUser
+        {
+            get { return _selectedUser; }
+            set
+            {
+                _selectedUser = value;
+                if (value == null) return;
+                User = value;
+                TextChanged(value.Nm);
             }
         }
 
         public string UserName
         {
             get { return _user != null ? _user.Nm : ""; }
-            set
-            {
-                IsChanged = (_user ?? (_user = new UserLightModel())).Nm != value;
-                _user.Nm = value;
-                OnPropertyChanged("UserName");
-            }
         }
 
         public DISP_Car Car
@@ -137,20 +161,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             }
         }
 
-        private RelayCommand _completeSaveCommand;
         private bool _isChanged;
-
-        public RelayCommand SaveCommand
-        {
-            get { return _completeSaveCommand ?? (_completeSaveCommand = new RelayCommand(CompleteSave)); }
-        }
-
-        public event EventHandler IsCompleteSaved;
-        protected virtual void CompleteSave(object sender)
-        {
-            if (IsCompleteSaved != null) IsCompleteSaved(this, EventArgs.Empty);
-        }
-
         public bool IsChanged
         {
             get { return _isChanged; }
@@ -159,6 +170,90 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
                 _isChanged = value;
                 OnPropertyChanged("IsChanged");
             }
+        }
+
+        private bool _visableUserList = false;
+        public bool VisableUserList
+        {
+            get { return _visableUserList; }
+            set
+            {
+                _visableUserList = value;
+                OnPropertyChanged("VisableUserList");
+            }
+        }
+
+        public bool EnableAddWorkButton
+        {
+            get { return _selectedWork != null && SelectedWorks.FirstOrDefault(o => o.Equals(_selectedWork)) == null; }
+        }
+
+        private string _foundString = string.Empty;
+        private CollectionViewSource _listUsers;
+        public ICollectionView ListUsers
+        {
+            get
+            {
+                if (_listUsers != null) return _listUsers.View;
+                _listUsers = new CollectionViewSource { Source = _handler.Users };
+                _listUsers.Filter += (o, e) =>
+                {
+                    e.Accepted = string.IsNullOrEmpty(_foundString) || ((UserLightModel)e.Item).Nm.Contains(_foundString);
+                };
+                return _listUsers.View;
+            }
+        }
+
+        public WorksInfoDataModel SelectedWork
+        {
+            get { return _selectedWork; }
+            set
+            {
+                _selectedWork = value;
+                OnPropertyChanged("EnableAddWorkButton");                
+            }
+        }
+
+
+        private RelayCommand _completeSaveCommand;
+        public RelayCommand SaveCommand
+        {
+            get { return _completeSaveCommand ?? (_completeSaveCommand = new RelayCommand(CompleteSave)); }
+        }
+
+        private RelayCommand _textChangedCommand;
+        public RelayCommand TextChangedCommand
+        {
+            get { return _textChangedCommand ?? (_textChangedCommand = new RelayCommand(TextChanged)); }
+        }
+
+        private RelayCommand _addWorkCommand;
+        private WorksInfoDataModel _selectedWork;
+
+        public object AddWorkCommand
+        {
+            get { return _addWorkCommand ?? (_addWorkCommand = new RelayCommand(AddWork)); }
+        }
+
+        private void AddWork(object obj)
+        {
+            if(_selectedWork == null) return;
+            SelectedWorks.Add(_selectedWork);
+        }
+
+        private void TextChanged(object obj)
+        {
+            SelectedUser = null;
+            VisableUserList = !UserName.Equals(_foundString = obj.ToString());
+            if (!VisableUserList) return;
+            ListUsers.Refresh();
+        }
+
+        public event EventHandler IsCompleteSaved;
+
+        protected virtual void CompleteSave(object sender)
+        {
+            if (IsCompleteSaved != null) IsCompleteSaved(this, EventArgs.Empty);
         }
 
         public override bool Equals(object obj)

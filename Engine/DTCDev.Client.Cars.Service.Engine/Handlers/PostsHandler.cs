@@ -50,16 +50,23 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
         private readonly List<string> _listTypePost = new List<string>();
         public List<string> ListTypePost { get { return _listTypePost; } }
 
+        private readonly List<UserLightModel> _users = new List<UserLightModel>();
+        public List<UserLightModel> Users { get { return _users; } }
+
+
         private void DesigneAddPostOrders()
         {
             ListPost.Add(new PostViewModel { ID = 0, Name = "Post #1", StartWorkTime = 8, EndWorkTime = 17 });
             ListPost.Add(new PostViewModel { ID = 1, Name = "Post #2", StartWorkTime = 9, EndWorkTime = 18 });
             ListPost.Add(new PostViewModel { ID = 2, Name = "Post #3", StartWorkTime = 10, EndWorkTime = 19 });
+            Users.Add(new UserLightModel { Nm = "Иванов Петр Иванович" });
+            Users.Add(new UserLightModel { Nm = "Петров Иван Сидорович" });
+            Users.Add(new UserLightModel { Nm = "Сидоров Сидор Петрович" });
             Orders.Add(new OrderViewModel
             {
                 ID = Orders.Count,
                 PostID = 0,
-                User = new UserLightModel { Nm = "User 1" },
+                User = Users[0],
                 Car =new DISP_Car{CarModel = new CarListBaseDataModel { CarNumber = "Demo1", Mark = "Audio", Model = "A3" }},
                 DateWork = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day)  + new TimeSpan(12, 0, 0), 
                 IsChanged = false
@@ -68,7 +75,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             {
                 ID = Orders.Count,
                 PostID = 0,
-                User = new UserLightModel { Nm = "User 2" },
+                User = Users[1],
                 Car = new DISP_Car{CarModel = new CarListBaseDataModel { CarNumber = "Demo2", Mark = "Audio", Model = "A4" }},
                 DateWork = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day) + new TimeSpan(13, 0, 0),
                 IsChanged = false
@@ -77,7 +84,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             {
                 ID = Orders.Count,
                 PostID = 1,
-                User = new UserLightModel { Nm = "User 3" },
+                User = Users[2],
                 Car = new DISP_Car{CarModel = new CarListBaseDataModel { CarNumber = "Demo3", Mark = "Audio", Model = "A5" }},
                 DateWork = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day) + new TimeSpan(14, 30, 0),
                 IsChanged = false
