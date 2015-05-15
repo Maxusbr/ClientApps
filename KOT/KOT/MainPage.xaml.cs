@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel.Resources;
+using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -37,6 +38,8 @@ namespace KOT
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
+
+            DefaultViewModel["Center"] = new Geopoint(new BasicGeoposition { Altitude = 0, Latitude = 55.75, Longitude = 37.62 });
         }
 
         private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
@@ -47,6 +50,11 @@ namespace KOT
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             
+        }
+
+        public ObservableDictionary DefaultViewModel
+        {
+            get { return this.defaultViewModel; }
         }
 
         /// <summary>
@@ -71,6 +79,18 @@ namespace KOT
 
         private void AddAppBarButton_Click(object sender, RoutedEventArgs e)
         {
+
+        }
+
+        private void All_Click(object sender, RoutedEventArgs e)
+        {
+            var butt = sender as ToggleMenuFlyoutItem;
+            if (butt == null)  return;
+            All.IsChecked = butt.Name == All.Name;
+            Gas.IsChecked = butt.Name == Gas.Name;
+            Wash.IsChecked = butt.Name == Wash.Name;
+            Shops.IsChecked = butt.Name == Shops.Name;
+            Tire.IsChecked = butt.Name == Tire.Name;
 
         }
     }
