@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings;
+using DTCDev.Client.Cars.Service.Engine.Handlers;
 using DTCDev.Client.ViewModel;
 
 namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
@@ -15,6 +16,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
         private readonly PostViewModel _post;
         private readonly ObservableCollection<OrderViewModel> _orders = new ObservableCollection<OrderViewModel>();
         private int _selectedOrder = -1;
+        public bool WeekStyle { get { return PostsHandler.Instance.WeekStyle; } }
+        public DateTime Date { get { return PostsHandler.Instance.Date; } }
 
         public PostOrdersViewModel(PostViewModel post)
         {
@@ -28,7 +31,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
         public PostViewModel Post { get { return _post; } }
 
         public ObservableCollection<OrderViewModel> Orders { get { return _orders; } }
-
 
         public int SelectedOrder
         {
@@ -50,12 +52,12 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
 
         private void Order_IsCompleteSaved(object sender, EventArgs e)
         {
-            
+
         }
 
         internal void Update(PostViewModel post)
         {
-            if(post == null) return;
+            if (post == null) return;
             Post.IsChange = post.IsChange;
             Post.Name = post.Name;
             Post.PostType = post.PostType;

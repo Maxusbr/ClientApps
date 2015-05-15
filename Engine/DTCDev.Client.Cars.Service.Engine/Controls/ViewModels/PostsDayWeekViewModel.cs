@@ -41,6 +41,44 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             }
         }
 
+        public DateTime Date
+        {
+            get { return _handler.Date; }
+            set
+            {
+                if(_handler.Date == value) return;
+                _handler.Date = value;
+                OnPropertyChanged("Date");
+                OnPropertyChanged("Period");
+            }
+        }
+
+        public bool WeekStyle
+        {
+            get { return _handler.WeekStyle; }
+            set
+            {
+                if (_handler.WeekStyle == value) return;
+                _handler.WeekStyle = value;
+                if(value)
+                    UpdateDate();
+                OnPropertyChanged("WeekStyle");
+                OnPropertyChanged("Period");
+                OnPropertyChanged("ToggleButtonName");
+            }
+        }
+
+        private void UpdateDate()
+        {
+            _handler.Date = _handler.Date.AddDays(DayOfWeek.Monday - _handler.Date.DayOfWeek);
+        }
+
+        public string Period
+        {
+            get { return WeekStyle ? string.Format("{0} - {1}", Date.ToShortDateString(), 
+                (Date + new TimeSpan(7,0,0,0)).ToShortDateString()): Date.ToShortDateString(); }
+        }
+
         readonly ObservableCollection<PostOrdersViewModel> _listPostOrder = new ObservableCollection<PostOrdersViewModel>();
         private PostOrdersViewModel _selectedItem;
         public ObservableCollection<PostOrdersViewModel> ListPostOrder { get { return _listPostOrder; } }
@@ -76,6 +114,12 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
         {
             get { return SelectedItem != null && SelectedItem.Post != null ? SelectedItem.Post.Name : ""; }
         }
+
+        public string ToggleButtonName
+        {
+            get { return WeekStyle ? "Неделя" : "День"; }
+        }
+
 
         public void UpdateOrders(OrderViewModel model)
         {

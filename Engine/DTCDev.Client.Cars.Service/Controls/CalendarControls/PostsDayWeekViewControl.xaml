@@ -6,6 +6,8 @@
              xmlns:ViewModels="clr-namespace:DTCDev.Client.Cars.Service.Engine.Controls.ViewModels;assembly=DTCDev.Client.Cars.Service.Engine" 
              xmlns:BindingConvertors="clr-namespace:DTCDev.Client.BindingConvertors;assembly=DTCDev.Client"
              xmlns:calendarControls="clr-namespace:DTCDev.Client.Cars.Service.Controls.CalendarControls"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls"
              x:Class="DTCDev.Client.Cars.Service.Controls.CalendarControls.PostsDayWeekViewControl" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="1000">
@@ -95,6 +97,63 @@
 
         </Style>
 
+        <Style x:Key="ToggleButtonStyle" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Custom:ButtonHelper.CornerRadius" Value="3"/>
+            <Setter Property="Background" Value="{DynamicResource GrayBrush10}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+            <Setter Property="FontFamily" Value="{DynamicResource DefaultFont}"/>
+            <Setter Property="FontSize" Value="{DynamicResource UpperCaseContentFontSize}"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="5,6"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="MinHeight" Value="25"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Grid>
+                            <Border x:Name="Background" Background="{TemplateBinding Background}" CornerRadius="{Binding (Custom:ButtonHelper.CornerRadius), Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{x:Null}" CornerRadius="{Binding (Custom:ButtonHelper.CornerRadius), Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            <Border x:Name="DisabledVisualElement" Background="{DynamicResource ControlsDisabledBrush}" CornerRadius="{Binding (Custom:ButtonHelper.CornerRadius), Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" IsHitTestVisible="False" Opacity="0" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            <ContentControl x:Name="contentControl" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="BorderThickness" TargetName="Border" Value="2"/>
+                                <Setter Property="Background" TargetName="Background" Value="{DynamicResource GrayBrush2}"/>
+                                <Setter Property="BorderBrush" TargetName="Border" Value="{DynamicResource GrayBrush5}"/>
+                                <Setter Property="Foreground" TargetName="contentControl" Value="{DynamicResource LightGray1}"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                    <Condition Property="IsChecked" Value="False"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" TargetName="Background" Value="{DynamicResource GrayBrush8}"/>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                    <Condition Property="IsChecked" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" TargetName="Background" Value="{DynamicResource GrayBrush3}"/>
+                            </MultiTrigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" TargetName="Background" Value="{DynamicResource GrayBrush7}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                <Setter Property="BorderThickness" TargetName="Border" Value="2"/>
+                                <Setter Property="BorderBrush" TargetName="Border" Value="{DynamicResource ButtonMouseOverBorderBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" TargetName="DisabledVisualElement" Value="0.7"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </UserControl.Resources>
     <UserControl.DataContext>
         <ViewModels:PostsDayWeekViewModel/>
@@ -109,9 +168,31 @@
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Состояния постов" VerticalAlignment="Top" Margin="20,20,0,20"/>
 
-        <DataGrid x:Name="PostList" AutoGenerateColumns="False" ItemsSource="{Binding ListPostOrder}" Grid.Row="1" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" SelectionUnit="Cell" SelectionMode="Single" Margin="20,0" CanUserDeleteRows="False" CanUserResizeRows="False" GridLinesVisibility="All" HorizontalAlignment="Left" >
+        <Grid Margin="20,20,20,10">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Состояния постов" VerticalAlignment="Top" Margin="0,0,0,15"/>
+            <Grid VerticalAlignment="Bottom" Grid.Row="1" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ToggleButton x:Name="ToggleButton" Content="{Binding ToggleButtonName}" Margin="0,0,20,0" Style="{DynamicResource ToggleButtonStyle}" Width="50" 
+                              IsChecked="{Binding WeekStyle, Mode=TwoWay}"/>
+                <Image x:Name="imgLeft" Source="/DTCDev.Client.Cars.Service;component/Assets/Images/left.png" Cursor="Hand" Width="24" Height="24" Grid.Column="1" MouseLeftButtonDown="imgLeft_MouseLeftButtonDown"/>
+                <TextBlock x:Name="txtDate" Grid.Column="2" FontSize="18" VerticalAlignment="Center" Margin="20,0" Text="{Binding Period}" MinWidth="50" />
+                <Image x:Name="imgRight" Source="/DTCDev.Client.Cars.Service;component/Assets/Images/right.png" Cursor="Hand" Width="24" Height="24" Grid.Column="3" MouseLeftButtonDown="imgRight_MouseLeftButtonDown"/>
+
+            </Grid>
+
+        </Grid>
+
+        <DataGrid x:Name="PostList" AutoGenerateColumns="False" ItemsSource="{Binding ListPostOrder}" Grid.Row="1" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" SelectionUnit="Cell" SelectionMode="Single" Margin="20,0" CanUserDeleteRows="False" CanUserResizeRows="False" GridLinesVisibility="All" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Название поста" Binding="{Binding Post.Name}" ClipboardContentBinding="{x:Null}"/>
                 <DataGridTemplateColumn ClipboardContentBinding="{x:Null}" Header="8:00" CellStyle="{DynamicResource StyleCell}" />

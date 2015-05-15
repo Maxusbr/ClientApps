@@ -53,6 +53,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
         private readonly List<UserLightModel> _users = new List<UserLightModel>();
         public List<UserLightModel> Users { get { return _users; } }
 
+        public DateTime Date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+        public bool WeekStyle = false;
 
         private void DesigneAddPostOrders()
         {
@@ -68,7 +70,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                 PostID = 0,
                 User = Users[0],
                 Car =new DISP_Car{CarModel = new CarListBaseDataModel { CarNumber = "Demo1", Mark = "Audio", Model = "A3" }},
-                DateWork = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day)  + new TimeSpan(12, 0, 0), 
+                DateWork = Date + new TimeSpan(12, 0, 0), 
                 IsChanged = false
             });
             Orders.Add(new OrderViewModel
@@ -77,7 +79,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                 PostID = 0,
                 User = Users[1],
                 Car = new DISP_Car{CarModel = new CarListBaseDataModel { CarNumber = "Demo2", Mark = "Audio", Model = "A4" }},
-                DateWork = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day) + new TimeSpan(13, 0, 0),
+                DateWork = Date + new TimeSpan(13, 0, 0),
                 IsChanged = false
             });
             Orders.Add(new OrderViewModel
@@ -86,7 +88,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                 PostID = 1,
                 User = Users[2],
                 Car = new DISP_Car{CarModel = new CarListBaseDataModel { CarNumber = "Demo3", Mark = "Audio", Model = "A5" }},
-                DateWork = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day) + new TimeSpan(14, 30, 0),
+                DateWork = Date + new TimeSpan(14, 30, 0),
                 IsChanged = false
             });
         }
