@@ -414,8 +414,8 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Slides\Settings\SlideSettingsPersonal.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Slides\Settings\SlideSettingsWorkDic.xaml">
       <SubType>Designer</SubType>
