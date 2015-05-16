@@ -34,8 +34,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
 
         public string Adress { get; set; }
 
-        private PersonalDataModel _model = new PersonalDataModel();
-        public PersonalDataModel Model
+        private ServiceInfoDataModel _model = new ServiceInfoDataModel();
+        public ServiceInfoDataModel Model
         {
             get { return _model; }
         }
@@ -158,6 +158,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                     if (Application.Current != null)
                         Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                             {
+                                _model = model;
                                 CompanyName = model.Name;
                                 if (UserDataLoadComplete != null)
                                     UserDataLoadComplete(this, new EventArgs());

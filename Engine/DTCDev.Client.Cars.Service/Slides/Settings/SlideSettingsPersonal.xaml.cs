@@ -46,15 +46,6 @@ namespace DTCDev.Client.Cars.Service.Slides.Settings
             btnEditPhones.Visibility = Visibility.Collapsed;
         }
 
-        private void brdrAdrEditor_MouseEnter(object sender, MouseEventArgs e)
-        {
-            btnEditAdress.Visibility = Visibility.Visible;
-        }
-
-        private void brdrAdrEditor_MouseLeave(object sender, MouseEventArgs e)
-        {
-            btnEditAdress.Visibility = Visibility.Collapsed;
-        }
 
         private void Border_MouseEnter_2(object sender, MouseEventArgs e)
         {
