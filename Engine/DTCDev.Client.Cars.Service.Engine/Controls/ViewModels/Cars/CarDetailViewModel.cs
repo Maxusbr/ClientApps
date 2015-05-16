@@ -7,7 +7,6 @@ using DTCDev.Client.Cars.Service.Engine.Handlers;
 using DTCDev.Client.ViewModel;
 using DTCDev.Models.CarBase.CarList;
 using DTCDev.Models.Date;
-using DTCDev.Client.Cars.Service.Engine.Controls.View;
 using System.Windows;
 using DTCDev.Models.CarBase.CarStatData;
 using System.Windows.Media.Imaging;
