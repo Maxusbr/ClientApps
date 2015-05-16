@@ -139,6 +139,10 @@
       <Project>{17d29bc2-3bde-4104-a96b-db91c1dfa5e7}</Project>
       <Name>DTCDev.Models.CarsSending</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Models\DTCDev.Models.Service\DTCDev.Models.Service.csproj">
+      <Project>{2b9978db-b59c-4ca6-b4e4-329dc1f30926}</Project>
+      <Name>DTCDev.Models.Service</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Models\DTCDev.Models\DTCDev.Models.csproj">
       <Project>{ddd0ab63-faf8-4a78-9369-2481e912e641}</Project>
       <Name>DTCDev.Models</Name>

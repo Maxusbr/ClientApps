@@ -1,6 +1,7 @@
 ﻿using DTCDev.Client.Cars.Service.Engine.Network;
 using DTCDev.Client.Cars.Service.Engine.Storage;
 using DTCDev.Models.CarsSending.Service;
+using DTCDev.Models.Service;
 using DTCDev.Models.User;
 using Newtonsoft.Json;
 using System;
@@ -151,16 +152,13 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
         {
             try
             {
-                PersonalDataModel model = JsonConvert.DeserializeObject<PersonalDataModel>(row);
+                ServiceInfoDataModel model = JsonConvert.DeserializeObject<ServiceInfoDataModel>(row);
                 if (model != null)
                 {
                     if (Application.Current != null)
                         Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                             {
-                                Login = model.Login;
-                                CompanyPhone = model.Phone;
-                                CompanyName = model.CompanyName;
-                                Adress = model.AdressString;
+                                CompanyName = model.Name;
                                 if (UserDataLoadComplete != null)
                                     UserDataLoadComplete(this, new EventArgs());
                             }));
