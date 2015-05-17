@@ -29,7 +29,7 @@
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock TextWrapping="Wrap" Text="Настройка постов" Grid.ColumnSpan="4" Margin="10"/>
+        <TextBlock TextWrapping="Wrap" Text="Настройка постов" Style="{DynamicResource TextHeaderStyle}" Grid.ColumnSpan="4" Margin="10"/>
         <ListBox Grid.Row="1" MinWidth="200" Margin="10,0,10,40" Grid.RowSpan="4" Grid.Column="0"  DisplayMemberPath="DisplayName"
                  ItemsSource="{Binding ListPost}" SelectedItem="{Binding SelectedPost, Mode=TwoWay}"/>
         <Border Style="{DynamicResource borderBlueDeviderStyle}" Width="2" Grid.Row="1" Margin="20,0" Grid.RowSpan="4" Grid.Column="1" />

@@ -32,7 +32,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="Название компании" Margin="10"/>
+                    <TextBlock Text="Название компании" Margin="10"  Style="{DynamicResource TextHeaderStyle}"/>
                     <TextBlock Text="{Binding CompanyName}" Margin="60,10,10,10" Grid.Column="1"/>
                     <Border Background="White" Opacity="0" Grid.Column="1" MouseEnter="Border_MouseEnter" MouseLeave="Border_MouseLeave"/>
                     <Button Visibility="Collapsed" x:Name="btnEditCompany" Command="{Binding EditNameCommand}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="32" Height="32"  MouseEnter="Border_MouseEnter" MouseLeave="Border_MouseLeave">
@@ -59,7 +59,7 @@
                     <RowDefinition/>
                     <RowDefinition Height="100"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Подразделения" Grid.Row="1"/>
+                <TextBlock Text="Подразделения" Style="{DynamicResource TextHeaderStyle}" Grid.Row="1"/>
                 <DataGrid Grid.Row="2" AutoGenerateColumns="False" ItemsSource="{Binding Path=Departments}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Название" Binding="{Binding Path=Name}" IsReadOnly="True" Width="*"/>
@@ -68,6 +68,7 @@
                         <DataGridTextColumn Header="н/ч, руб" Binding="{Binding Path=NHCost}" IsReadOnly="True"/>
                     </DataGrid.Columns>
                 </DataGrid>
+                <Button Grid.Row="3" Content="Добавить подразделение"/>
             </Grid>
             <Border Style="{DynamicResource borderBlueDeviderStyle}" Grid.Row="2" Grid.Column="1" Margin="19,20,19,0" />
             <Post:PostSettings Grid.Row="2" Grid.Column="2" Margin="0,20,0,0" />
