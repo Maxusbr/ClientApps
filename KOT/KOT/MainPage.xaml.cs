@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Services.Maps;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Maps;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
@@ -16,6 +21,8 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using KOT.Common;
 // Документацию по шаблону элемента пустой страницы см. по адресу http://go.microsoft.com/fwlink/?LinkID=390556
+using KOT.Common.Controls;
+using KOT.DataModel;
 
 
 namespace KOT
@@ -40,6 +47,7 @@ namespace KOT
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
 
             DefaultViewModel["Center"] = new Geopoint(new BasicGeoposition { Altitude = 0, Latitude = 55.75, Longitude = 37.62 });
+            DefaultViewModel["ServiceToken"] = "dIjWUGuzClDyimeHLXa9bw";            
         }
 
         private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
@@ -49,7 +57,26 @@ namespace KOT
 
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            
+            DefaultViewModel["Source"] = DataSource.Instance;
+            Map.Children.Add(DataSource.Phone);
+            Map.Children.Add(DataSource.Kot);
+
+            DataSource.Instance.MapElements.CollectionChanged += MapElements_CollectionChanged;
+            DataSource.GetMapElements();
+            //await AddMapElements();
+        }
+
+        void MapElements_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if(e.Action == NotifyCollectionChangedAction.Add)
+                foreach (var item in e.NewItems)
+                    Map.Children.Add(item as RadioButton);
+            if(e.Action == NotifyCollectionChangedAction.Remove)
+                foreach (var item in e.NewItems)
+                    Map.Children.Remove(item as RadioButton);
+            if(e.Action == NotifyCollectionChangedAction.Reset)
+                foreach (var item in Map.Children.Where(o => o is ServiceElement).ToList())
+                    Map.Children.Remove(item);
         }
 
         public ObservableDictionary DefaultViewModel
@@ -92,6 +119,39 @@ namespace KOT
             Shops.IsChecked = butt.Name == Shops.Name;
             Tire.IsChecked = butt.Name == Tire.Name;
 
+        }
+
+        private async void AppBarToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            var but = sender as AppBarToggleButton;
+            if(but == null) return;
+            Map.Routes.Clear();
+            AddRoute(but.IsChecked ?? false);
+        }
+
+        private async void AddRoute(bool p)
+        {
+            Busy.IsActive = true;
+            var routeResult = await DataSource.UpdatePhone(p);
+            Busy.IsActive = false;
+            if (!p || routeResult == null || routeResult.Status != MapRouteFinderStatus.Success) return;
+            var viewOfRoute = new MapRouteView(routeResult.Route)
+            {
+                RouteColor = Color.FromArgb(255, 233, 30, 99),
+                OutlineColor = Colors.Transparent
+            };
+
+            Map.Routes.Add(viewOfRoute);
+
+            await Map.TrySetViewBoundsAsync(
+                routeResult.Route.BoundingBox,
+                null,
+                MapAnimationKind.Bow);
+        }
+
+        private async void btCenter_Click(object sender, RoutedEventArgs e)
+        {
+            await Map.TrySetViewAsync(DataSource.Kot.Location);
         }
     }
 }

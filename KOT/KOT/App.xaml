@@ -4,13 +4,18 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:KOT">
 	<Application.Resources>
-		<SolidColorBrush x:Key="LigthPrimeryColor" Color="#FFFFECB3"/>
-		<SolidColorBrush x:Key="PrimeryColor" Color="#FFFFC107"/>
-		<SolidColorBrush x:Key="DarkPrimeryColor" Color="#FFFFA000"/>
-		<SolidColorBrush x:Key="AccentColor" Color="#FFE91E63"/>
-		<SolidColorBrush x:Key="PrimeryText" Color="#FF212121"/>
-		<SolidColorBrush x:Key="SecondaryText" Color="#FF727272"/>
-		<SolidColorBrush x:Key="DividerText" Color="#FFB6B6B6"/>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="Themes/Generic.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+			<SolidColorBrush x:Key="LigthPrimeryColor" Color="#FFFFECB3"/>
+			<SolidColorBrush x:Key="PrimeryColor" Color="#FFFFC107"/>
+			<SolidColorBrush x:Key="DarkPrimeryColor" Color="#FFFFA000"/>
+			<SolidColorBrush x:Key="AccentColor" Color="#FFE91E63"/>
+			<SolidColorBrush x:Key="PrimeryText" Color="#FF212121"/>
+			<SolidColorBrush x:Key="SecondaryText" Color="#FF727272"/>
+			<SolidColorBrush x:Key="DividerText" Color="#FFB6B6B6"/>
+		</ResourceDictionary>
     </Application.Resources>
 
 </Application>

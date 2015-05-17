@@ -1,0 +1,85 @@
+﻿<RadioButton
+    x:Class="KOT.Common.Controls.KotElement"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:KOT.Common.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="43" d:DesignWidth="25"
+     HorizontalAlignment="Center" VerticalAlignment="Center" >
+    <RadioButton.Resources>
+        <!--<SolidColorBrush x:Key="PhoneRadioCheckBoxBrush" Color="Transparent"/>
+        <x:Double x:Key="TextStyleLargeFontSize">18.14</x:Double>
+        <FontFamily x:Key="PhoneFontFamilyNormal">Segoe WP</FontFamily>
+        <Thickness x:Key="CheckBoxAndRadioButtonTextPaddingThickness">8,0,0,0</Thickness>
+        <x:Double x:Key="CheckBoxAndRadioButtonMinWidthSize">0</x:Double>
+        <Style TargetType="RadioButton">
+            <Setter Property="Background" Value="{ThemeResource PhoneRadioCheckBoxBrush}"/>
+            <Setter Property="BorderBrush" Value="{ThemeResource PhoneRadioCheckBoxBorderBrush}"/>
+            <Setter Property="FontSize" Value="{ThemeResource TextStyleLargeFontSize}"/>
+            <Setter Property="FontFamily" Value="{ThemeResource PhoneFontFamilyNormal}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Top"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Padding" Value="{ThemeResource CheckBoxAndRadioButtonTextPaddingThickness}"/>
+            <Setter Property="MinWidth" Value="{ThemeResource CheckBoxAndRadioButtonMinWidthSize}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Grid Background="Transparent" HorizontalAlignment="Left">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="MouseOver"/>
+                                    <VisualState x:Name="PointerOver"/>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <PointerDownThemeAnimation Storyboard.TargetName="Container"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled"/>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="CheckStates">
+                                    <VisualState x:Name="Checked"/>
+                                    <VisualState x:Name="Unchecked"/>
+                                    <VisualState x:Name="Indeterminate"/>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Path Data="M24.5,12.5 C24.5,21.5415 13.4,34.1866 12.5,34.1667 C11.7,34.1866 0.5,21.0357 0.5,12.5 C0.5,5.87258 5.87258,0.5 12.5,0.5 C19.1274,0.5 24.5,5.87258 24.5,12.5 z" Fill="{StaticResource AccentColor}" HorizontalAlignment="Left" Height="35" Stretch="Fill" VerticalAlignment="Top" Width="25" UseLayoutRounding="False"/>
+                            <Ellipse HorizontalAlignment="Left" Height="22" Margin="2,2,0,0" VerticalAlignment="Top" Width="22" Stroke="White" StrokeThickness="2"/>
+                            <Ellipse HorizontalAlignment="Left" Height="4" Margin="0,38,0,0" StrokeThickness="2" VerticalAlignment="Top" Width="25">
+                                <Ellipse.Fill>
+                                    <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5" Opacity="0.9">
+                                        <GradientStop Color="#CC272727" Offset="0.5"/>
+                                        <GradientStop Offset="1"/>
+                                        <GradientStop/>
+                                    </LinearGradientBrush>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>-->
+    </RadioButton.Resources>
+	<RadioButton.Style>
+		<StaticResource ResourceKey="KotRadioButtonStyle"/>
+	</RadioButton.Style>
+
+    <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Collapsed">
+        <Path Data="M24.5,12.5 C24.5,21.5415 13.4,34.1866 12.5,34.1667 C11.7,34.1866 0.5,21.0357 0.5,12.5 C0.5,5.87258 5.87258,0.5 12.5,0.5 C19.1274,0.5 24.5,5.87258 24.5,12.5 z" Fill="{StaticResource AccentColor}" HorizontalAlignment="Left" Height="35" Stretch="Fill" VerticalAlignment="Top" Width="25" UseLayoutRounding="False" Visibility="Collapsed"/>
+        <Ellipse HorizontalAlignment="Left" Height="22" Margin="2,2,0,0" VerticalAlignment="Top" Width="22" Stroke="White" StrokeThickness="2" Visibility="Collapsed"/>
+        <Ellipse HorizontalAlignment="Left" Height="4" Margin="0,38,0,0" StrokeThickness="2" VerticalAlignment="Top" Width="25" Visibility="Collapsed">
+            <Ellipse.Fill>
+                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5" Opacity="0.9">
+                    <GradientStop Color="#CC272727" Offset="0.5"/>
+                    <GradientStop Offset="1"/>
+                    <GradientStop/>
+                </LinearGradientBrush>
+            </Ellipse.Fill>
+        </Ellipse>
+
+    </Grid>
+</RadioButton>
