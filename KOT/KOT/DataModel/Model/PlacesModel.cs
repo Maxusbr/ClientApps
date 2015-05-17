@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 namespace KOT.DataModel.Model
 {
     [JsonObject]
-    class PlacesModel
+    public class PlacesModel
     {
         //Идентификатор
         [JsonProperty(PropertyName = "A")]

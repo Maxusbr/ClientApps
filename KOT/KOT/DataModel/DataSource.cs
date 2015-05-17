@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Controls.Maps;
 using KOT.Common.Controls;
 using KOT.DataModel.Handlers;
 using KOT.DataModel.Model;
+using KOT.DataModel.ViewModel;
 using Newtonsoft.Json;
 
 namespace KOT.DataModel
@@ -31,8 +32,8 @@ namespace KOT.DataModel
             UpdatePositionPhone();
             UpdatePositionKot();
         }
+        public static ObservableCollection<ServicePoint> ServicePoints = new ObservableCollection<ServicePoint>();
 
-        public ObservableCollection<ServiceElement> MapElements = new ObservableCollection<ServiceElement>();
         private readonly KotElement _kot = new KotElement{Location = new Geopoint(new BasicGeoposition { Altitude = 0, Latitude = 55.75, Longitude = 37.62 })};
         private readonly KotElement _phone = new KotElement("PhoneRadioButtonStyle", null){Visibility = Visibility.Collapsed };
 
@@ -43,7 +44,7 @@ namespace KOT.DataModel
 
         public static async void GetMapElements()
         {
-            Instance.MapElements.Clear();
+            ServicePoints.Clear();
             await MapsElementsDataHandler.GetMapElements();
         }
 

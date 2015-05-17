@@ -23,6 +23,8 @@ using KOT.Common;
 // Документацию по шаблону элемента пустой страницы см. по адресу http://go.microsoft.com/fwlink/?LinkID=390556
 using KOT.Common.Controls;
 using KOT.DataModel;
+using KOT.DataModel.Model;
+using KOT.DataModel.ViewModel;
 
 
 namespace KOT
@@ -61,23 +63,26 @@ namespace KOT
             Map.Children.Add(DataSource.Phone);
             Map.Children.Add(DataSource.Kot);
 
-            DataSource.Instance.MapElements.CollectionChanged += MapElements_CollectionChanged;
+            DataSource.ServicePoints.CollectionChanged += ServicePoints_CollectionChanged;
             DataSource.GetMapElements();
             //await AddMapElements();
+            //AddServiceElement(new PlacesModel { Latitude = 557500, Longitude = 376300 });
+
+            MapControls.ItemsSource = DataSource.ServicePoints;
+            
+
         }
 
-        void MapElements_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        async void ServicePoints_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if(e.Action == NotifyCollectionChangedAction.Add)
-                foreach (var item in e.NewItems)
-                    Map.Children.Add(item as RadioButton);
-            if(e.Action == NotifyCollectionChangedAction.Remove)
-                foreach (var item in e.NewItems)
-                    Map.Children.Remove(item as RadioButton);
-            if(e.Action == NotifyCollectionChangedAction.Reset)
-                foreach (var item in Map.Children.Where(o => o is ServiceElement).ToList())
-                    Map.Children.Remove(item);
+            var positions = DataSource.ServicePoints.Select(el => el.Location.Position).ToList();
+            positions.Add(DataSource.Kot.Location.Position);
+            var box = GeoboundingBox.TryCompute(positions);
+
+            //Map.Center = new Geopoint(box.Center);
+            await Map.TrySetViewBoundsAsync(box, null, MapAnimationKind.Default);
         }
+
 
         public ObservableDictionary DefaultViewModel
         {
@@ -152,6 +157,24 @@ namespace KOT
         private async void btCenter_Click(object sender, RoutedEventArgs e)
         {
             await Map.TrySetViewAsync(DataSource.Kot.Location);
+        }
+
+        private void AddServiceElement(PlacesModel model)
+        {
+            var pin = new ServiceElement("", new Geopoint(new BasicGeoposition
+            {
+                Altitude = 0,
+                Latitude = model.Latitude / 10000.0,
+                Longitude = model.Longitude / 10000.0
+            })) { DataContext = model };
+            pin.Click += pin_Click;
+            MapControl.SetLocation(pin, pin.Location);
+            Map.Children.Add(pin);
+        }
+
+        private void pin_Click(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }

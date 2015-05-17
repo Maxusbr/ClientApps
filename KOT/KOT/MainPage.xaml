@@ -6,6 +6,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
     xmlns:Controls="using:KOT.Common.Controls"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     x:Class="KOT.MainPage"
     mc:Ignorable="d" RequestedTheme="Light"
     DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Mode=Self}}">
@@ -372,7 +374,17 @@
 			<RowDefinition Height="66"/>
 			<RowDefinition/>
 		</Grid.RowDefinitions>
-        <maps:MapControl x:Name="Map" MapServiceToken="{Binding ServiceToken}" Center="{Binding Center, Mode=TwoWay}" ZoomLevel="14" Grid.Row="1"/>
+        <maps:MapControl x:Name="Map" MapServiceToken="{Binding ServiceToken}" Center="{Binding Center, Mode=TwoWay}" ZoomLevel="14" Grid.Row="1">
+            <maps:MapItemsControl x:Name="MapControls" ItemsSource="{Binding Services}">
+                <maps:MapItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Controls:ServiceElement maps:MapControl.Location="{Binding Location}" 
+                                                 maps:MapControl.NormalizedAnchorPoint="{Binding NAP}"
+                                                 Style="{Binding StylePoint}"/>
+                    </DataTemplate>
+                </maps:MapItemsControl.ItemTemplate>
+            </maps:MapItemsControl>
+        </maps:MapControl>
 		<Border Margin="0,0,0,-10">
 			<Border.Background>
 				<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">

@@ -171,6 +171,7 @@
     <Compile Include="DataModel\Model\TripAdvisorModel.cs" />
     <Compile Include="DataModel\Model\WorkType.cs" />
     <Compile Include="DataModel\SampleDataSource.cs" />
+    <Compile Include="DataModel\ViewModel\ServicePoint.cs" />
     <Compile Include="ItemPage.xaml.cs">
       <DependentUpon>ItemPage.xaml</DependentUpon>
     </Compile>

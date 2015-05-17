@@ -71,7 +71,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="RadioButton">
-                    <Canvas Background="Transparent" HorizontalAlignment="Left" Height="43" Width="25" Margin="-12.5,-40,0,0">
+                    <Canvas Background="Transparent" HorizontalAlignment="Left" Height="43" Width="25" >
                 		<VisualStateManager.VisualStateGroups>
                 			<VisualStateGroup x:Name="CommonStates">
                 				<VisualState x:Name="Normal"/>
@@ -127,7 +127,7 @@
     	<Setter Property="Template">
     		<Setter.Value>
     			<ControlTemplate TargetType="RadioButton">
-                    <Canvas Background="Transparent" HorizontalAlignment="Left" Height="43" Width="25" Margin="-12.5,-40,0,0">
+                    <Canvas Background="Transparent" HorizontalAlignment="Left" Height="43" Width="25">
     					<VisualStateManager.VisualStateGroups>
     						<VisualStateGroup x:Name="CommonStates">
     							<VisualState x:Name="Normal"/>
@@ -183,45 +183,44 @@
     	<Setter Property="Template">
     		<Setter.Value>
     			<ControlTemplate TargetType="RadioButton">
-                    <Canvas Background="Transparent" HorizontalAlignment="Left" Height="43" Width="25" Margin="-12.5,-40,0,0">
-    					<VisualStateManager.VisualStateGroups>
-    						<VisualStateGroup x:Name="CommonStates">
-    							<VisualState x:Name="Normal"/>
-    							<VisualState x:Name="MouseOver"/>
-    							<VisualState x:Name="PointerOver"/>
-    							<VisualState x:Name="Pressed"/>
-    							<VisualState x:Name="Disabled"/>
-    						</VisualStateGroup>
-    						<VisualStateGroup x:Name="CheckStates">
-    							<VisualState x:Name="Checked">
-    								<Storyboard>
-    									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill)" Storyboard.TargetName="path">
-    										<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource AccentColor}"/>
-    									</ObjectAnimationUsingKeyFrames>
-    									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill)" Storyboard.TargetName="path1">
-    										<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource AccentColor}"/>
-    									</ObjectAnimationUsingKeyFrames>
-    								</Storyboard>
-    							</VisualState>
-    							<VisualState x:Name="Unchecked"/>
-    							<VisualState x:Name="Indeterminate"/>
-    						</VisualStateGroup>
-    					</VisualStateManager.VisualStateGroups>
-    					<Path x:Name="path" Data="M24.5,12.5 C24.5,21.5415 13.4,34.1866 12.5,34.1667 C11.7,34.1866 0.5,21.0357 0.5,12.5 C0.5,5.87258 5.87258,0.5 12.5,0.5 C19.1274,0.5 24.5,5.87258 24.5,12.5 z" Fill="{StaticResource SecondaryText}" HorizontalAlignment="Left" Height="35" Stretch="Fill" VerticalAlignment="Top" Width="25" UseLayoutRounding="False"/>
-    					<Ellipse x:Name="ellipse" HorizontalAlignment="Left" Height="22" VerticalAlignment="Top" Width="22" Fill="White" Canvas.Left="1.5" Canvas.Top="2"/>
-    					<Ellipse HorizontalAlignment="Left" Height="4" StrokeThickness="2" VerticalAlignment="Top" Width="25" Canvas.Top="38">
-    						<Ellipse.Fill>
-    							<LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5" Opacity="0.9">
-    								<GradientStop Color="#CC272727" Offset="0.5"/>
-    								<GradientStop Offset="1"/>
-    								<GradientStop/>
-    							</LinearGradientBrush>
-    						</Ellipse.Fill>
-    					</Ellipse>
-    					<Path x:Name="path1" Data="M4.26562,16.001 C4.0625,16.001 3.88281,16.074 3.72656,16.2198 C3.57552,16.3708 3.5,16.5505 3.5,16.7589 C3.5,16.8578 3.51953,16.9542 3.55859,17.0479 C3.59766,17.1417 3.65365,17.225 3.72656,17.2979 C3.80469,17.376 3.89062,17.4333 3.98438,17.4698 C4.07812,17.5063 4.17448,17.5245 4.27344,17.5245 C4.48177,17.5245 4.65885,17.4516 4.80469,17.3057 C4.8776,17.2328 4.93229,17.1495 4.96875,17.0557 C5.00521,16.962 5.02344,16.8656 5.02344,16.7667 C5.02344,16.6677 5.00521,16.5714 4.96875,16.4776 C4.93229,16.3839 4.8776,16.3005 4.80469,16.2276 C4.65365,16.0766 4.47396,16.001 4.26562,16.001 z M14.2266,3.18073 C14.3724,3.18073 14.5143,3.19245 14.6523,3.21589 C14.7904,3.23932 14.9115,3.26406 15.0156,3.2901 C15.1406,3.32135 15.2578,3.35781 15.3672,3.39948 L15.375,3.58698 L13.0781,5.82135 L13.5156,7.74323 L15.4531,8.12604 L17.7344,5.89948 L17.9062,5.87604 C17.9583,5.99583 18.0052,6.12344 18.0469,6.25885 C18.0833,6.37344 18.1159,6.50234 18.1445,6.64557 C18.1732,6.7888 18.1875,6.93073 18.1875,7.07135 C18.1875,7.61302 18.0807,8.11823 17.8672,8.58698 C17.6536,9.05573 17.3516,9.46589 16.9609,9.81745 C16.5703,10.169 16.1003,10.4477 15.5508,10.6534 C15.0013,10.8591 14.3906,10.9672 13.7188,10.9776 C13.599,10.9776 13.4818,10.9711 13.3672,10.9581 C13.2526,10.9451 13.1328,10.9177 13.0078,10.876 L5.46094,18.2354 C5.2526,18.4385 5.04427,18.5844 4.83594,18.6729 C4.6276,18.7615 4.41927,18.8057 4.21094,18.8057 C3.96615,18.8057 3.73047,18.751 3.50391,18.6417 C3.27734,18.5323 3.06771,18.3839 2.875,18.1964 C2.67188,17.9984 2.5026,17.7758 2.36719,17.5284 C2.23177,17.281 2.16406,17.0219 2.16406,16.751 C2.16406,16.5531 2.21615,16.3526 2.32031,16.1495 C2.42448,15.9464 2.5599,15.751 2.72656,15.5635 L10.2109,8.21198 L10.2109,7.07917 C10.2109,6.5375 10.3151,6.02969 10.5234,5.55573 C10.7318,5.08177 11.0169,4.66901 11.3789,4.31745 C11.7409,3.96589 12.1667,3.68854 12.6562,3.48542 C13.1458,3.28229 13.6693,3.18073 14.2266,3.18073 z" Fill="{StaticResource PrimeryText}" Height="16" Canvas.Left="4.5" RenderTransformOrigin="0.5,0.5" Stretch="Uniform" Canvas.Top="4.458" UseLayoutRounding="False" Width="16">
-    					</Path>
-    				</Canvas>
-    			</ControlTemplate>
+                    <Grid Background="Transparent" HorizontalAlignment="Left" Height="43" Width="25">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="MouseOver"/>
+                                <VisualState x:Name="PointerOver"/>
+                                <VisualState x:Name="Pressed"/>
+                                <VisualState x:Name="Disabled"/>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="CheckStates">
+                                <VisualState x:Name="Checked">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill)" Storyboard.TargetName="path">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource AccentColor}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill)" Storyboard.TargetName="path1">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource AccentColor}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unchecked"/>
+                                <VisualState x:Name="Indeterminate"/>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Path x:Name="path" Data="M24.5,12.5 C24.5,21.5415 13.4,34.1866 12.5,34.1667 C11.7,34.1866 0.5,21.0357 0.5,12.5 C0.5,5.87258 5.87258,0.5 12.5,0.5 C19.1274,0.5 24.5,5.87258 24.5,12.5 z" Fill="{StaticResource SecondaryText}" HorizontalAlignment="Left" Height="35" Stretch="Fill" VerticalAlignment="Top" Width="25" UseLayoutRounding="False"/>
+                        <Ellipse x:Name="ellipse" HorizontalAlignment="Left" Height="22" VerticalAlignment="Top" Width="22" Fill="White" Margin="2,2,0,0"/>
+                        <Ellipse HorizontalAlignment="Left" Height="4" StrokeThickness="2" VerticalAlignment="Top" Width="25" Margin="0,38,0,0">
+                            <Ellipse.Fill>
+                                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5" Opacity="0.9">
+                                    <GradientStop Color="#CC272727" Offset="0.5"/>
+                                    <GradientStop Offset="1"/>
+                                    <GradientStop/>
+                                </LinearGradientBrush>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                        <Path x:Name="path1" Data="M4.26562,16.001 C4.0625,16.001 3.88281,16.074 3.72656,16.2198 C3.57552,16.3708 3.5,16.5505 3.5,16.7589 C3.5,16.8578 3.51953,16.9542 3.55859,17.0479 C3.59766,17.1417 3.65365,17.225 3.72656,17.2979 C3.80469,17.376 3.89062,17.4333 3.98438,17.4698 C4.07812,17.5063 4.17448,17.5245 4.27344,17.5245 C4.48177,17.5245 4.65885,17.4516 4.80469,17.3057 C4.8776,17.2328 4.93229,17.1495 4.96875,17.0557 C5.00521,16.962 5.02344,16.8656 5.02344,16.7667 C5.02344,16.6677 5.00521,16.5714 4.96875,16.4776 C4.93229,16.3839 4.8776,16.3005 4.80469,16.2276 C4.65365,16.0766 4.47396,16.001 4.26562,16.001 z M14.2266,3.18073 C14.3724,3.18073 14.5143,3.19245 14.6523,3.21589 C14.7904,3.23932 14.9115,3.26406 15.0156,3.2901 C15.1406,3.32135 15.2578,3.35781 15.3672,3.39948 L15.375,3.58698 L13.0781,5.82135 L13.5156,7.74323 L15.4531,8.12604 L17.7344,5.89948 L17.9062,5.87604 C17.9583,5.99583 18.0052,6.12344 18.0469,6.25885 C18.0833,6.37344 18.1159,6.50234 18.1445,6.64557 C18.1732,6.7888 18.1875,6.93073 18.1875,7.07135 C18.1875,7.61302 18.0807,8.11823 17.8672,8.58698 C17.6536,9.05573 17.3516,9.46589 16.9609,9.81745 C16.5703,10.169 16.1003,10.4477 15.5508,10.6534 C15.0013,10.8591 14.3906,10.9672 13.7188,10.9776 C13.599,10.9776 13.4818,10.9711 13.3672,10.9581 C13.2526,10.9451 13.1328,10.9177 13.0078,10.876 L5.46094,18.2354 C5.2526,18.4385 5.04427,18.5844 4.83594,18.6729 C4.6276,18.7615 4.41927,18.8057 4.21094,18.8057 C3.96615,18.8057 3.73047,18.751 3.50391,18.6417 C3.27734,18.5323 3.06771,18.3839 2.875,18.1964 C2.67188,17.9984 2.5026,17.7758 2.36719,17.5284 C2.23177,17.281 2.16406,17.0219 2.16406,16.751 C2.16406,16.5531 2.21615,16.3526 2.32031,16.1495 C2.42448,15.9464 2.5599,15.751 2.72656,15.5635 L10.2109,8.21198 L10.2109,7.07917 C10.2109,6.5375 10.3151,6.02969 10.5234,5.55573 C10.7318,5.08177 11.0169,4.66901 11.3789,4.31745 C11.7409,3.96589 12.1667,3.68854 12.6562,3.48542 C13.1458,3.28229 13.6693,3.18073 14.2266,3.18073 z" Fill="{StaticResource PrimeryText}" RenderTransformOrigin="0.5,0.5" Stretch="Uniform" UseLayoutRounding="False" Margin="4.5,4.458,4.5,22.542"/>
+                    </Grid>
+                </ControlTemplate>
     		</Setter.Value>
     	</Setter>
     </Style>
@@ -239,7 +238,7 @@
     	<Setter Property="Template">
     		<Setter.Value>
     			<ControlTemplate TargetType="RadioButton">
-                    <Canvas Background="Transparent" HorizontalAlignment="Left" Height="43" Width="25" Margin="-12.5,-40,0,0">
+                    <Canvas Background="Transparent" HorizontalAlignment="Left" Height="43" Width="25">
     					<VisualStateManager.VisualStateGroups>
     						<VisualStateGroup x:Name="CommonStates">
     							<VisualState x:Name="Normal"/>

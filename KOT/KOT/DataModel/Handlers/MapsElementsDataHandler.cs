@@ -7,6 +7,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Maps;
 using KOT.Common.Controls;
 using KOT.DataModel.Model;
+using KOT.DataModel.ViewModel;
 
 namespace KOT.DataModel.Handlers
 {
@@ -44,8 +45,6 @@ namespace KOT.DataModel.Handlers
             AddWashElement(new PlacesModel { Latitude = 557400, Longitude = 376300 });
             AddGasElement(new PlacesModel { Latitude = 557500, Longitude = 376100 });
             AddShopElement(new PlacesModel { Latitude = 557600, Longitude = 376100 });       
-     
-             
         }
 
         private void AddElements(PlacesModel model)
@@ -69,52 +68,30 @@ namespace KOT.DataModel.Handlers
 
         private void AddGasElement(PlacesModel model)
         {
-            var pin = new ServiceElement("GasRadioButtonStyle", new Geopoint(new BasicGeoposition
-            {
-                Altitude = 0, Latitude = model.Latitude / 10000.0, Longitude = model.Longitude / 10000.0
-            })) { DataContext = model};
-            pin.Click += pin_Click;
-            MapControl.SetLocation(pin, pin.Location);
-            DataSource.Instance.MapElements.Add(pin);
+            var pin = new ServicePoint(model, "GasRadioButtonStyle");
+            //pin.Click += pin_Click;
+            DataSource.ServicePoints.Add(pin);
         }
 
         private void AddWashElement(PlacesModel model)
         {
-            var pin = new ServiceElement("WashRadioButtonStyle", new Geopoint(new BasicGeoposition
-            {
-                Altitude = 0,
-                Latitude = model.Latitude / 10000.0,
-                Longitude = model.Longitude / 10000.0
-            })) { DataContext = model };
-            pin.Click += pin_Click;
-            MapControl.SetLocation(pin, pin.Location);
-            DataSource.Instance.MapElements.Add(pin);
+            var pin = new ServicePoint(model, "WashRadioButtonStyle");
+            //pin.Click += pin_Click;
+            DataSource.ServicePoints.Add(pin);
         }
 
         private void AddShopElement(PlacesModel model)
         {
-            var pin = new ServiceElement("ShopRadioButtonStyle", new Geopoint(new BasicGeoposition
-            {
-                Altitude = 0,
-                Latitude = model.Latitude / 10000.0,
-                Longitude = model.Longitude / 10000.0
-            })) { DataContext = model };
-            pin.Click += pin_Click;
-            MapControl.SetLocation(pin, pin.Location);
-            DataSource.Instance.MapElements.Add(pin);
+            var pin = new ServicePoint(model, "ShopRadioButtonStyle");
+            //pin.Click += pin_Click;
+            DataSource.ServicePoints.Add(pin);
         }
 
         private void AddServiceElement(PlacesModel model)
         {
-            var pin = new ServiceElement("", new Geopoint(new BasicGeoposition
-            {
-                Altitude = 0,
-                Latitude = model.Latitude / 10000.0,
-                Longitude = model.Longitude / 10000.0
-            })) { DataContext = model };
-            pin.Click += pin_Click;
-            MapControl.SetLocation(pin, pin.Location);
-            DataSource.Instance.MapElements.Add(pin);
+            var pin = new ServicePoint(model);
+            //pin.Click += pin_Click;
+            DataSource.ServicePoints.Add(pin);
         }
         void pin_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
