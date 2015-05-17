@@ -473,4 +473,10 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
+    <Style x:Key="TextHeaderStyle" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Margin" Value="5"/>
+    </Style>
 </ResourceDictionary>

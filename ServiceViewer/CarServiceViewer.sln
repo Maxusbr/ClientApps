@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTCDev", "..\Engine\DTCDev\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTCDev.Client.Window", "..\Engine\DTCDev.Client.Window\DTCDev.Client.Window.csproj", "{D416393C-1DAD-484C-80A7-3CD25054B434}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTCDev.Models.Service", "..\Models\DTCDev.Models.Service\DTCDev.Models.Service.csproj", "{2B9978DB-B59C-4CA6-B4E4-329DC1F30926}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,6 +87,10 @@ Global
 		{D416393C-1DAD-484C-80A7-3CD25054B434}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D416393C-1DAD-484C-80A7-3CD25054B434}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D416393C-1DAD-484C-80A7-3CD25054B434}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B9978DB-B59C-4CA6-B4E4-329DC1F30926}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B9978DB-B59C-4CA6-B4E4-329DC1F30926}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B9978DB-B59C-4CA6-B4E4-329DC1F30926}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B9978DB-B59C-4CA6-B4E4-329DC1F30926}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -101,5 +107,6 @@ Global
 		{CB3B751C-A41C-47D2-AECC-BADCD375CFD6} = {96B1C959-ED7B-4824-B786-948F30490BAA}
 		{D839AA11-C210-446B-A41A-65C6020C4A33} = {96B1C959-ED7B-4824-B786-948F30490BAA}
 		{D416393C-1DAD-484C-80A7-3CD25054B434} = {96B1C959-ED7B-4824-B786-948F30490BAA}
+		{2B9978DB-B59C-4CA6-B4E4-329DC1F30926} = {96B1C959-ED7B-4824-B786-948F30490BAA}
 	EndGlobalSection
 EndGlobal

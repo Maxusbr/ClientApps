@@ -6,7 +6,7 @@
          
     	<ResourceDictionary>
     		<ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/DTCDev.Client.Cars.Service.Engine;component/Controls/Assets/Resource.xaml"/>
+                <ResourceDictionary Source="/DTCDev.Client.Cars.Service;component/Assets/Resource.xaml"/>
                 <ResourceDictionary Source="/DTCDev.Client.Cars.Service;component/Assets/Themes/LightTheme/LightTemeStyles.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />

@@ -1,5 +1,5 @@
-﻿<UserControl
-	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<UserControl x:Class="DTCDev.Client.Cars.Service.Controls.Settings.PostSettings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -7,7 +7,6 @@
 	xmlns:calendarControls="clr-namespace:DTCDev.Client.Cars.Service.Controls.CalendarControls"
 	xmlns:Settings="clr-namespace:DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings;assembly=DTCDev.Client.Cars.Service.Engine"
 	mc:Ignorable="d"
-	x:Class="DTCDev.Client.Cars.Service.SlidePostSettings"
 	x:Name="UserControl"
 	d:DesignWidth="640" d:DesignHeight="450">
 
@@ -30,7 +29,7 @@
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock TextWrapping="Wrap" Text="Настройка постов" Grid.ColumnSpan="4" Margin="10"/>
+        <TextBlock TextWrapping="Wrap" Text="Настройка постов" Style="{DynamicResource TextHeaderStyle}" Grid.ColumnSpan="4" Margin="10"/>
         <ListBox Grid.Row="1" MinWidth="200" Margin="10,0,10,40" Grid.RowSpan="4" Grid.Column="0"  DisplayMemberPath="DisplayName"
                  ItemsSource="{Binding ListPost}" SelectedItem="{Binding SelectedPost, Mode=TwoWay}"/>
         <Border Style="{DynamicResource borderBlueDeviderStyle}" Width="2" Grid.Row="1" Margin="20,0" Grid.RowSpan="4" Grid.Column="1" />

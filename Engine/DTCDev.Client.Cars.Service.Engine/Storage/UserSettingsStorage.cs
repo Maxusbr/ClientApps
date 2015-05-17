@@ -54,7 +54,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Storage
 
         void Instance_UserDataLoadComplete(object sender, EventArgs e)
         {
-            UserSettings.PersonModel = PersonalHandler.Instance.Model;
+            //UserSettings.PersonModel = PersonalHandler.Instance.Model;
         }
 
 

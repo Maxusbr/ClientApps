@@ -91,7 +91,6 @@
     <Compile Include="Controls\ViewModels\Settings\AccessSettingsViewModel.cs" />
     <Compile Include="Controls\ViewModels\Settings\PostViewModel.cs" />
     <Compile Include="Controls\ViewModels\Settings\SettingsPersonalViewModel.cs" />
-    <Compile Include="Controls\ViewModels\Settings\SettingsViewModel.cs" />
     <Compile Include="Controls\ViewModels\Settings\SettingsWorkDicViewModel.cs" />
     <Compile Include="Controls\ViewModels\Settings\SettingsWorksViewModel.cs" />
     <Compile Include="Controls\ViewModels\Settings\SlidePostViewModel.cs" />
@@ -104,24 +103,7 @@
     <Compile Include="Controls\ViewModels\Slides\SlideHomeViewModel.cs" />
     <Compile Include="Controls\ViewModels\Slides\SlideOrdersListViewModel.cs" />
     <Compile Include="Controls\ViewModels\Slides\SlideStartViewModel.cs" />
-    <Compile Include="Controls\View\AddNewCarView.xaml.cs">
-      <DependentUpon>AddNewCarView.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Controls\View\CarButtonsView.xaml.cs">
-      <DependentUpon>CarButtonsView.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Controls\View\LoginView.xaml.cs">
-      <DependentUpon>LoginView.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Controls\View\Reports\ReportsView.xaml.cs">
-      <DependentUpon>ReportsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\View\ShowHistoryView.xaml.cs">
-      <DependentUpon>ShowHistoryView.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Controls\View\Class1.cs" />
     <Compile Include="Handlers\CarBaseHandler.cs" />
     <Compile Include="Handlers\CarsHandler.cs" />
     <Compile Include="Handlers\ClientsHandler.cs" />
@@ -157,6 +139,10 @@
       <Project>{17d29bc2-3bde-4104-a96b-db91c1dfa5e7}</Project>
       <Name>DTCDev.Models.CarsSending</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Models\DTCDev.Models.Service\DTCDev.Models.Service.csproj">
+      <Project>{2b9978db-b59c-4ca6-b4e4-329dc1f30926}</Project>
+      <Name>DTCDev.Models.Service</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Models\DTCDev.Models\DTCDev.Models.csproj">
       <Project>{ddd0ab63-faf8-4a78-9369-2481e912e641}</Project>
       <Name>DTCDev.Models</Name>
@@ -167,38 +153,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\Assets\Resource.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\View\AddNewCarView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\View\CarButtonsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\View\LoginView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\View\Reports\ReportsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\View\ShowHistoryView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Resources\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controls\Imgs\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Resources\Entypo.ttf" />

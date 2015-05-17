@@ -4,21 +4,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:Service="clr-namespace:DTCDev.Client.Cars.Service" x:Class="DTCDev.Client.Cars.Service.Slides.Settings.SlideSettingsPersonal" 
-             mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="1000"  >
+             xmlns:Post="clr-namespace:DTCDev.Client.Cars.Service.Controls.Settings"         
+    mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="1200"  >
     <Grid>
         <Grid Margin="20">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="400"/>
                 <ColumnDefinition Width="40"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="54"/>
-                <RowDefinition Height="120"/>
+                <RowDefinition Height="0"/>
+                <RowDefinition Height="40"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <TextBlock Text="{Binding Login}" Grid.ColumnSpan="3"/>
             <Grid Grid.Row="1" Grid.ColumnSpan="3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="500"/>
@@ -31,90 +31,47 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="Название компании" Margin="10"/>
-                    <TextBlock Text="Телефоны" Grid.Row="1" Margin="10"/>
-                    <TextBlock Text="Стоимость н/часа" Grid.Row="2" Margin="10"/>
+                    <TextBlock Text="Название компании" Margin="10"  Style="{DynamicResource TextHeaderStyle}"/>
                     <TextBlock Text="{Binding CompanyName}" Margin="60,10,10,10" Grid.Column="1"/>
-                    <TextBlock Text="{Binding CompnayPhone}" Grid.Row="1" Margin="60,10,10,10" Grid.Column="1"/>
-                    <TextBlock Text="{Binding CompanyCost}" Grid.Row="2" Margin="60,10,10,10" Grid.Column="1"/>
                     <Border Background="White" Opacity="0" Grid.Column="1" MouseEnter="Border_MouseEnter" MouseLeave="Border_MouseLeave"/>
-                    <Border Background="White" Opacity="0" Grid.Column="1" Grid.Row="1" MouseEnter="Border_MouseEnter_1" MouseLeave="Border_MouseLeave_1"/>
-                    <Border Background="White" Opacity="0" Grid.Column="1" Grid.Row="2" MouseEnter="Border_MouseEnter_2" MouseLeave="Border_MouseLeave_2"/>
-                    <Button Visibility="Collapsed" x:Name="btnEditCompany" Command="{Binding EditNameCommand}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="40" Height="40"  MouseEnter="Border_MouseEnter" MouseLeave="Border_MouseLeave">
+                    <Button Visibility="Collapsed" x:Name="btnEditCompany" Command="{Binding EditNameCommand}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="32" Height="32"  MouseEnter="Border_MouseEnter" MouseLeave="Border_MouseLeave">
                         <Image Source="/DTCDev.Client.Cars.Service;component/Assets/Images/pencil.png"/>
                     </Button>
-                    <Button Visibility="Collapsed" x:Name="btnEditPhones" Command="{Binding EditPhonesCommand}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="40" Height="40" MouseEnter="Border_MouseEnter_1" MouseLeave="Border_MouseLeave_1">
+                    <Button Visibility="Collapsed" x:Name="btnEditPhones" Command="{Binding EditPhonesCommand}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="32" Height="32" MouseEnter="Border_MouseEnter_1" MouseLeave="Border_MouseLeave_1">
                         <Image Source="/DTCDev.Client.Cars.Service;component/Assets/Images/pencil.png"/>
                     </Button>
-                    <Button Visibility="Collapsed" x:Name="btnEditCost" Command="{Binding EditCostCommand}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Width="40" Height="40" MouseEnter="Border_MouseEnter_2" MouseLeave="Border_MouseLeave_2">
+                    <Button Visibility="Collapsed" x:Name="btnEditCost" Command="{Binding EditCostCommand}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Left" Width="32" Height="32" MouseEnter="Border_MouseEnter_2" MouseLeave="Border_MouseLeave_2">
                         <Image Source="/DTCDev.Client.Cars.Service;component/Assets/Images/pencil.png"/>
                     </Button>
                     <Grid x:Name="grdEditName" Grid.Column="1" Background="White" Visibility="{Binding VisEditName}">
                         <TextBox Margin="60,5,5,5" Text="{Binding CompanyEditedName, Mode=TwoWay}"/>
-                        <Button Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="40" Height="40" Command="{Binding SaveNameCommand}">
+                        <Button Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="32" Height="32" Command="{Binding SaveNameCommand}">
                             <Image Source="/DTCDev.Client.Cars.Service;component/Assets/Images/save.png"/>
                         </Button>
                     </Grid>
-                    <Grid x:Name="grdEditPhones" Grid.Column="1" Background="White" Grid.Row="1" Visibility="{Binding VisEditPhone}">
-                        <TextBox Margin="60,5,5,5" Text="{Binding CompnayEditedPhone, Mode=TwoWay}"/>
-                        <Button Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="40" Height="40" Command="{Binding SavePhonesCommand}">
-                            <Image Source="/DTCDev.Client.Cars.Service;component/Assets/Images/save.png"/>
-                        </Button>
-                    </Grid>
-                    <Grid x:Name="grdEditCost" Grid.Column="1" Background="White" Grid.Row="2" Visibility="{Binding VisEditCost}">
-                        <TextBox Margin="60,5,5,5" Text="{Binding CompanyEditedCost, Mode=TwoWay}"/>
-                        <Button Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="40" Height="40" Command="{Binding SaveCostCommand}">
-                            <Image Source="/DTCDev.Client.Cars.Service;component/Assets/Images/save.png"/>
-                        </Button>
-                    </Grid>
-                </Grid>
-                <Grid Grid.Column="1" Margin="40,0,20,0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="50"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Text="Адрес:" Margin="10"/>
-                    <TextBlock Text="{Binding Adress}" Grid.Row="1" Margin="10" TextWrapping="Wrap"/>
-                    <Border x:Name="brdrAdrEditor" Grid.RowSpan="2" Opacity="0" Background="White" MouseEnter="brdrAdrEditor_MouseEnter" MouseLeave="brdrAdrEditor_MouseLeave"/>
-                    <Button Visibility="Collapsed" x:Name="btnEditAdress" Command="{Binding EditPhonesCommand}" VerticalAlignment="Center" HorizontalAlignment="Right" Width="40" Height="40"  MouseEnter="brdrAdrEditor_MouseEnter" MouseLeave="brdrAdrEditor_MouseLeave">
-                        <Image Source="/DTCDev.Client.Cars.Service;component/Assets/Images/pencil.png"/>
-                    </Button>
                 </Grid>
             </Grid>
-            <Grid Grid.Row="2" Margin="0,20,0,0">
+            <Grid Grid.Row="2" >
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
                     <RowDefinition Height="40"/>
                     <RowDefinition/>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="100"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Мастера-приемщики" FontSize="14" Margin="10"/>
-                <ListBox Grid.Row="1" ItemsSource="{Binding Masters}" SelectedItem="{Binding SelectedMaster, Mode=TwoWay}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="5">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <TextBlock TextWrapping="Wrap" Text="{Binding Name}" Margin="2"/>
-                                <TextBlock Grid.Row="1" FontStyle="Italic" Text="{Binding Phone}" Margin="2"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-                <TextBlock Text="Имя" Margin="0,10" Grid.Row="2"/>
-                <TextBlock Text="Тел." Margin="0,10" Grid.Row="3"/>
-                <TextBox Margin="50,5,0,5" Grid.Row="2" Text="{Binding MasterName, Mode=TwoWay}"/>
-                <TextBox Margin="50,5,0,5" Grid.Row="3" Text="{Binding MasterPhone, Mode=TwoWay}"/>
-                <Button Grid.Row="4" Content="{Binding ButtonName}" Margin="0,5" Command="{Binding SaveMasterChangesCommand}"/>
+                <TextBlock Text="Подразделения" Style="{DynamicResource TextHeaderStyle}" Grid.Row="1"/>
+                <DataGrid Grid.Row="2" AutoGenerateColumns="False" ItemsSource="{Binding Path=Departments}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Название" Binding="{Binding Path=Name}" IsReadOnly="True" Width="*"/>
+                        <DataGridTextColumn Header="Открыто, с" Binding="{Binding Path=From}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="По" Binding="{Binding Path=To}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="н/ч, руб" Binding="{Binding Path=NHCost}" IsReadOnly="True"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Button Grid.Row="3" Content="Добавить подразделение"/>
             </Grid>
-            <Border Style="{DynamicResource borderBlueDeviderStyle}" Width="2" Grid.Row="2" Grid.Column="1" Margin="0,20,0,0" />
-            <Service:SlidePostSettings Grid.Row="2" Grid.Column="2" Margin="0,20,0,0" />
+            <Border Style="{DynamicResource borderBlueDeviderStyle}" Grid.Row="2" Grid.Column="1" Margin="19,20,19,0" />
+            <Post:PostSettings Grid.Row="2" Grid.Column="2" Margin="0,20,0,0" />
         </Grid>
     </Grid>
 </UserControl>
