@@ -106,6 +106,11 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             SendRequest("UJ");
         }
 
+        public void EditDepartment(ServiceInfoDataModel.DepModel model)
+        {
+            SendRequest("UK" + JsonConvert.SerializeObject(model));
+        }
+
         
 
         private void SendRequest(string req)
@@ -144,6 +149,11 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                 case 'h':
                 case 'H':
                     ConvertCurrentMaster(row);
+                    break;
+                case 'k':
+                case 'K':
+                    //after add|edit department refresh settings model
+                    GetUserData();
                     break;
             }
         }

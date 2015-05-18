@@ -57,10 +57,15 @@
                     <RowDefinition Height="20"/>
                     <RowDefinition Height="40"/>
                     <RowDefinition/>
-                    <RowDefinition Height="100"/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="Подразделения" Style="{DynamicResource TextHeaderStyle}" Grid.Row="1"/>
-                <DataGrid Grid.Row="2" AutoGenerateColumns="False" ItemsSource="{Binding Path=Departments}">
+                <Button Command="{Binding Path=NewDepCommand}" Grid.Row="1" Margin="4" HorizontalAlignment="Right">
+                    <Image Source="/DTCDev.Client.Cars.Service;component/Assets/Images/add.png"/>
+                </Button>
+                <Button Command="{Binding Path=EditDepCommand}" Grid.Row="1" Margin="4,4,44,4" HorizontalAlignment="Right" Visibility="{Binding Path=VisEnableEdit}">
+                    <Image Source="/DTCDev.Client.Cars.Service;component/Assets/Images/pencil.png"/>  
+                </Button>
+                <DataGrid Grid.Row="2" AutoGenerateColumns="False" ItemsSource="{Binding Path=Departments}" SelectedItem="{Binding Path=SelectedDepartment, Mode=TwoWay}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Название" Binding="{Binding Path=Name}" IsReadOnly="True" Width="*"/>
                         <DataGridTextColumn Header="Открыто, с" Binding="{Binding Path=From}" IsReadOnly="True"/>
@@ -68,10 +73,48 @@
                         <DataGridTextColumn Header="н/ч, руб" Binding="{Binding Path=NHCost}" IsReadOnly="True"/>
                     </DataGrid.Columns>
                 </DataGrid>
-                <Button Grid.Row="3" Content="Добавить подразделение"/>
+            </Grid>
+            <!--<Grid Grid.Row="2" Background="White" Visibility="Collapsed">-->
+            <Grid Grid.Row="2" Background="White" Visibility="{Binding Path=VisAddDep}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="187*"/>
+                    <ColumnDefinition Width="213*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Button Command="{Binding Path=BackCommand}" Grid.Row="1"  Width="32" Height="32" Margin="4" HorizontalAlignment="Left">
+                    <Image Source="/DTCDev.Client.Cars.Service;component/Assets/Images/left.png"/>
+                </Button>
+                <TextBlock Grid.Row="1" Margin="50,10" Style="{DynamicResource TextHeaderStyle}" Text="Добавить подразделение" Grid.ColumnSpan="2"/>
+                <TextBlock Grid.Row="3" Text="Название" Margin="7"/>
+                <TextBlock Grid.Row="4" Text="Время работы, с" Margin="7"/>
+                <TextBlock Grid.Row="5" Text="Время работы, по" Margin="7"/>
+                <TextBlock Grid.Row="6" Text="Телефоны" Margin="7"/>
+                <TextBlock Grid.Row="7" Text="Адрес" Margin="7"/>
+                <TextBlock Grid.Row="8" Text="Стоимость н/ч, руб" Margin="7"/>
+                <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Path=DepName, Mode=TwoWay}" Margin="2"/>
+                <ComboBox ItemsSource="{Binding Path=Hours}" SelectedItem="{Binding Path=TimeFrom, Mode=TwoWay}" Grid.Column="1" Grid.Row="4" Width="100" HorizontalAlignment="Left" Margin="2"/>
+                <ComboBox ItemsSource="{Binding Path=Hours}" SelectedItem="{Binding Path=TimeTo, Mode=TwoWay}" Grid.Column="1" Grid.Row="5" Width="100" HorizontalAlignment="Left" Margin="2"/>
+                <TextBox Text="{Binding Path=DepPhones, Mode=TwoWay}" Grid.Column="1" Grid.Row="6" Margin="2"/>
+                <TextBox Text="{Binding Path=DepAdress, Mode=TwoWay}" Grid.Column="1" Grid.Row="7" Margin="2"/>
+                <TextBox Text="{Binding Path=DepNHCost, Mode=TwoWay}" Grid.Column="1" Grid.Row="8" Margin="2" Width="100" HorizontalAlignment="Left"/>
+                <Button Command="{Binding Path=SaveCommand}" Grid.Row="9" Grid.Column="1" Margin="9" HorizontalAlignment="Right" Width="32" Height="32">
+                    <Image Source="/DTCDev.Client.Cars.Service;component/Assets/Images/save.png"/>
+                </Button>
             </Grid>
             <Border Style="{DynamicResource borderBlueDeviderStyle}" Grid.Row="2" Grid.Column="1" Margin="19,20,19,0" />
-            <Post:PostSettings Grid.Row="2" Grid.Column="2" Margin="0,20,0,0" />
+            <Post:PostSettings Grid.Row="2" Grid.Column="1" Margin="38,20,2,0" Grid.ColumnSpan="2" />
         </Grid>
     </Grid>
 </UserControl>

@@ -20,9 +20,13 @@ namespace DTCDev.Models.Service
         [JsonProperty(PropertyName = "b")]
         public List<DepModel> Departments { get; set; }
 
+
         [JsonObject]
         public class DepModel
         {
+
+            [JsonProperty(PropertyName = "i")]
+            public int id { get; set; }
 
             [JsonProperty(PropertyName = "c")]
             public string Name { get; set; }
@@ -38,6 +42,9 @@ namespace DTCDev.Models.Service
 
             [JsonProperty(PropertyName = "g")]
             public int NHCost { get; set; }
+
+            [JsonProperty(PropertyName = "h")]
+            public string Adress { get; set; }
         }
     }
 }
