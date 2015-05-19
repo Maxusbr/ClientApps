@@ -81,11 +81,11 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <Page Include="Common\Controls\RatingControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="Common\Controls\MapUserControl.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Common\Controls\WashElement.xaml">
+    <Page Include="Common\Controls\RatingControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -93,15 +93,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Common\Controls\GasElement.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Common\Controls\ShopElement.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Common\Controls\KotElement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Common\Controls\ServiceInfoRating.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -127,23 +123,20 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Common\Controls\MapUserControl.xaml.cs">
+      <DependentUpon>MapUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Common\Controls\RatingControl.xaml.cs">
       <DependentUpon>RatingControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Common\Controls\WashElement.xaml.cs">
-      <DependentUpon>WashElement.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\Controls\ServiceElement.xaml.cs">
       <DependentUpon>ServiceElement.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Common\Controls\GasElement.xaml.cs">
-      <DependentUpon>GasElement.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Common\Controls\ShopElement.xaml.cs">
-      <DependentUpon>ShopElement.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Common\Controls\KotElement.xaml.cs">
       <DependentUpon>KotElement.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Controls\ServiceInfoRating.xaml.cs">
+      <DependentUpon>ServiceInfoRating.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\NavigationHelper.cs" />
     <Compile Include="Common\ObservableDictionary.cs" />
@@ -171,7 +164,8 @@
     <Compile Include="DataModel\Model\TripAdvisorModel.cs" />
     <Compile Include="DataModel\Model\WorkType.cs" />
     <Compile Include="DataModel\SampleDataSource.cs" />
-    <Compile Include="DataModel\ViewModel\ServicePoint.cs" />
+    <Compile Include="DataModel\ViewModel\ServiceInfoViewModel.cs" />
+    <Compile Include="DataModel\ViewModel\ServicePointViewModel.cs" />
     <Compile Include="ItemPage.xaml.cs">
       <DependentUpon>ItemPage.xaml</DependentUpon>
     </Compile>
@@ -181,6 +175,7 @@
     <Compile Include="PivotPage.xaml.cs">
       <DependentUpon>PivotPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -195,12 +190,6 @@
     <Content Include="Assets\Square71x71Logo.scale-240.png" />
     <Content Include="Assets\StoreLogo.scale-240.png" />
     <Content Include="Assets\WideLogo.scale-240.png" />
-    <Content Include="README_FIRST.txt" />
-    <Content Include="Toolkit.Content\ApplicationBar.Add.png" />
-    <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
-    <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
-    <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
-    <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -215,15 +204,15 @@
     </PRIResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <SDKReference Include="BehaviorsXamlSDKManaged, Version=12.0" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\M2B Cars\packages\Newtonsoft.Json.6.0.6\lib\portable-net45+wp80+win8+wpa81+aspnetcore50\Newtonsoft.Json.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DataModel\Network\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>

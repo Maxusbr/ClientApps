@@ -23,17 +23,8 @@ namespace KOT.Common.Controls
         public ServiceElement()
         {
             this.InitializeComponent();
-            Location = new Geopoint(new BasicGeoposition { Altitude = 0, Latitude = 0, Longitude = 0 });
         }
 
-        public ServiceElement(string style, Geopoint point)
-        {
-            this.InitializeComponent();
-            Location = point ?? new Geopoint(new BasicGeoposition { Altitude = 0, Latitude = 0, Longitude = 0 });
-            if (string.IsNullOrEmpty(style)) return;
-            Style = Application.Current.Resources[style] as Style;
-        }
 
-        public Geopoint Location { get; set; }
     }
 }

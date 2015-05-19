@@ -32,13 +32,13 @@ namespace KOT.DataModel
             UpdatePositionPhone();
             UpdatePositionKot();
         }
-        public static ObservableCollection<ServicePoint> ServicePoints = new ObservableCollection<ServicePoint>();
+        public static ObservableCollection<ServicePointViewModel> ServicePoints = new ObservableCollection<ServicePointViewModel>();
 
         private readonly KotElement _kot = new KotElement{Location = new Geopoint(new BasicGeoposition { Altitude = 0, Latitude = 55.75, Longitude = 37.62 })};
         private readonly KotElement _phone = new KotElement("PhoneRadioButtonStyle", null){Visibility = Visibility.Collapsed };
 
-        public static KotElement Kot { get { return _instance._kot; } }
-        public static KotElement Phone { get { return _instance._phone; } }
+        public static KotElement Kot { get { return Instance._kot; } }
+        public static KotElement Phone { get { return Instance._phone; } }
 
         public static string Url = "http://effects.homevideo.pro:52000/files/";
 

@@ -10,12 +10,13 @@ using KOT.DataModel.Model;
 
 namespace KOT.DataModel.ViewModel
 {
-    public class ServicePoint
+    public class ServicePointViewModel
     {
-        public ServicePoint() { StylePoint = Application.Current.Resources["ServiceRadioButtonStyle"] as Style; }
+        public ServicePointViewModel() { StylePoint = Application.Current.Resources["ServiceRadioButtonStyle"] as Style; }
 
-        public ServicePoint(PlacesModel model)
+        public ServicePointViewModel(PlacesModel model)
         {
+            Model = model;
             Location = new Geopoint(new BasicGeoposition
             {
                 Altitude = 0,
@@ -26,8 +27,9 @@ namespace KOT.DataModel.ViewModel
             StylePoint = Application.Current.Resources["ServiceRadioButtonStyle"] as Style;
         }
 
-        public ServicePoint(PlacesModel model, string style)
+        public ServicePointViewModel(PlacesModel model, string style)
         {
+            Model = model;
             Location = new Geopoint(new BasicGeoposition
             {
                 Altitude = 0,
@@ -38,6 +40,7 @@ namespace KOT.DataModel.ViewModel
             StylePoint = Application.Current.Resources[style] as Style;
         }
 
+        public PlacesModel Model { get; set; }
         public Geopoint Location { get; set; }
         public Point NAP { get; set; }
         public Style StylePoint { get; set; }

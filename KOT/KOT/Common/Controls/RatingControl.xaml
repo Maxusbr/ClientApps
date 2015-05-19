@@ -16,6 +16,10 @@
     </UserControl.Resources>
 
     <Grid HorizontalAlignment="Left">
+    	<Grid.RowDefinitions>
+    		<RowDefinition/>
+    		<RowDefinition Height="Auto"/>
+    	</Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
@@ -37,7 +41,7 @@
 			Height="Auto" Width="Auto" Grid.ColumnSpan="5">
             <Path.Fill>
                 <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
-                    <GradientStop Color="#FFE91E63" Offset="{Binding Value, ElementName=UserControl}"/>
+                    <GradientStop Color="{Binding Brush, ElementName=UserControl}" Offset="{Binding Value, ElementName=UserControl}"/>
                     <GradientStop Color="#06FCFCFC" Offset="{Binding Value, ElementName=UserControl}"/>
                 </LinearGradientBrush>
             </Path.Fill>
@@ -47,6 +51,6 @@
         <Rectangle Fill="#00000000" Grid.Column="2" Tapped="Rectangle_Tapped_2"/>
         <Rectangle Fill="#00000000" Grid.Column="3" Tapped="Rectangle_Tapped_3"/>
         <Rectangle Fill="#00000000" Grid.Column="4" Tapped="Rectangle_Tapped_4"/>
-        <TextBlock HorizontalAlignment="Center" Text="{Binding Rate, ElementName=UserControl, Mode=OneWay}" VerticalAlignment="Bottom" Grid.ColumnSpan="5" Margin="0,0,0,-25" FontFamily="Segoe UI" FontSize="18" Foreground="{StaticResource AccentColor}" Visibility="{Binding ViewText, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=UserControl}"/>
+        <TextBlock HorizontalAlignment="Center" Text="{Binding Rate, ElementName=UserControl}" VerticalAlignment="Bottom" Grid.ColumnSpan="5" FontFamily="Segoe UI" FontSize="18" Foreground="{StaticResource AccentColor}" Visibility="{Binding ViewText, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=UserControl}" Margin="0" Grid.Row="1"/>
     </Grid>
 </UserControl>

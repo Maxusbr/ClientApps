@@ -2,9 +2,13 @@
     x:Class="KOT.Common.Controls.ServiceElement"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:KOT.Common.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
     mc:Ignorable="d"
     d:DesignHeight="43" d:DesignWidth="25"
-     HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource ServiceRadioButtonStyle}"/>
+    HorizontalAlignment="Center" VerticalAlignment="Center"
+    maps:MapControl.Location="{Binding Location}" 
+	maps:MapControl.NormalizedAnchorPoint="{Binding NAP}"
+	Style="{Binding StylePoint}"
+    ClickMode="Press"/>

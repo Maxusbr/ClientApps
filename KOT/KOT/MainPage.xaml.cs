@@ -47,9 +47,16 @@ namespace KOT
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
+            Map.SelectionPoinChanged += Map_SelectionPoinChanged;
+        }
 
-            DefaultViewModel["Center"] = new Geopoint(new BasicGeoposition { Altitude = 0, Latitude = 55.75, Longitude = 37.62 });
-            DefaultViewModel["ServiceToken"] = "dIjWUGuzClDyimeHLXa9bw";            
+        private void Map_SelectionPoinChanged(object sender, EventArgs e)
+        {
+            var model = sender as PlacesModel;
+            if(model == null)return;
+            ServiceInfo.UpdateDataContext(model);
+            ServiceInfo.IsChecked = false;
+            ServiceInfo.Visibility = Visibility.Visible;
         }
 
         private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
@@ -60,29 +67,7 @@ namespace KOT
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             DefaultViewModel["Source"] = DataSource.Instance;
-            Map.Children.Add(DataSource.Phone);
-            Map.Children.Add(DataSource.Kot);
-
-            DataSource.ServicePoints.CollectionChanged += ServicePoints_CollectionChanged;
-            DataSource.GetMapElements();
-            //await AddMapElements();
-            //AddServiceElement(new PlacesModel { Latitude = 557500, Longitude = 376300 });
-
-            MapControls.ItemsSource = DataSource.ServicePoints;
-            
-
         }
-
-        async void ServicePoints_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            var positions = DataSource.ServicePoints.Select(el => el.Location.Position).ToList();
-            positions.Add(DataSource.Kot.Location.Position);
-            var box = GeoboundingBox.TryCompute(positions);
-
-            //Map.Center = new Geopoint(box.Center);
-            await Map.TrySetViewBoundsAsync(box, null, MapAnimationKind.Default);
-        }
-
 
         public ObservableDictionary DefaultViewModel
         {
@@ -126,55 +111,33 @@ namespace KOT
 
         }
 
-        private async void AppBarToggleButton_Click(object sender, RoutedEventArgs e)
+        private void AppBarToggleButton_Click(object sender, RoutedEventArgs e)
         {
             var but = sender as AppBarToggleButton;
             if(but == null) return;
-            Map.Routes.Clear();
-            AddRoute(but.IsChecked ?? false);
+            Map.AddRoute(but.IsChecked ?? false);
         }
 
-        private async void AddRoute(bool p)
+        private void btCenter_Click(object sender, RoutedEventArgs e)
         {
-            Busy.IsActive = true;
-            var routeResult = await DataSource.UpdatePhone(p);
-            Busy.IsActive = false;
-            if (!p || routeResult == null || routeResult.Status != MapRouteFinderStatus.Success) return;
-            var viewOfRoute = new MapRouteView(routeResult.Route)
-            {
-                RouteColor = Color.FromArgb(255, 233, 30, 99),
-                OutlineColor = Colors.Transparent
-            };
-
-            Map.Routes.Add(viewOfRoute);
-
-            await Map.TrySetViewBoundsAsync(
-                routeResult.Route.BoundingBox,
-                null,
-                MapAnimationKind.Bow);
+            Map.SetCenterLocation(null);
         }
 
-        private async void btCenter_Click(object sender, RoutedEventArgs e)
+        private void ServiceInfo_Checked(object sender, EventArgs e)
         {
-            await Map.TrySetViewAsync(DataSource.Kot.Location);
+            var but = sender as ToggleButton;
+            if(but == null) return;
+            ServiceInfo.VerticalAlignment =(but.IsChecked ?? false)? VerticalAlignment.Stretch: VerticalAlignment.Bottom;
+            BackButton.Visibility = (but.IsChecked ?? false)? Visibility.Visible:Visibility.Collapsed;
+            Tools.Visibility = !(but.IsChecked ?? false) ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        private void AddServiceElement(PlacesModel model)
+        private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            var pin = new ServiceElement("", new Geopoint(new BasicGeoposition
-            {
-                Altitude = 0,
-                Latitude = model.Latitude / 10000.0,
-                Longitude = model.Longitude / 10000.0
-            })) { DataContext = model };
-            pin.Click += pin_Click;
-            MapControl.SetLocation(pin, pin.Location);
-            Map.Children.Add(pin);
-        }
-
-        private void pin_Click(object sender, RoutedEventArgs e)
-        {
-            
+            BackButton.Visibility = ServiceInfo.Visibility = Visibility.Collapsed;
+            Tools.Visibility = Visibility.Visible;
+            ServiceInfo.VerticalAlignment = VerticalAlignment.Bottom;
+            ServiceInfo.IsChecked = false;
         }
     }
 }

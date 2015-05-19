@@ -29,7 +29,7 @@
     </Page.BottomAppBar>
 
 	<Grid>
-		<Pivot x:Uid="Pivot" Title="MY APPLICATION" x:Name="pivot" CommonNavigationTransitionInfo.IsStaggerElement="True" Visibility="Collapsed">
+		<Pivot x:Uid="Pivot" Title="MY APPLICATION" x:Name="pivot" CommonNavigationTransitionInfo.IsStaggerElement="True">
             <!--Сводный элемент один-->
 			<PivotItem
 				x:Uid="PivotItem1"
@@ -101,7 +101,7 @@
 			</PivotItem>
 		</Pivot>
         
-		<Maps:MapControl x:Name="Map" MapServiceToken="88910a80-bdfd-461a-9f47-0ab9cd18b33e" Center="{Binding Center, Mode=TwoWay}" ZoomLevel="14"/>
+		<Maps:MapControl x:Name="Map" MapServiceToken="88910a80-bdfd-461a-9f47-0ab9cd18b33e" Center="{Binding Center, Mode=TwoWay}" ZoomLevel="14" Visibility="Collapsed"/>
 		<ProgressRing x:Name="Busy" Background="#7F727272"/>
         
 	</Grid>

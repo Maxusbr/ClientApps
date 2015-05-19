@@ -1,5 +1,7 @@
-﻿using Windows.UI.Xaml;
+﻿using Windows.UI;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 
 
 namespace KOT.Common.Controls
@@ -10,8 +12,10 @@ namespace KOT.Common.Controls
         {
             this.InitializeComponent();
         }
+        static readonly DependencyProperty BrushValueProperty =
+            DependencyProperty.Register("Brush", typeof(Color), typeof(RatingControl), new PropertyMetadata(Color.FromArgb(255,233,30,99)));
 
-        readonly DependencyProperty _rateValueProperty =
+        static readonly DependencyProperty RateValueProperty =
             DependencyProperty.Register("RateValue", typeof(double), typeof(RatingControl), new PropertyMetadata(0.5, UpdateValue));
 
         private static void UpdateValue(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -20,6 +24,11 @@ namespace KOT.Common.Controls
             if (control != null) control.Value = (double)e.NewValue;
         }
 
+        public Color Brush
+        {
+            get { return (Color)GetValue(BrushValueProperty); }
+            set { SetValue(BrushValueProperty, value); }
+        }
 
         private double Value
         {
@@ -39,11 +48,11 @@ namespace KOT.Common.Controls
         {
             get
             {
-                return (double)GetValue(_rateValueProperty);
+                return (double)GetValue(RateValueProperty);
             }
             set
             {
-                SetValue(_rateValueProperty, value);
+                SetValue(RateValueProperty, value);
             }
         }
 
@@ -93,12 +102,13 @@ namespace KOT.Common.Controls
         public string Rate
         {
             get { return (string)GetValue(RateProperty); }
-            set { SetValue(RateProperty, value); }
+            private set { SetValue(RateProperty, value); }
         }
 
 
         private string UpdateRate(double value)
         {
+            if (value < 0) return "";
             if (value <= .2) return "Ужасно";
             if (value <= .4) return "Плохо";
             if (value <= .6) return "Неплохо";
