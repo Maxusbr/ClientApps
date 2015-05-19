@@ -13,7 +13,7 @@ namespace KOT.Common.Controls
             this.InitializeComponent();
         }
         static readonly DependencyProperty BrushValueProperty =
-            DependencyProperty.Register("Brush", typeof(Color), typeof(RatingControl), new PropertyMetadata(Color.FromArgb(255, 233, 30, 99)));
+            DependencyProperty.Register("Brush", typeof(Color), typeof(RatingControl), new PropertyMetadata(Color.FromArgb(255,233,30,99)));
 
         public static readonly DependencyProperty RateValueProperty =
             DependencyProperty.Register("RateValue", typeof(double), typeof(RatingControl), new PropertyMetadata(0.5, UpdateValue));

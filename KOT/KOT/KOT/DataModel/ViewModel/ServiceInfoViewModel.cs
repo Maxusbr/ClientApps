@@ -136,7 +136,7 @@ namespace KOT.DataModel.ViewModel
             private readonly List<PointDetailsModel.CommentModel> _list = new List<PointDetailsModel.CommentModel>();
             public CommentsDetailModel(List<PointDetailsModel.CommentModel> listComment)
             {
-
+                
                 _list = listComment;
                 if (DesignMode.DesignModeEnabled)
                 {
