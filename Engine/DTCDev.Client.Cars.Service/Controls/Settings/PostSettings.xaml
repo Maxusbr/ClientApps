@@ -39,8 +39,8 @@
         <ComboBox VerticalAlignment="Center" DisplayMemberPath="Data" Grid.Row="2" Margin="20,0,20,10" Grid.Column="3" IsEnabled="{Binding EnableEditPost}" ItemsSource="{Binding ListTypePost}" SelectedItem="{Binding SelectedPost.PostType, Mode=TwoWay}"/>
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="3" Grid.Column="2" Margin="0,0,0,10"><Run Text="Время работы:"/></TextBlock>
         <calendarControls:TimeSelectControl VerticalAlignment="Top" Grid.Row="3" Grid.Column="3" Margin="20,0" IsEnabled="{Binding EnableEditPost}" StartTime="{Binding StartWorkTime, Mode=TwoWay}" EndTime="{Binding EndWorkTime, Mode=TwoWay}" />
-        <Button VerticalAlignment="Bottom" Grid.Row="4" Margin="10,0" Content="Добавить" Height="26" Command="{Binding AddPostCommand}"/>
-        <Button Grid.Row="5" Width="52" Grid.Column="3" HorizontalAlignment="Right" Height="52" VerticalAlignment="Top" IsEnabled="{Binding CompleteSaveEnabled}" Command="{Binding CompleteSaveCommand}" Margin="0,0,20,20">
+        <Button Visibility="{Binding Path=VisAddPost}" VerticalAlignment="Bottom" Grid.Row="4" Margin="10,0" Content="Добавить" Height="26" Command="{Binding AddPostCommand}"/>
+        <Button Grid.Row="4" Width="32" Grid.Column="3" HorizontalAlignment="Right" Height="32" VerticalAlignment="Top" IsEnabled="{Binding CompleteSaveEnabled}" Command="{Binding CompleteSaveCommand}" Margin="20">
             <Image Source="/DTCDev.Client.Cars.Service;component/Assets/Images/AED/apply.png"/>
         </Button>
     </Grid>

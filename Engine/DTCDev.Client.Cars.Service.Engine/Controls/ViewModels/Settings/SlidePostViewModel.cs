@@ -112,6 +112,20 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             get { return _addPostCommand ?? (_addPostCommand = new RelayCommand(AddPost)); }
         }
 
+        private Visibility _visAddPost = Visibility.Visible;
+        /// <summary>
+        /// Видимость кнопки добавления поста
+        /// </summary>
+        public Visibility VisAddPost
+        {
+            get { return _visAddPost; }
+            set
+            {
+                _visAddPost = value;
+                this.OnPropertyChanged("VisAddPost");
+            }
+        }
+
         private void AddPost(object sender)
         {
             var el = new PostViewModel { Name = "Новый пост", StartWorkTime = 8, EndWorkTime = 17 };
@@ -119,6 +133,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             ListPost.Add(el);
             SelectedPost = el;
             CompleteSaveEnabled = true;
+            VisAddPost = Visibility.Collapsed;
         }
 
         private void post_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -139,7 +154,20 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
 
         private void CompleteSave(object obj)
         {
-            SelectedPost = null; CompleteSaveEnabled = false;
+            ServiceInfoDataModel.PostSettings post = new ServiceInfoDataModel.PostSettings();
+            if(SelectedPost!=null)
+            {
+                post.ID = SelectedPost.ID;
+                post.IDDep = PersonalHandler.Instance.SelectedDep.id;
+                post.idPostType = SelectedPost.PostType.ID;
+                post.Name = SelectedPost.Name;
+                post.TimeFrom = SelectedPost.StartWorkTime;
+                post.TimeTo = SelectedPost.EndWorkTime;
+                PersonalHandler.Instance.EditPost(post);
+            }
+            SelectedPost = null; 
+            CompleteSaveEnabled = false;
+            VisAddPost = Visibility.Visible;
         }
 
     }
