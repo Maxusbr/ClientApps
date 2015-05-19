@@ -7,23 +7,51 @@ using System.Text;
 using System.Windows;
 using DTCDev.Client.Cars.Service.Engine.Handlers;
 using DTCDev.Client.ViewModel;
+using DTCDev.Models.Service;
+using DTCDev.Models;
 
 namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
 {
     public class SlidePostViewModel : ViewModelBase
     {
-        private readonly PostsHandler _handler = PostsHandler.Instance;
+        private readonly PersonalHandler _handler = PersonalHandler.Instance;
 
         public SlidePostViewModel()
         {
-            if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+            UpdatePosts();
+            PersonalHandler.Instance.SelectedDepRereshed += Instance_SelectedDepRereshed;
+        }
+
+        void Instance_SelectedDepRereshed(object sender, EventArgs e)
+        {
+            UpdatePosts();
+        }
+
+        private void UpdatePosts()
+        {
+            ListTypePost.Clear();
+            ListPost.Clear();
+            if (_handler.SelectedDep != null)
             {
-                ListTypePost.Add("Type 1"); ListTypePost.Add("Type 2"); ListTypePost.Add("Type 3");
+                foreach (var item in _handler.Model.PostTypes)
+                    ListTypePost.Add(item);
+                foreach (var item in _handler.SelectedDep.Posts)
+                {
+                    ListPost.Add(new PostViewModel(item));
+                }
             }
         }
 
-        public List<string> ListTypePost { get { return _handler.ListTypePost; } }
-        public ObservableCollection<PostViewModel> ListPost { get { return _handler.ListPost; } }
+        ObservableCollection<DicDataModel> _listTypePost = new ObservableCollection<DicDataModel>();
+
+
+        public ObservableCollection<DicDataModel> ListTypePost
+        {
+            get  { return _listTypePost; }
+        }
+
+        private ObservableCollection<PostViewModel> _listPost = new ObservableCollection<PostViewModel>();
+        public ObservableCollection<PostViewModel> ListPost { get { return _listPost; } }
 
         private PostViewModel _selectedPost;
         public PostViewModel SelectedPost
@@ -86,7 +114,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
 
         private void AddPost(object sender)
         {
-            var el = new PostViewModel { ID = ListPost.Count, Name = "Новый пост " + ListPost.Count, PostType = "Type 1", StartWorkTime = 8, EndWorkTime = 17 };
+            var el = new PostViewModel { Name = "Новый пост", StartWorkTime = 8, EndWorkTime = 17 };
             el.PropertyChanged += post_PropertyChanged;
             ListPost.Add(el);
             SelectedPost = el;

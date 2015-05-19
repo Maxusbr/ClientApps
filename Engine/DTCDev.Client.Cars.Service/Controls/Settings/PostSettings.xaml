@@ -36,7 +36,7 @@
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Название поста:" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2" Margin="0,0,0,10"/>
         <TextBox TextWrapping="Wrap" Grid.Row="1" Grid.Column="3" Margin="20,0,20,10" VerticalAlignment="Center" IsEnabled="{Binding EnableEditPost}" Text="{Binding SelectedPost.Name, Mode=TwoWay}"/>
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Тип поста:" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2" Margin="0,0,0,10"/>
-        <ComboBox VerticalAlignment="Center" Grid.Row="2" Margin="20,0,20,10" Grid.Column="3" IsEnabled="{Binding EnableEditPost}" ItemsSource="{Binding ListTypePost}" SelectedItem="{Binding SelectedPost.PostType, Mode=TwoWay}"/>
+        <ComboBox VerticalAlignment="Center" DisplayMemberPath="Data" Grid.Row="2" Margin="20,0,20,10" Grid.Column="3" IsEnabled="{Binding EnableEditPost}" ItemsSource="{Binding ListTypePost}" SelectedItem="{Binding SelectedPost.PostType, Mode=TwoWay}"/>
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="3" Grid.Column="2" Margin="0,0,0,10"><Run Text="Время работы:"/></TextBlock>
         <calendarControls:TimeSelectControl VerticalAlignment="Top" Grid.Row="3" Grid.Column="3" Margin="20,0" IsEnabled="{Binding EnableEditPost}" StartTime="{Binding StartWorkTime, Mode=TwoWay}" EndTime="{Binding EndWorkTime, Mode=TwoWay}" />
         <Button VerticalAlignment="Bottom" Grid.Row="4" Margin="10,0" Content="Добавить" Height="26" Command="{Binding AddPostCommand}"/>

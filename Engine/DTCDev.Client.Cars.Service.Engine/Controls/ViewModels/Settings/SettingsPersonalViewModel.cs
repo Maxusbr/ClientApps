@@ -99,6 +99,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
                     VisEnableEdit = Visibility.Collapsed;
                 else
                     VisEnableEdit = Visibility.Visible;
+
+                PersonalHandler.Instance.SelectedDep = value;
             }
         }
 

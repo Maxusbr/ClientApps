@@ -40,6 +40,21 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             get { return _model; }
         }
 
+        public event EventHandler SelectedDepRereshed;
+
+
+        private ServiceInfoDataModel.DepModel _selectedDep;
+        public ServiceInfoDataModel.DepModel SelectedDep
+        {
+            get { return _selectedDep; }
+            set
+            {
+                _selectedDep = value;
+                if (SelectedDepRereshed != null)
+                    SelectedDepRereshed(this, new EventArgs());
+            }
+        }
+
         public event EventHandler UserDataLoadComplete;
 
 
@@ -109,6 +124,11 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
         public void EditDepartment(ServiceInfoDataModel.DepModel model)
         {
             SendRequest("UK" + JsonConvert.SerializeObject(model));
+        }
+
+        public void EditPost(ServiceInfoDataModel.PostSettings model)
+        {
+            SendRequest("UL" + JsonConvert.SerializeObject(model));
         }
 
         
