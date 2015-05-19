@@ -15,7 +15,7 @@ namespace KOT.Common.Controls
         static readonly DependencyProperty BrushValueProperty =
             DependencyProperty.Register("Brush", typeof(Color), typeof(RatingControl), new PropertyMetadata(Color.FromArgb(255,233,30,99)));
 
-        static readonly DependencyProperty RateValueProperty =
+        public static readonly DependencyProperty RateValueProperty =
             DependencyProperty.Register("RateValue", typeof(double), typeof(RatingControl), new PropertyMetadata(0.5, UpdateValue));
 
         private static void UpdateValue(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -73,27 +73,27 @@ namespace KOT.Common.Controls
 
         private void Rectangle_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
-            Value = .2;
+            RateValue = .2;
         }
 
         private void Rectangle_Tapped_1(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
-            Value = .4;
+            RateValue = .4;
         }
 
         private void Rectangle_Tapped_2(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
-            Value = .6;
+            RateValue = .6;
         }
 
         private void Rectangle_Tapped_3(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
-            Value = .8;
+            RateValue = .8;
         }
 
         private void Rectangle_Tapped_4(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
-            Value = 1;
+            RateValue = 1;
         }
 
         private static readonly DependencyProperty RateProperty =

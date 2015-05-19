@@ -8,7 +8,7 @@
     xmlns:Common="using:KOT.Common"
     x:Class="KOT.Common.Controls.ServiceInfoRating"
     mc:Ignorable="d"
-    d:DesignHeight="300"
+    
     d:DesignWidth="400" MinHeight="50" Loaded="UserControl_Loaded" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" >
     <ContentControl.Resources>
         <Common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
@@ -108,8 +108,8 @@
                                         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding ServicePrice, Mode=OneWay}" VerticalAlignment="Top" Foreground="{StaticResource PrimeryText}" Margin="0,5,0,0"/>
                                     </StackPanel>
                                     <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="2" Margin="20,0">
-                                        <TextBlock Text="{Binding RateString, Mode=OneWay}" HorizontalAlignment="Center" Margin="0" FontSize="16" Foreground="{StaticResource PrimeryText}"/>
-                                        <local:RatingControl Width="40" Background="#FF212121" Margin="10,10,10,0" Brush="#FF323232" RateValue="{Binding Rate}"/>
+                                        <TextBlock Text="{Binding RateString}" HorizontalAlignment="Center" Margin="0" FontSize="16" Foreground="{Binding Background, Mode=OneWay}"/>
+                                        <local:RatingControl Width="40" Background="#FF212121" Margin="10,10,10,0" Brush="{Binding Brush}" RateValue="{Binding Rate}"/>
                                         <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                                             <TextBlock HorizontalAlignment="Center" Text="Отзывов: " Foreground="{StaticResource PrimeryText}"/>
                                             <TextBlock Text="{Binding Model.Comments}" HorizontalAlignment="Center" Margin="5,0,0,0" Foreground="{StaticResource PrimeryText}"/>
@@ -130,7 +130,179 @@
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="FontSize" Value="13.333"/>
         </Style>
-
+        <x:Double x:Key="ControlContentThemeFontSize">12</x:Double>
+        <Thickness x:Key="ListViewItemMargin">0</Thickness>
+        <x:Double x:Key="ListViewItemDisabledThemeOpacity">0.4</x:Double>
+        <x:Double x:Key="ListViewItemReorderHintThemeOffset">32</x:Double>
+        <Style x:Key="ListViewItemStyle" TargetType="ListViewItem">
+            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+            <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="TabNavigation" Value="Local"/>
+            <Setter Property="IsHoldingEnabled" Value="False"/>
+            <Setter Property="Margin" Value="{ThemeResource ListViewItemMargin}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Bottom"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <Grid>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates1">
+                                    <VisualStateGroup.Transitions>
+                                        <VisualTransition From="Pressed" To="Normal">
+                                            <Storyboard>
+                                                <PointerUpThemeAnimation Storyboard.TargetName="TiltContainer"/>
+                                            </Storyboard>
+                                        </VisualTransition>
+                                    </VisualStateGroup.Transitions>
+                                    <VisualState x:Name="Normal1"/>
+                                    <VisualState x:Name="Pressed1">
+                                        <Storyboard>
+                                            <PointerDownThemeAnimation Storyboard.TargetName="TiltContainer"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="CheckboxPressed">
+                                        <Storyboard>
+                                            <PointerDownThemeAnimation Storyboard.TargetName="CheckboxTiltContainer"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled1">
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="0" To="{ThemeResource ListViewItemDisabledThemeOpacity}" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="contentPresenter"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="SelectionStates1">
+                                    <VisualState x:Name="Unselected1"/>
+                                    <VisualState x:Name="Selected1"/>
+                                    <VisualState x:Name="SelectedUnfocused1"/>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="DataVirtualizationStates1">
+                                    <VisualState x:Name="DataAvailable1"/>
+                                    <VisualState x:Name="DataPlaceholder1"/>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="MultiSelectStates">
+                                    <VisualStateGroup.Transitions>
+                                        <VisualTransition From="ListMultiSelect" GeneratedDuration="0:0:0.15" To="NoMultiSelect"/>
+                                        <VisualTransition From="NoMultiSelect" GeneratedDuration="0:0:0.15" To="ListMultiSelect"/>
+                                    </VisualStateGroup.Transitions>
+                                    <VisualState x:Name="NoMultiSelect"/>
+                                    <VisualState x:Name="ListMultiSelect"/>
+                                    <VisualState x:Name="GridMultiSelect"/>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="ReorderModeStates">
+                                    <VisualStateGroup.Transitions>
+                                        <VisualTransition From="ReorderEnabled" GeneratedDuration="00:00:00.2" To="ReorderDisabled"/>
+                                    </VisualStateGroup.Transitions>
+                                    <VisualState x:Name="ReorderEnabled">
+                                        <Storyboard>
+                                            <DropTargetItemThemeAnimation Storyboard.TargetName="OuterContainer"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Reorderable"/>
+                                    <VisualState x:Name="ReorderDisabled"/>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="ReorderHintStates1">
+                                    <VisualStateGroup.Transitions>
+                                        <VisualTransition GeneratedDuration="0:0:0.2" To="NoReorderHint"/>
+                                    </VisualStateGroup.Transitions>
+                                    <VisualState x:Name="NoReorderHint1"/>
+                                    <VisualState x:Name="BottomReorderHint1">
+                                        <Storyboard>
+                                            <DragOverThemeAnimation Direction="Bottom" ToOffset="{ThemeResource ListViewItemReorderHintThemeOffset}" Storyboard.TargetName="ReorderHintContent"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="RightReorderHint1">
+                                        <Storyboard>
+                                            <DragOverThemeAnimation Direction="Right" ToOffset="{ThemeResource ListViewItemReorderHintThemeOffset}" Storyboard.TargetName="ReorderHintContent"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="TopReorderHint1">
+                                        <Storyboard>
+                                            <DragOverThemeAnimation Direction="Top" ToOffset="0" Storyboard.TargetName="ReorderHintContent"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="LeftReorderHint1">
+                                        <Storyboard>
+                                            <DragOverThemeAnimation Direction="Left" ToOffset="0" Storyboard.TargetName="ReorderHintContent"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="MinHeight" Value="30"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <SolidColorBrush x:Key="SliderBorderThemeBrush" Color="Transparent"/>
+        <Thickness x:Key="SliderBorderThemeThickness">0</Thickness>
+        <x:Double x:Key="SliderTrackThemeHeight">9</x:Double>
+        <Style x:Key="SliderStyle" TargetType="Slider">
+            <Setter Property="Background" Value="{ThemeResource SliderTrackBackgroundThemeBrush}"/>
+            <Setter Property="BorderBrush" Value="{ThemeResource SliderBorderThemeBrush}"/>
+            <Setter Property="BorderThickness" Value="{ThemeResource SliderBorderThemeThickness}"/>
+            <Setter Property="Foreground" Value="{ThemeResource SliderTrackDecreaseBackgroundThemeBrush}"/>
+            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+            <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}"/>
+            <Setter Property="ManipulationMode" Value="None"/>
+            <Setter Property="IsThumbToolTipEnabled" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Slider">
+                        <Grid Margin="{TemplateBinding Padding}">
+                            <Grid.Resources>
+                                <Style x:Key="SliderThumbStyle" TargetType="Thumb">
+                                    <Setter Property="BorderThickness" Value="0.8"/>
+                                    <Setter Property="BorderBrush" Value="{ThemeResource SliderThumbBorderThemeBrush}"/>
+                                    <Setter Property="Background" Value="{ThemeResource SliderThumbBackgroundThemeBrush}"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}"/>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Grid.Resources>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="HorizontalInlineTickBar">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SliderTickMarkInlineDisabledForegroundThemeBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Grid x:Name="SliderContainer" Background="Transparent" Grid.Row="1">
+                                <Grid x:Name="HorizontalTemplate">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="17.5"/>
+                                    </Grid.RowDefinitions>
+                                    <Rectangle x:Name="HorizontalDecreaseRect" Fill="{StaticResource AccentColor}"/>
+                                    <TickBar x:Name="HorizontalInlineTickBar" Grid.ColumnSpan="3" Fill="{ThemeResource SliderTickMarkInlineBackgroundThemeBrush}" Height="{ThemeResource SliderTrackThemeHeight}" Margin="-4.5,0" Visibility="Collapsed"/>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </ContentControl.Resources>
 
     <ContentControl.DataContext>
@@ -202,42 +374,101 @@
             </Border>
             <Border BorderBrush="{StaticResource DividerText}" BorderThickness="1" Background="White" Grid.Row="1" Padding="25,5">
                 <Grid VerticalAlignment="Top">
-                    <ListView VerticalAlignment="Top" Header="Услуги" Foreground="{StaticResource SecondaryText}" DisplayMemberPath="" ItemsSource="{Binding Prices}">
-                    	<ListView.Resources>
-                    		<DataTemplate x:Key="DataTemplate1">
-                    			<Grid>
-                    				<ContentControl Content="{Binding}" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="13.333"/>
-                    			</Grid>
-                    		</DataTemplate>
-                    	</ListView.Resources>
-                    	<ListView.HeaderTemplate>
-                    		<StaticResource ResourceKey="DataTemplate1"/>
-                    	</ListView.HeaderTemplate>
+                    <ListView VerticalAlignment="Top" Header="Услуги" Foreground="{StaticResource SecondaryText}" DisplayMemberPath="" SelectionMode="None" IsSwipeEnabled="False" ItemsSource="{Binding Prices}">
+                        <ListView.Resources>
+                            <DataTemplate x:Key="DataTemplate">
+                                <Grid>
+                                    <ContentControl Content="{Binding}" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="13.333"/>
+                                </Grid>
+                            </DataTemplate>
+
+                        </ListView.Resources>
+                        <ListView.ItemContainerStyle>
+                            <StaticResource ResourceKey="ListViewItemStyle"/>
+                        </ListView.ItemContainerStyle>
+                        <ListView.HeaderTemplate>
+                            <StaticResource ResourceKey="DataTemplate"/>
+                        </ListView.HeaderTemplate>
+                        <ListViewItem Content="Мойка - 150 руб."/>
+                        <ListViewItem Content="Мойка - 150 руб."/>
                     </ListView>
                 </Grid>
             </Border>
             <Border Padding="0,10,0,0" Background="#FFE6E6E6" Grid.Row="2" >
 
-                <local:RatingControl Background="#FFE91E63" Brush="#FFE91E63" ViewText="True" RateValue="{Binding UserRate}" Margin="0,0,0,-0.167" Width="90" VerticalAlignment="Center"/>
+                <local:RatingControl Background="#FFE91E63" Brush="#FFE91E63" ViewText="True" RateValue="{Binding UserRate, Mode=TwoWay}" Margin="0,0,0,-0.167" Width="90" VerticalAlignment="Center"/>
             </Border>
             <Border BorderBrush="{StaticResource DividerText}" BorderThickness="1" Background="White" Grid.Row="3" Padding="25,5">
-            	<Grid VerticalAlignment="Top">
-            		<ListView VerticalAlignment="Top" Header="Отзывы" DisplayMemberPath="Text" ItemsSource="{Binding Comments}">
-            			<ListView.Resources>
-            				<DataTemplate x:Key="DataTemplate1">
-            					<Grid>
-            						<ContentControl Content="{Binding}" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="13.333"/>
-            					</Grid>
-            				</DataTemplate>
-            			</ListView.Resources>
-            			<ListView.Foreground>
-            				<StaticResource ResourceKey="SecondaryText"/>
-            			</ListView.Foreground>
-            			<ListView.HeaderTemplate>
-            				<StaticResource ResourceKey="DataTemplate1"/>
-            			</ListView.HeaderTemplate>
-            		</ListView>
-            	</Grid>
+                <Grid VerticalAlignment="Top">
+                    <ListView VerticalAlignment="Top" Header="{Binding CommentsDetail, Mode=OneWay}" DisplayMemberPath="Text" ItemsSource="{Binding Comments}">
+                        <ListView.Resources>
+                            <DataTemplate x:Key="DataTemplate">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Text="Отзывы" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="13.333"/>
+                                    <Grid VerticalAlignment="Top" Grid.Row="1" Margin="25,10,25,0" Grid.ColumnSpan="2" MaxWidth="250">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Text="{Binding TotalValue}" HorizontalAlignment="Center" FontSize="34" Foreground="{StaticResource AccentColor}"/>
+                                        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding CountComments}" VerticalAlignment="Top" Grid.Row="1"/>
+                                        <Grid VerticalAlignment="Top" Grid.Column="1" HorizontalAlignment="Right" Width="100" Grid.RowSpan="2">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock x:Name="_1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="1"/>
+                                            <Slider VerticalAlignment="Center" TickPlacement="Inline" Maximum="1" Value="{Binding Value1Star}" Grid.Column="1" Height="5" Margin="5,-1,5,0" Background="{x:Null}" Style="{StaticResource SliderStyle}"/>
+                                            <TextBlock x:Name="_2" HorizontalAlignment="Left" TextWrapping="Wrap" Text="2" Grid.Row="1"/>
+                                            <Slider VerticalAlignment="Center" TickPlacement="Inline" Maximum="1" Value="{Binding Value2Star}" Grid.Column="1" Height="5" Margin="5,-1,5,0" Background="{x:Null}" Style="{StaticResource SliderStyle}" Grid.Row="1"/>
+                                            <TextBlock x:Name="_3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="3" Grid.Row="2"/>
+                                            <Slider VerticalAlignment="Center" TickPlacement="Inline" Maximum="1" Value="{Binding Value3Star}" Grid.Column="1" Height="5" Margin="5,-1,5,0" Background="{x:Null}" Style="{StaticResource SliderStyle}" Grid.Row="2"/>
+                                            <TextBlock x:Name="_4" HorizontalAlignment="Left" TextWrapping="Wrap" Text="4" Grid.Row="3"/>
+                                            <Slider VerticalAlignment="Center" TickPlacement="Inline" Maximum="1" Value="{Binding Value4Star}" Grid.Column="1" Height="5" Margin="5,-1,5,0" Background="{x:Null}" Style="{StaticResource SliderStyle}" Grid.Row="3"/>
+                                            <TextBlock x:Name="_5" HorizontalAlignment="Left" TextWrapping="Wrap" Text="5" Grid.Row="4"/>
+                                            <Slider VerticalAlignment="Center" TickPlacement="Inline" Maximum="1" Value="{Binding Value5Star}" Grid.Column="1" Height="5" Margin="5,-1,5,0" Background="{x:Null}" Style="{StaticResource SliderStyle}" Grid.Row="4"/>
+                                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Count1Star}" VerticalAlignment="Center" Grid.Column="2"/>
+                                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Count2Star}" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2"/>
+                                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Count3Star}" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2"/>
+                                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Count4Star}" VerticalAlignment="Center" Grid.Row="3" Grid.Column="2"/>
+                                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Count5Star}" VerticalAlignment="Center" Grid.Row="4" Grid.Column="2"/>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.Resources>
+                        <ListView.ItemContainerStyle>
+                            <StaticResource ResourceKey="ListViewItemStyle"/>
+                        </ListView.ItemContainerStyle>
+                        <ListView.Foreground>
+                            <StaticResource ResourceKey="SecondaryText"/>
+                        </ListView.Foreground>
+                        <ListView.HeaderTemplate>
+                            <StaticResource ResourceKey="DataTemplate"/>
+                        </ListView.HeaderTemplate>
+                    </ListView>
+                </Grid>
             </Border>
 
         </Grid>
