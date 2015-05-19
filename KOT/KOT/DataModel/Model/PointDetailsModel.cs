@@ -46,6 +46,11 @@ namespace KOT.DataModel.Model
             //Стоимость, в копейках
             [JsonProperty(PropertyName = "G")]
             public int Cost { get; set; }
+
+            public override string ToString()
+            {
+                return string.Format("{0} - {1} руб.", Name, Cost);
+            }
         }
     }
 

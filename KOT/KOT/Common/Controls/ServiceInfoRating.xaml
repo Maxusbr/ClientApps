@@ -200,14 +200,44 @@
                 </Grid>
 
             </Border>
-            <Border BorderBrush="{StaticResource DividerText}" BorderThickness="1" Background="White" Grid.Row="1">
-                <Grid VerticalAlignment="Top" Margin="25,0">
-                    <ListView VerticalAlignment="Top" Header="Услуги" Foreground="{StaticResource SecondaryText}"/>
+            <Border BorderBrush="{StaticResource DividerText}" BorderThickness="1" Background="White" Grid.Row="1" Padding="25,5">
+                <Grid VerticalAlignment="Top">
+                    <ListView VerticalAlignment="Top" Header="Услуги" Foreground="{StaticResource SecondaryText}" DisplayMemberPath="" ItemsSource="{Binding Prices}">
+                    	<ListView.Resources>
+                    		<DataTemplate x:Key="DataTemplate1">
+                    			<Grid>
+                    				<ContentControl Content="{Binding}" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="13.333"/>
+                    			</Grid>
+                    		</DataTemplate>
+                    	</ListView.Resources>
+                    	<ListView.HeaderTemplate>
+                    		<StaticResource ResourceKey="DataTemplate1"/>
+                    	</ListView.HeaderTemplate>
+                    </ListView>
                 </Grid>
             </Border>
             <Border Padding="0,10,0,0" Background="#FFE6E6E6" Grid.Row="2" >
 
                 <local:RatingControl Background="#FFE91E63" Brush="#FFE91E63" ViewText="True" RateValue="{Binding UserRate}" Margin="0,0,0,-0.167" Width="90" VerticalAlignment="Center"/>
+            </Border>
+            <Border BorderBrush="{StaticResource DividerText}" BorderThickness="1" Background="White" Grid.Row="3" Padding="25,5">
+            	<Grid VerticalAlignment="Top">
+            		<ListView VerticalAlignment="Top" Header="Отзывы" DisplayMemberPath="Text" ItemsSource="{Binding Comments}">
+            			<ListView.Resources>
+            				<DataTemplate x:Key="DataTemplate1">
+            					<Grid>
+            						<ContentControl Content="{Binding}" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="13.333"/>
+            					</Grid>
+            				</DataTemplate>
+            			</ListView.Resources>
+            			<ListView.Foreground>
+            				<StaticResource ResourceKey="SecondaryText"/>
+            			</ListView.Foreground>
+            			<ListView.HeaderTemplate>
+            				<StaticResource ResourceKey="DataTemplate1"/>
+            			</ListView.HeaderTemplate>
+            		</ListView>
+            	</Grid>
             </Border>
 
         </Grid>

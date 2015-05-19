@@ -610,10 +610,8 @@
         </Border>
         <Controls:ServiceInfoRating x:Name="ServiceInfo" VerticalContentAlignment="Stretch" Grid.Row="1" HorizontalAlignment="Stretch" Checked="ServiceInfo_Checked" IsChecked="False" VerticalAlignment="Bottom" Visibility="Collapsed" >
         	<FlyoutBase.AttachedFlyout>
-        		<Flyout>
-        			<Controls:RatingControl/>
-        		</Flyout>
-        	</FlyoutBase.AttachedFlyout>
+        		<Flyout/>
+            </FlyoutBase.AttachedFlyout>
         </Controls:ServiceInfoRating>
 
     </Grid>
