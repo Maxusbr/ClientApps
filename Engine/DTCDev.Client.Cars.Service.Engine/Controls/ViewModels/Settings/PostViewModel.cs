@@ -3,11 +3,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DTCDev.Client.ViewModel;
+using DTCDev.Models.Service;
+using DTCDev.Client.Cars.Service.Engine.Handlers;
+using DTCDev.Models;
 
 namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
 {
     public class PostViewModel : ViewModelBase
     {
+        public PostViewModel()
+        {
+
+        }
+
+        public ServiceInfoDataModel.PostSettings CurrentPost { get; set; }
+
+        public PostViewModel(ServiceInfoDataModel.PostSettings model)
+        {
+            UpdatePosts(model);
+            CurrentPost = model;
+        }
+
+        private void UpdatePosts(ServiceInfoDataModel.PostSettings model)
+        {
+            ID = model.ID;
+            Name = model.Name;
+            PostType = PersonalHandler.Instance.Model.PostTypes.Where(p => p.ID == model.idPostType).First();
+            StartWorkTime = model.TimeFrom;
+            EndWorkTime = model.TimeTo;
+        }
+
         public int ID { get; set; }
 
         private string _name = string.Empty;
@@ -22,8 +47,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             }
         }
 
-        private string _postType = string.Empty;
-        public string PostType
+        private DicDataModel _postType;
+        public DicDataModel PostType
         {
             get { return _postType; }
             set
