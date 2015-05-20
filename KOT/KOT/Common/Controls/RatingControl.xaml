@@ -8,14 +8,13 @@
     x:Class="KOT.Common.Controls.RatingControl"
     mc:Ignorable="d"
  
-    d:DesignHeight="40"
-    d:DesignWidth="200">
+     FontSize="13.333" VerticalAlignment="Top" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top">
 
     <UserControl.Resources>
         <Common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </UserControl.Resources>
 
-    <Grid HorizontalAlignment="Left">
+    <Grid VerticalAlignment="Top">
     	<Grid.RowDefinitions>
     		<RowDefinition/>
     		<RowDefinition Height="Auto"/>
@@ -27,28 +26,28 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Path Stretch="Uniform" 
-			Data="M -1346.6,-259.247L -1358.76,-305.451L -1321.61,-335.489L -1369.31,-338.197L -1386.39,-382.816L -1403.71,-338.285L -1451.43,-335.823L -1414.43,-305.594L -1426.83,-259.454L -1386.65,-285.302L -1346.6,-259.247 Z M -1067.9,-259.247L -1080.07,-305.451L -1042.91,-335.489L -1090.61,-338.197L -1107.7,-382.816L -1125.01,-338.285L -1172.73,-335.823L -1135.73,-305.594L -1148.13,-259.453L -1107.95,-285.301L -1067.9,-259.247 Z M -1207.25,-259.247L -1219.41,-305.451L -1182.26,-335.489L -1229.96,-338.197L -1247.05,-382.816L -1264.36,-338.285L -1312.08,-335.823L -1275.08,-305.594L -1287.48,-259.453L -1247.3,-285.301L -1207.25,-259.247 Z M -928.552,-259.247L -940.718,-305.451L -903.562,-335.489L -951.264,-338.197L -968.35,-382.816L -985.666,-338.285L -1033.38,-335.823L -996.382,-305.594L -1008.79,-259.453L -968.602,-285.301L -928.552,-259.247 Z M -789.204,-259.247L -801.369,-305.451L -764.214,-335.489L -811.916,-338.197L -829.002,-382.816L -846.318,-338.285L -894.034,-335.823L -857.033,-305.594L -869.437,-259.453L -829.254,-285.301L -789.204,-259.247 Z "  
-			UseLayoutRounding="False" 
-			VerticalAlignment="Top" 
-			Height="Auto" Width="Auto" Fill="#FFF0F0F0" Stroke="{StaticResource DividerText}" Grid.ColumnSpan="5"/>
-        <Path Stretch="Uniform" 
-			Data="M -1346.6,-259.247L -1358.76,-305.451L -1321.61,-335.489L -1369.31,-338.197L -1386.39,-382.816L -1403.71,-338.285L -1451.43,-335.823L -1414.43,-305.594L -1426.83,-259.454L -1386.65,-285.302L -1346.6,-259.247 Z M -1067.9,-259.247L -1080.07,-305.451L -1042.91,-335.489L -1090.61,-338.197L -1107.7,-382.816L -1125.01,-338.285L -1172.73,-335.823L -1135.73,-305.594L -1148.13,-259.453L -1107.95,-285.301L -1067.9,-259.247 Z M -1207.25,-259.247L -1219.41,-305.451L -1182.26,-335.489L -1229.96,-338.197L -1247.05,-382.816L -1264.36,-338.285L -1312.08,-335.823L -1275.08,-305.594L -1287.48,-259.453L -1247.3,-285.301L -1207.25,-259.247 Z M -928.552,-259.247L -940.718,-305.451L -903.562,-335.489L -951.264,-338.197L -968.35,-382.816L -985.666,-338.285L -1033.38,-335.823L -996.382,-305.594L -1008.79,-259.453L -968.602,-285.301L -928.552,-259.247 Z M -789.204,-259.247L -801.369,-305.451L -764.214,-335.489L -811.916,-338.197L -829.002,-382.816L -846.318,-338.285L -894.034,-335.823L -857.033,-305.594L -869.437,-259.453L -829.254,-285.301L -789.204,-259.247 Z "  
-			UseLayoutRounding="False" 
-			VerticalAlignment="Top" 
-			Height="Auto" Width="Auto" Grid.ColumnSpan="5" Stroke="#00000000">
-            <Path.Fill>
-                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
-                    <GradientStop Color="{Binding Brush, ElementName=UserControl}" Offset="{Binding Value, ElementName=UserControl}"/>
-                    <GradientStop Color="#06FCFCFC" Offset="{Binding Value, ElementName=UserControl}"/>
-                </LinearGradientBrush>
-            </Path.Fill>
-        </Path>
+        <Image Visibility="{Binding IsNotUserRate, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=UserControl}" Source="ms-appx:///Assets/drawable-xxhdpi/ic_star_24dp.png" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Image Visibility="{Binding IsNotUserRate, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=UserControl}" Source="ms-appx:///Assets/drawable-xxhdpi/ic_star_24dp.png" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Image Visibility="{Binding IsNotUserRate, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=UserControl}" Source="ms-appx:///Assets/drawable-xxhdpi/ic_star_24dp.png" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Image Visibility="{Binding IsNotUserRate, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=UserControl}" Source="ms-appx:///Assets/drawable-xxhdpi/ic_star_24dp.png" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Image Visibility="{Binding IsNotUserRate, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=UserControl}" Source="ms-appx:///Assets/drawable-xxhdpi/ic_star_24dp.png" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Image Visibility="{Binding IsUserRate, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=UserControl}" Source="ms-appx:///Assets/drawable-xxhdpi/ic_star_active_24dp.png" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        <Image Visibility="{Binding IsUserRate, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=UserControl}" Source="ms-appx:///Assets/drawable-xxhdpi/ic_star_active_24dp.png" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Image Visibility="{Binding IsUserRate, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=UserControl}" Source="ms-appx:///Assets/drawable-xxhdpi/ic_star_active_24dp.png" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Image Visibility="{Binding IsUserRate, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=UserControl}" Source="ms-appx:///Assets/drawable-xxhdpi/ic_star_active_24dp.png" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Image Visibility="{Binding IsUserRate, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=UserControl}" Source="ms-appx:///Assets/drawable-xxhdpi/ic_star_active_24dp.png" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Image Visibility="{Binding Rate1, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=UserControl}" Source="ms-appx:///Assets/drawable-xxhdpi/ic_star_full_active_24dp.png" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Image Visibility="{Binding Rate2, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=UserControl}" Source="ms-appx:///Assets/drawable-xxhdpi/ic_star_full_active_24dp.png" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        <Image Visibility="{Binding Rate3, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=UserControl}" Source="ms-appx:///Assets/drawable-xxhdpi/ic_star_full_active_24dp.png" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        <Image Visibility="{Binding Rate4, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=UserControl}" Source="ms-appx:///Assets/drawable-xxhdpi/ic_star_full_active_24dp.png" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        <Image Visibility="{Binding Rate5, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=UserControl}" Source="ms-appx:///Assets/drawable-xxhdpi/ic_star_full_active_24dp.png" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Center" />
         <Rectangle Fill="#00000000" Tapped="Rectangle_Tapped"/>
         <Rectangle Fill="#00000000" Grid.Column="1" Tapped="Rectangle_Tapped_1"/>
         <Rectangle Fill="#00000000" Grid.Column="2" Tapped="Rectangle_Tapped_2"/>
         <Rectangle Fill="#00000000" Grid.Column="3" Tapped="Rectangle_Tapped_3"/>
         <Rectangle Fill="#00000000" Grid.Column="4" Tapped="Rectangle_Tapped_4"/>
-        <TextBlock HorizontalAlignment="Center" Text="{Binding Rate, ElementName=UserControl}" VerticalAlignment="Bottom" Grid.ColumnSpan="5" FontFamily="Segoe UI" FontSize="18" Foreground="{StaticResource AccentColor}" Visibility="{Binding ViewText, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=UserControl}" Margin="0" Grid.Row="1"/>
+        <Grid Grid.Row="1" Grid.ColumnSpan="5" Visibility="{Binding VisableText, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=UserControl}">
+        	<TextBlock HorizontalAlignment="Center" Text="{Binding Rate, ElementName=UserControl}" VerticalAlignment="Bottom" FontFamily="Segoe UI" Foreground="{StaticResource AccentColor}"  Margin="0"/>
+        </Grid>
     </Grid>
 </UserControl>

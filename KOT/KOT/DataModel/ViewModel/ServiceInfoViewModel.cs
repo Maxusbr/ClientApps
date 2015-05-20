@@ -106,8 +106,11 @@ namespace KOT.DataModel.ViewModel
                 OnPropertyChanged("RateString");
                 OnPropertyChanged("Brush");
                 OnPropertyChanged("Background");
+                OnPropertyChanged("IsUserRate");
             }
         }
+
+        public bool IsUserRate { get { return UserRate > 0; } }
 
         public PointDetailsModel Details
         {

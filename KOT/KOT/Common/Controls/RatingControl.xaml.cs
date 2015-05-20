@@ -1,12 +1,15 @@
-﻿using Windows.UI;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
+using KOT.Annotations;
 
 
 namespace KOT.Common.Controls
 {
-    public partial class RatingControl : UserControl
+    public partial class RatingControl : UserControl, INotifyPropertyChanged
     {
         public RatingControl()
         {
@@ -37,6 +40,12 @@ namespace KOT.Common.Controls
             {
                 SetValue(ValueProperty, value);
                 Rate = UpdateRate(value);
+                OnPropertyChanged("Rate1");
+                OnPropertyChanged("Rate2");
+                OnPropertyChanged("Rate3");
+                OnPropertyChanged("Rate4");
+                OnPropertyChanged("Rate5");
+                OnPropertyChanged("VisableText");
             }
         }
 
@@ -70,6 +79,8 @@ namespace KOT.Common.Controls
             get { return (bool)GetValue(ViewTextPrperty); }
             set { SetValue(ViewTextPrperty, value); }
         }
+
+        public bool VisableText { get { return ViewText && Value > 0; } }
 
         private void Rectangle_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
@@ -105,7 +116,28 @@ namespace KOT.Common.Controls
             private set { SetValue(RateProperty, value); }
         }
 
+        public static readonly DependencyProperty IsUserRateProperty =
+            DependencyProperty.Register("IsUserRate", typeof(bool), typeof(RatingControl), new PropertyMetadata(false, IsUserRateChange));
 
+        private static void IsUserRateChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var control = d as RatingControl;
+            if (control == null) return;
+            control.IsUserRate = (bool)e.NewValue;
+            control.OnPropertyChanged("IsNotUserRate");
+        }
+
+        public bool IsUserRate
+        {
+            get { return (bool)GetValue(IsUserRateProperty); }
+            set { SetValue(IsUserRateProperty, value); }
+        }
+
+        public bool IsNotUserRate
+        {
+            get { return !(bool)GetValue(IsUserRateProperty); }
+            set { SetValue(IsUserRateProperty, !value); }
+        }
         private string UpdateRate(double value)
         {
             if (value < 0) return "";
@@ -115,5 +147,53 @@ namespace KOT.Common.Controls
             return value <= .8 ? "Хорошо" : "Отлично";
         }
 
+        //private static readonly DependencyProperty Rate1Property =
+        //    DependencyProperty.Register("Rate1", typeof(bool), typeof(RatingControl), new PropertyMetadata(false));
+
+        public bool Rate1
+        {
+            get { return Value > 0; }
+        }
+
+        //private static readonly DependencyProperty Rate2Property =
+        //    DependencyProperty.Register("Rate2", typeof(bool), typeof(RatingControl), new PropertyMetadata(false));
+
+        public bool Rate2
+        {
+            get { return Value > .2; }
+        }
+
+        //private static readonly DependencyProperty Rate3Property =
+        //    DependencyProperty.Register("Rate3", typeof(bool), typeof(RatingControl), new PropertyMetadata(false));
+
+        public bool Rate3
+        {
+            get { return Value > .4; }
+        }
+
+        //private static readonly DependencyProperty Rate4Property =
+        //    DependencyProperty.Register("Rate4", typeof(bool), typeof(RatingControl), new PropertyMetadata(false));
+
+        public bool Rate4
+        {
+            get { return Value > .6; }
+        }
+
+        //private static readonly DependencyProperty Rate5Property =
+        //    DependencyProperty.Register("Rate5", typeof(bool), typeof(RatingControl), new PropertyMetadata(false));
+
+        public bool Rate5
+        {
+            get { return Value > .8; }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }
