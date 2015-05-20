@@ -19,6 +19,8 @@ namespace KOT.DataModel.ViewModel
     {
         private double _userRate = -1;
         private PointDetailsModel _details = new PointDetailsModel();
+        private CommentsDetailModel _commentsDetail = new CommentsDetailModel();
+        private string _userComment;
 
         public ServiceInfoViewModel()
         {
@@ -84,14 +86,22 @@ namespace KOT.DataModel.ViewModel
             }
         }
         public string RateString { get { return Rate.ToString("0.#"); } }
-
+        private double _oldvalue = -1;
         public double UserRate
         {
             get { return _userRate; }
             set
             {
                 _userRate = value;
-                Rate = value;
+                if(value > 0)
+                {
+                    _oldvalue = Model.Score / 100.0;
+                    Rate = value;
+                }
+                else
+                {
+                    Rate = _oldvalue;
+                }
                 OnPropertyChanged("UserRate");
                 OnPropertyChanged("RateString");
                 OnPropertyChanged("Brush");
@@ -108,14 +118,40 @@ namespace KOT.DataModel.ViewModel
                 _details = value;
                 OnPropertyChanged("Comments");
                 OnPropertyChanged("Prices");
-                OnPropertyChanged("CommentsDetail");
+                CommentsDetail = new CommentsDetailModel(value.Comments);
+                OnPropertyChanged("VisableListComment");
             }
         }
+
+        public bool VisableListComment { get { return ListComment.Count > 0; } }
         public List<PointDetailsModel.CommentModel> Comments { get { return Details.Comments; } }
         public List<PointDetailsModel.PriceModel> Prices { get { return Details.Price; } }
         public PlacesModel Model { get; set; }
         public Style StylePoint { get; set; }
-        public CommentsDetailModel CommentsDetail { get { return new CommentsDetailModel(Details.Comments); } }
+
+        public CommentsDetailModel CommentsDetail
+        {
+            get { return _commentsDetail; }
+            set
+            {
+                _commentsDetail = value; 
+                OnPropertyChanged("CommentsDetail");
+                OnPropertyChanged("ListComment");
+            }
+        }
+
+        public List<RateClass> ListComment { get { return CommentsDetail.ListComment; } }
+
+        public string UserComment
+        {
+            get { return _userComment; }
+            set
+            {
+                if (value == _userComment) return;
+                _userComment = value;
+                OnPropertyChanged("UserComment");
+            }
+        }
 
         #region PropertyChanged
 
@@ -134,10 +170,15 @@ namespace KOT.DataModel.ViewModel
         public class CommentsDetailModel
         {
             private readonly List<PointDetailsModel.CommentModel> _list = new List<PointDetailsModel.CommentModel>();
+            private readonly List<RateClass> _listComment = new List<RateClass>();
+            public CommentsDetailModel() { }
             public CommentsDetailModel(List<PointDetailsModel.CommentModel> listComment)
             {
-
                 _list = listComment;
+                foreach (var el in _list)
+                {
+                    _listComment.Add(new RateClass(el));
+                }
                 if (DesignMode.DesignModeEnabled)
                 {
                     _list.Add(new PointDetailsModel.CommentModel { Date = new DateDataModel(DateTime.Now), Score = 80, Text = "Text1" });
@@ -171,6 +212,22 @@ namespace KOT.DataModel.ViewModel
             public double Value3Star { get { return (_count3 * 1.0) / Count; } }
             public double Value4Star { get { return (_count4 * 1.0) / Count; } }
             public double Value5Star { get { return (_count5 * 1.0) / Count; } }
+
+            public List<RateClass> ListComment { get { return _listComment; } }
+        }
+
+        public class RateClass: PointDetailsModel.CommentModel
+        {
+            public RateClass(PointDetailsModel.CommentModel model)
+            {
+                Date = model.Date;
+                Text = model.Text;
+                Score = model.Score;
+            }
+
+            public string Dates { get { return new DateTime(Date.Y, Date.M, Date.D).ToString("d"); } }
+
+            public double Rate { get { return Score / 100.0; } }
         }
     }
 }
