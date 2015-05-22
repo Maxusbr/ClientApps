@@ -104,7 +104,7 @@ namespace KOT
                 // Если стек навигации не восстанавливается для перехода к первой странице,
                 // настройка новой страницы путем передачи необходимой информации в качестве параметра
                 // навигации.
-                if (!rootFrame.Navigate(typeof(MainPage), e.Arguments))
+                if (!rootFrame.Navigate(typeof(LoginPage), e.Arguments))
                 {
                     throw new Exception("Failed to create initial page");
                 }
@@ -136,6 +136,32 @@ namespace KOT
             var deferral = e.SuspendingOperation.GetDeferral();
             await SuspensionManager.SaveAsync();
             deferral.Complete();
+        }
+
+        private void GetSettings()
+        {
+            var localsetting = Windows.Storage.ApplicationData.Current.LocalSettings;
+            if (localsetting.Values.Keys.Contains("UserID"))
+            {
+                try
+                {
+                    //DataSource.user_id = (int)localsetting.Values["VideoEffectsUserID"];
+                }
+                catch { }
+            }
+            else
+            {
+                var roumingsetting = Windows.Storage.ApplicationData.Current.RoamingSettings;
+                //roumingsetting.Values.Remove("VideoEffectsUserID");
+                if (roumingsetting.Values.Keys.Contains("UserID"))
+                {
+                    try
+                    {
+                        //DataSource.user_id = (int)roumingsetting.Values["VideoEffectsUserID"];
+                    }
+                    catch { }
+                }
+            }
         }
     }
 }

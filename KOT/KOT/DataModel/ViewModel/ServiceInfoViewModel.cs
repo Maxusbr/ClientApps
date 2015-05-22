@@ -18,6 +18,8 @@ namespace KOT.DataModel.ViewModel
     public class ServiceInfoViewModel : INotifyPropertyChanged
     {
         private double _userRate = -1;
+        private double _oldvalue = -1;
+        private bool _showAllPrices;
         private PointDetailsModel _details = new PointDetailsModel();
         private CommentsDetailModel _commentsDetail = new CommentsDetailModel();
         private string _userComment;
@@ -86,7 +88,7 @@ namespace KOT.DataModel.ViewModel
             }
         }
         public string RateString { get { return Rate.ToString("0.#"); } }
-        private double _oldvalue = -1;
+
         public double UserRate
         {
             get { return _userRate; }
@@ -110,7 +112,7 @@ namespace KOT.DataModel.ViewModel
             }
         }
 
-        public bool IsUserRate { get { return UserRate > 0; } }
+        public bool IsUserRate { get { return _userRate > 0; } }
 
         public PointDetailsModel Details
         {
@@ -128,9 +130,20 @@ namespace KOT.DataModel.ViewModel
 
         public bool VisableListComment { get { return ListComment.Count > 0; } }
         public List<PointDetailsModel.CommentModel> Comments { get { return Details.Comments; } }
-        public List<PointDetailsModel.PriceModel> Prices { get { return Details.Price; } }
+        public List<PointDetailsModel.PriceModel> Prices { get { return !ShowAllPrices? Details.Price.Take(3).ToList(): Details.Price; } }
         public PlacesModel Model { get; set; }
         public Style StylePoint { get; set; }
+
+        public bool ShowAllPrices
+        {
+            get { return _showAllPrices; }
+            set
+            {
+                if (value.Equals(_showAllPrices)) return;
+                _showAllPrices = value;
+                OnPropertyChanged("Prices");
+            }
+        }
 
         public CommentsDetailModel CommentsDetail
         {
@@ -231,6 +244,11 @@ namespace KOT.DataModel.ViewModel
             public string Dates { get { return new DateTime(Date.Y, Date.M, Date.D).ToString("d"); } }
 
             public double Rate { get { return Score / 100.0; } }
+        }
+
+        internal async void SendComment()
+        {
+            await DataSource.SendComment(UserRate, UserComment);
         }
     }
 }

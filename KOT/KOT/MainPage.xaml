@@ -12,109 +12,7 @@
     mc:Ignorable="d" RequestedTheme="Light"
     DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Mode=Self}}">
     <Page.Resources>
-        <FontFamily x:Key="ContentControlThemeFontFamily">Segoe WP</FontFamily>
-        <SolidColorBrush x:Key="AppBarItemBackgroundThemeBrush" Color="Transparent"/>
-
-        <Style x:Key="AppBarButtonStyle" TargetType="AppBarButton">
-        	<Setter Property="Foreground" Value="{ThemeResource AppBarItemForegroundThemeBrush}"/>
-        	<Setter Property="VerticalAlignment" Value="Top"/>
-        	<Setter Property="HorizontalAlignment" Value="Left"/>
-        	<Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
-        	<Setter Property="FontWeight" Value="Normal"/>
-        	<Setter Property="Template">
-        		<Setter.Value>
-        			<ControlTemplate TargetType="AppBarButton">
-        				<Grid x:Name="LayoutRoot" Background="Transparent">
-        					<VisualStateManager.VisualStateGroups>
-        						<VisualStateGroup x:Name="ApplicationViewStates">
-        							<VisualState x:Name="FullSize"/>
-        							<VisualState x:Name="Compact">
-        								<Storyboard>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Width" Storyboard.TargetName="LayoutRoot">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="48"/>
-        									</ObjectAnimationUsingKeyFrames>
-        								</Storyboard>
-        							</VisualState>
-        						</VisualStateGroup>
-        						<VisualStateGroup x:Name="CommonStates">
-        							<VisualState x:Name="Normal"/>
-        							<VisualState x:Name="Pressed">
-        								<Storyboard>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentPresenter.Foreground)" Storyboard.TargetName="Content">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PrimeryText}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        								</Storyboard>
-        							</VisualState>
-        							<VisualState x:Name="Disabled">
-        								<Storyboard>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentPresenter.Foreground)" Storyboard.TargetName="Content">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource SecondaryText}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        								</Storyboard>
-        							</VisualState>
-        						</VisualStateGroup>
-        					</VisualStateManager.VisualStateGroups>
-        					<Grid HorizontalAlignment="Center">
-        						<Grid x:Name="ContentRoot" Background="Transparent">
-        							<ContentPresenter x:Name="Content" AutomationProperties.AccessibilityView="Raw" Content="{TemplateBinding Icon}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
-        						</Grid>
-        					</Grid>
-        				</Grid>
-        			</ControlTemplate>
-        		</Setter.Value>
-        	</Setter>
-        </Style>
-        <Style x:Key="AppBarWhiteButtonStyle" TargetType="AppBarButton">
-        	<Setter Property="Foreground" Value="{ThemeResource AppBarItemForegroundThemeBrush}"/>
-        	<Setter Property="VerticalAlignment" Value="Top"/>
-        	<Setter Property="HorizontalAlignment" Value="Left"/>
-        	<Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
-        	<Setter Property="FontWeight" Value="Normal"/>
-        	<Setter Property="Template">
-        		<Setter.Value>
-        			<ControlTemplate TargetType="AppBarButton">
-        				<Grid x:Name="LayoutRoot" Background="Transparent">
-        					<VisualStateManager.VisualStateGroups>
-        						<VisualStateGroup x:Name="ApplicationViewStates">
-        							<VisualState x:Name="FullSize"/>
-        							<VisualState x:Name="Compact">
-        								<Storyboard>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Width" Storyboard.TargetName="LayoutRoot">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="48"/>
-        									</ObjectAnimationUsingKeyFrames>
-        								</Storyboard>
-        							</VisualState>
-        						</VisualStateGroup>
-        						<VisualStateGroup x:Name="CommonStates">
-        							<VisualState x:Name="Normal"/>
-        							<VisualState x:Name="Pressed">
-        								<Storyboard>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="Content">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource AccentColor}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        								</Storyboard>
-        							</VisualState>
-        							<VisualState x:Name="Disabled">
-        								<Storyboard>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="Content">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarItemDisabledForegroundThemeBrush}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        								</Storyboard>
-        							</VisualState>
-        						</VisualStateGroup>
-        					</VisualStateManager.VisualStateGroups>
-        					<Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="2" BorderThickness="1" BorderBrush="{StaticResource SecondaryText}">
-        						<Grid>
-        							<Grid x:Name="ContentRoot" Background="Transparent">
-        								<ContentPresenter x:Name="Content" AutomationProperties.AccessibilityView="Raw" Content="{TemplateBinding Icon}" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        							</Grid>
-        						</Grid>
-        					</Border>
-        				</Grid>
-        			</ControlTemplate>
-        		</Setter.Value>
-        	</Setter>
-        </Style>
+        
         <Style x:Key="CommandBarButtonStyle" TargetType="AppBarButton">
         	<Setter Property="Foreground" Value="{ThemeResource AppBarItemForegroundThemeBrush}"/>
         	<Setter Property="VerticalAlignment" Value="Top"/>
@@ -387,7 +285,7 @@
                     <PathIcon Data="M6.29134,26.5534 L6.29134,29.0534 L13.7914,29.0534 L13.7914,26.5534 z M2.54132,5.28779 L2.54132,25.3034 L17.5413,25.3034 L17.5413,5.28779 z M1.47873,2.8033 L18.6038,2.8033 C18.8018,2.8033 18.9893,2.83975 19.1663,2.91267 C19.3433,2.98559 19.4997,3.08714 19.6351,3.21735 C19.7705,3.34756 19.8747,3.4986 19.9476,3.67048 C20.0205,3.84239 20.0569,4.02729 20.0569,4.22519 L20.0569,30.1159 C20.0569,30.5221 19.9163,30.8633 19.6351,31.1393 C19.3538,31.4154 19.0101,31.5534 18.6038,31.5534 L1.47873,31.5534 C1.28082,31.5534 1.09593,31.5169 0.924143,31.444 C0.752243,31.3711 0.601144,31.2695 0.470944,31.1393 C0.340774,31.0091 0.236604,30.8581 0.158484,30.6862 C0.080344,30.5143 0.041264,30.3242 0.041264,30.1159 L0.041264,4.22519 C0.041264,4.02729 0.080344,3.84239 0.158484,3.67048 C0.236604,3.4986 0.340774,3.34756 0.470944,3.21735 C0.601144,3.08714 0.752243,2.98559 0.924143,2.91267 C1.09593,2.83975 1.28082,2.8033 1.47873,2.8033 z" />
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarButton x:Name="btCenter" HorizontalAlignment="Right" Label="appbarbutton" VerticalAlignment="Center" Style="{StaticResource AppBarWhiteButtonStyle}" Foreground="{StaticResource PrimeryText}" Background="#D8FFFFFF" Width="46" Height="46" Click="btCenter_Click">
+            <AppBarButton x:Name="btCenter" HorizontalAlignment="Right" Label="appbarbutton" VerticalAlignment="Center" Style="{StaticResource AppBarWhiteButtonStyle}" Foreground="{StaticResource PrimeryText}" Background="#D8FFFFFF" Width="46" Height="46" Click="btCenter_Click" BorderBrush="{StaticResource SecondaryText}">
                 <AppBarButton.Icon>
                     <PathIcon Data="M13.396,0 L15.396,0 L15.396,3 L13.396,3 z M13.229,26.25 L15.229,26.25 L15.229,29.25 L13.229,29.25 z M26.25,15.729 L26.25,13.729 L29.25,13.729 L29.25,15.729 z M0,15.729 L0,13.729 L3,13.729 L3,15.729 z M9.40452,14.6507 C9.40452,13.9292 9.54137,13.2496 9.81507,12.612 C10.0888,11.9744 10.4604,11.4208 10.9301,10.9511 C11.3998,10.4815 11.9533,10.1098 12.5909,9.83611 C13.2285,9.56237 13.9081,9.42559 14.6297,9.42559 C15.3512,9.42559 16.0277,9.56237 16.6591,9.83611 C17.2904,10.1098 17.8441,10.4815 18.3199,10.9511 C18.7958,11.4208 19.1706,11.9744 19.4443,12.612 C19.718,13.2496 19.8548,13.9292 19.8548,14.6507 C19.8548,15.3722 19.718,16.0487 19.4443,16.6801 C19.1706,17.3115 18.7958,17.862 18.3199,18.3317 C17.8441,18.8013 17.2904,19.1745 16.6591,19.4513 C16.0277,19.7281 15.3512,19.8665 14.6297,19.8665 C13.9081,19.8665 13.2285,19.7281 12.5909,19.4513 C11.9533,19.1745 11.3998,18.8013 10.9301,18.3317 C10.4604,17.862 10.0888,17.3115 9.81507,16.6801 C9.54137,16.0487 9.40452,15.3722 9.40452,14.6507 z M4.69255,14.6507 C4.69255,15.5651 4.80918,16.4453 5.04245,17.2913 C5.27572,18.1373 5.61006,18.9257 6.04549,19.6566 C6.48092,20.3875 6.99878,21.0546 7.59905,21.658 C8.19931,22.2614 8.86957,22.7793 9.60979,23.2116 C10.35,23.6439 11.1431,23.9783 11.9891,24.2146 C12.8351,24.451 13.7153,24.5692 14.6297,24.5692 C15.5441,24.5692 16.4242,24.451 17.2703,24.2146 C18.1162,23.9783 18.9062,23.6439 19.6403,23.2116 C20.3743,22.7793 21.0445,22.2614 21.651,21.658 C22.2575,21.0546 22.7753,20.3875 23.2046,19.6566 C23.6337,18.9257 23.9665,18.1373 24.2029,17.2913 C24.4393,16.4453 24.5575,15.5651 24.5575,14.6507 C24.5575,13.7363 24.4393,12.8562 24.2029,12.0101 C23.9665,11.1642 23.6337,10.3711 23.2046,9.6308 C22.7753,8.89055 22.2575,8.22035 21.651,7.6201 C21.0445,7.01977 20.3743,6.50193 19.6403,6.0665 C18.9062,5.63108 18.1162,5.29678 17.2703,5.06343 C16.4242,4.83018 15.5441,4.71355 14.6297,4.71355 C13.7153,4.71355 12.8351,4.83018 11.9891,5.06343 C11.1431,5.29678 10.35,5.63108 9.60979,6.0665 C8.86957,6.50193 8.19931,7.01977 7.59905,7.6201 C6.99878,8.22035 6.48092,8.89055 6.04549,9.6308 C5.61006,10.3711 5.27572,11.1642 5.04245,12.0101 C4.80918,12.8562 4.69255,13.7363 4.69255,14.6507 z M3.125,14.6507 C3.125,13.587 3.26185,12.5653 3.53555,11.5856 C3.80925,10.6058 4.19648,9.68992 4.69721,8.8377 C5.19796,7.98548 5.79823,7.20796 6.49803,6.50507 C7.19783,5.80217 7.97227,5.20344 8.82136,4.70889 C9.67045,4.21435 10.588,3.83025 11.5739,3.55659 C12.5599,3.28285 13.5784,3.14607 14.6297,3.14607 C15.6934,3.14607 16.712,3.28285 17.6855,3.55659 C18.659,3.83025 19.5734,4.21435 20.4287,4.70889 C21.284,5.20344 22.0615,5.80217 22.7613,6.50507 C23.4611,7.20796 24.0598,7.98548 24.5575,8.8377 C25.0551,9.68992 25.4408,10.6058 25.7145,11.5856 C25.9882,12.5653 26.125,13.587 26.125,14.6507 C26.125,15.702 25.9882,16.7175 25.7145,17.6972 C25.4408,18.6769 25.0551,19.5913 24.5575,20.4404 C24.0598,21.2895 23.4611,22.0655 22.7613,22.7684 C22.0615,23.4713 21.284,24.0731 20.4287,24.5739 C19.5734,25.0746 18.6558,25.4618 17.6761,25.7355 C16.6965,26.0092 15.6809,26.1461 14.6297,26.1461 C13.5784,26.1461 12.5599,26.0092 11.5739,25.7355 C10.588,25.4618 9.67045,25.0746 8.82136,24.5739 C7.97227,24.0731 7.19783,23.4713 6.49803,22.7684 C5.79823,22.0655 5.19796,21.2895 4.69721,20.4404 C4.19648,19.5913 3.80925,18.6769 3.53555,17.6972 C3.26185,16.7175 3.125,15.702 3.125,14.6507 z" />
                 </AppBarButton.Icon>
@@ -414,7 +312,7 @@
             <Path Data="M22.1975,38.7339 L22.6458,41.5672 L20.03,42.0715 L19.4268,39.4767 z M21.4653,34.1075 L22.0623,37.8796 L18.4505,38.7498 L19.2946,42.2133 L15.7585,42.8951 L16.6167,43.4524 L19.4701,42.9336 L20.1568,45.7513 L21.015,46.3086 L20.1995,42.801 L23.707,42.1633 L23.0329,38.5099 L26.7218,37.521 L25.8636,36.9638 L22.8803,37.6825 L22.3235,34.6648 z M11.4325,31.097 L12.0538,32.7986 C12.0538,32.7986 9.92575,35.0004 9.92575,35.0004 L8.78318,32.6866 z M14.0144,29.7329 C13.7889,30.1351 12.8583,31.6129 12.8583,31.6129 L12.3851,30.5255 z M30.6372,8.85029 C37.466,8.71758 47.6663,17.7701 49.0725,20.9859 C53.145,30.2992 33.1921,42.4896 33.1921,42.4896 C30.3583,43.7116 28.7095,50.5455 27.1286,50.6959 C25.5477,50.8462 9.57542,42.1322 9.66791,39.3427 C9.74304,37.087 14.183,32.8014 15.9142,28.4405 C17.1461,25.1589 19.9784,15.3581 24.7955,15.8844 C22.6879,12.8769 27.3215,9.18779 29.989,8.89171 C30.2007,8.86821 30.417,8.85457 30.6372,8.85029 z M15.7149,0.000848 C16.5699,0.011569 17.508,0.12463 18.5406,0.375181 C18.7471,0.425292 18.9528,0.477294 19.1573,0.531205 C22.2251,1.3398 25.0401,2.57669 26.7346,4.2779 C26.89,4.43398 27.0361,4.59403 27.1721,4.75796 C27.8044,5.52058 29.7468,8.06467 28.666,8.84099 C27.4403,9.05443 24.5317,11.4286 23.9612,12.9257 C23.3907,14.4228 23.318,14.6141 23.3362,15.8423 C19.6946,14.1947 13.7611,10.9574 13.5876,11.3617 C13.3655,11.8792 14.6959,14.5402 12.7007,15.6485 C13.001,16.2494 19.3953,18.6326 19.3953,18.6326 C17.2078,21.3409 16.1641,24.9716 15.1439,27.6891 C15.0898,27.8254 12.0002,29.6412 12.0002,29.6412 L10.9006,27.1146 L9.84576,26.7513 L11.0802,30.1322 L7.38395,32.1046 L9.08196,35.391 L4.98632,37.2869 L6.04125,37.6502 L9.46317,36.1287 C9.46317,36.1287 8.76986,38.0399 8.75107,38.6038 C8.74101,38.9089 9.21095,39.8158 9.21095,39.8158 C4.78612,38.7426 0.674445,37.3816 0.190411,36.8162 C-0.842391,35.6099 2.7188,29.5486 1.52916,26.7012 C1.52916,26.7012 2.26566,6.5243 8.34741,2.76643 C9.86367,1.82966 12.0096,-0.045608 15.7149,0.000848 z" Fill="Black" Height="50.698" Canvas.Left="233.417" Stretch="Fill" Canvas.Top="279.909" UseLayoutRounding="False" Width="49.621"/>
 
         </Canvas>
-        <Border x:Name="AlarmLine" Grid.RowSpan="2" VerticalAlignment="Bottom" Background="#7FEAEAEA" BorderBrush="{StaticResource DividerText}" BorderThickness="0,1,0,0" >
+        <Border x:Name="AlarmLine" Grid.RowSpan="2" VerticalAlignment="Bottom" Background="#7FEAEAEA" BorderBrush="{StaticResource DividerText}" BorderThickness="0,1,0,0" Visibility="Collapsed" >
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5">
                 <AppBarToggleButton x:Name="LightsOn" HorizontalAlignment="Stretch" Label="appbartogglebutton" VerticalAlignment="Stretch" Style="{StaticResource CommandBarToggleButtonStyle}" Width="60" Height="60" BorderThickness="1" Foreground="{StaticResource PrimeryText}" IsChecked="False" Margin="0,0,20,0">
                 	<AppBarToggleButton.Icon>
@@ -468,6 +366,11 @@
         	<Border Background="{StaticResource PrimeryColor}" Grid.Row="1" Grid.ColumnSpan="5" />
         	<AppBarButton x:Name="Tools" HorizontalAlignment="Center" Label="appbarbutton" VerticalAlignment="Center" Grid.Row="1"
         		Grid.Column="0" Margin="4" Style="{StaticResource AppBarButtonStyle}" Width="46" Height="46">
+        		<AppBarButton.Flyout>
+        			<Flyout x:Name="FlyoutMenu"  Placement="Left" FlyoutPresenterStyle="{StaticResource BlankFlyoutPresenterStyle}">
+        				<Controls:MainMenuControl x:Name="MainMenuControl" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        			</Flyout>
+        		</AppBarButton.Flyout>
         		<AppBarButton.Icon>
         			<BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_nav_menu_24dp.png" Margin="5,0"/>
         		</AppBarButton.Icon>
@@ -515,70 +418,7 @@
         				<Setter Property="HorizontalAlignment" Value="Right"/>
         			</Style>
 
-        			<Style x:Key="ServiceToogleMenuStyle" TargetType="ToggleMenuFlyoutItem">
-        				<Setter Property="Background" Value="Transparent" />
-        				<Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
-        				<Setter Property="FontWeight" Value="SemiBold" />
-        				<Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
-        				<Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        				<Setter Property="VerticalContentAlignment" Value="Center" />
-        				<Setter Property="Template">
-        					<Setter.Value>
-        						<ControlTemplate TargetType="ToggleMenuFlyoutItem">
-        							<Border x:Name="LayoutRoot"
-        								Background="{TemplateBinding Background}"
-        								BorderBrush="{TemplateBinding BorderBrush}"
-        								BorderThickness="{TemplateBinding BorderThickness}">
-        								<VisualStateManager.VisualStateGroups>
-        									<VisualStateGroup x:Name="CommonStates">
-        										<VisualState x:Name="Normal" />
-        										<VisualState x:Name="PointerOver"/>
-        										<VisualState x:Name="Pressed">
-        											<Storyboard>
-        												<ObjectAnimationUsingKeyFrames Storyboard.TargetName="InnerBorder"
-        													Storyboard.TargetProperty="Background">
-        													<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource DividerText}" />
-        												</ObjectAnimationUsingKeyFrames>
-        											</Storyboard>
-        										</VisualState>
-        										<VisualState x:Name="Disabled"/>
-        									</VisualStateGroup>
-        									<VisualStateGroup x:Name="FocusStates">
-        										<VisualState x:Name="Focused"/>
-        										<VisualState x:Name="Unfocused" />
-        										<VisualState x:Name="PointerFocused" />
-        									</VisualStateGroup>
-        									<VisualStateGroup x:Name="CheckStates">
-        										<VisualState x:Name="Unchecked" />
-        										<VisualState x:Name="Checked">
-        											<Storyboard>
-        												<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(TextBlock.Foreground)" Storyboard.TargetName="TextBlock">
-        													<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource AccentColor}"/>
-        												</ObjectAnimationUsingKeyFrames>
-        											</Storyboard>
-        										</VisualState>
-        									</VisualStateGroup>
-        								</VisualStateManager.VisualStateGroups>
-        								<Border x:Name="InnerBorder">
-        									<Grid Margin="{TemplateBinding Padding}">
-        										<Grid.ColumnDefinitions>
-        											<ColumnDefinition Width="Auto" />
-        											<ColumnDefinition Width="*" />
-        										</Grid.ColumnDefinitions>
-        										<TextBlock x:Name="TextBlock"
-        											Grid.Column="1"
-        											Text="{TemplateBinding Text}"
-        											TextTrimming="CharacterEllipsis"
-        											HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-        											VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Foreground="{StaticResource PrimeryText}" />
-        									</Grid>
-        								</Border>
-        							</Border>
-        						</ControlTemplate>
-        					</Setter.Value>
-        				</Setter>
-        				<Setter Property="Padding" Value="0,5"/>
-        			</Style>
+        			
         		</AppBarButton.Resources>
         		<AppBarButton.Icon>
         			<BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_filter_24dp.png" Margin="5,0"/>

@@ -68,6 +68,19 @@ namespace KOT
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             DefaultViewModel["Source"] = DataSource.Instance;
+            MainMenuControl.HideMenu += MainMenuControl_HideMenu;
+            MainMenuControl.ShowAlarm += MainMenuControl_ShowAlarm;
+        }
+
+        private void MainMenuControl_ShowAlarm(object sender, EventArgs e)
+        {
+            FlyoutMenu.Hide();
+            AlarmLine.Visibility = Visibility.Visible;
+        }
+
+        void MainMenuControl_HideMenu(object sender, EventArgs e)
+        {
+            FlyoutMenu.Hide();
         }
 
         public ObservableDictionary DefaultViewModel
