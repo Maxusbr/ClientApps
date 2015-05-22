@@ -57,5 +57,17 @@ namespace KOT.Common.Controls
             get { return toggleButton.IsChecked ?? false; }
             set { toggleButton.IsChecked = value; }
         }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            _vm.UserComment = string.Empty;
+            _vm.UserRate = -1;
+            if (RateButton.Flyout != null) RateButton.Flyout.Hide();
+        }
+
+        private void Send_Click(object sender, RoutedEventArgs e)
+        {
+            if (RateButton.Flyout != null) RateButton.Flyout.Hide();
+        }
     }
 }

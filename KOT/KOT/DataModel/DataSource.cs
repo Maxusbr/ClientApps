@@ -57,6 +57,7 @@ namespace KOT.DataModel
         {
             var geolocator = new Geolocator();
             var position = await geolocator.GetGeopositionAsync();
+            //TODO Раскоментировать перед релизом
             //MapControl.SetLocation(Phone, position.Coordinate.Point);
             MapControl.SetLocation(Phone, Phone.Location);
         }

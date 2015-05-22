@@ -53,15 +53,16 @@ namespace KOT
         private void Map_SelectionPoinChanged(object sender, EventArgs e)
         {
             var model = sender as PlacesModel;
-            if(model == null)return;
+            if (model == null) return;
             ServiceInfo.UpdateDataContext(model);
             ServiceInfo.IsChecked = false;
             ServiceInfo.Visibility = Visibility.Visible;
+            if (AlarmLine.Visibility == Visibility.Visible) AlarmLine.Visibility = Visibility.Collapsed;
         }
 
         private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
         {
-            
+
         }
 
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
@@ -102,7 +103,7 @@ namespace KOT
         private void All_Click(object sender, RoutedEventArgs e)
         {
             var butt = sender as ToggleMenuFlyoutItem;
-            if (butt == null)  return;
+            if (butt == null) return;
             All.IsChecked = butt.Name == All.Name;
             Gas.IsChecked = butt.Name == Gas.Name;
             Wash.IsChecked = butt.Name == Wash.Name;
@@ -114,7 +115,7 @@ namespace KOT
         private void AppBarToggleButton_Click(object sender, RoutedEventArgs e)
         {
             var but = sender as AppBarToggleButton;
-            if(but == null) return;
+            if (but == null) return;
             Map.AddRoute(but.IsChecked ?? false);
         }
 
@@ -126,9 +127,9 @@ namespace KOT
         private void ServiceInfo_Checked(object sender, EventArgs e)
         {
             var but = sender as ToggleButton;
-            if(but == null) return;
-            ServiceInfo.VerticalAlignment =(but.IsChecked ?? false)? VerticalAlignment.Stretch: VerticalAlignment.Bottom;
-            BackButton.Visibility = (but.IsChecked ?? false)? Visibility.Visible:Visibility.Collapsed;
+            if (but == null) return;
+            ServiceInfo.VerticalAlignment = (but.IsChecked ?? false) ? VerticalAlignment.Stretch : VerticalAlignment.Bottom;
+            BackButton.Visibility = (but.IsChecked ?? false) ? Visibility.Visible : Visibility.Collapsed;
             Tools.Visibility = !(but.IsChecked ?? false) ? Visibility.Visible : Visibility.Collapsed;
         }
 

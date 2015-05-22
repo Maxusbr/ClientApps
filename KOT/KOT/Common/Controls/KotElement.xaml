@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DesignHeight="43" d:DesignWidth="25"
-     HorizontalAlignment="Center" VerticalAlignment="Center" >
+     HorizontalAlignment="Center" VerticalAlignment="Center" Width="40" >
     <RadioButton.Resources>
         <!--<SolidColorBrush x:Key="PhoneRadioCheckBoxBrush" Color="Transparent"/>
         <x:Double x:Key="TextStyleLargeFontSize">18.14</x:Double>
@@ -67,19 +67,4 @@
 	<RadioButton.Style>
 		<StaticResource ResourceKey="KotRadioButtonStyle"/>
 	</RadioButton.Style>
-
-    <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Collapsed">
-        <Path Data="M24.5,12.5 C24.5,21.5415 13.4,34.1866 12.5,34.1667 C11.7,34.1866 0.5,21.0357 0.5,12.5 C0.5,5.87258 5.87258,0.5 12.5,0.5 C19.1274,0.5 24.5,5.87258 24.5,12.5 z" Fill="{StaticResource AccentColor}" HorizontalAlignment="Left" Height="35" Stretch="Fill" VerticalAlignment="Top" Width="25" UseLayoutRounding="False" Visibility="Collapsed"/>
-        <Ellipse HorizontalAlignment="Left" Height="22" Margin="2,2,0,0" VerticalAlignment="Top" Width="22" Stroke="White" StrokeThickness="2" Visibility="Collapsed"/>
-        <Ellipse HorizontalAlignment="Left" Height="4" Margin="0,38,0,0" StrokeThickness="2" VerticalAlignment="Top" Width="25" Visibility="Collapsed">
-            <Ellipse.Fill>
-                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5" Opacity="0.9">
-                    <GradientStop Color="#CC272727" Offset="0.5"/>
-                    <GradientStop Offset="1"/>
-                    <GradientStop/>
-                </LinearGradientBrush>
-            </Ellipse.Fill>
-        </Ellipse>
-
-    </Grid>
 </RadioButton>
