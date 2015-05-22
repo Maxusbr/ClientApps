@@ -388,7 +388,7 @@
 
 
         
-        <Grid x:Name="grdHistoryWork" Grid.Row="1" Background="White" Grid.Column="1" Visibility="Collapsed"  MouseEnter="grdHistoryWork_MouseEnter" MouseLeave="grdHistoryWork_MouseLeave">
+        <Grid x:Name="grdHistoryWork" Grid.Row="1" Background="White" Grid.Column="1" Visibility="Collapsed" MouseEnter="grdHistoryWork_MouseEnter" MouseLeave="grdHistoryWork_MouseLeave">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
@@ -428,14 +428,28 @@
                         <ColumnDefinition/>
                         <ColumnDefinition Width="40"/>
                     </Grid.ColumnDefinitions>
-                    <Button Width="34" Height="34" Grid.Column="1">
+                    <Button Command="{Binding Path=ClickDistanceCommand}" x:Name="btnDistance" Width="34" Height="34" Grid.Column="1" Click="btnDistance_Click" >
                         <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/way.png"/>
                     </Button>
                     <TextBlock TextWrapping="Wrap" FontStyle="Italic" Margin="5" Text="Пробег автомобиля за несколько дней"/>
                 </Grid>
                 <Grid Grid.Row="1">
-                    <Grid x:Name="grdDistance">
-                        
+                    <Grid x:Name="grdDistance" Height="60" Visibility="Collapsed">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Border Background="LightGray" Margin="2" BorderThickness="1" BorderBrush="Gray" Grid.RowSpan="2" Grid.ColumnSpan="3"/>
+                        <TextBlock Text="{Binding Path=CDStartDay}" Grid.Column="1" Margin="7"/>
+                        <TextBlock Text="{Binding Path=CDStopDay}" Grid.Column="1" Grid.Row="1" Margin="7"/>
+                        <Path Visibility="{Binding Path=VisCDStart}" Fill="Green" Data="M0,0 10,5 0,10" Margin="10"/>
+                        <Path Visibility="{Binding Path=VisCDStop}" Fill="Green" Data="M0,0 10,5 0,10" Margin="10" Grid.Row="1"/>
+                        <TextBlock Text="{Binding Path=TotalDistance, StringFormat='Всего {0} км'}" Grid.Column="2" Grid.RowSpan="2" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Grid>
                 </Grid>
 

@@ -115,5 +115,15 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             grdHistoryWork.Opacity = 0.4f;
         }
 
+        private bool _displayedDistance = false;
+        private void btnDistance_Click(object sender, RoutedEventArgs e)
+        {
+            if (_displayedDistance)
+                grdDistance.Visibility = Visibility.Collapsed;
+            else
+                grdDistance.Visibility = Visibility.Visible;
+            _displayedDistance = !_displayedDistance;
+        }
+
     }
 }
