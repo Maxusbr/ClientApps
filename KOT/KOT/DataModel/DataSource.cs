@@ -40,7 +40,11 @@ namespace KOT.DataModel
         public static KotElement Kot { get { return Instance._kot; } }
         public static KotElement Phone { get { return Instance._phone; } }
 
-        public static string Url = "http://effects.homevideo.pro:52000/files/";
+        private const string _url = "http://195.208.184.73/";
+        public static string Url
+        {
+            get { return _url; }
+        }
 
         public static async void GetMapElements()
         {
@@ -70,6 +74,34 @@ namespace KOT.DataModel
                 return await MapRouteFinder.GetWalkingRouteAsync(Phone.Location, Kot.Location);
             }
             return null;
+        }
+
+        internal async static Task SendComment(double userRate, string userComment)
+        {
+            await Instance.SendCommentAsync(userRate,  userComment);
+        }
+
+        private async Task SendCommentAsync(double userRate, string userComment)
+        {
+            var dataUri = new Uri(DataSource.Url + "GetTemplates");
+            try
+            {
+                var request = (HttpWebRequest)WebRequest.Create(dataUri);
+                request.Method = "GET";
+                //request.ContentType = "text/plain";
+                using (var response = await request.GetResponseAsync())
+                {
+                    using (var stream = response.GetResponseStream())
+                    {
+
+                    }
+                }
+
+            }
+            catch
+            {
+
+            }
         }
     }
 }

@@ -14,7 +14,6 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // Шаблон элемента пользовательского элемента управления задокументирован по адресу http://go.microsoft.com/fwlink/?LinkId=234236
-using KOT.DataModel;
 using KOT.DataModel.Handlers;
 using KOT.DataModel.ViewModel;
 
@@ -67,7 +66,14 @@ namespace KOT.Common.Controls
 
         private void Send_Click(object sender, RoutedEventArgs e)
         {
-            if (RateButton.Flyout != null) RateButton.Flyout.Hide();
+            if (RateButton.Flyout == null) return;
+            RateButton.Flyout.Hide();
+            _vm.SendComment();
+        }
+
+        private void ShowAllPrices_Click(object sender, RoutedEventArgs e)
+        {
+            _vm.ShowAllPrices = !_vm.ShowAllPrices;
         }
     }
 }

@@ -1,0 +1,42 @@
+﻿<Page
+    x:Class="KOT.LoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:KOT"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+    	<Grid.RowDefinitions>
+    		<RowDefinition Height="180"/>
+    		<RowDefinition Height="Auto" />
+    		<RowDefinition Height="Auto"/>
+    		<RowDefinition Height="Auto"/>
+    		<RowDefinition/>
+    	</Grid.RowDefinitions>
+        <Grid.Background>
+            <ImageBrush Stretch="UniformToFill" ImageSource="Assets/drawable-xxhdpi/start_bg_480x800.png"/>
+        </Grid.Background>
+    	<Image Source="Assets/drawable-xxhdpi/logo_reg_page_120dp.png" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,24,0,0" d:IsLocked="True"/>
+    	<Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" d:IsLocked="True">
+    		<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="KOT" VerticalAlignment="Top" FontSize="66.667" Foreground="#FF383838" Margin="4,4,0,0"/>
+    		<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="KOT" VerticalAlignment="Top" FontSize="66.667" Foreground="White"/>
+
+    	</Grid>
+    	<Border BorderBrush="Black" BorderThickness="1" VerticalAlignment="Center" Grid.Row="2" Background="White" Margin="32,0">
+    		<Grid Margin="16,8,16,16">
+    			<Grid.RowDefinitions>
+    				<RowDefinition/>
+    				<RowDefinition/>
+    			</Grid.RowDefinitions>
+    			<TextBox x:Name="tbName" Margin="0,0,0,5" TextWrapping="Wrap" VerticalAlignment="Top" Background="White" PlaceholderText="Имя" Height="48" BorderBrush="{StaticResource DividerText}" BorderThickness="0,0,0,1" Style="{StaticResource TextBoxStyle}"/>
+    			<TextBox x:Name="tbPass" Margin="0,8,0,5" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Row="1" MinWidth="48" Background="White" PlaceholderText="Пароль" Height="48" BorderBrush="{StaticResource DividerText}" BorderThickness="0,0,0,1" Style="{StaticResource TextBoxStyle}"/>
+    		</Grid>
+    	</Border>
+    	<Button x:Name="btLogin" Content="ВХОД" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="3" Margin="32,16,32,0" BorderThickness="0" Foreground="#FFA4A4A4" FontSize="21.333" Background="#55000000" Padding="9.5,0,9.5,4" Style="{StaticResource LoginButtonStyle}" Click="btLogin_Click"/>
+    	<Button x:Name="btDemo" Content="Познакомиться с КОТ'ом" HorizontalAlignment="Stretch" VerticalAlignment="Top" Grid.Row="4" Style="{StaticResource LinkButtonStyle}" BorderBrush="{x:Null}" Foreground="#FFECECEC" VerticalContentAlignment="Bottom" MinHeight="50" Margin="32,0" FontSize="21.333" Click="btDemo_Click"/>
+
+    </Grid>
+</Page>

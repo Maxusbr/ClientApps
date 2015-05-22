@@ -123,8 +123,8 @@ namespace KOT.Common.Controls
         {
             var control = d as RatingControl;
             if (control == null) return;
-            control.IsUserRate = (bool)e.NewValue;
-            control.OnPropertyChanged("IsNotUserRate");
+            //control.IsUserRate = (bool)e.NewValue;
+            control.IsNotUserRate = !(bool)e.NewValue;
         }
 
         public bool IsUserRate

@@ -102,14 +102,14 @@
                                     </Grid.ColumnDefinitions>
 
                                     <ContentControl Content="ContentControl" VerticalAlignment="Center" Style="{Binding StylePoint}" d:IsHidden="True" HorizontalAlignment="Center"/>
-                                    <StackPanel Orientation="Vertical" Grid.Column="1" Margin="20,0,0,-1">
+                                    <StackPanel Orientation="Vertical" Grid.Column="1" Margin="20,0,0,0">
                                         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Model.Name}" VerticalAlignment="Top" FontSize="16" Foreground="{StaticResource PrimeryText}"/>
                                         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Model.Adress}" VerticalAlignment="Top" Foreground="{StaticResource SecondaryText}" Margin="0,5,0,0" FontSize="12"/>
-                                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding ServicePrice, Mode=OneWay}" VerticalAlignment="Top" Foreground="{StaticResource PrimeryText}" Margin="0,5,0,0" FontSize="12"/>
+                                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding ServicePrice, Mode=OneWay}" VerticalAlignment="Top" Foreground="{StaticResource SecondaryText}" Margin="0,5,0,0" FontSize="12"/>
                                     </StackPanel>
                                     <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="2" Margin="20,0">
                                         <TextBlock Text="{Binding RateString}" HorizontalAlignment="Center" Margin="0" FontSize="16" Foreground="{Binding Background, Mode=OneWay}"/>
-                                        <local:RatingControl Width="46" Background="#FF212121" Margin="10,7,10,0" Brush="{Binding Brush}" RateValue="{Binding Rate}" IsEnabled="False" IsUserRate="{Binding IsUserRate, Mode=OneWay}"/>
+                                        <local:RatingControl Width="46" Background="#FF212121" Margin="10,7,10,0" Brush="{Binding Brush}" RateValue="{Binding Rate}" IsEnabled="False" IsUserRate="{Binding IsUserRate}"/>
                                         <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
                                             <TextBlock HorizontalAlignment="Center" Text="Отзывов: " Foreground="{StaticResource PrimeryText}"/>
                                             <TextBlock Text="{Binding Model.Comments}" HorizontalAlignment="Center" Margin="5,0,0,0" Foreground="{StaticResource PrimeryText}"/>
@@ -365,9 +365,13 @@
                 </Grid>
 
             </Border>
-            <Border BorderBrush="{StaticResource DividerText}" BorderThickness="1,0,1,1" Background="White" Grid.Row="1" Padding="25,5">
+            <Border BorderBrush="{StaticResource DividerText}" BorderThickness="1,0,1,1" Background="White" Grid.Row="1" Padding="25,5,25,0">
                 <Grid VerticalAlignment="Top">
-                    <ListView VerticalAlignment="Top" DisplayMemberPath="" SelectionMode="None" IsSwipeEnabled="False" ItemsSource="{Binding Prices}" Grid.Row="1" Header="Услуги">
+                	<Grid.RowDefinitions>
+                		<RowDefinition/>
+                		<RowDefinition Height="Auto"/>
+                	</Grid.RowDefinitions>
+                    <ListView VerticalAlignment="Top" DisplayMemberPath="" SelectionMode="None" IsSwipeEnabled="False" ItemsSource="{Binding Prices}" Header="Услуги">
                         <ListView.Resources>
                             <DataTemplate x:Key="DataTemplate">
                                 <Grid>
@@ -388,10 +392,58 @@
                         <ListViewItem Content="Мойка - 150 руб."/>
                         <ListViewItem Content="Мойка - 150 руб."/>
                     </ListView>
+                    <AppBarToggleButton Grid.Row="1" x:Name="PhoneToggle" HorizontalAlignment="Right" Label="appbartogglebutton" VerticalAlignment="Bottom" Width="24" Height="24" BorderThickness="1" Background="#D8FFFFFF" Foreground="{StaticResource PrimeryText}" Margin="0,0,0,5" Click="ShowAllPrices_Click">
+                    	<AppBarToggleButton.Resources>
+                    		<Style x:Key="AppBarToggleButtonStyle" TargetType="AppBarToggleButton">
+                    			<Setter Property="Foreground" Value="{ThemeResource AppBarItemForegroundThemeBrush}"/>
+                    			<Setter Property="VerticalAlignment" Value="Top"/>
+                    			<Setter Property="HorizontalAlignment" Value="Left"/>
+                    			<Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+                    			<Setter Property="FontWeight" Value="Normal"/>
+                    			<Setter Property="Template">
+                    				<Setter.Value>
+                    					<ControlTemplate TargetType="AppBarToggleButton">
+                    						<Border x:Name="LayoutRoot" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="2" BorderThickness="{TemplateBinding BorderThickness}">
+                    							<VisualStateManager.VisualStateGroups>
+                    								<VisualStateGroup x:Name="ApplicationViewStates">
+                    									<VisualState x:Name="FullSize"/>
+                    									<VisualState x:Name="Compact"/>
+                    								</VisualStateGroup>
+                    								<VisualStateGroup x:Name="CommonStates">
+                    									<VisualState x:Name="Normal"/>
+                    									<VisualState x:Name="Pressed"/>
+                    									<VisualState x:Name="Disabled"/>
+                    									<VisualState x:Name="Checked">
+                    										<Storyboard>
+                    											<DoubleAnimation Duration="0" To="180" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Rotation)" Storyboard.TargetName="Content" d:IsOptimized="True"/>
+                    										</Storyboard>
+                    									</VisualState>
+                    									<VisualState x:Name="CheckedPressed"/>
+                    									<VisualState x:Name="CheckedDisabled"/>
+                    								</VisualStateGroup>
+                    							</VisualStateManager.VisualStateGroups>
+                    							<ContentPresenter x:Name="Content" AutomationProperties.AccessibilityView="Raw" Content="{TemplateBinding Icon}" Foreground="{TemplateBinding Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                    								<ContentPresenter.RenderTransform>
+                    									<CompositeTransform/>
+                    								</ContentPresenter.RenderTransform>
+                    							</ContentPresenter>
+                    						</Border>
+                    					</ControlTemplate>
+                    				</Setter.Value>
+                    			</Setter>
+                    		</Style>
+                    	</AppBarToggleButton.Resources>
+                    	<AppBarToggleButton.Style>
+                    		<StaticResource ResourceKey="AppBarToggleButtonStyle"/>
+                    	</AppBarToggleButton.Style>
+                        <AppBarToggleButton.Icon>
+                            <BitmapIcon UriSource="ms-appx:///Assets/drawable-xxhdpi/ic_arrow_down_more_24dp.png"/>
+                        </AppBarToggleButton.Icon>
+                    </AppBarToggleButton>
                 </Grid>
             </Border>
             <Border Padding="0" Background="WhiteSmoke" Grid.Row="2" >
-            	<Button x:Name="RateButton" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Padding="0" MinWidth="0" MinHeight="0" Margin="0,-4,0,-2">
+            	<Button x:Name="RateButton" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Padding="0" MinWidth="0" MinHeight="48">
             		<Button.Resources>
             			<Thickness x:Key="PhoneBorderThickness">2.5</Thickness>
             			<Thickness x:Key="PhoneButtonContentPadding">9.5,0,9.5,3.5</Thickness>
@@ -467,43 +519,7 @@
             					</Setter.Value>
             				</Setter>
             			</Style>
-            			<x:Double x:Key="FlyoutThemeMinHeight">43</x:Double>
-            			<Thickness x:Key="FlyoutContentPanelPortraitThemeMargin">0,25.5,0,0</Thickness>
-            			<Thickness x:Key="FlyoutContentPanelLandscapeThemeMargin">0,0,0,0</Thickness>
-            			<Style x:Key="FlyoutPresenterStyle" TargetType="FlyoutPresenter">
-            				<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-            				<Setter Property="VerticalContentAlignment" Value="Stretch"/>
-            				<Setter Property="IsTabStop" Value="False"/>
-            				<Setter Property="Background" Value="#7FB6B6B6"/>
-            				<Setter Property="Padding" Value="0"/>
-            				<Setter Property="MinHeight" Value="{ThemeResource FlyoutThemeMinHeight}"/>
-            				<Setter Property="ScrollViewer.HorizontalScrollMode" Value="Auto"/>
-            				<Setter Property="ScrollViewer.VerticalScrollMode" Value="Auto"/>
-            				<Setter Property="ScrollViewer.ZoomMode" Value="Disabled"/>
-            				<Setter Property="Template">
-            					<Setter.Value>
-            						<ControlTemplate TargetType="FlyoutPresenter">
-            							<Border x:Name="Background" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" FlowDirection="LeftToRight">
-            								<VisualStateManager.VisualStateGroups>
-            									<VisualStateGroup x:Name="OrientationStates">
-            										<VisualState x:Name="Portrait"/>
-            										<VisualState x:Name="Landscape">
-            											<Storyboard>
-            												<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" Storyboard.TargetName="ScrollViewer">
-            													<DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource FlyoutContentPanelLandscapeThemeMargin}"/>
-            												</ObjectAnimationUsingKeyFrames>
-            											</Storyboard>
-            										</VisualState>
-            									</VisualStateGroup>
-            								</VisualStateManager.VisualStateGroups>
-            								<ScrollViewer x:Name="ScrollViewer" AutomationProperties.AccessibilityView="Raw" FlowDirection="{TemplateBinding FlowDirection}" HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}" HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}" Margin="{ThemeResource FlyoutContentPanelPortraitThemeMargin}" VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}" VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}" ZoomMode="{TemplateBinding ScrollViewer.ZoomMode}">
-            									<ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-            								</ScrollViewer>
-            							</Border>
-            						</ControlTemplate>
-            					</Setter.Value>
-            				</Setter>
-            			</Style>
+            			
             		</Button.Resources>
             		<Button.Flyout>
             			<Flyout Placement="Full" FlyoutPresenterStyle="{StaticResource FlyoutPresenterStyle}">
@@ -514,7 +530,7 @@
             							<RowDefinition/>
             							<RowDefinition Height="Auto"/>
             						</Grid.RowDefinitions>
-            						<local:RatingControl Width="90" VerticalAlignment="Top" RateValue="{Binding UserRate}"/>
+            						<local:RatingControl Width="150" VerticalAlignment="Top" RateValue="{Binding UserRate}" Height="24"/>
             						<TextBox Margin="0,10" Text="{Binding UserComment}" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="1" FontSize="10.667" MinHeight="0" MinWidth="0" BorderThickness="0,0,0,1" Padding="7,0,8,0" AcceptsReturn="True" PlaceholderText="Поделитесь впечатлениями" Background="{x:Null}" BorderBrush="{StaticResource AccentColor}"/>
             						<StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
             							<Button x:Name="Cancel" Content="отменить" VerticalAlignment="Top" Style="{StaticResource ButtonStyle}" BorderThickness="0" MinWidth="0" MinHeight="0" Padding="5,0" Foreground="{StaticResource AccentColor}" MaxHeight="35" FontSize="13.333" Click="Cancel_Click"/>
@@ -527,8 +543,8 @@
             		<Button.Style>
             			<StaticResource ResourceKey="ButtonStyle"/>
             		</Button.Style>
-					<Grid Margin="0" VerticalAlignment="Center" Width="175">
-            			<local:RatingControl  x:Name="UserRatingControl" Background="#FFE91E63" Brush="#FFE91E63" RateValue="{Binding UserRate, Mode=TwoWay}" VerticalAlignment="Center" ViewText="True"/>
+					<Grid Margin="0" VerticalAlignment="Center">
+            			<local:RatingControl  x:Name="UserRatingControl" Background="#FFE91E63" Brush="#FFE91E63" RateValue="{Binding UserRate, Mode=TwoWay}" VerticalAlignment="Center" ViewText="True" Height="24" Width="168"/>
             		</Grid>
 				</Button>
 
