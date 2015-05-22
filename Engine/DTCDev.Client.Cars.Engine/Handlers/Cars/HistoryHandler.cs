@@ -332,7 +332,6 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
         {
             historyMessages.Clear();
             optimization = optim;
-            //Debug.Assert(start < stop, "Current dates are not valid");
             if (start > stop)
                 return;
 
@@ -340,8 +339,6 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
             currentAsked = stop;
             startDate = start;
             stopDate = stop;
-            //Thread tr = new Thread(ThreadGetter);
-            //tr.Start();
             ThreadGetter();
         }
 
@@ -354,10 +351,6 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
                 if (currentAsked < startDate)
                 {
                     historyMessages.ForEach(o => o.DevID = currentDeviceID);
-                    //for (int i = 0; i < historyMessages.Count(); i++)
-                    //{
-                    //    historyMessages[i].DevID = currentDeviceID;
-                    //}
                     if (Application.Current != null)
                         Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                         {

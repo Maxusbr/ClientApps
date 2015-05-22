@@ -32,32 +32,9 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            trDetector = new Thread(DetectCallRefresh);
-            trDetector.Start();
+            
         }
 
-        Thread trDetector;
-        private double _lastWidth=0;
-
-        private void DetectCallRefresh()
-        {
-            while (this != null)
-            {
-                if (this.ActualWidth != _lastWidth)
-                {
-                    _lastWidth = this.ActualWidth;
-                }
-                else
-                {
-                    _currentWidth = _lastWidth;
-                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                        {
-                            CalculateDisplayed();
-                        }));
-                }
-                Thread.Sleep(200);
-            }
-        }
 
         private void UserControl_SizeChanged_1(object sender, SizeChangedEventArgs e)
         {
@@ -165,51 +142,47 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
                 return;
             CalcPrescale();
             cnvData.Children.Clear();
-            if (_data.Count() < 1)
-                return;
-            double step = (24.0 * 60.0) / _currentWidth;
-            //step = Math.Round(step, 0) + 1;
+            double step = _currentWidth / (24 * 60 * 60);
 
-            TimeSpan ts = TimeSpan.FromMinutes(step);
-
-            int displayedDay = 0;
-
-            DateTime d1 = new DateTime(_data[0].yy, _data[0].Mnth, _data[0].dd, 0, 0, 0);
-            DateTime d2 = new DateTime();
-            displayedDay = d1.Day;
-
-            while (d1.Day == displayedDay)
+            int secondsInStep = 86400;
+            double sStep = _currentWidth;
+            while (sStep > 1)
             {
-                d2 = d1;
-                d1 += ts;
-                List<CarStateModel> temp = _data.Where(p => p.hh >= d2.Hour && p.mm >= d2.Minute).ToList();
-                temp = temp.Where(p => p.hh <= d1.Hour).ToList();
-                temp = temp.Where(p => p.mm <= d1.Minute).ToList();
-                if (temp.Count() > 0)
-                {
-                    int maxSpeed = temp.Max(p => p.Spd);
-                    Border b = new Border
-                    {
-                        Width = 1,
-                        Height = maxSpeed / prescale,
-                        VerticalAlignment = System.Windows.VerticalAlignment.Bottom
-                    };
-                    if (maxSpeed < 900)
-                        b.Background = new SolidColorBrush(Colors.Green);
-                    else if (maxSpeed < 1100)
-                        b.Background = new SolidColorBrush(Colors.Yellow);
-                    else
-                        b.Background = new SolidColorBrush(Colors.Red);
-                    cnvData.Children.Add(b);
-                }
+                secondsInStep = secondsInStep / 2;
+                sStep = sStep / 2;
+            }
+
+            int currentSecond = 0;
+            while (currentSecond < 86400)
+            {
+                List<CarStateModel> temp = _data.Where(p => p.Seconds >= currentSecond && p.Seconds < currentSecond + secondsInStep).ToList();
+                if (temp.Count() < 1)
+                    AddBorderRow(step, currentSecond, secondsInStep, 0);
                 else
                 {
-                    Border b = new Border();
-                    b.Width = 1;
-                    b.Height = 30;
-                    cnvData.Children.Add(b);
+                    int vol = temp.Sum(p => p.Spd) / temp.Count();
+                    AddBorderRow(step, currentSecond, secondsInStep, vol);
                 }
+                currentSecond += secondsInStep;
             }
+        }
+
+        private void AddBorderRow(double step, int startSeconds, int widthSeconds, int vol)
+        {
+            Border b = new Border();
+            b.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
+            if (vol < 900)
+                b.Background = new SolidColorBrush(Colors.Green);
+            else if (vol < 1100)
+                b.Background = new SolidColorBrush(Colors.Yellow);
+            else
+                b.Background = new SolidColorBrush(Colors.Red);
+            b.Height = (int)(vol / prescale);
+            double width = widthSeconds * step;
+            if (width < 1)
+                width = 1;
+            b.Width = width;
+            cnvData.Children.Add(b);
         }
 
         private void CalcPrescale()

@@ -78,55 +78,8 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             //_playerVisible = !_playerVisible;
         }
 
-        private void rbtnGraphic_Checked(object sender, RoutedEventArgs e)
-        {
-            if (grdGrapic != null && grdList != null)
-            {
-                grdGrapic.Visibility = Visibility.Visible;
-                grdList.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        private void rbtnList_Checked(object sender, RoutedEventArgs e)
-        {
-            if (grdGrapic != null && grdList != null)
-            {
-                grdGrapic.Visibility = Visibility.Collapsed;
-                grdList.Visibility = Visibility.Visible;
-            }
-        }
-
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-        }
-
-        bool _statDisplayed = true;
-
-        private void btnMinimize_Click(object sender, RoutedEventArgs e)
-        {
-            brdrStat.Visibility = _statDisplayed ? Visibility.Collapsed : Visibility.Visible;
-            _statDisplayed = !_statDisplayed;
-        }
-
-        private void ToggleButton_Click(object sender, RoutedEventArgs e)
-        {
-            var tb = sender as ToggleButton;
-            if (tb == null) return;
-            if (tb.IsChecked == true)
-            {
-                grdService.Width = 450;
-                grdGrapic.Visibility = Visibility.Visible;
-                _hvm.SpanMap = 2;
-                tb.Content = "Скрыть детали";
-            }
-            else
-            {
-                grdService.Width = 230;
-                grdGrapic.Visibility = Visibility.Collapsed;
-                _hvm.SpanMap = 3;
-                tb.Content = "Детально";
-            }
-
         }
 
         bool _displayHistory=false;
@@ -135,7 +88,6 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         {
             if (_displayHistory == false)
             {
-                //grdService.Visibility = Visibility.Visible;
                 CarPoints.Opacity = .5;
                 _hvm.EnableHistory = true;
                 _hvm.LoadData();
@@ -143,7 +95,6 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             }
             else
             {
-                //grdService.Visibility = Visibility.Collapsed;
                 CarPoints.Opacity = 1;
                 _hvm.EnableHistory = false;
                 grdHistoryWork.Visibility = Visibility.Collapsed;
@@ -151,7 +102,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             _displayHistory = !_displayHistory;
             CarPin.Visibility = ParkingsPin.Visibility =
             RouteLine.Visibility = WarningLine.Visibility = ErrorLine.Visibility = OfflineLine.Visibility =
-            btnMinimize.Visibility = brdrStat.Visibility = _carZonesError.Visibility = grdHistoryWork.Visibility;
+            _carZonesError.Visibility = grdHistoryWork.Visibility;
         }
 
         private void grdHistoryWork_MouseEnter(object sender, MouseEventArgs e)

@@ -163,7 +163,12 @@
                             <Image Source="Imgs/2.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Календарь работ" Padding="7" Click="menuItem_ClickCalendar">
+                    <MenuItem Header="Состояние постов" Padding="7" Click="menuItem_Posts">
+                        <MenuItem.Icon>
+                            <Image Source="Imgs/4.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Календарь предстоящих работ" Padding="7" Click="menuItem_ClickCalendar">
                         <MenuItem.Icon>
                             <Image Source="Imgs/7.png"/>
                         </MenuItem.Icon>
@@ -197,11 +202,7 @@
                             <Image Source="Imgs/4.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Состояния постов" Padding="7" Click="menuItem_Posts">
-                        <MenuItem.Icon>
-                            <Image Source="Imgs/4.png"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
+                    
                 </MenuItem>
                 <MenuItem Header="НАСТРОЙКИ" Padding="10,2">
                     <MenuItem Header="Настройки сервиса" Padding="7" Click="menuItem_ClickPersonalSettings">

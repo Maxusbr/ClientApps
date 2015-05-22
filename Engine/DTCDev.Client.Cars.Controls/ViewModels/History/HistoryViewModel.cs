@@ -42,8 +42,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             HistoryHandler.Instance.LinesLoaded += Instance_LinesLoaded;
             HistoryHandler.Instance.OBDLoaded += Instance_OBDLoaded;
             HistoryHandler.Instance.AccLoaded += Instance_AccLoaded;
-            bwPlayer.DoWork += bwPlayer_DoWork;
-            bwPlayer.RunWorkerCompleted += bwPlayer_RunWorkerCompleted;
             _zoneHandler = ZonesHandler.Instance;
             _mapHandler = CarsHandler.Instance;
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
@@ -140,7 +138,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         private int _acceleration = 1;
 
-        private Visibility _btnStopPlayVisibility = Visibility.Collapsed;
+        
 
         private CarStateModel _selectedState;
 
@@ -489,8 +487,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             {
                 _currentSecondSelected = value;
                 this.OnPropertyChanged("CurrentSecondSelected");
-                if (_isPlayerPlay == false)
-                    CheckSelectedTime();
+                CheckSelectedTime();
             }
         }
 
@@ -567,16 +564,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             {
                 _acceleration = value;
                 this.OnPropertyChanged("Accelleration");
-            }
-        }
-
-        public Visibility BtnStopPlayVisibility
-        {
-            get { return _btnStopPlayVisibility; }
-            set
-            {
-                _btnStopPlayVisibility = value;
-                this.OnPropertyChanged("BtnStopPlayVisibility");
             }
         }
 
@@ -760,88 +747,11 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         }
 
 
-        #region PLAYER
-
-        private RelayCommand _plr_RunCommand;
-        private RelayCommand _plr_StopCommand;
-        private RelayCommand _plr_PlusCommand;
-        private RelayCommand _plr_MinezeCommand;
-        private RelayCommand _plr_FastPlusCommand;
-        private RelayCommand _plr_FastMinezeCommand;
-
-
-        public RelayCommand Plr_RunCommand
-        {
-            get
-            {
-                if (_plr_RunCommand == null)
-                    _plr_RunCommand = new RelayCommand(a => PLR_Start());
-                return _plr_RunCommand;
-            }
-        }
-        public RelayCommand Plr_StopCommand
-        {
-            get
-            {
-                if (_plr_StopCommand == null)
-                    _plr_StopCommand = new RelayCommand(a => PLR_Stop());
-                return _plr_StopCommand;
-            }
-        }
-        public RelayCommand Plr_PlusCommand
-        {
-            get
-            {
-                if (_plr_PlusCommand == null)
-                    _plr_PlusCommand = new RelayCommand(a => PLR_Plus());
-                return _plr_PlusCommand;
-            }
-        }
-        public RelayCommand Plr_MinezeCommand
-        {
-            get
-            {
-                if (_plr_MinezeCommand == null)
-                    _plr_MinezeCommand = new RelayCommand(a => PLR_Mineze());
-                return _plr_MinezeCommand;
-            }
-        }
-        public RelayCommand Plr_FastPlusCommand
-        {
-            get
-            {
-                if (_plr_FastPlusCommand == null)
-                    _plr_FastPlusCommand = new RelayCommand(a => PLR_FastPlus());
-                return _plr_FastPlusCommand;
-            }
-        }
-        public RelayCommand Plr_FastMinezeCommand
-        {
-            get
-            {
-                if (_plr_FastMinezeCommand == null)
-                    _plr_FastMinezeCommand = new RelayCommand(a => PLR_FastMineze());
-                return _plr_FastMinezeCommand;
-            }
-        }
-
-
-
-        #endregion PLAYER
 
         #endregion
 
 
 
-
-        #region Public Functions
-
-        public void StopPlay()
-        {
-            _isPlayerPlay = false;
-        }
-
-        #endregion
 
 
 
@@ -1425,96 +1335,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 MoveBack();
         }
 
-        #region PLAYER
-
-        private bool _isPlayerPlay = false;
-
-        private BackgroundWorker bwPlayer = new BackgroundWorker();
-
-        private void PLR_Start()
-        {
-            _isPlayerPlay = true;
-            _currentSecond = CurrentSecondSelected;
-            bwPlayer.RunWorkerAsync();
-            BtnStopPlayVisibility = Visibility.Visible;
-        }
-
-        private void PLR_Stop()
-        {
-            _isPlayerPlay = false;
-            BtnStopPlayVisibility = Visibility.Collapsed;
-        }
-
-        private void PLR_Plus()
-        {
-            id++;
-            if (id > DayStates.Count() - 1)
-                id = DayStates.Count() - 1;
-            _selectedState = DayStates[id];
-            _currentSecond = CurrentSecondSelected;
-        }
-
-        private void PLR_Mineze()
-        {
-            id--;
-            if (id < 0)
-                id = 0;
-            _selectedState = DayStates[id];
-            _currentSecond = CurrentSecondSelected;
-        }
-
-        private void PLR_FastPlus()
-        {
-            id += 10;
-            if (id > DayStates.Count() - 1)
-                id = DayStates.Count() - 1;
-            _selectedState = DayStates[id];
-            _currentSecond = CurrentSecondSelected;
-        }
-
-        private void PLR_FastMineze()
-        {
-            id -= 10;
-            if (id < 0)
-                id = 0;
-            _selectedState = DayStates[id];
-            _currentSecond = CurrentSecondSelected;
-
-        }
-
-        private int _currentSecond = 0;
-
-
-
-        void bwPlayer_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            _currentSecond++;
-            if (_currentSecond < 0)
-                _currentSecond = 0;
-            if (_currentSecond > 84600)
-                _currentSecond = 84600;
-            CurrentSecondSelected = _currentSecond;
-
-            FindPoint();
-
-            if (_isPlayerPlay)
-                bwPlayer.RunWorkerAsync();
-        }
-
-        void bwPlayer_DoWork(object sender, DoWorkEventArgs e)
-        {
-            System.Threading.Thread.Sleep(1000 / _acceleration);
-        }
-
-        private void FindPoint()
-        {
-            TimeSpan ts = TimeSpan.FromSeconds(_currentSecond);
-            DateTime dt = _displayedHistoryDate + ts;
-            FindModelByDate(dt);
-            SelectRoute(_selectedState);
-        }
-
-        #endregion PLAYER
 
 
 

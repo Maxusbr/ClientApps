@@ -97,5 +97,21 @@ namespace DTCDev.Models.CarsSending.Car
         /// </summary>
         [JsonProperty(PropertyName = "l")]
         public int H { get; set; }
+
+        private int _seconds = 0;
+
+        [JsonIgnore]
+        public int Seconds
+        {
+            get
+            {
+                if (_seconds == 0)
+                {
+                    TimeSpan ts = new TimeSpan(hh, mm, ss);
+                    _seconds = (int)ts.TotalSeconds;
+                }
+                return _seconds;
+            }
+        }
     }
 }

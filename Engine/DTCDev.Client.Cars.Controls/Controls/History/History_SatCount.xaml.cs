@@ -37,32 +37,9 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            trDetector = new Thread(DetectCallRefresh);
-            trDetector.Start();
+            
         }
 
-        Thread trDetector;
-        private double _lastWidth = 0;
-
-        private void DetectCallRefresh()
-        {
-            while (this != null)
-            {
-                if (this.ActualWidth != _lastWidth)
-                {
-                    _lastWidth = this.ActualWidth;
-                }
-                else
-                {
-                    _currentWidth = _lastWidth;
-                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                    {
-                        CalculateDisplayed();
-                    }));
-                }
-                Thread.Sleep(200);
-            }
-        }
 
 
 
@@ -85,9 +62,54 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         }
 
 
-
-
         private void CalculateDisplayed()
+        {
+            double step = _currentWidth / (24 * 60 * 60);
+
+            int secondsInStep = 86400;
+            double sStep = _currentWidth;
+            while (sStep > 1)
+            {
+                secondsInStep = secondsInStep / 2;
+                sStep = sStep / 2;
+            }
+
+            int currentSecond = 0;
+            while (currentSecond < 86400)
+            {
+                List<CarStateModel> temp = _data.Where(p => p.Seconds >= currentSecond && p.Seconds < currentSecond + secondsInStep).ToList();
+                if (temp.Count() < 1)
+                    AddBorder(step, currentSecond, secondsInStep, 0);
+                else
+                {
+                    int vol = temp.Sum(p => p.St) / temp.Count();
+                    AddBorder(step, currentSecond, secondsInStep, vol);
+                }
+                currentSecond += secondsInStep;
+            }
+        }
+
+        private void AddBorder(double step, int startSeconds, int widthSeconds, int vol)
+        {
+            double height = vol;
+            height = Math.Round(height) + 1;
+            Border b = new Border();
+            b.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
+            if (vol < 5)
+                b.Background = new SolidColorBrush(Colors.Red);
+            else if (vol < 8)
+                b.Background = new SolidColorBrush(Colors.Yellow);
+            else
+                b.Background = new SolidColorBrush(Colors.Green);
+            b.Height = (int)height;
+            double width = widthSeconds * step;
+            if (width < 1)
+                width = 1;
+            b.Width = width;
+            cnvData.Children.Add(b);
+        }
+
+        private void CalculateDisplayedOld()
         {
             if (_currentWidth < 1)
                 return;
