@@ -160,7 +160,7 @@
     </UserControl.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition />
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -201,13 +201,13 @@
         </DataGrid>
         <Grid x:Name="gDetail" Grid.Column="1" Margin="20,0" Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition />
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <TextBlock x:Name="tbPost" Text=" спост 1" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,5,0,20"/>
+            <TextBlock x:Name="tbPost" Text="" Margin="0,5,0,20"/>
 
-            <ContentControl x:Name="ccDetail" Grid.Row="1" />
+            <Grid x:Name="ccDetail" Grid.Row="1" />
 
         </Grid>
 

@@ -5,11 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:ViewModels="clr-namespace:DTCDev.Client.Cars.Service.Engine.Controls.ViewModels;assembly=DTCDev.Client.Cars.Service.Engine" xmlns:local="clr-namespace:DTCDev.Client.Cars.Service.Controls.CalendarControls" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:MetroChart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart" x:Class="DTCDev.Client.Cars.Service.Controls.CalendarControls.CardOrder" 
              mc:Ignorable="d" 
-              d:DesignWidth="300" d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type={x:Type ViewModels:OrderViewModel}}">
+              Width="350" d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type={x:Type ViewModels:OrderViewModel}}">
     <UserControl.Resources>
         <MetroChart:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </UserControl.Resources>
-    <Grid VerticalAlignment="Top">
+    <Grid VerticalAlignment="Top" Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
