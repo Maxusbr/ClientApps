@@ -228,6 +228,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 _selectedRow = value;
                 this.OnPropertyChanged("SelectedHistoryRow");
                 SortData();
+                if (_distanceCheckActive)
+                    DistanceSelectedDayChanged();
             }
         }
 
@@ -1357,6 +1359,132 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         }
 
         #endregion
+
+
+
+
+
+
+        #region DISTANCE_CHECKER
+
+        private bool _distanceCheckActive = false;
+
+        private RelayCommand _clickDistanceCommand;
+
+        public RelayCommand ClickDistanceCommand { get { return _clickDistanceCommand ?? (_clickDistanceCommand = new RelayCommand(a=>ClickDistance())); } }
+
+        /// <summary>
+        /// пользователь выбрал инструмент подсчета пробега
+        /// </summary>
+        private void ClickDistance()
+        {
+            _distanceCheckActive = !_distanceCheckActive;
+            if(_distanceCheckActive)
+            {
+                CDStartDay = "Укажите начало";
+                CDStopDay = "Укажите окончание";
+                VisCDStart = Visibility.Visible;
+                VisCDStop = Visibility.Collapsed;
+                _distanceStart = -1;
+                _distanceStop = -1;
+            }
+        }
+
+        private string _cdStartDay = "Укажите начало";
+        private string _cdStopDay = "Укажите окончание";
+
+        public string CDStartDay
+        {
+            get { return _cdStartDay; }
+            set
+            {
+                _cdStartDay = value;
+                this.OnPropertyChanged("CDStartDay");
+            }
+        }
+
+        public string CDStopDay
+        {
+            get { return _cdStopDay; }
+            set
+            {
+                _cdStopDay = value;
+                this.OnPropertyChanged("CDStopDay");
+            }
+        }
+
+        private string _totalDistance = "";
+        public string TotalDistance
+        {
+            get { return _totalDistance;}
+            set
+            {
+                _totalDistance = value;
+                this.OnPropertyChanged("TotalDistance");
+            }
+        }
+
+        private Visibility _visCDStart = Visibility.Visible;
+        private Visibility _visCDStop = Visibility.Collapsed;
+
+        public Visibility VisCDStart
+        {
+            get { return _visCDStart; }
+            set
+            {
+                _visCDStart = value;
+                this.OnPropertyChanged("VisCDStart");
+            }
+        }
+
+        public Visibility VisCDStop
+        {
+            get { return _visCDStop; }
+            set
+            {
+                _visCDStop = value;
+                this.OnPropertyChanged("VisCDStop");
+            }
+        }
+
+        private void DistanceSelectedDayChanged()
+        {
+            if(SelectedHistoryRow!=null)
+            {
+                if(VisCDStart==Visibility.Visible)
+                {
+                    _distanceStart = HistoryRows.IndexOf(SelectedHistoryRow);
+                    VisCDStart = Visibility.Collapsed;
+                    VisCDStop = Visibility.Visible;
+                    CDStartDay = SelectedHistoryRow.Date.ToString("dd.MM.yy");
+                }
+                else
+                {
+                    _distanceStop = HistoryRows.IndexOf(SelectedHistoryRow);
+                    VisCDStart = Visibility.Visible;
+                    VisCDStop = Visibility.Collapsed;
+                    CDStopDay = SelectedHistoryRow.Date.ToString("dd.MM.yy");
+                }
+                if(_distanceStart>-1 && _distanceStop>-1)
+                {
+                    if(_distanceStart<HistoryRows.Count() && _distanceStop<HistoryRows.Count())
+                    {
+                        double dist = 0;
+                        for (int i = _distanceStart; i <= _distanceStop; i++)
+                        {
+                            dist += HistoryRows[i].Mileage;
+                        }
+                        TotalDistance = Math.Round(dist, 1).ToString();
+                    }
+                }
+            }
+        }
+
+        private int _distanceStart=-1;
+        private int _distanceStop=-1;
+
+
+        #endregion DISTANCE_CHECKER
 
         private enum RouteSelect
         {

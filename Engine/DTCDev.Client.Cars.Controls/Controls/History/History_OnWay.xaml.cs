@@ -65,54 +65,6 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
 
 
 
-
-
-        private void Calculate()
-        {
-            try
-            {
-                cnvData.Children.Clear();
-                cnvData.Width = _currentWidth;
-                double step = _currentWidth / (24 * 60 * 60);
-                TimeSpan ts = new TimeSpan(0);
-                if (_data == null)
-                {
-                    LayoutRoot.Children.Add(new Border
-                    {
-                        Background = new SolidColorBrush(Colors.White)
-                    });
-                    return;
-                }
-                if (_data.Count() < 1)
-                {
-                    LayoutRoot.Children.Add(new Border
-                    {
-                        Background = new SolidColorBrush(Colors.White)
-                    });
-                    return;
-                }
-                foreach (var item in _data)
-                {
-                    TimeSpan tsCurrent = new TimeSpan(item.hh, item.mm, item.ss);
-                    TimeSpan delta = tsCurrent - ts;
-                    if (delta.TotalSeconds > 300)
-                    {
-                        AddBorder(step, (int)ts.TotalSeconds, (int)delta.TotalSeconds, 0);
-                    }
-                    else
-                    {
-                        AddBorder(step, (int)ts.TotalSeconds, (int)delta.TotalSeconds, item.Spd);
-                    }
-                    ts = tsCurrent;
-                }
-                AddBorder(step, (int)ts.TotalSeconds, (int)(new TimeSpan(1, 0, 0, 0).TotalSeconds), 0);
-            }
-            catch (Exception ex)
-            {
-                int i = 0;
-            }
-        }
-
         private void AddBorder(double step, int startSeconds, int widthSeconds, int speed)
         {
             try
@@ -160,7 +112,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
                     AddBorderRow(step, currentSecond, secondsInStep, 0);
                 else
                 {
-                    int vol = temp.Sum(p => p.Spd) / temp.Count();
+                    int vol = temp.Max(p => p.Spd);
                     AddBorderRow(step, currentSecond, secondsInStep, vol);
                 }
                 currentSecond += secondsInStep;
