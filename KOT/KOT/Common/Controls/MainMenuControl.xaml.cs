@@ -32,33 +32,33 @@ namespace KOT.Common.Controls
             if (ShowAlarm != null) ShowAlarm(this, EventArgs.Empty);
         }
 
-        private void OnHideMenu()
+        private void OnHideMenu(Type type)
         {
-            if (HideMenu != null) HideMenu(this, EventArgs.Empty);
+            if (HideMenu != null) HideMenu(type, EventArgs.Empty);
         }
 
         private void Map_Checked(object sender, RoutedEventArgs e)
         {
             //TODO сохранить в DataSource активный пункт меню & NavigateTo MapControl
-            OnHideMenu();
+            OnHideMenu(typeof(MainPage));
         }
 
         private void TO_Checked(object sender, RoutedEventArgs e)
         {
             //TODO сохранить в DataSource активный пункт меню & NavigateTo TOControl 
-            OnHideMenu();
+            OnHideMenu(typeof(TOPage));
         }
 
         private void PC_Checked(object sender, RoutedEventArgs e)
         {
             //TODO сохранить в DataSource активный пункт меню & NavigateTo PCControl
-            OnHideMenu();
+            OnHideMenu(typeof(PivotPage));
         }
 
         private void Money_Checked(object sender, RoutedEventArgs e)
         {
             //TODO сохранить в DataSource активный пункт меню & NavigateTo MoneyControl
-            OnHideMenu();
+            OnHideMenu(typeof(MainPage));
         }
 
         private void Alarm_Checked(object sender, RoutedEventArgs e)
@@ -70,13 +70,13 @@ namespace KOT.Common.Controls
         private void Settings_Checked(object sender, RoutedEventArgs e)
         {
             //TODO сохранить в DataSource активный пункт меню & NavigateTo SettingsControl 
-            OnHideMenu();
+            OnHideMenu(typeof(MainPage));
         }
 
         private void About_Checked(object sender, RoutedEventArgs e)
         {
             //TODO сохранить в DataSource активный пункт меню & NavigateTo AboutControl
-            OnHideMenu();
+            OnHideMenu(typeof(MainPage));
         }
     }
 }

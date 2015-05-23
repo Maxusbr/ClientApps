@@ -84,43 +84,7 @@ namespace KOT
             var sampleDataGroup = await SampleDataSource.GetGroupAsync("Group-1");
             this.DefaultViewModel[FirstGroupName] = sampleDataGroup;
 
-            var geolocator = new Geolocator();
-            //точность геолокации до 5 метров
-            geolocator.DesiredAccuracyInMeters = 5;
-            // получаем позицию
-            Busy.IsActive = true;
-            //var position = await geolocator.GetGeopositionAsync();
-            // установка этой позиции на карте
-            //DefaultViewModel["Center"] = position.Coordinate.Point;
             
-            var routeResult =
-                await MapRouteFinder.GetWalkingRouteAsync(
-                new Geopoint(new BasicGeoposition { Altitude = 0, Latitude = 55.70, Longitude = 37.62 }),
-                new Geopoint(new BasicGeoposition { Altitude = 0, Latitude = 55.75, Longitude = 37.62 }) 
-          //      ,MapRouteOptimization.Time, MapRouteRestrictions.None
-                );
-            Busy.IsActive = false;
-            if (routeResult.Status == MapRouteFinderStatus.Success)
-            {
-                var viewOfRoute = new MapRouteView(routeResult.Route);
-                viewOfRoute.RouteColor = Color.FromArgb(255,233,30,99);
-                viewOfRoute.OutlineColor = Colors.Transparent;
-
-                // Add the new MapRouteView to the Routes collection
-                // of the MapControl.
-                Map.Routes.Add(viewOfRoute);
-                
-                // Fit the MapControl to the route.
-                await Map.TrySetViewBoundsAsync(
-                    routeResult.Route.BoundingBox,
-                    null,
-                    MapAnimationKind.Bow);
-                
-            }
-            else
-            {
-               
-            }
             //await Map.TrySetViewAsync(new Geopoint(new BasicGeoposition { Altitude = 0, Latitude = 55.75, Longitude  = 37.62 }), 12);
         }
 

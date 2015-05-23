@@ -96,8 +96,8 @@
     				<RowDefinition/>
     				<RowDefinition/>
     			</Grid.RowDefinitions>
-    			<RadioButton x:Name="Map" Content="Карта" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{StaticResource MainMenuRadioButtonStyle}" IsChecked="False" Foreground="{StaticResource PrimeryText}" Checked="Map_Checked"/>
-    			<RadioButton x:Name="TO" Content="ТО" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{StaticResource MainMenuRadioButtonStyle}" IsChecked="True" Grid.Row="1" Foreground="{StaticResource PrimeryText}" Checked="TO_Checked"/>
+    			<RadioButton x:Name="Map" Content="Карта" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{StaticResource MainMenuRadioButtonStyle}" IsChecked="True" Foreground="{StaticResource PrimeryText}" Checked="Map_Checked"/>
+    			<RadioButton x:Name="TO" Content="ТО" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{StaticResource MainMenuRadioButtonStyle}" Grid.Row="1" Foreground="{StaticResource PrimeryText}" Checked="TO_Checked"/>
     			<RadioButton x:Name="PC" Content="Бортовой ЭВМ" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{StaticResource MainMenuRadioButtonStyle}" IsChecked="False" Grid.Row="2" Foreground="{StaticResource PrimeryText}" Checked="PC_Checked"/>
     			<RadioButton x:Name="Money" Content="Бюджет" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{StaticResource MainMenuRadioButtonStyle}" IsChecked="False" Grid.Row="3" Foreground="{StaticResource PrimeryText}" Checked="Money_Checked"/>
     		</Grid>
