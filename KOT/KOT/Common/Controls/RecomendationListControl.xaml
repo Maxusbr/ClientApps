@@ -33,7 +33,7 @@
                         				<ColumnDefinition/>
                         				<ColumnDefinition Width="Auto"/>
                         			</Grid.ColumnDefinitions>
-                        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Name}" VerticalAlignment="Bottom" FontSize="13.333"/>
+                        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Name}" VerticalAlignment="Bottom" FontSize="16" Foreground="{StaticResource PrimeryText}"/>
                         			<TextBlock x:Name="textBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding DistanceToMake}" VerticalAlignment="Top" Foreground="{Binding Pereprobeg, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}" Grid.Row="1"/>
                         			<Grid MinHeight="72" Grid.RowSpan="2" Grid.Column="1">
                         				<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding DaysToMake, Mode=OneWay}" Foreground="{Binding Foreground, ElementName=textBlock}" VerticalAlignment="Center"/>
@@ -51,7 +51,12 @@
                         			</Grid.RowDefinitions>
                         			<TextBox Margin="0,0,24,0" TextWrapping="Wrap" VerticalAlignment="Top" BorderThickness="0,0,0,1" PlaceholderText="Цена" FontSize="16" Style="{StaticResource TextBoxStyle}" Background="{x:Null}"/>
                         			<TextBox Margin="0,0,24,0" TextWrapping="Wrap" VerticalAlignment="Top" BorderThickness="0,0,0,1" PlaceholderText="Пробег" FontSize="16" Grid.Row="1" Style="{StaticResource TextBoxStyle}" Background="{x:Null}"/>
-                        			<TextBox Margin="0" TextWrapping="Wrap" VerticalAlignment="Top" BorderThickness="0,0,0,1" PlaceholderText="дд.мм.гггг" FontSize="16" Style="{StaticResource TextBoxStyle}" Background="{x:Null}" Grid.Column="1" HorizontalAlignment="Right"/>
+                        			<TextBox Margin="0" TextWrapping="Wrap" VerticalAlignment="Top" BorderThickness="0,0,0,1" PlaceholderText="дд.мм.гггг" FontSize="16" Style="{StaticResource TextBoxStyle}" Background="{x:Null}" Grid.Column="1" HorizontalAlignment="Right" Text="{Binding Date, Mode=TwoWay}" Foreground="{StaticResource PrimeryText}"/>
+                        			<Button Content="" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="1" Style="{StaticResource LinkButtonStyle}" BorderBrush="{x:Null}">
+                        				<Button.Flyout>
+                        					<DatePickerFlyout x:Name="DatePickerFlyout" Closed="DatePickerFlyout_Closed"/>
+                        				</Button.Flyout>
+                        			</Button>
                         			<StackPanel Grid.Column="1" Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
                         				<Button Content="ОТМЕНА" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource LinkButtonStyle}" BorderBrush="{x:Null}" MinHeight="24" Foreground="{StaticResource AccentColor}" FontSize="13.333" MinWidth="80" Click="Cancel_Click"/>
                         				<Button Content="ГОТОВО" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource LinkButtonStyle}" BorderBrush="{x:Null}" MinHeight="24" Foreground="{StaticResource AccentColor}" FontSize="13.333" MinWidth="80" Click="Save_Click"/>

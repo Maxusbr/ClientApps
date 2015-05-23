@@ -15,6 +15,8 @@ namespace KOT.DataModel.ViewModel
     public class WorkTypeViewModel : INotifyPropertyChanged
     {
         private bool _details;
+        private DateTimeOffset _selectedDate;
+        private string _date;
         public WorkType Model { get; set; }
 
         public WorkTypeViewModel()
@@ -66,6 +68,29 @@ namespace KOT.DataModel.ViewModel
 
         public string DaysToMake { get { return new DateDataModel(DateTime.Now.AddDays(Model.DaysToMake)).ToString(); } }
 
+        public DateTimeOffset SelectedDate
+        {
+            get { return _selectedDate; }
+            set
+            {
+                if (value.Equals(_selectedDate)) return;
+                _selectedDate = value;
+                Date = value.ToString("d");
+                OnPropertyChanged("SelectedDate");
+            }
+        }
+
+        public string Date
+        {
+            get { return _date; }
+            set
+            {
+                if (value == _date) return;
+                _date = value;
+                OnPropertyChanged("Date");
+            }
+        }
+
         public bool ShowDetails
         {
             get { return _details; }
@@ -100,6 +125,7 @@ namespace KOT.DataModel.ViewModel
         #endregion
 
 
-        
+
+
     }
 }

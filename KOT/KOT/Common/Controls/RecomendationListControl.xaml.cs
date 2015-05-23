@@ -21,6 +21,7 @@ namespace KOT.Common.Controls
     public sealed partial class RecomendationListControl : UserControl
     {
         private WorksViewModel _vm;
+        private WorkTypeViewModel _selectedVM;
         public RecomendationListControl()
         {
             this.InitializeComponent();
@@ -30,9 +31,9 @@ namespace KOT.Common.Controls
         {
             var cntrl = sender as FrameworkElement;
             if(cntrl == null) return;
-            var vm = cntrl.DataContext as WorkTypeViewModel;
-            if(vm == null) return;
-            vm.ShowDetail();
+            _selectedVM = cntrl.DataContext as WorkTypeViewModel;
+            if (_selectedVM == null) return;
+            _selectedVM.ShowDetail();
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -56,6 +57,15 @@ namespace KOT.Common.Controls
             var vm = cntrl.DataContext as WorkTypeViewModel;
             if (vm == null) return;
             vm.HideDetail(true);
+        }
+
+        private void DatePickerFlyout_Closed(object sender, object e)
+        {
+            var dt = sender as DatePickerFlyout;
+            if (dt == null) return;
+            //var vm = dt.DataContext as WorkTypeViewModel;
+            if (_selectedVM == null) return;
+            _selectedVM.SelectedDate = dt.Date;
         }
     }
 }
