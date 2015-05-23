@@ -392,50 +392,7 @@
                         <ListViewItem Content="Мойка - 150 руб."/>
                         <ListViewItem Content="Мойка - 150 руб."/>
                     </ListView>
-                    <AppBarToggleButton Grid.Row="1" x:Name="PhoneToggle" HorizontalAlignment="Right" Label="appbartogglebutton" VerticalAlignment="Bottom" Width="24" Height="24" BorderThickness="1" Background="#D8FFFFFF" Foreground="{StaticResource PrimeryText}" Margin="0,0,0,5" Click="ShowAllPrices_Click">
-                    	<AppBarToggleButton.Resources>
-                    		<Style x:Key="AppBarToggleButtonStyle" TargetType="AppBarToggleButton">
-                    			<Setter Property="Foreground" Value="{ThemeResource AppBarItemForegroundThemeBrush}"/>
-                    			<Setter Property="VerticalAlignment" Value="Top"/>
-                    			<Setter Property="HorizontalAlignment" Value="Left"/>
-                    			<Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
-                    			<Setter Property="FontWeight" Value="Normal"/>
-                    			<Setter Property="Template">
-                    				<Setter.Value>
-                    					<ControlTemplate TargetType="AppBarToggleButton">
-                    						<Border x:Name="LayoutRoot" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="2" BorderThickness="{TemplateBinding BorderThickness}">
-                    							<VisualStateManager.VisualStateGroups>
-                    								<VisualStateGroup x:Name="ApplicationViewStates">
-                    									<VisualState x:Name="FullSize"/>
-                    									<VisualState x:Name="Compact"/>
-                    								</VisualStateGroup>
-                    								<VisualStateGroup x:Name="CommonStates">
-                    									<VisualState x:Name="Normal"/>
-                    									<VisualState x:Name="Pressed"/>
-                    									<VisualState x:Name="Disabled"/>
-                    									<VisualState x:Name="Checked">
-                    										<Storyboard>
-                    											<DoubleAnimation Duration="0" To="180" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Rotation)" Storyboard.TargetName="Content" d:IsOptimized="True"/>
-                    										</Storyboard>
-                    									</VisualState>
-                    									<VisualState x:Name="CheckedPressed"/>
-                    									<VisualState x:Name="CheckedDisabled"/>
-                    								</VisualStateGroup>
-                    							</VisualStateManager.VisualStateGroups>
-                    							<ContentPresenter x:Name="Content" AutomationProperties.AccessibilityView="Raw" Content="{TemplateBinding Icon}" Foreground="{TemplateBinding Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
-                    								<ContentPresenter.RenderTransform>
-                    									<CompositeTransform/>
-                    								</ContentPresenter.RenderTransform>
-                    							</ContentPresenter>
-                    						</Border>
-                    					</ControlTemplate>
-                    				</Setter.Value>
-                    			</Setter>
-                    		</Style>
-                    	</AppBarToggleButton.Resources>
-                    	<AppBarToggleButton.Style>
-                    		<StaticResource ResourceKey="AppBarToggleButtonStyle"/>
-                    	</AppBarToggleButton.Style>
+                    <AppBarToggleButton Grid.Row="1" x:Name="PhoneToggle" HorizontalAlignment="Right" Label="appbartogglebutton" VerticalAlignment="Bottom" Width="24" Height="24" BorderThickness="1" Background="#D8FFFFFF" Foreground="{StaticResource PrimeryText}" Margin="0,0,0,5" Click="ShowAllPrices_Click" Style="{StaticResource ClearAppBarToggleButtonStyle}">
                         <AppBarToggleButton.Icon>
                             <BitmapIcon UriSource="ms-appx:///Assets/drawable-xxhdpi/ic_arrow_down_more_24dp.png"/>
                         </AppBarToggleButton.Icon>

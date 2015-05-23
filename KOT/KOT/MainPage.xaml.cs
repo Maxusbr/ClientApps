@@ -81,6 +81,9 @@ namespace KOT
         void MainMenuControl_HideMenu(object sender, EventArgs e)
         {
             FlyoutMenu.Hide();
+            var type = sender as Type;
+            if (type == null || type == typeof(MainPage)) return;
+            Frame.Navigate(type);
         }
 
         public ObservableDictionary DefaultViewModel

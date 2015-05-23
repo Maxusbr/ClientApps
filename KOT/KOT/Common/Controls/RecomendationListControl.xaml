@@ -1,0 +1,178 @@
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:KOT.Common.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ViewModel="using:KOT.DataModel.ViewModel"
+    xmlns:Common="using:KOT.Common"
+    x:Class="KOT.Common.Controls.RecomendationListControl"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400" RequestedTheme="Dark" Loaded="UserControl_Loaded">
+    <UserControl.Resources>
+        <Common:BoolToBrushConverter x:Key="BoolToBrushConverter" FalseValue="{StaticResource SecondaryText}" TrueValue="{StaticResource AccentColor}"/>
+        <Style x:Key="WorkControlStyle" TargetType="local:WorkControl">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Top"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="local:WorkControl">
+                        <Border Background="Transparent">
+                            <Grid>
+                        		<Grid.RowDefinitions>
+                        			<RowDefinition/>
+                        			<RowDefinition Height="Auto"/>
+                        		</Grid.RowDefinitions>
+                        		<Grid Grid.ColumnSpan="2" Tapped="WorkControl_Tapped" Background="Transparent">
+                        			<Grid.RowDefinitions>
+                        				<RowDefinition/>
+                        				<RowDefinition/>
+                        			</Grid.RowDefinitions>
+                        			<Grid.ColumnDefinitions>
+                        				<ColumnDefinition/>
+                        				<ColumnDefinition Width="Auto"/>
+                        			</Grid.ColumnDefinitions>
+                        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Name}" VerticalAlignment="Bottom" FontSize="13.333"/>
+                        			<TextBlock x:Name="textBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding DistanceToMake}" VerticalAlignment="Top" Foreground="{Binding Pereprobeg, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}" Grid.Row="1"/>
+                        			<Grid MinHeight="72" Grid.RowSpan="2" Grid.Column="1">
+                        				<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding DaysToMake, Mode=OneWay}" Foreground="{Binding Foreground, ElementName=textBlock}" VerticalAlignment="Center"/>
+                        			</Grid>
+                        		</Grid>
+                        		<Grid Grid.ColumnSpan="2" Grid.Row="1" Visibility="{Binding ShowDetails, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        			<Grid.ColumnDefinitions>
+                        				<ColumnDefinition/>
+                        				<ColumnDefinition/>
+                        			</Grid.ColumnDefinitions>
+                        			<Grid.RowDefinitions>
+                        				<RowDefinition/>
+                        				<RowDefinition/>
+                        				<RowDefinition/>
+                        			</Grid.RowDefinitions>
+                        			<TextBox Margin="0,0,24,0" TextWrapping="Wrap" VerticalAlignment="Top" BorderThickness="0,0,0,1" PlaceholderText="Цена" FontSize="16" Style="{StaticResource TextBoxStyle}" Background="{x:Null}"/>
+                        			<TextBox Margin="0,0,24,0" TextWrapping="Wrap" VerticalAlignment="Top" BorderThickness="0,0,0,1" PlaceholderText="Пробег" FontSize="16" Grid.Row="1" Style="{StaticResource TextBoxStyle}" Background="{x:Null}"/>
+                        			<TextBox Margin="0" TextWrapping="Wrap" VerticalAlignment="Top" BorderThickness="0,0,0,1" PlaceholderText="дд.мм.гггг" FontSize="16" Style="{StaticResource TextBoxStyle}" Background="{x:Null}" Grid.Column="1" HorizontalAlignment="Right"/>
+                        			<StackPanel Grid.Column="1" Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
+                        				<Button Content="ОТМЕНА" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource LinkButtonStyle}" BorderBrush="{x:Null}" MinHeight="24" Foreground="{StaticResource AccentColor}" FontSize="13.333" MinWidth="80" Click="Cancel_Click"/>
+                        				<Button Content="ГОТОВО" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource LinkButtonStyle}" BorderBrush="{x:Null}" MinHeight="24" Foreground="{StaticResource AccentColor}" FontSize="13.333" MinWidth="80" Click="Save_Click"/>
+                        			</StackPanel>
+                        		</Grid>
+                        	</Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <DataTemplate x:Key="WorkListDataTemplate">
+            <Border Padding="16,0,12,0" BorderThickness="0,0,0,1" BorderBrush="{StaticResource DividerText}">
+                <Grid>
+                    <local:WorkControl Style="{StaticResource WorkControlStyle}" DataContext="{Binding}"  Margin="0" FontSize="10.667" Foreground="{StaticResource SecondaryText}"/>
+                </Grid>
+            </Border>
+        </DataTemplate>
+        <Style x:Key="RecomendetWorkControlStyle" TargetType="local:WorkControl">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Top"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="local:WorkControl">
+                        <Border Background="{TemplateBinding Background}" Padding="16,0,12,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Name}" VerticalAlignment="Center"/>
+                                <Button Content="ДОБАВИТЬ" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{StaticResource LinkButtonStyle}" BorderThickness="0" Background="{x:Null}" BorderBrush="{x:Null}" MinHeight="24" Foreground="{StaticResource AccentColor}" FontSize="{TemplateBinding FontSize}" HorizontalContentAlignment="Right"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <DataTemplate x:Key="RecomendetDataTemplate">
+            <Grid>
+                <local:WorkControl Style="{StaticResource RecomendetWorkControlStyle}" HorizontalContentAlignment="Stretch" Margin="0" FontSize="10.667" Foreground="{StaticResource SecondaryText}" Background="#FFEAEAEA"/>
+            </Grid>
+        </DataTemplate>
+
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <ViewModel:WorksViewModel/>
+    </UserControl.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Border Background="{StaticResource AccentColor}" Padding="16,8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock TextWrapping="Wrap" Text="Рекомендации по ТО от " Style="{StaticResource TitleTextBlockStyle}" FontSize="18.667"/>
+                <TextBlock TextWrapping="Wrap" Text="{Binding DateTxt, Mode=OneWay}" Style="{StaticResource TitleTextBlockStyle}" Grid.Column="1" FontSize="18.667" Margin="10,0,0,0" HorizontalAlignment="Left"/>
+                <AppBarToggleButton x:Name="PhoneToggle" HorizontalAlignment="Right" Label="appbartogglebutton" VerticalAlignment="Bottom" BorderThickness="1" Background="#D8FFFFFF" Foreground="{StaticResource PrimeryText}" Style="{StaticResource ClearAppBarToggleButtonStyle}" Grid.Column="2" Width="24" IsChecked="False">
+                    <AppBarToggleButton.Icon>
+                        <BitmapIcon UriSource="ms-appx:///Assets/drawable-xxhdpi/ic_arrow_down_more_24dp.png" Foreground="White"/>
+                    </AppBarToggleButton.Icon>
+                </AppBarToggleButton>
+            </Grid>
+        </Border>
+        <Border Grid.Row="1" Background="White" Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=PhoneToggle}">
+            <ItemsControl ItemsSource="{Binding WorkTypes}" HorizontalContentAlignment="Stretch" RequestedTheme="Dark">
+                <ItemsControl.Resources>
+                    <Style x:Key="FrameworkElementStyle" TargetType="FrameworkElement"/>
+                </ItemsControl.Resources>
+                <ItemsControl.ItemTemplate>
+                    <StaticResource ResourceKey="RecomendetDataTemplate"/>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.Foreground>
+                    <StaticResource ResourceKey="PrimeryText"/>
+                </ItemsControl.Foreground>
+                <ItemsControl.ItemContainerStyle>
+                    <StaticResource ResourceKey="FrameworkElementStyle"/>
+                </ItemsControl.ItemContainerStyle>
+            </ItemsControl>
+
+        </Border>
+        <Border Grid.Row="2" Background="White">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Border BorderThickness="0,1" BorderBrush="{StaticResource DividerText}" Padding="16,0,12,0" Background="#FFF0F0F0">
+                    <Grid>
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Text="Название рекомендованной работы" Foreground="{StaticResource SecondaryText}" Margin="0,5"/>
+                        <Button Content="СКРЫТЬ" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{StaticResource LinkButtonStyle}" BorderThickness="0" Background="{x:Null}" BorderBrush="{x:Null}" MinHeight="24" Foreground="{StaticResource AccentColor}" HorizontalContentAlignment="Right" FontSize="10.667" Padding="9.5,0"/>
+
+                    </Grid>
+                </Border>
+
+                <ItemsControl ItemsSource="{Binding WorkTypes}" HorizontalContentAlignment="Stretch" RequestedTheme="Dark" Grid.Row="1">
+                    <ItemsControl.Resources>
+                        <Style x:Key="FrameworkElementStyle" TargetType="FrameworkElement"/>
+                    </ItemsControl.Resources>
+                    <ItemsControl.ItemTemplate>
+                        <StaticResource ResourceKey="WorkListDataTemplate"/>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.Foreground>
+                        <StaticResource ResourceKey="PrimeryText"/>
+                    </ItemsControl.Foreground>
+                    <ItemsControl.ItemContainerStyle>
+                        <StaticResource ResourceKey="FrameworkElementStyle"/>
+                    </ItemsControl.ItemContainerStyle>
+                </ItemsControl>
+
+            </Grid>
+
+        </Border>
+
+    </Grid>
+</UserControl>

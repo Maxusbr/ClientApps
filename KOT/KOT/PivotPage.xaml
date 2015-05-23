@@ -33,7 +33,7 @@
             <!--Сводный элемент один-->
 			<PivotItem
 				x:Uid="PivotItem1"
-				Margin="19,14.5,0,0"
+				Margin="19,0,0,0"
 				Header="first"
 				DataContext="{Binding FirstGroup}"
 				d:DataContext="{Binding Groups[0], Source={d:DesignData Source=/DataModel/SampleData.json, Type=data:SampleDataSource}}"
@@ -100,9 +100,7 @@
 				</ListView>
 			</PivotItem>
 		</Pivot>
-        
-		<Maps:MapControl x:Name="Map" MapServiceToken="88910a80-bdfd-461a-9f47-0ab9cd18b33e" Center="{Binding Center, Mode=TwoWay}" ZoomLevel="14" Visibility="Collapsed"/>
-		<ProgressRing x:Name="Busy" Background="#7F727272"/>
+        <ProgressRing x:Name="Busy" Background="#7F727272" d:IsHidden="True"/>
         
 	</Grid>
 

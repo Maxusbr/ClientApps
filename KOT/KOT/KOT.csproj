@@ -93,6 +93,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Common\Controls\RecomendationListControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Common\Controls\ServiceElement.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -102,6 +106,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Common\Controls\ServiceInfoRating.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Common\Controls\WorkControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -125,12 +133,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="TOPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Common\BoolToValueConverter.cs" />
     <Compile Include="Common\Controls\MainMenuControl.xaml.cs">
       <DependentUpon>MainMenuControl.xaml</DependentUpon>
     </Compile>
@@ -139,6 +152,9 @@
     </Compile>
     <Compile Include="Common\Controls\RatingControl.xaml.cs">
       <DependentUpon>RatingControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Controls\RecomendationListControl.xaml.cs">
+      <DependentUpon>RecomendationListControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\Controls\ServiceElement.xaml.cs">
       <DependentUpon>ServiceElement.xaml</DependentUpon>
@@ -149,12 +165,16 @@
     <Compile Include="Common\Controls\ServiceInfoRating.xaml.cs">
       <DependentUpon>ServiceInfoRating.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\Controls\WorkControl.xaml.cs">
+      <DependentUpon>WorkControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Common\NavigationHelper.cs" />
     <Compile Include="Common\ObservableDictionary.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="DataModel\DataSource.cs" />
     <Compile Include="DataModel\Handlers\MapsElementsDataHandler.cs" />
+    <Compile Include="DataModel\Handlers\WorksDataHandler.cs" />
     <Compile Include="DataModel\Model\CarAlarmsState.cs" />
     <Compile Include="DataModel\Model\CarHistoryWorkReport.cs" />
     <Compile Include="DataModel\Model\CarListBaseDataModel.cs" />
@@ -177,6 +197,8 @@
     <Compile Include="DataModel\SampleDataSource.cs" />
     <Compile Include="DataModel\ViewModel\ServiceInfoViewModel.cs" />
     <Compile Include="DataModel\ViewModel\ServicePointViewModel.cs" />
+    <Compile Include="DataModel\ViewModel\WorksViewModel.cs" />
+    <Compile Include="DataModel\ViewModel\WorkTypeViewModel.cs" />
     <Compile Include="ItemPage.xaml.cs">
       <DependentUpon>ItemPage.xaml</DependentUpon>
     </Compile>
@@ -191,6 +213,9 @@
     </Compile>
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TOPage.xaml.cs">
+      <DependentUpon>TOPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

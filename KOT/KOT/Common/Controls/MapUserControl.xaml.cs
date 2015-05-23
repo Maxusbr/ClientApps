@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -45,10 +46,7 @@ namespace KOT.Common.Controls
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            Map.Children.Add(DataSource.Phone);
-            Map.Children.Add(DataSource.Kot);
-            MapControls.ItemsSource = DataSource.ServicePoints;
-            DataSource.ServicePoints.CollectionChanged += ServicePoints_CollectionChanged;
+            
             UpdateMapElements();
         }
 
@@ -61,6 +59,14 @@ namespace KOT.Common.Controls
         {
             DefaultViewModel["Center"] = new Geopoint(new BasicGeoposition { Altitude = 0, Latitude = 55.75, Longitude = 37.62 });
             DefaultViewModel["ServiceToken"] = "dIjWUGuzClDyimeHLXa9bw";
+            if (!DesignMode.DesignModeEnabled)
+            {
+                Map.Children.Add(DataSource.Phone);
+                Map.Children.Add(DataSource.Kot);
+            }
+            MapControls.ItemsSource = DataSource.ServicePoints;
+            DataSource.ServicePoints.CollectionChanged += ServicePoints_CollectionChanged;
+            
         }
 
         private async void ServicePoints_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
