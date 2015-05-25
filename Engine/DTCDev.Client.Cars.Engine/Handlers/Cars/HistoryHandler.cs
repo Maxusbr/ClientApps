@@ -139,7 +139,7 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
                         {
                             TimeSpan ts = new DateTime(data[i+1].yy, data[i+1].Mnth, data[i+1].dd, data[i+1].hh, data[i+1].mm, data[i+1].ss) - new DateTime(data[i].yy, data[i].Mnth, data[i].dd, data[i].hh, data[i].mm, data[i].ss);
                             double speed = dist / ts.TotalHours;
-                            if (speed > 180 || speed < -180)
+                            if (speed > 220 || speed < -20)
                             {
                                 data.RemoveAt(i + 1);
                                 count--;
@@ -162,7 +162,10 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
                         {
                             
                             if (DayRefreshed != null)
-                                DayRefreshed(currentAsked, data);
+                                //добавляем сюда один день, так как прошло вычитание на этапе завершения запроса
+                                //к серверу
+                                //TODO: Костыль, подумать как лучше
+                                DayRefreshed(currentAsked + TimeSpan.FromDays(1), data);
                         }));
 
                 ThreadGetter();

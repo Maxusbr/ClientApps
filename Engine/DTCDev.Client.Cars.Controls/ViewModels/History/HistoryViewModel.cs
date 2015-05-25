@@ -80,8 +80,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
             if (!_zoneHandler.Zones.Any())
                 _zoneHandler.Update();
-            dtm.Interval = new TimeSpan(0, 0, 0, 0, 100);
-            dtm.Tick += dtm_Tick;
         }
 
         void Instance_AccLoaded(CarAccHistoryModel model)
@@ -129,9 +127,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         private DateTime _displayedHistoryDate;
 
         private List<CarStateModel> _dayStates = new List<CarStateModel>();
-
-        private int _currentSecondSelected = 0;
-
+        
         private DISP_Car _position = new DISP_Car();
 
         private bool _useAccelleration = true;
@@ -482,17 +478,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
-        public int CurrentSecondSelected
-        {
-            get { return _currentSecondSelected; }
-            set
-            {
-                _currentSecondSelected = value;
-                this.OnPropertyChanged("CurrentSecondSelected");
-                CheckSelectedTime();
-            }
-        }
-
         private Location _mapCenter = new Location();
         public Location MapCenter
         {
@@ -692,48 +677,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         public RelayCommand LoadNext10Command { get { return _loadNext10Command ?? (_loadNext10Command = new RelayCommand(a => LoadNext10Days())); }}
 
-        private RelayCommand _moveTimeBackwardUpCommand;
-        public RelayCommand MoveTimeBackwardUpCommand
-        {
-            get
-            {
-                return _moveTimeBackwardUpCommand ??
-                       (_moveTimeBackwardUpCommand = new RelayCommand(a => MoveTimeBackUp()));
-            }
-        }
-
-        private RelayCommand _moveTimeForwardUpCommand;
-        public RelayCommand MoveTimeForwardUpCommand
-        {
-            get
-            {
-                return _moveTimeForwardUpCommand ??
-                       (_moveTimeForwardUpCommand = new RelayCommand(a => MoveTimeForwardUp()));
-            }
-        }
-
-
-        private RelayCommand _moveTimeBackwardCommand;
-        public RelayCommand MoveTimeBackwardCommand
-        {
-            get
-            {
-                if (_moveTimeBackwardCommand == null)
-                    _moveTimeBackwardCommand = new RelayCommand(a => MoveTimeBack());
-                return _moveTimeBackwardCommand;
-            }
-        }
-
-        private RelayCommand _moveTimeForwardCommand;
-        public RelayCommand MoveTimeForwardCommand
-        {
-            get
-            {
-                if (_moveTimeForwardCommand == null)
-                    _moveTimeForwardCommand = new RelayCommand(a => MoveTimeForward());
-                return _moveTimeForwardCommand;
-            }
-        }
+       
 
 
         private RelayCommand _showMaxSpeedCommand;
@@ -1183,39 +1127,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
 
 
-        private void CheckSelectedTime()
-        {
-            if (DayStates == null || !DayStates.Any())
-                return;
-            TimeSpan ts = TimeSpan.FromSeconds(_currentSecondSelected);
-            DateTime dt = _displayedHistoryDate + ts;
-            if (DayStates.FirstOrDefault(p => p.hh == dt.Hour && p.mm == dt.Minute && p.ss == dt.Second) != null)
-                return;
-            else
-            {
-                FindModelByDate(dt);
-                UpdatePosition();
-            }
-        }
 
-        private void FindModelByDate(DateTime dt)
-        {
-            if (DayStates == null)
-                return;
-            if (DayStates.Count < 1)
-                return;
-            CarStateModel temp = DayStates.LastOrDefault(p => p.hh == dt.Hour && p.mm <= dt.Minute);
-            if (temp == null)
-            {
-                temp = DayStates.LastOrDefault(p => p.hh < dt.Hour);
-                if (temp == null)
-                {
-                    temp = DayStates.First();
-                }
-            }
-            SelectedState = temp;
-            id = DayStates.IndexOf(SelectedState);
-        }
 
         private void SelectRoute(CarStateModel point)
         {
@@ -1246,96 +1158,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             //Position = tempCar;
         }
 
-        int id = 0;
-        DispatcherTimer dtm = new DispatcherTimer();
-        private bool forward = true;
 
-        private void MoveBack()
-        {
-            //Debug.WriteLine(string.Format("Перемотка {0}: {1}раз", forward ? "вперед" : "назад", id));
-            if (DayStates == null || !DayStates.Any())
-                return;
-            if (_selectedState == null)
-            {
-                SelectedState = DayStates.First();
-                id = 0;
-            }
-            else
-            {
-                id--;
-                if (id > 0)
-                {
-                    SelectedState = DayStates[id];
-                }
-                else
-                    id = 0;
-            }
-            UpdatePosition();
-        }
-
-        private void MoveForward()
-        {
-            //Debug.WriteLine(string.Format("Перемотка {0}: {1}раз", forward ? "вперед" : "назад", id));
-            if (DayStates == null || !DayStates.Any())
-                return;
-            if (SelectedState == null)
-            {
-                SelectedState = DayStates.First();
-                id = 0;
-            }
-            else
-            {
-                id++;
-                if (id <= DayStates.Count() - 1)
-                {
-                    SelectedState = DayStates[id];
-                }
-                else
-                    id = DayStates.Count() - 1;
-            }
-            UpdatePosition();
-        }
-        /// <summary>
-        /// Step to manualy move time back in view mode
-        /// </summary>
-        private void MoveTimeBack()
-        {
-            forward = false;
-            dtm.Start();
-        }
-
-        /// <summary>
-        /// Step to manualy move time forward in view mode
-        /// </summary>
-        private void MoveTimeForward()
-        {
-            forward = true;
-            dtm.Start();
-        }
-
-
-        private void MoveTimeBackUp()
-        {
-            forward = false;
-            dtm.Stop();
-            MoveBack();
-        }
-
-        private void MoveTimeForwardUp()
-        {
-            forward = true;
-            dtm.Stop();
-            MoveForward();
-        }
-
-
-        void dtm_Tick(object sender, EventArgs e)
-        {
-            if (forward)
-                MoveForward();
-            else
-                MoveBack();
-        }
 
 
 

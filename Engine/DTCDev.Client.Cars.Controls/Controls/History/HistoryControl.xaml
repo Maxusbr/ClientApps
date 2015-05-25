@@ -36,6 +36,12 @@
         <Storyboard x:Key="stbCloseToolBar" Storyboard.TargetName="grdToolbar" Storyboard.TargetProperty="(Grid.Width)">
             <DoubleAnimation From="180" To="40" Duration="0:0:0.2"/>
         </Storyboard>
+        <Storyboard x:Key="stbDisplayWorkHistory" Storyboard.TargetName="grdHistoryWork" Storyboard.TargetProperty="(Grid.Opacity)">
+            <DoubleAnimation From="0.3" To="1" Duration="0:0:0.1"/>
+        </Storyboard>
+        <Storyboard x:Key="stbHideWorkHistory" Storyboard.TargetName="grdHistoryWork" Storyboard.TargetProperty="(Grid.Opacity)">
+            <DoubleAnimation From="1" To="0.3" Duration="0:0:0.1"/>
+        </Storyboard>
         <Style TargetType="{x:Type Button}" x:Key="feBtnStyle">
             <Setter Property="Background" Value="#FF1F3B53"/>
             <Setter Property="Foreground" Value="#FF000000"/>
@@ -388,7 +394,15 @@
 
 
         
-        <Grid x:Name="grdHistoryWork" Grid.Row="1" Background="White" Grid.Column="1" Visibility="Collapsed" MouseEnter="grdHistoryWork_MouseEnter" MouseLeave="grdHistoryWork_MouseLeave">
+        <Grid x:Name="grdHistoryWork" Grid.Row="1" Opacity="0.3" Background="White" Grid.Column="1" Visibility="Collapsed">
+            <Grid.Triggers>
+                <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                    <BeginStoryboard Storyboard="{StaticResource stbDisplayWorkHistory}"/>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                    <BeginStoryboard Storyboard="{StaticResource stbHideWorkHistory}"/>
+                </EventTrigger>
+            </Grid.Triggers>
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
@@ -400,13 +414,13 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="{Binding Path=LoadedText}" Margin="10,10,10,0" VerticalAlignment="Top"/>
-                <DataGrid Margin="10,7,70,40" ItemsSource="{Binding Path=HistoryRows}" AutoGenerateColumns="False" SelectedItem="{Binding Path=SelectedHistoryRow, Mode=TwoWay}" Grid.Row="2">
+                <DataGrid Margin="10,7,70,40" ItemsSource="{Binding Path=HistoryRows}" AutoGenerateColumns="False" SelectedItem="{Binding Path=SelectedHistoryRow, Mode=TwoWay}" CanUserAddRows="False" Grid.Row="2">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding Path=StringDate}" Header="Дата" Width="*"/>
-                        <DataGridTextColumn Binding="{Binding Path=Mileage}" Header="Пробег"/>
-                        <DataGridTextColumn Binding="{Binding Path=MiddleSpeed}" Header="Ср. скорость"/>
-                        <DataGridTextColumn Binding="{Binding Path=Start}" Header="Начало"/>
-                        <DataGridTextColumn Binding="{Binding Path=Stop}" Header="Окончание"/>
+                        <DataGridTextColumn Binding="{Binding Path=StringDate}" Header="Дата" Width="*" IsReadOnly="True"/>
+                        <DataGridTextColumn Binding="{Binding Path=Mileage}" Header="Пробег" IsReadOnly="True"/>
+                        <DataGridTextColumn Binding="{Binding Path=MiddleSpeed}" Header="Ср. скорость" IsReadOnly="True"/>
+                        <DataGridTextColumn Binding="{Binding Path=Start}" Header="Начало" IsReadOnly="True"/>
+                        <DataGridTextColumn Binding="{Binding Path=Stop}" Header="Окончание" IsReadOnly="True"/>
                     </DataGrid.Columns>
                 </DataGrid>
                 <TextBlock Text="{Binding Path=DistanceAll}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,19,20" Grid.Row="2"/>
