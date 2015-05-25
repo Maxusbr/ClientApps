@@ -17,6 +17,7 @@ namespace KOT.DataModel.ViewModel
         private bool _details;
         private DateTimeOffset _selectedDate;
         private string _date;
+        private bool _isSelected;
         public WorkType Model { get; set; }
 
         public WorkTypeViewModel()
@@ -41,6 +42,8 @@ namespace KOT.DataModel.ViewModel
         public WorkTypeViewModel(WorkType model)
         {
             Model = model;
+            DateWork = (new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day)).AddDays(Model.DaysToMake);
+            DaysToMake = new DateDataModel(DateWork).ToString();
         }
 
         public string Name
@@ -66,7 +69,9 @@ namespace KOT.DataModel.ViewModel
             }
         }
 
-        public string DaysToMake { get { return new DateDataModel(DateTime.Now.AddDays(Model.DaysToMake)).ToString(); } }
+        public DateTime DateWork { get; set; }
+
+        public string DaysToMake { get; set; }
 
         public DateTimeOffset SelectedDate
         {
@@ -98,6 +103,17 @@ namespace KOT.DataModel.ViewModel
             {
                 _details = value;
                 OnPropertyChanged("ShowDetails");
+            }
+        }
+
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                if (value.Equals(_isSelected)) return;
+                _isSelected = value;
+                OnPropertyChanged("IsSelected");
             }
         }
 

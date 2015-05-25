@@ -392,7 +392,7 @@
                         <ListViewItem Content="Мойка - 150 руб."/>
                         <ListViewItem Content="Мойка - 150 руб."/>
                     </ListView>
-                    <AppBarToggleButton Grid.Row="1" x:Name="PhoneToggle" HorizontalAlignment="Right" Label="appbartogglebutton" VerticalAlignment="Bottom" Width="24" Height="24" BorderThickness="1" Background="#D8FFFFFF" Foreground="{StaticResource PrimeryText}" Margin="0,0,0,5" Click="ShowAllPrices_Click" Style="{StaticResource ClearAppBarToggleButtonStyle}">
+                    <AppBarToggleButton Grid.Row="1" x:Name="PhoneToggle" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="24" Height="24" BorderThickness="1" Background="{StaticResource PrimeryText}" Margin="0,0,0,5" Click="ShowAllPrices_Click" Style="{StaticResource ClearAppBarToggleButtonStyle}">
                         <AppBarToggleButton.Icon>
                             <BitmapIcon UriSource="ms-appx:///Assets/drawable-xxhdpi/ic_arrow_down_more_24dp.png"/>
                         </AppBarToggleButton.Icon>

@@ -25,13 +25,13 @@ namespace KOT.DataModel.Handlers
                 RecomendetWorkTypes.Add(new WorkTypeViewModel(
                     new WorkType
                     {
-                        DaysToMake = 2,
+                        DaysToMake = 35,
                         ID = "0",
                         DistanceToMake = 200,
-                        Name = "Work 1",
+                        Name = "Чистка форсунок",
                         LastMakeDist = 250,
                         LastMakeTime = new DateDataModel(
-                            DateTime.Now.AddDays(-5)),
+                            DateTime.Now.AddDays(-60)),
                         PeriodicDist = 100,
                         PeriodicTime = 5,
                         PresentModel = 1
@@ -39,13 +39,69 @@ namespace KOT.DataModel.Handlers
                 RecomendetWorkTypes.Add(new WorkTypeViewModel(
                     new WorkType
                     {
-                        DaysToMake = -1,
-                        ID = "1",
-                        DistanceToMake = -100,
-                        Name = "Work 2",
+                        DaysToMake = 34,
+                        ID = "0",
+                        DistanceToMake = 200,
+                        Name = "Замена масла",
                         LastMakeDist = 250,
                         LastMakeTime = new DateDataModel(
-                            DateTime.Now.AddDays(-15)),
+                            DateTime.Now.AddDays(-60)),
+                        PeriodicDist = 100,
+                        PeriodicTime = 5,
+                        PresentModel = 1
+                    }));
+                RecomendetWorkTypes.Add(new WorkTypeViewModel(
+                    new WorkType
+                    {
+                        DaysToMake = 38,
+                        ID = "0",
+                        DistanceToMake = 200,
+                        Name = "Замена фильтров",
+                        LastMakeDist = 250,
+                        LastMakeTime = new DateDataModel(
+                            DateTime.Now.AddDays(-65)),
+                        PeriodicDist = 100,
+                        PeriodicTime = 5,
+                        PresentModel = 1
+                    }));
+                RecomendetWorkTypes.Add(new WorkTypeViewModel(
+                    new WorkType
+                    {
+                        DaysToMake = -3,
+                        ID = "1",
+                        DistanceToMake = -100,
+                        Name = "Замена фильтров",
+                        LastMakeDist = 250,
+                        LastMakeTime = new DateDataModel(
+                            DateTime.Now.AddDays(-45)),
+                        PeriodicDist = 50,
+                        PeriodicTime = 4,
+                        PresentModel = 2
+                    }));
+                RecomendetWorkTypes.Add(new WorkTypeViewModel(
+                    new WorkType
+                    {
+                        DaysToMake = -4,
+                        ID = "1",
+                        DistanceToMake = -100,
+                        Name = "Замена масла",
+                        LastMakeDist = 250,
+                        LastMakeTime = new DateDataModel(
+                            DateTime.Now.AddDays(-42)),
+                        PeriodicDist = 50,
+                        PeriodicTime = 4,
+                        PresentModel = 2
+                    }));
+                RecomendetWorkTypes.Add(new WorkTypeViewModel(
+                    new WorkType
+                    {
+                        DaysToMake = 3,
+                        ID = "1",
+                        DistanceToMake = -100,
+                        Name = "Чистка форсунок",
+                        LastMakeDist = 250,
+                        LastMakeTime = new DateDataModel(
+                            DateTime.Now.AddDays(-43)),
                         PeriodicDist = 50,
                         PeriodicTime = 4,
                         PresentModel = 2

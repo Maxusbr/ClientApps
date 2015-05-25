@@ -14,7 +14,7 @@
             <RowDefinition Height="66"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Pivot x:Name="Pivot" Grid.Row="2" Margin="0,28,0,0" Style="{StaticResource TOPivotStyle}" RequestedTheme="Dark">
+        <Pivot x:Name="Pivot" Grid.Row="2" Margin="0,28,0,0" Style="{StaticResource TOPivotStyle}" RequestedTheme="Dark" SelectionChanged="Pivot_SelectionChanged">
             <PivotItem Margin="-2,0,0,0" Style="{StaticResource TOPivotItemStyle}">
                 <Border Background="White">
             		<Grid>
@@ -22,10 +22,10 @@
             		</Grid>
             	</Border>
             </PivotItem>
-            <PivotItem Margin="-2,0,0,0">
-                <Border Background="White">
+            <PivotItem>
+                <Border Background="White" Padding="24,0,16,0">
             		<Grid>
-            			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Календарь" VerticalAlignment="Top" Foreground="{StaticResource PrimeryText}" Margin="10,0,0,0"/>
+            			<Controls:RecomendationCalendarControl/>
             		</Grid>
             	</Border>
             </PivotItem>
@@ -38,7 +38,7 @@
                 </LinearGradientBrush>
             </Border.Background>
         </Border>
-        <Grid x:Name="TopMenu" d:IsLocked="True">
+        <Grid x:Name="TopMenu">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="56"/>
                 <ColumnDefinition/>
@@ -75,7 +75,7 @@
                     <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_to_history_24dp.png" Margin="5,0"/>
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarToggleButton HorizontalAlignment="Left" Label="appbartogglebutton" VerticalAlignment="Top" Grid.Row="1" Grid.Column="3" Style="{StaticResource TOAppBarToggleButtonStyle}" Margin="4" IsChecked="False" Width="46" Height="46" Click="AppBarToggleButton_Click">
+            <AppBarToggleButton x:Name="CalendarListToggle" HorizontalAlignment="Left" Label="appbartogglebutton" VerticalAlignment="Top" Grid.Row="1" Grid.Column="3" Style="{StaticResource TOAppBarToggleButtonStyle}" Margin="4" IsChecked="False" Width="46" Height="46" Click="AppBarToggleButton_Click">
                 <AppBarToggleButton.Icon>
                     <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_to_calendar_24dp.png" Foreground="White"/>
                 </AppBarToggleButton.Icon>

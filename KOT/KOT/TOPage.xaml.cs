@@ -68,5 +68,10 @@ namespace KOT
             if(bt == null) return;
             Pivot.SelectedIndex = (bt.IsChecked ?? false) ? 1 : 0;
         }
+
+        private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CalendarListToggle.IsChecked = Pivot.SelectedIndex == 1;
+        }
     }
 }

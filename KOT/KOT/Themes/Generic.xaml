@@ -811,6 +811,8 @@
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="Background" Value="{x:Null}"/>
         <Setter Property="Opacity" Value="1"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="Margin" Value="0"/>
     </Style>
     <Thickness x:Key="MenuFlyoutPortraitBorderThemeThickness">0,1.5</Thickness>
     <Thickness x:Key="MenuFlyoutPortraitThemePadding">19,13.5,0,26</Thickness>
@@ -1243,15 +1245,116 @@
                                 <VisualState x:Name="CheckedDisabled"/>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <ContentPresenter x:Name="Content" AutomationProperties.AccessibilityView="Raw" Content="{TemplateBinding Icon}" Foreground="{TemplateBinding Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
-                            <ContentPresenter.RenderTransform>
-                                <CompositeTransform/>
-                            </ContentPresenter.RenderTransform>
-                        </ContentPresenter>
+                        <StackPanel Orientation="Horizontal">
+                    		<ContentPresenter x:Name="Content_Copy" AutomationProperties.AccessibilityView="Raw" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Content="{TemplateBinding Label}" Foreground="{TemplateBinding Foreground}">
+                    		</ContentPresenter>
+							<ContentPresenter x:Name="Content" AutomationProperties.AccessibilityView="Raw" Content="{TemplateBinding Icon}" Foreground="{TemplateBinding Background}" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                    			<ContentPresenter.RenderTransform>
+                    				<CompositeTransform/>
+                    			</ContentPresenter.RenderTransform>
+                    		</ContentPresenter>
+                    	</StackPanel>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+    <Style x:Key="LabelAppBarButtonStyle" TargetType="AppBarButton">
+    	<Setter Property="Foreground" Value="{ThemeResource AppBarItemForegroundThemeBrush}"/>
+    	<Setter Property="VerticalAlignment" Value="Top"/>
+    	<Setter Property="HorizontalAlignment" Value="Left"/>
+    	<Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+    	<Setter Property="FontWeight" Value="Normal"/>
+    	<Setter Property="Template">
+    		<Setter.Value>
+    			<ControlTemplate TargetType="AppBarButton">
+    				<StackPanel x:Name="ContentRoot" Background="Transparent" Orientation="Horizontal" Margin="0,0,2,1.5">
+    					<ContentPresenter x:Name="Content_Copy" AutomationProperties.AccessibilityView="Raw" VerticalAlignment="Center" HorizontalAlignment="Center" Content="{TemplateBinding Label}" Foreground="{TemplateBinding Foreground}"/>
+    					<ContentPresenter x:Name="Content" AutomationProperties.AccessibilityView="Raw" Content="{TemplateBinding Icon}" Foreground="{TemplateBinding Background}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+    				</StackPanel>
+    			</ControlTemplate>
+    		</Setter.Value>
+    	</Setter>
+    </Style>
+    <Style x:Key="CalendarFlyoutPresenterStyle" TargetType="FlyoutPresenter">
+    	<Setter Property="HorizontalContentAlignment" Value="Left"/>
+    	<Setter Property="VerticalContentAlignment" Value="Top"/>
+    	<Setter Property="IsTabStop" Value="False"/>
+    	<Setter Property="Padding" Value="0"/>
+    	<Setter Property="MinHeight" Value="{ThemeResource FlyoutThemeMinHeight}"/>
+    	<Setter Property="ScrollViewer.HorizontalScrollMode" Value="Auto"/>
+    	<Setter Property="ScrollViewer.VerticalScrollMode" Value="Auto"/>
+    	<Setter Property="ScrollViewer.ZoomMode" Value="Disabled"/>
+    	<Setter Property="Template">
+    		<Setter.Value>
+    			<ControlTemplate TargetType="FlyoutPresenter">
+    				<Border x:Name="Background" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" FlowDirection="LeftToRight" HorizontalAlignment="Left" VerticalAlignment="Top">
+    					<VisualStateManager.VisualStateGroups>
+    						<VisualStateGroup x:Name="OrientationStates">
+    							<VisualState x:Name="Portrait"/>
+    							<VisualState x:Name="Landscape">
+    								<Storyboard>
+    									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" Storyboard.TargetName="ScrollViewer">
+    										<DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource FlyoutContentPanelLandscapeThemeMargin}"/>
+    									</ObjectAnimationUsingKeyFrames>
+    								</Storyboard>
+    							</VisualState>
+    						</VisualStateGroup>
+    					</VisualStateManager.VisualStateGroups>
+    					<ScrollViewer x:Name="ScrollViewer" AutomationProperties.AccessibilityView="Raw" FlowDirection="{TemplateBinding FlowDirection}" HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}" HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}" Margin="{ThemeResource FlyoutContentPanelPortraitThemeMargin}" VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}" VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}" ZoomMode="{TemplateBinding ScrollViewer.ZoomMode}">
+    						<ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+    					</ScrollViewer>
+    				</Border>
+    			</ControlTemplate>
+    		</Setter.Value>
+    	</Setter>
+    	<Setter Property="Width" Value="Auto"/>
+    	<Setter Property="Height" Value="Auto"/>
+    	<Setter Property="HorizontalAlignment" Value="Left"/>
+    	<Setter Property="Background" Value="{x:Null}"/>
+    	<Setter Property="Opacity" Value="1"/>
+    	<Setter Property="VerticalAlignment" Value="Top"/>
+    	<Setter Property="Margin" Value="48,120,0,0"/>
+    </Style>
+    <Style x:Key="BordersFlyoutPresenterStyle" TargetType="FlyoutPresenter">
+    	<Setter Property="HorizontalContentAlignment" Value="Left"/>
+    	<Setter Property="VerticalContentAlignment" Value="Top"/>
+    	<Setter Property="IsTabStop" Value="False"/>
+    	<Setter Property="Padding" Value="0"/>
+    	<Setter Property="MinHeight" Value="{ThemeResource FlyoutThemeMinHeight}"/>
+    	<Setter Property="ScrollViewer.HorizontalScrollMode" Value="Auto"/>
+    	<Setter Property="ScrollViewer.VerticalScrollMode" Value="Auto"/>
+    	<Setter Property="ScrollViewer.ZoomMode" Value="Disabled"/>
+    	<Setter Property="Template">
+    		<Setter.Value>
+    			<ControlTemplate TargetType="FlyoutPresenter">
+    				<Border x:Name="Background" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" FlowDirection="LeftToRight" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#7F303030">
+    					<VisualStateManager.VisualStateGroups>
+    						<VisualStateGroup x:Name="OrientationStates">
+    							<VisualState x:Name="Portrait"/>
+    							<VisualState x:Name="Landscape">
+    								<Storyboard>
+    									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" Storyboard.TargetName="ScrollViewer">
+    										<DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource FlyoutContentPanelLandscapeThemeMargin}"/>
+    									</ObjectAnimationUsingKeyFrames>
+    								</Storyboard>
+    							</VisualState>
+    						</VisualStateGroup>
+    					</VisualStateManager.VisualStateGroups>
+    					<ScrollViewer x:Name="ScrollViewer" AutomationProperties.AccessibilityView="Raw" FlowDirection="{TemplateBinding FlowDirection}" HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}" HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}" Margin="{ThemeResource FlyoutContentPanelPortraitThemeMargin}" VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}" VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}" ZoomMode="{TemplateBinding ScrollViewer.ZoomMode}">
+    						<ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+    					</ScrollViewer>
+    				</Border>
+    			</ControlTemplate>
+    		</Setter.Value>
+    	</Setter>
+    	<Setter Property="Width" Value="Auto"/>
+    	<Setter Property="Height" Value="Auto"/>
+    	<Setter Property="HorizontalAlignment" Value="Left"/>
+    	<Setter Property="Opacity" Value="1"/>
+    	<Setter Property="VerticalAlignment" Value="Top"/>
+    	<Setter Property="Margin" Value="0"/>
+    	<Setter Property="Background" Value="{StaticResource PrimeryText}"/>
     </Style>
     
 

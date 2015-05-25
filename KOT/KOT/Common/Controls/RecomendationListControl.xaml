@@ -121,7 +121,7 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock TextWrapping="Wrap" Text="Рекомендации по ТО от " Style="{StaticResource TitleTextBlockStyle}" FontSize="18.667"/>
                 <TextBlock TextWrapping="Wrap" Text="{Binding DateTxt, Mode=OneWay}" Style="{StaticResource TitleTextBlockStyle}" Grid.Column="1" FontSize="18.667" Margin="10,0,0,0" HorizontalAlignment="Left"/>
-                <AppBarToggleButton x:Name="PhoneToggle" HorizontalAlignment="Right" Label="appbartogglebutton" VerticalAlignment="Bottom" BorderThickness="1" Background="#D8FFFFFF" Foreground="{StaticResource PrimeryText}" Style="{StaticResource ClearAppBarToggleButtonStyle}" Grid.Column="2" Width="24" IsChecked="False">
+                <AppBarToggleButton x:Name="PhoneToggle" HorizontalAlignment="Right" VerticalAlignment="Bottom" BorderThickness="1" Background="#D8FFFFFF" Foreground="{StaticResource PrimeryText}" Style="{StaticResource ClearAppBarToggleButtonStyle}" Grid.Column="2" IsChecked="False" Height="24">
                     <AppBarToggleButton.Icon>
                         <BitmapIcon UriSource="ms-appx:///Assets/drawable-xxhdpi/ic_arrow_down_more_24dp.png" Foreground="White"/>
                     </AppBarToggleButton.Icon>
