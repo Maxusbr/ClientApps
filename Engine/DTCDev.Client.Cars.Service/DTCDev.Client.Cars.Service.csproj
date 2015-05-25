@@ -129,6 +129,9 @@
     <Compile Include="Controls\Settings\PostSettings.xaml.cs">
       <DependentUpon>PostSettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Settings\UserSettings.xaml.cs">
+      <DependentUpon>UserSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Convertors\DTCConverter.cs" />
     <Compile Include="Convertors\OnLineConverter.cs" />
     <Compile Include="Convertors\PlugConvertor.cs" />
@@ -362,6 +365,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Settings\PostSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Settings\UserSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
