@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Navigation;
 
 // Документацию по шаблону элемента пустой страницы см. по адресу http://go.microsoft.com/fwlink/?LinkID=390556
 using KOT.Common;
+using KOT.DataModel.Handlers;
 
 namespace KOT
 {
@@ -72,6 +73,87 @@ namespace KOT
         private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             CalendarListToggle.IsChecked = Pivot.SelectedIndex == 1;
+            if (Pivot.SelectedIndex < 2)
+            {
+                Lable.Text = "TO";
+                Tools.Visibility = History.Visibility= CalendarListToggle.Visibility = BarButton.Visibility = Visibility.Visible;
+                BackButton.Visibility = More.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                Lable.Text = "История TO";
+                Tools.Visibility = History.Visibility = CalendarListToggle.Visibility = BarButton.Visibility = Visibility.Collapsed;
+                BackButton.Visibility = More.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void All_Click(object sender, RoutedEventArgs e)
+        {
+            var butt = sender as ToggleMenuFlyoutItem;
+            if (butt == null) return;
+            All.IsChecked = butt.Name == All.Name;
+            Month1.IsChecked = butt.Name == Month1.Name;
+            Month3.IsChecked = butt.Name == Month3.Name;
+            Month6.IsChecked = butt.Name == Month6.Name;
+            SelectDate.IsChecked = butt.Name == SelectDate.Name;
+            UpdateSelectedDate();
+        }
+
+        private void UpdateSelectedDate()
+        {
+            var dt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            var nulldate = new DateTime(1, 1, 1);
+            if (All.IsChecked)
+            {
+                HistoryWorkHandler.UpdateDate(nulldate, dt);
+                return;
+            }
+            if (Month1.IsChecked)
+            {
+                HistoryWorkHandler.UpdateDate(dt.AddMonths(-1), dt);
+                return;
+            }
+            if (Month3.IsChecked)
+            {
+                HistoryWorkHandler.UpdateDate(dt.AddMonths(-3), dt);
+                return;
+            }
+            if (Month6.IsChecked)
+            {
+                HistoryWorkHandler.UpdateDate(dt.AddMonths(-6), dt);
+                return;
+            }
+            FlyoutBase.ShowAttachedFlyout(this);
+        }
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            Pivot.SelectedIndex = 0;
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            var fl = FlyoutBase.GetAttachedFlyout(this);
+            if (fl == null) return;
+            fl.Hide();
+        }
+
+        private void OK_Click(object sender, RoutedEventArgs e)
+        {
+            var fl = FlyoutBase.GetAttachedFlyout(this);
+            if (fl == null) return;
+            fl.Hide();
+            DateTime start;
+            DateTime end;
+            if (!DateTime.TryParse(EndDate.Text, out end))
+                end = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            if (DateTime.TryParse(StartDate.Text, out start))
+                HistoryWorkHandler.UpdateDate(start, end); 
+        }
+
+        private void History_Click(object sender, RoutedEventArgs e)
+        {
+            Pivot.SelectedIndex = 2;
         }
     }
 }

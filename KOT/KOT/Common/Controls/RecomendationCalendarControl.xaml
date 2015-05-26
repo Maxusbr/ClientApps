@@ -130,10 +130,6 @@
         </Flyout>
     </FlyoutBase.AttachedFlyout>
 
-    <UserControl.DataContext>
-        <ViewModel:WorksViewModel/>
-    </UserControl.DataContext>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="36"/>
@@ -148,7 +144,7 @@
                 <BitmapIcon UriSource="ms-appx:///Assets/drawable-xxhdpi/ic_arrow_down_more_24dp.png" Foreground="{StaticResource AccentColor}"/>
             </AppBarToggleButton.Icon>
         </AppBarToggleButton>
-        <AppBarButton x:Name="YearButton" HorizontalAlignment="Left" Label="{Binding SelectedYearTxt, Mode=OneWay}" Style="{StaticResource LabelAppBarButtonStyle}" VerticalAlignment="Center" Background="{StaticResource AccentColor}" Foreground="{StaticResource AccentColor}" Height="24" Margin="24,0,0,0" Click="AppBarButton_Click">
+        <AppBarButton x:Name="YearButton" HorizontalAlignment="Left" Label="{Binding SelectedYearTxt, Mode=OneWay}" Style="{StaticResource LabelAppBarButtonStyle}" VerticalAlignment="Center" Background="{StaticResource AccentColor}" Foreground="{StaticResource AccentColor}" Height="24" Margin="58,0,0,0" Click="AppBarButton_Click">
             <FlyoutBase.AttachedFlyout>
                 <Flyout Placement="Bottom" FlyoutPresenterStyle="{StaticResource CalendarFlyoutPresenterStyle}">
                     <ListBox HorizontalAlignment="Left" Height="135" VerticalAlignment="Top" Width="100" ItemsSource="{Binding YearList}" SelectedItem="{Binding SelectedYear, Mode=TwoWay}" Background="White" RequestedTheme="Light" BorderThickness="1" Tapped="ListBox_Tapped">
@@ -292,17 +288,19 @@
                 <BitmapIcon UriSource="ms-appx:///Assets/drawable-xxhdpi/ic_arrow_down_more_24dp.png"/>
             </AppBarButton.Icon>
         </AppBarButton>
-        <ListView Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0" ItemsSource="{Binding YearWorks}" Loaded="ListView_Loaded" Tapped="ListView_Tapped">
+        <ListView Grid.Row="1" VerticalAlignment="Top" Margin="0" ItemsSource="{Binding YearWorks}" Loaded="ListView_Loaded" Tapped="ListView_Tapped" HorizontalContentAlignment="Stretch" HorizontalAlignment="Center">
             <ListView.Resources>
                 <ItemsPanelTemplate x:Key="ItemsPanelTemplate">
-                    <ItemsWrapGrid ItemWidth="92" ItemHeight="77" Orientation="Horizontal"/>
+                	<ItemsWrapGrid Orientation="Horizontal" MaximumRowsOrColumns="3" HorizontalAlignment="Center"/>
                 </ItemsPanelTemplate>
                 <DataTemplate x:Key="DataTemplate">
-                    <Grid Width="80" Height="69">
-                        <Border Background="{Binding ColorBox, Mode=OneWay}"/>
-                        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding MonthName, Mode=OneWay}" VerticalAlignment="Bottom" Margin="8,0,0,0" Foreground="{Binding HasWorks, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"/>
-                        <TextBlock HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding CountTxt, Mode=OneWay}" VerticalAlignment="Top" Margin="0,0,8,0" Foreground="{Binding Foreground, ElementName=textBlock}"/>
-                    </Grid>
+                    <Border HorizontalAlignment="Center" VerticalAlignment="Center" Padding="6" >
+                		<Grid Width="100" Height="100">
+                			<Border Background="{Binding ColorBox, Mode=OneWay}"/>
+                			<TextBlock x:Name="textBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding MonthName, Mode=OneWay}" VerticalAlignment="Bottom" Margin="8,0,0,8" Foreground="{Binding HasWorks, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"/>
+                			<TextBlock HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding CountTxt, Mode=OneWay}" VerticalAlignment="Top" Margin="0,4,8,0" Foreground="{Binding Foreground, ElementName=textBlock}"/>
+                		</Grid>
+                	</Border>
                 </DataTemplate>
                 <x:Double x:Key="ControlContentThemeFontSize">12</x:Double>
                 <Thickness x:Key="ListViewItemMargin">0</Thickness>

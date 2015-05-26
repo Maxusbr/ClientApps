@@ -29,6 +29,13 @@ namespace KOT.DataModel.ViewModel
             WorkTypes.CollectionChanged += WorkTypes_CollectionChanged;
             if (DesignMode.DesignModeEnabled)
                 SelectedMonth = YearWorks[4];
+            UpdateWork();
+        }
+
+        private async void UpdateWork()
+        {
+            await WorksDataHandler.UpdateWork();
+            UpdateListWorks();
         }
 
         public ObservableCollection<WorkTypeViewModel> WorkTypes { get { return WorksDataHandler.RecomendetWorkTypes; } }
@@ -81,7 +88,7 @@ namespace KOT.DataModel.ViewModel
 
         private void WorkTypes_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-
+            //UpdateListWorks();
         }
 
         private void UpdateListWorks()
