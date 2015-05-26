@@ -59,13 +59,12 @@ namespace KOT.Common.Controls
             vm.HideDetail(true);
         }
 
-        private void DatePickerFlyout_Closed(object sender, object e)
+
+        private void DateSelect_OnClose(object sender)
         {
-            var dt = sender as DatePickerFlyout;
-            if (dt == null) return;
-            //var vm = dt.DataContext as WorkTypeViewModel;
-            if (_selectedVM == null) return;
-            _selectedVM.SelectedDate = dt.Date;
+            var dt = sender as DateWeekSelectControl;
+            if (dt == null || _selectedVM == null) return;
+            _selectedVM.Date = dt.Date.ToString("d");
         }
     }
 }

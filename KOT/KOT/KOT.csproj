@@ -81,6 +81,10 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Page Include="Common\Controls\DateWeekSelectControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Common\Controls\HistoryWorkControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -121,6 +125,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="EVMPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ItemPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -152,6 +160,9 @@
     </Compile>
     <Compile Include="Common\BooleanToVisibilityConverter.cs" />
     <Compile Include="Common\BoolToValueConverter.cs" />
+    <Compile Include="Common\Controls\DateWeekSelectControl.xaml.cs">
+      <DependentUpon>DateWeekSelectControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Common\Controls\HistoryWorkControl.xaml.cs">
       <DependentUpon>HistoryWorkControl.xaml</DependentUpon>
     </Compile>
@@ -221,6 +232,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataModel\ViewModel\WorkTypeViewModel.cs" />
+    <Compile Include="EVMPage.xaml.cs">
+      <DependentUpon>EVMPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ItemPage.xaml.cs">
       <DependentUpon>ItemPage.xaml</DependentUpon>
     </Compile>

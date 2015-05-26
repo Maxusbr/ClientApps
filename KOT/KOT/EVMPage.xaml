@@ -1,0 +1,24 @@
+﻿<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:KOT"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Controls="using:KOT.Common.Controls"
+    x:Class="KOT.EVMPage"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" RequestedTheme="Light">
+
+	<Grid>
+		<Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+			<Grid.RowDefinitions>
+				<RowDefinition/>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
+
+			<Controls:DateWeekSelectControl x:Name="DateSelect" HorizontalAlignment="Left" VerticalAlignment="Top" Close="DateSelect_Closed"/>
+
+        </Grid>
+
+	</Grid>
+</Page>
