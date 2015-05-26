@@ -114,7 +114,15 @@
                 </Button>
             </Grid>
             <Border Style="{DynamicResource borderBlueDeviderStyle}" Grid.Row="2" Grid.Column="1" Margin="19,20,19,0" />
-            <Post:PostSettings Visibility="{Binding Path=VisEnableEdit}" Grid.Row="2" Grid.Column="1" Margin="38,20,2,0" Grid.ColumnSpan="2" />
+            <TabControl Visibility="{Binding Path=VisEnableEdit}" Grid.Row="2" Grid.Column="2" Margin="10">
+                <TabItem Header="Посты">
+                    <Post:PostSettings Visibility="{Binding Path=VisEnableEdit}" />
+                </TabItem>
+                <TabItem Header="Пользователи">
+                    <Post:UserSettings/>
+                </TabItem>
+            </TabControl>
+            
         </Grid>
     </Grid>
 </UserControl>

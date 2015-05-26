@@ -832,9 +832,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 SortDataByDate(true);
             }
 
-            HistoryHandler.Instance.StartLoadDayLines(Position.Car.Id, _displayedHistoryDate);
-            HistoryHandler.Instance.StartLoadOBD(Position.Car.Id, _displayedHistoryDate);
-            HistoryHandler.Instance.StartLoadAcc(Position.Car.Id, _displayedHistoryDate);
+            HistoryHandler.Instance.StartLoadDayLines(Position.Car.Id, SelectedHistoryRow.Date);
+            HistoryHandler.Instance.StartLoadOBD(Position.Car.Id, SelectedHistoryRow.Date);
+            HistoryHandler.Instance.StartLoadAcc(Position.Car.Id, SelectedHistoryRow.Date);
             AccHistory = null;
         }
 
