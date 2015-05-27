@@ -247,5 +247,12 @@ namespace DTCDev.Client.Cars.Service.Engine.Storage
                 StartCurrentOBD();
             }
         }
+
+
+
+        public void GetCarSettings()
+        {
+            CarsHandler.Instance.GetCarSettings(SelectedCar.CarModel.ID);
+        }
     }
 }

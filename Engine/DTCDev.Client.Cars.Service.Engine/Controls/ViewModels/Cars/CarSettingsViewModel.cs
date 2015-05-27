@@ -1,4 +1,5 @@
 ﻿using DTCDev.Client.Cars.Service.Engine.Handlers;
+using DTCDev.Client.Cars.Service.Engine.Storage;
 using DTCDev.Client.ViewModel;
 using DTCDev.Models.CarBase.CarStatData;
 using System;
@@ -13,7 +14,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Cars
     {
         public CarSettingsViewModel()
         {
-
+            CarStorage.Instance.GetCarSettings();
         }
 
         public ObservableCollection<KVPBase> Marks { get { return SpecificationDataStorage.Instance.Marks; } }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Cars;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,7 @@ namespace DTCDev.Client.Cars.Service.Controls.Car
         public CarSettingsView()
         {
             InitializeComponent();
+            this.DataContext = new CarSettingsViewModel();
         }
     }
 }
