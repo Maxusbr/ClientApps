@@ -31,7 +31,7 @@
                 <ColumnDefinition Width="420"/>
                 <ColumnDefinition Width="40"/>
                 <ColumnDefinition Width="143*"/>
-                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="348"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.ColumnSpan="3" >
                 <Grid.ColumnDefinitions>
@@ -163,6 +163,7 @@
                     <ColumnDefinition Width="48"/>
                     <ColumnDefinition/>
                     <ColumnDefinition Width="48"/>
+                    <ColumnDefinition Width="48"/>
                 </Grid.ColumnDefinitions>
                 <Border Style="{DynamicResource brdrGreenStyle}" Margin="0,5"/>
                 <Border Style="{DynamicResource brdrRedStyle}" Visibility="{Binding VisErrors}" Margin="0,5"/>
@@ -178,6 +179,9 @@
                 </Button>
                 <Button Grid.Column="7" ToolTip="Диагностика автомобиля" Click="Button_Click_2" Style="{DynamicResource MetroCircleButtonStyle}">
                     <Image Source="/DTCDev.Client.Cars.Service;component/Assets/Images/speedometer.png" Width="24"/>
+                </Button>
+                <Button Grid.Column="8" ToolTip="Настройка автомобиля" Click="Button_Click_4" Style="{DynamicResource MetroCircleButtonStyle}">
+                    <Image Source="/DTCDev.Client.Cars.Service;component/Assets/Images/services.png" Width="24"/>
                 </Button>
             </Grid>
             <Button Grid.Column="3" VerticalAlignment="Top" HorizontalAlignment="Right" Style="{DynamicResource MetroCircleButtonStyle}" Width="30" Height="30" Foreground="#FF6A6A6A" Content="X" Command="{Binding CloseViewCommand}"/>

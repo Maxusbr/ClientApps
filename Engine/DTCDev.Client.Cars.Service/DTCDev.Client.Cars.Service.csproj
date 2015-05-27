@@ -81,6 +81,9 @@
     <Compile Include="Controls\Car\CarAddWork_WorkList.xaml.cs">
       <DependentUpon>CarAddWork_WorkList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Car\CarSettingsView.xaml.cs">
+      <DependentUpon>CarSettingsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Car\ParamsViewer\CarCurrentParamsViewer.xaml.cs">
       <DependentUpon>CarCurrentParamsViewer.xaml</DependentUpon>
     </Compile>
@@ -301,6 +304,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Car\CarAddWork_WorkList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Car\CarSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -588,6 +595,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Entypo-license.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\services.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

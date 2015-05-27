@@ -311,6 +311,15 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             catch { }
         }
 
+        public void GetCarSettings(int carID)
+        {
+            try
+            {
+                TCPConnection.Instance.SendData("BR" + carID.ToString());
+            }
+            catch { }
+        }
+
 
 
 
@@ -382,6 +391,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                 case 's':
                 case 'S':
                     FillCurrentOBD(row);
+                    break;
+                case 'r':
+                case 'R':
+
                     break;
 
             }
