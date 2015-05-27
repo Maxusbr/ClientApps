@@ -28,6 +28,9 @@ namespace KOT.DataModel.Model
         //Номер заказ-наряда
         [JsonProperty(PropertyName = "H")]
         public int OrderN { get; set; }
+        //Исполнитель
+        [JsonProperty(PropertyName = "W")]
+        public string Worker { get; set; }
     }
 
 }

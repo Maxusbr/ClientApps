@@ -31,6 +31,8 @@ namespace KOT.DataModel.ViewModel
 
         public string WorkName { get { return _model.WorkName; } }
 
+        public string NameWorker { get { return _model.Worker; } }
+
         public double Cost { get { return _model.Cost/10.0; } }
     }
 }

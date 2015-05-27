@@ -70,42 +70,44 @@ namespace KOT.DataModel.Handlers
         private async Task UpdateHistoryAsync()
         {
             //if (DesignMode.DesignModeEnabled)
-            _historyWorks.Add(new WorkFromHistoryViewModel(new CarHistoryWorkReport
             {
-                OrderN = 1,
-                WorkName = "Чистка форсунок",
-                Date = new DateDataModel(DateTime.Now.AddDays(-16)),
-                Cost = 154,
-                Comment = "Comment 2",
-                Distance = 280
-            }));
-            _historyWorks.Add(new WorkFromHistoryViewModel(new CarHistoryWorkReport
-            {
-                OrderN = 1,
-                WorkName = "Замена масла",
-                Date = new DateDataModel(DateTime.Now.AddDays(-52)),
-                Cost = 154,
-                Comment = "Comment 3",
-                Distance = 280
-            }));
-            _historyWorks.Add(new WorkFromHistoryViewModel(new CarHistoryWorkReport
-            {
-                OrderN = 1,
-                WorkName = "Замена фильтров",
-                Date = new DateDataModel(DateTime.Now.AddDays(-92)),
-                Cost = 154,
-                Comment = "Comment 4",
-                Distance = 280
-            }));
-            _historyWorks.Add(new WorkFromHistoryViewModel(new CarHistoryWorkReport
-            {
-                OrderN = 1,
-                WorkName = "Чистка форсунок",
-                Date = new DateDataModel(DateTime.Now.AddDays(-125)),
-                Cost = 154,
-                Comment = "Comment 5",
-                Distance = 280
-            }));
+                _historyWorks.Add(new WorkFromHistoryViewModel(new CarHistoryWorkReport
+                {
+                    OrderN = 1,
+                    WorkName = "Чистка форсунок",
+                    Date = new DateDataModel(DateTime.Now.AddDays(-16)),
+                    Cost = 154,
+                    Comment = "Comment 2",
+                    Distance = 280, Worker = "Бригадир"
+                }));
+                _historyWorks.Add(new WorkFromHistoryViewModel(new CarHistoryWorkReport
+                {
+                    OrderN = 1,
+                    WorkName = "Замена масла",
+                    Date = new DateDataModel(DateTime.Now.AddDays(-52)),
+                    Cost = 154,
+                    Comment = "Comment 3",
+                    Distance = 280, Worker = "Мастер"
+                }));
+                _historyWorks.Add(new WorkFromHistoryViewModel(new CarHistoryWorkReport
+                {
+                    OrderN = 1,
+                    WorkName = "Замена фильтров",
+                    Date = new DateDataModel(DateTime.Now.AddDays(-92)),
+                    Cost = 154,
+                    Comment = "Comment 4",
+                    Distance = 280, Worker = "Пользователь"
+                }));
+                _historyWorks.Add(new WorkFromHistoryViewModel(new CarHistoryWorkReport
+                {
+                    OrderN = 1,
+                    WorkName = "Чистка форсунок",
+                    Date = new DateDataModel(DateTime.Now.AddDays(-125)),
+                    Cost = 154,
+                    Comment = "Comment 5",
+                    Distance = 280, Worker = "Гаражный мастер"
+                }));
+            }
             UpdateSource();
         }
 

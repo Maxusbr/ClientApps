@@ -42,5 +42,20 @@ namespace KOT
             var dt = sender as DateWeekSelectControl;
             if(dt == null) return;
         }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            MainMenuControl.HideMenu += MainMenuControl_HideMenu;
+        }
+
+        private void MainMenuControl_HideMenu(object sender, EventArgs e)
+        {
+            FlyoutMenu.Hide();
+            var type = sender as Type;
+            if (type == null || type == typeof(EVMPage)) return;
+            Frame.Navigate(type);
+        }
+
+
     }
 }

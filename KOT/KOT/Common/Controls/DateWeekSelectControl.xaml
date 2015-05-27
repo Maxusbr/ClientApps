@@ -75,9 +75,9 @@
 
     	</Border>
         <ListView x:Name="Month" Grid.Row="1" ScrollViewer.HorizontalScrollMode="Enabled"
-                  ItemsSource="{Binding Months, Mode=OneWay}" ItemsPanel="{StaticResource ItemsPanelTemplate}" ItemContainerStyle="{StaticResource ListViewItemStyle}" Foreground="{StaticResource AccentColor}" HorizontalContentAlignment="Stretch" FontSize="18.667" Padding="0,10" Width="200" Loaded="Month_Loaded" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
+                  ItemsSource="{Binding Months, Mode=OneWay}" ItemsPanel="{StaticResource ItemsPanelTemplate}" ItemContainerStyle="{StaticResource ListViewItemStyle}" Foreground="{StaticResource AccentColor}" HorizontalContentAlignment="Stretch" FontSize="18.667" Padding="0,10" Width="200" Loaded="Month_Loaded" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Disabled" BorderBrush="{StaticResource DividerText}" BorderThickness="0,0,0,1"/>
         <ListView x:Name="Days" Grid.Row="2" ScrollViewer.VerticalScrollMode="Enabled"
-                  ItemsSource="{Binding Days, Mode=OneWay}" ItemsPanel="{StaticResource ItemsPanelTemplate1}" ItemContainerStyle="{StaticResource ListViewItemStyle1}" Foreground="{StaticResource AccentColor}" HorizontalContentAlignment="Stretch" Height="120" Padding="0,10" FontSize="24" Loaded="Days_Loaded"/>
+                  ItemsSource="{Binding Days, Mode=OneWay}" ItemsPanel="{StaticResource ItemsPanelTemplate1}" ItemContainerStyle="{StaticResource ListViewItemStyle1}" Foreground="{StaticResource AccentColor}" HorizontalContentAlignment="Stretch" Height="120" Padding="0,10" FontSize="24" Loaded="Days_Loaded" BorderBrush="{StaticResource DividerText}" BorderThickness="0,0,0,1"/>
         <Button Content="Готово" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="3" Style="{StaticResource LinkButtonStyle}" Foreground="{StaticResource SecondaryText}" BorderThickness="0" Click="Button_Click" MinHeight="40" Margin="0,5,0,0"/>
 
     </Grid>

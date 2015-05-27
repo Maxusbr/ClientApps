@@ -52,7 +52,7 @@ namespace KOT.Common.Controls
         private void PC_Checked(object sender, RoutedEventArgs e)
         {
             //TODO сохранить в DataSource активный пункт меню & NavigateTo PCControl
-            OnHideMenu(typeof(PivotPage));
+            OnHideMenu(typeof(EVMPage));
         }
 
         private void Money_Checked(object sender, RoutedEventArgs e)

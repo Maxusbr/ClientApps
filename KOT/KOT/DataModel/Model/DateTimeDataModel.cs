@@ -21,5 +21,18 @@ namespace KOT.DataModel.Model
         //секунды
         public int ss { get; set; }
 
+        public DateTimeDataModel() { }
+
+        public DateTimeDataModel(DateTime dt)
+        {
+            Y = dt.Year;
+            M = dt.Month;
+            D = dt.Day;
+            hh = dt.Hour;
+            mm = dt.Minute;
+            ss = dt.Second;
+        }
+
+        public DateTime ToDate { get { return new DateTime(Y, M, D); } }
     }
 }

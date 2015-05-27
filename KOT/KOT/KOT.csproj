@@ -81,7 +81,19 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Page Include="Common\Controls\AutoEVMControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Common\Controls\CircularProgressBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Common\Controls\DateWeekSelectControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Common\Controls\DriverStyleControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -160,8 +172,18 @@
     </Compile>
     <Compile Include="Common\BooleanToVisibilityConverter.cs" />
     <Compile Include="Common\BoolToValueConverter.cs" />
+    <Compile Include="Common\Controls\AutoEVMControl.xaml.cs">
+      <DependentUpon>AutoEVMControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Controls\CircularProgressBar.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>CircularProgressBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Common\Controls\DateWeekSelectControl.xaml.cs">
       <DependentUpon>DateWeekSelectControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Controls\DriverStyleControl.xaml.cs">
+      <DependentUpon>DriverStyleControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\Controls\HistoryWorkControl.xaml.cs">
       <DependentUpon>HistoryWorkControl.xaml</DependentUpon>
@@ -200,6 +222,7 @@
     <Compile Include="DataModel\DataSource.cs" />
     <Compile Include="DataModel\Handlers\HistoryWorkHandler.cs" />
     <Compile Include="DataModel\Handlers\MapsElementsDataHandler.cs" />
+    <Compile Include="DataModel\Handlers\PCHandler.cs" />
     <Compile Include="DataModel\Handlers\WorksDataHandler.cs" />
     <Compile Include="DataModel\Model\CarAlarmsState.cs" />
     <Compile Include="DataModel\Model\CarHistoryWorkReport.cs" />
@@ -221,9 +244,12 @@
     <Compile Include="DataModel\Model\TripAdvisorModel.cs" />
     <Compile Include="DataModel\Model\WorkType.cs" />
     <Compile Include="DataModel\SampleDataSource.cs" />
+    <Compile Include="DataModel\ViewModel\DriverStyleViewModel.cs" />
     <Compile Include="DataModel\ViewModel\HistoryWorksViewModel.cs" />
+    <Compile Include="DataModel\ViewModel\PCViewModel.cs" />
     <Compile Include="DataModel\ViewModel\ServiceInfoViewModel.cs" />
     <Compile Include="DataModel\ViewModel\ServicePointViewModel.cs" />
+    <Compile Include="DataModel\ViewModel\TripAdvisorViewModel.cs" />
     <Compile Include="DataModel\ViewModel\WorkFromHistoryViewModel.cs" />
     <Compile Include="DataModel\ViewModel\WorksInMonthViewModel.cs">
       <SubType>Code</SubType>

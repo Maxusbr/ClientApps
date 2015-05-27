@@ -52,7 +52,7 @@ namespace KOT
 
         private void btDemo_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(MainPage));
+            Frame.Navigate(typeof(EVMPage));
         }
 
     }
