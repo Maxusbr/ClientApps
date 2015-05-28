@@ -1,0 +1,90 @@
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:KOT.Common.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ViewModel="using:KOT.DataModel.ViewModel"
+    x:Class="KOT.Common.Controls.BudgetMonthControl"
+    mc:Ignorable="d"
+    d:DesignHeight="400"
+    d:DesignWidth="400" RequestedTheme="Light">
+    <UserControl.Resources>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding ViewModel.TotalCost, Mode=OneWay}" VerticalAlignment="Top" Foreground="{StaticResource PrimeryText}" Margin="0,5,16,5" FontSize="16" Grid.Column="2" Grid.ColumnSpan="3"/>
+        <AppBarButton x:Name="GasButton" HorizontalAlignment="Center" Label="appbarbutton" VerticalAlignment="Center" Style="{StaticResource AppBarWhiteButtonStyle}" Grid.Row="2"
+                      Grid.Column="0" Margin="0,8" Width="32" Height="32" Foreground="{StaticResource PrimeryText}" Click="GasButton_Click">
+            <AppBarButton.Icon>
+                <BitmapIcon UriSource="ms-appx:///Assets/drawable-xxhdpi/ic_azs_24dp.png"/>
+            </AppBarButton.Icon>
+        </AppBarButton>
+        <AppBarButton x:Name="ParkingButton" HorizontalAlignment="Center" Label="appbarbutton" VerticalAlignment="Center" Style="{StaticResource AppBarWhiteButtonStyle}" Grid.Row="2" Margin="0,8" Width="32" Height="32" Foreground="{StaticResource PrimeryText}" Grid.Column="1" Click="ParkingButton_Click">
+            <AppBarButton.Icon>
+                <BitmapIcon UriSource="ms-appx:///Assets/drawable-xxhdpi/ic_parking_24dp.png"/>
+            </AppBarButton.Icon>
+        </AppBarButton>
+        <AppBarButton x:Name="CarwashButton" HorizontalAlignment="Center" Label="appbarbutton" VerticalAlignment="Center" Style="{StaticResource AppBarWhiteButtonStyle}" Grid.Row="2" Margin="0,8" Width="32" Height="32" Foreground="{StaticResource PrimeryText}" Grid.Column="2" Click="CarwashButton_Click">
+            <AppBarButton.Icon>
+                <BitmapIcon UriSource="ms-appx:///Assets/drawable-xxhdpi/ic_carwash_24dp.png"/>
+            </AppBarButton.Icon>
+        </AppBarButton>
+        <AppBarButton x:Name="ShopButton" HorizontalAlignment="Center" Label="appbarbutton" VerticalAlignment="Center" Style="{StaticResource AppBarWhiteButtonStyle}" Grid.Row="2" Margin="0,8" Width="32" Height="32" Foreground="{StaticResource PrimeryText}" Grid.Column="3" Click="ShopButton_Click">
+            <AppBarButton.Icon>
+                <BitmapIcon UriSource="ms-appx:///Assets/drawable-xxhdpi/ic_zp_24dp.png"/>
+            </AppBarButton.Icon>
+        </AppBarButton>
+        <AppBarButton x:Name="RashodButton" HorizontalAlignment="Center" Label="appbarbutton" VerticalAlignment="Center" Style="{StaticResource AppBarWhiteButtonStyle}" Grid.Row="2" Margin="0,8" Width="32" Height="32" Foreground="{StaticResource PrimeryText}" Grid.Column="4" Click="RashodButton_Click">
+            <AppBarButton.Icon>
+                <BitmapIcon UriSource="ms-appx:///Assets/drawable-xxhdpi/ic_rashod_24dp.png"/>
+            </AppBarButton.Icon>
+        </AppBarButton>
+        <Button HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Foreground="{x:Null}" BorderBrush="{x:Null}" MinHeight="0" MinWidth="0" Padding="0" Grid.Row="3" Grid.Column="2" Style="{StaticResource ClearButtonStyle}">
+            <Image Source="ms-appx:///Assets/drawable-xxhdpi/ic_add_40dp.png" Height="32" Width="32"/>
+        </Button>
+        <StackPanel Grid.Row="1" Grid.Column="0" VerticalAlignment="Bottom">
+            <TextBlock TextWrapping="Wrap" Text="{Binding ViewModel.GasCostTxt}" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="{StaticResource SecondaryText}"/>
+            <Button HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Foreground="{x:Null}" BorderBrush="{x:Null}" MinHeight="0" MinWidth="0" Padding="0" Style="{StaticResource ClearButtonStyle}" Click="GasButton_Click">
+                <Border BorderThickness="1" Height="{Binding ViewModel.GasCostValue}" VerticalAlignment="Bottom" Background="{StaticResource DarkPrimeryColor}" HorizontalAlignment="Center" Width="48" MinHeight="4"/>
+            </Button>
+        </StackPanel>
+        <StackPanel Grid.Row="1" VerticalAlignment="Bottom" Grid.Column="1">
+            <TextBlock TextWrapping="Wrap" Text="{Binding ViewModel.ParkingCostTxt}" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="{StaticResource SecondaryText}"/>
+            <Button HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Foreground="{x:Null}" BorderBrush="{x:Null}" MinHeight="0" MinWidth="0" Padding="0" Style="{StaticResource ClearButtonStyle}" Click="ParkingButton_Click">
+                <Border BorderThickness="1" Height="{Binding ViewModel.ParkingCostValue}" VerticalAlignment="Bottom" Background="{StaticResource DarkPrimeryColor}" HorizontalAlignment="Center" Width="48" MinHeight="4"/>
+            </Button>
+        </StackPanel>
+        <StackPanel Grid.Row="1" VerticalAlignment="Bottom" Grid.Column="2">
+            <TextBlock TextWrapping="Wrap" Text="{Binding ViewModel.CarwashCostTxt}" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="{StaticResource SecondaryText}"/>
+            <Button HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Foreground="{x:Null}" BorderBrush="{x:Null}" MinHeight="0" MinWidth="0" Padding="0" Style="{StaticResource ClearButtonStyle}" Click="CarwashButton_Click">
+                <Border BorderThickness="1" Height="{Binding ViewModel.CarwashCostValue}" VerticalAlignment="Bottom" Background="{StaticResource DarkPrimeryColor}" HorizontalAlignment="Center" Width="48" MinHeight="4"/>
+            </Button>
+        </StackPanel>
+        <StackPanel Grid.Row="1" VerticalAlignment="Bottom" Grid.Column="3">
+            <TextBlock TextWrapping="Wrap" Text="{Binding ViewModel.ShopCostTxt}" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="{StaticResource SecondaryText}"/>
+            <Button HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Foreground="{x:Null}" BorderBrush="{x:Null}" MinHeight="0" MinWidth="0" Padding="0" Style="{StaticResource ClearButtonStyle}" Click="ShopButton_Click">
+                <Border BorderThickness="1" Height="{Binding ViewModel.ShopCostValue}" VerticalAlignment="Bottom" Background="{StaticResource DarkPrimeryColor}" HorizontalAlignment="Center" Width="48" MinHeight="4"/>
+            </Button>
+        </StackPanel>
+        <StackPanel Grid.Row="1" VerticalAlignment="Bottom" Grid.Column="4">
+            <TextBlock TextWrapping="Wrap" Text="{Binding ViewModel.RashodCostTxt}" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="{StaticResource SecondaryText}"/>
+            <Button HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Foreground="{x:Null}" BorderBrush="{x:Null}" MinHeight="0" MinWidth="0" Padding="0" Style="{StaticResource ClearButtonStyle}" Click="RashodButton_Click">
+                <Border BorderThickness="1" Height="{Binding ViewModel.RashodCostValue}" VerticalAlignment="Bottom" Background="{StaticResource DarkPrimeryColor}" HorizontalAlignment="Center" Width="48" MinHeight="4"/>
+            </Button>
+        </StackPanel>
+
+    </Grid>
+</UserControl>

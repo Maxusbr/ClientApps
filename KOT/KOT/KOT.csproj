@@ -81,7 +81,15 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Page Include="BudgetPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Common\Controls\AutoEVMControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Common\Controls\BudgetMonthControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -90,6 +98,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Common\Controls\DateWeekSelectControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Common\Controls\DetailBudgetControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -170,10 +182,16 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BudgetPage.xaml.cs">
+      <DependentUpon>BudgetPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Common\BooleanToVisibilityConverter.cs" />
     <Compile Include="Common\BoolToValueConverter.cs" />
     <Compile Include="Common\Controls\AutoEVMControl.xaml.cs">
       <DependentUpon>AutoEVMControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Controls\BudgetMonthControl.xaml.cs">
+      <DependentUpon>BudgetMonthControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\Controls\CircularProgressBar.xaml.cs">
       <SubType>Code</SubType>
@@ -181,6 +199,9 @@
     </Compile>
     <Compile Include="Common\Controls\DateWeekSelectControl.xaml.cs">
       <DependentUpon>DateWeekSelectControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Controls\DetailBudgetControl.xaml.cs">
+      <DependentUpon>DetailBudgetControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\Controls\DriverStyleControl.xaml.cs">
       <DependentUpon>DriverStyleControl.xaml</DependentUpon>
@@ -220,6 +241,7 @@
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="DataModel\DataSource.cs" />
+    <Compile Include="DataModel\Handlers\BudgetHandler.cs" />
     <Compile Include="DataModel\Handlers\HistoryWorkHandler.cs" />
     <Compile Include="DataModel\Handlers\MapsElementsDataHandler.cs" />
     <Compile Include="DataModel\Handlers\PCHandler.cs" />
@@ -244,11 +266,14 @@
     <Compile Include="DataModel\Model\TripAdvisorModel.cs" />
     <Compile Include="DataModel\Model\WorkType.cs" />
     <Compile Include="DataModel\SampleDataSource.cs" />
+    <Compile Include="DataModel\ViewModel\BudgetItemViewModel.cs" />
+    <Compile Include="DataModel\ViewModel\BudgetViewModel.cs" />
     <Compile Include="DataModel\ViewModel\DriverStyleViewModel.cs" />
     <Compile Include="DataModel\ViewModel\HistoryWorksViewModel.cs" />
     <Compile Include="DataModel\ViewModel\PCViewModel.cs" />
     <Compile Include="DataModel\ViewModel\ServiceInfoViewModel.cs" />
     <Compile Include="DataModel\ViewModel\ServicePointViewModel.cs" />
+    <Compile Include="DataModel\ViewModel\SpendingViewModel.cs" />
     <Compile Include="DataModel\ViewModel\TripAdvisorViewModel.cs" />
     <Compile Include="DataModel\ViewModel\WorkFromHistoryViewModel.cs" />
     <Compile Include="DataModel\ViewModel\WorksInMonthViewModel.cs">

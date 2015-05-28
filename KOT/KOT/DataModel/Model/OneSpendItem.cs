@@ -22,5 +22,8 @@ namespace KOT.DataModel.Model
         //Класс
         [JsonProperty(PropertyName = "G")]
         public int idClass { get; set; }
+
+        [JsonIgnore]
+        public string Cost { get { return string.Format("{0} руб.", Sum); } }
     }
 }

@@ -58,7 +58,7 @@ namespace KOT.Common.Controls
         private void Money_Checked(object sender, RoutedEventArgs e)
         {
             //TODO сохранить в DataSource активный пункт меню & NavigateTo MoneyControl
-            OnHideMenu(typeof(MainPage));
+            OnHideMenu(typeof(BudgetPage));
         }
 
         private void Alarm_Checked(object sender, RoutedEventArgs e)

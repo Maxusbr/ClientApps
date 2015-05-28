@@ -27,6 +27,8 @@ namespace KOT.DataModel.Model
         {
             return string.Format("{0:00}.{1:00}.{2}", D, M, Y);
         }
+
+        public DateTime ToDate { get { return new DateTime(Y, M, D); } }
     }
 
 }

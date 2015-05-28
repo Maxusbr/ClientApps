@@ -5,12 +5,18 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:Controls="using:KOT.Common.Controls"
-    x:Class="KOT.EVMPage"
+    xmlns:ViewModel="using:KOT.DataModel.ViewModel"
+    x:Class="KOT.BudgetPage"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" RequestedTheme="Light" Loaded="Page_Loaded">
+
     <Page.Resources>
-        <Thickness x:Key="PivotPortraitThemePadding">19,29,0,0</Thickness>
-        <Thickness x:Key="PivotLandscapeThemePadding">19,25,0,0</Thickness>
+        <DataTemplate x:Key="CategoryPivotItemHeaderTemplate">
+            <Grid>
+                <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding}" VerticalAlignment="Center" FontSize="16" Margin="0,8,0,0" SelectionHighlightColor="{StaticResource AccentColor}"/>
+            </Grid>
+        </DataTemplate>
+        <Thickness x:Key="PivotPortraitThemePadding2">19,29,0,0</Thickness>
         <Style x:Key="CustomPivotStyle" TargetType="Pivot">
             <Setter Property="Margin" Value="0"/>
             <Setter Property="Padding" Value="0"/>
@@ -50,7 +56,7 @@
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>
                             <ContentControl x:Name="TitleContentControl" ContentTemplate="{TemplateBinding TitleTemplate}" Content="{TemplateBinding Title}" Style="{StaticResource PivotTitleContentControlStyle}"/>
-                            <ScrollViewer x:Name="ScrollViewer" HorizontalSnapPointsAlignment="Center" HorizontalSnapPointsType="MandatorySingle" HorizontalScrollBarVisibility="Hidden" Margin="{TemplateBinding Padding}" Grid.Row="1" Template="{StaticResource ScrollViewerScrollBarlessTemplate}" VerticalSnapPointsType="None" VerticalScrollBarVisibility="Disabled" VerticalScrollMode="Disabled" VerticalContentAlignment="Stretch" ZoomMode="Disabled">
+                            <ScrollViewer x:Name="ScrollViewer" HorizontalSnapPointsAlignment="Center" HorizontalSnapPointsType="MandatorySingle" HorizontalScrollBarVisibility="Hidden" Margin="{TemplateBinding Padding}" Grid.Row="1" Template="{StaticResource ScrollViewerScrollBarlessTemplate}" VerticalSnapPointsType="None" VerticalScrollBarVisibility="Disabled" VerticalScrollMode="Disabled" VerticalContentAlignment="Stretch" ZoomMode="Disabled" HorizontalContentAlignment="Stretch">
                                 <PivotPanel x:Name="Panel" VerticalAlignment="Stretch">
                                     <PivotHeaderPanel x:Name="Header" Background="{TemplateBinding BorderBrush}">
                                         <PivotHeaderPanel.RenderTransform>
@@ -69,30 +75,61 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <DataTemplate x:Key="CategoryPivotItemHeaderTemplate">
-            <Grid>
-                <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding}" VerticalAlignment="Center" FontSize="16" Margin="0,8,0,0" SelectionHighlightColor="{StaticResource AccentColor}"/>
-            </Grid>
+        <Style x:Key="PivotItemStyle" TargetType="PivotItem">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Margin" Value="{ThemeResource PivotItemMargin}"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PivotItem">
+                        <Grid Background="{TemplateBinding Background}" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="Pivot">
+                                    <VisualState x:Name="Right"/>
+                                    <VisualState x:Name="Left"/>
+                                    <VisualState x:Name="Center"/>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <DataTemplate x:Key="PivotTemplate">
+            <PivotItem Header="{Binding Header}" Margin="-19,-21,-19,0">
+                <Grid>
+                	<Controls:BudgetMonthControl DataContext="{Binding}" Click="BudgetMonthControl_OnClick"/>
+                </Grid>
+            </PivotItem>
         </DataTemplate>
     </Page.Resources>
+
+    <Page.DataContext>
+        <ViewModel:BudgetViewModel/>
+    </Page.DataContext>
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Pivot Grid.Row="1" Style="{StaticResource CustomPivotStyle}" BorderBrush="{StaticResource DividerText}" HeaderTemplate="{StaticResource CategoryPivotItemHeaderTemplate}" Margin="0,-2,0,0">
-            <PivotItem Header="БОРТОВОЙ ЭВМ" Margin="0">
-                <Grid>
-                    <Controls:AutoEVMControl/>
-                </Grid>
-            </PivotItem>
-            <PivotItem Header="СТИЛЬ ВОЖДЕНИЯ" Margin="0">
-                <Grid>
-                    <Controls:DriverStyleControl/>
-                </Grid>
-            </PivotItem>
-        </Pivot>
+        <Pivot Style="{StaticResource CustomPivotStyle}" BorderBrush="{StaticResource DividerText}" HeaderTemplate="{StaticResource CategoryPivotItemHeaderTemplate}" Grid.Row="2" Margin="0,-10,0,0" ItemTemplate="{StaticResource PivotTemplate}" ItemsSource="{Binding PivotItems}" HorizontalContentAlignment="Stretch" SelectedItem="{Binding SelectedPivot, Mode=TwoWay}" />
+        <Border x:Name="DetailBorder" Grid.Row="1" Background="#7F000000" Padding="24,33,24,8" Visibility="{Binding VisableDetails, Converter={StaticResource BooleanToVisibilityConverter}}">
+        	<Grid VerticalAlignment="Top">
+        		<Border Margin="0,0,0,28">
+        			<Border.Background>
+        				<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+        					<GradientStop Color="#FF272727" Offset="0.882"/>
+        					<GradientStop Color="#00272727" Offset="1"/>
+        				</LinearGradientBrush>
+        			</Border.Background>
+        		</Border>
+        		<Controls:DetailBudgetControl DataContext="{Binding SelectedPivot}" Margin="0" Click="DetailBudgetControl_OnClick" Close="DetailBudgetControl_OnClose" />
+        	</Grid>
+        </Border>
         <Border Margin="0,0,0,-8">
             <Border.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -101,7 +138,7 @@
                 </LinearGradientBrush>
             </Border.Background>
         </Border>
-        <Grid x:Name="TopMenu">
+        <Grid x:Name="TopMenu" d:IsLocked="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="56"/>
                 <ColumnDefinition/>
@@ -126,11 +163,19 @@
                     <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_nav_menu_24dp.png" Margin="5,0"/>
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarButton x:Name="Insurence" HorizontalAlignment="Center" Label="appbarbutton" VerticalAlignment="Center" Grid.Row="1"
+            <AppBarButton x:Name="Filtr" HorizontalAlignment="Center" Label="appbarbutton" VerticalAlignment="Center" Grid.Row="1"
 				Grid.Column="2" Margin="4" Style="{StaticResource AppBarButtonStyle}" Width="46" Height="46" >
                 <AppBarButton.Icon>
-                    <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_insurence_24dp.png" Margin="5,0"/>
+                    <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_filter_24dp.png" Margin="5,0"/>
                 </AppBarButton.Icon>
+				<AppBarButton.Flyout>
+					<MenuFlyout MenuFlyoutPresenterStyle="{StaticResource ServiceMenuFlyoutPresenterStyle}" Placement="Right">
+                        <ToggleMenuFlyoutItem x:Name="Month1" Text="Месяц" Style="{StaticResource ServiceToogleMenuStyle}" Click="All_Click" Margin="0,0,10,0" IsChecked="True" />
+                        <ToggleMenuFlyoutItem x:Name="Month3" Text="3 месяца" Style="{StaticResource ServiceToogleMenuStyle}" Click="All_Click" Margin="0,0,10,0" />
+                        <ToggleMenuFlyoutItem x:Name="Month6" Text="Полгода" Style="{StaticResource ServiceToogleMenuStyle}" Click="All_Click" Margin="0,0,10,0" />
+                        <ToggleMenuFlyoutItem x:Name="Year" Text="Год" Style="{StaticResource ServiceToogleMenuStyle}" Click="All_Click" Margin="0,0,10,0" />
+					</MenuFlyout>
+				</AppBarButton.Flyout>
             </AppBarButton>
             <AppBarButton x:Name="BarButton" HorizontalAlignment="Center" Label="appbarbutton" VerticalAlignment="Center" Grid.Row="1"
 				Grid.Column="4" Margin="4" Style="{StaticResource AppBarButtonStyle}" Width="46" Height="46">
@@ -138,7 +183,7 @@
                     <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_menu_24dp.png" Margin="5,0"/>
                 </AppBarButton.Icon>
             </AppBarButton>
-            <TextBlock x:Name="Lable" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Бортовой ЭВМ" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" FontSize="26.667" Margin="16,0,0,0" FontFamily="Segoe UI" Style="{StaticResource HeaderTextBlockStyle}" Foreground="White"/>
+            <TextBlock x:Name="Lable" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Бюджет" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" FontSize="26.667" Margin="16,0,0,0" FontFamily="Segoe UI" Style="{StaticResource HeaderTextBlockStyle}" Foreground="White"/>
             <AppBarButton x:Name="More" HorizontalAlignment="Center" Label="appbarbutton" VerticalAlignment="Center" Grid.Row="1" Width="46" Height="46" RequestedTheme="Dark" Foreground="{ThemeResource AppBarBorderThemeBrush}" Grid.Column="4" Visibility="Collapsed" Style="{StaticResource AppBarButtonStyle}" Background="White">
                 <AppBarButton.Icon>
                     <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_filter_24dp.png" Margin="5,0"/>
