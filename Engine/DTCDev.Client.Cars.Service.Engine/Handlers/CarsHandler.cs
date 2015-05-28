@@ -681,7 +681,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                 if (Application.Current != null)
                     Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                         {
-
+                            CarStorage.Instance.SetCurrentCarSettings(model);
                         }));
             }
             catch { }

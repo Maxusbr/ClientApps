@@ -56,6 +56,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
         public event EventHandler PartsWorksLoadComplete;
         public event EventHandler LoadWorkTypesComplete;
         public event EventHandler LoadModelsComplete;
+        public event EventHandler LoadBodiesComplete;
+        public event EventHandler LoadEngineTypesComplete;
+        public event EventHandler LoadEnginsComplete;
+        public event EventHandler LoadTransmissionsComplete;
 
         public delegate void LoadWorkPartsListHandler(List<WorksInfoDataModel> data);
         public event LoadWorkPartsListHandler LoadWorkPartsListComplete;
@@ -239,6 +243,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             data = data.OrderBy(p => p.Name).ToList();
             EngineTypes.Clear();
             data.ForEach(o => EngineTypes.Add(o));
+            if (LoadEngineTypesComplete != null)
+                LoadEngineTypesComplete(this, new EventArgs());
         }
 
         public void SetEngineVolumes(List<KVPBase> data)
@@ -246,6 +252,9 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             data = data.OrderBy(p => p.Name).ToList();
             EngineVolumes.Clear();
             data.ForEach(o => EngineVolumes.Add(o));
+            if (LoadEnginsComplete != null)
+                LoadEnginsComplete(this, new EventArgs());
+
         }
 
         public void SetBodyTypes(List<KVPBase> data)
@@ -253,6 +262,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             data = data.OrderBy(p => p.Name).ToList();
             BodyTypes.Clear();
             data.ForEach(o => BodyTypes.Add(o));
+            if (LoadBodiesComplete != null)
+                LoadBodiesComplete(this, new EventArgs());
         }
 
         public void SetTransTypes(List<KVPBase> data)
@@ -260,6 +271,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             data = data.OrderBy(p => p.Name).ToList();
             TransTypes.Clear();
             data.ForEach(o => TransTypes.Add(o));
+            if (LoadTransmissionsComplete != null)
+                LoadTransmissionsComplete(this, new EventArgs());
         }
 
         public void SetWorkTypes(List<KVPBase> data)
