@@ -56,6 +56,8 @@ namespace KOT.DataModel.ViewModel
         private readonly ObservableCollection<BudgetItemViewModel> _pivotItems = new ObservableCollection<BudgetItemViewModel>();
         private BudgetItemViewModel _selectedPivot;
         private bool _visableDetails;
+        private string _label = "Бюджет";
+        private int _selectedCategoryId = -1;
         public ObservableCollection<BudgetItemViewModel> PivotItems { get { return _pivotItems; } }
 
         public BudgetItemViewModel SelectedPivot
@@ -80,15 +82,36 @@ namespace KOT.DataModel.ViewModel
             }
         }
 
+        public string Label
+        {
+            get { return _label; }
+            set
+            {
+                if (value == _label) return;
+                _label = value;
+                OnPropertyChanged("Label");
+            }
+        }
+
+        public int SelectedCategoryId
+        {
+            get { return _selectedCategoryId; }
+            set { _selectedCategoryId = value; }
+        }
+
         internal void UpdateSelected(int id)
         {
+            SelectedCategoryId = id;
             SelectedPivot.UpdateList(id);
             VisableDetails = true;
+            Label = "Расходы";
         }
 
         internal void CloseDetail()
         {
+            SelectedCategoryId = -1;
             VisableDetails = false;
+            Label = "Бюджет";
         }
         #region PropertyChanged
 

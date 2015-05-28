@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Navigation;
 
 // Документацию по шаблону элемента пустой страницы см. по адресу http://go.microsoft.com/fwlink/?LinkID=390556
 using KOT.Common;
+using KOT.DataModel.ViewModel;
 
 namespace KOT
 {
@@ -52,6 +53,7 @@ namespace KOT
 
         private void btDemo_Click(object sender, RoutedEventArgs e)
         {
+            MainMenuViewModel.IsPcCheck = true;
             Frame.Navigate(typeof(EVMPage));
         }
 

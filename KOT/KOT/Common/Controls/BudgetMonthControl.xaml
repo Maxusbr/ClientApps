@@ -23,7 +23,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
         <TextBlock HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding ViewModel.TotalCost, Mode=OneWay}" VerticalAlignment="Top" Foreground="{StaticResource PrimeryText}" Margin="0,5,16,5" FontSize="16" Grid.Column="2" Grid.ColumnSpan="3"/>
         <AppBarButton x:Name="GasButton" HorizontalAlignment="Center" Label="appbarbutton" VerticalAlignment="Center" Style="{StaticResource AppBarWhiteButtonStyle}" Grid.Row="2"
@@ -52,9 +52,6 @@
                 <BitmapIcon UriSource="ms-appx:///Assets/drawable-xxhdpi/ic_rashod_24dp.png"/>
             </AppBarButton.Icon>
         </AppBarButton>
-        <Button HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Foreground="{x:Null}" BorderBrush="{x:Null}" MinHeight="0" MinWidth="0" Padding="0" Grid.Row="3" Grid.Column="2" Style="{StaticResource ClearButtonStyle}">
-            <Image Source="ms-appx:///Assets/drawable-xxhdpi/ic_add_40dp.png" Height="32" Width="32"/>
-        </Button>
         <StackPanel Grid.Row="1" Grid.Column="0" VerticalAlignment="Bottom">
             <TextBlock TextWrapping="Wrap" Text="{Binding ViewModel.GasCostTxt}" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="{StaticResource SecondaryText}"/>
             <Button HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Foreground="{x:Null}" BorderBrush="{x:Null}" MinHeight="0" MinWidth="0" Padding="0" Style="{StaticResource ClearButtonStyle}" Click="GasButton_Click">

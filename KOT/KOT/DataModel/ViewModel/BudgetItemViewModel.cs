@@ -51,8 +51,11 @@ namespace KOT.DataModel.ViewModel
 
         public SpendingModel Model { get { return _model; } }
 
+        public int SelectedCategoryId { get; set; }
+
         public void UpdateList(int id)
         {
+            SelectedCategoryId = id;
             ListItem.Clear();
             foreach (var el in Model.Spends.Where(o => o.idClass == id))
             {

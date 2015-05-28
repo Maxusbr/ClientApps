@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // Шаблон элемента пользовательского элемента управления задокументирован по адресу http://go.microsoft.com/fwlink/?LinkId=234236
+using KOT.DataModel.ViewModel;
 
 namespace KOT.Common.Controls
 {
@@ -80,6 +81,17 @@ namespace KOT.Common.Controls
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             OnClose();
+        }
+
+        private void UserControl_LayoutUpdated(object sender, object e)
+        {
+            var vm = DataContext as BudgetItemViewModel;
+            if (vm == null) return;
+            GasButton.IsChecked = vm.SelectedCategoryId == 0;
+            ParkingButton.IsChecked = vm.SelectedCategoryId == 1;
+            CarwashButton.IsChecked = vm.SelectedCategoryId == 2;
+            ShopButton.IsChecked = vm.SelectedCategoryId == 3;
+            RashodButton.IsChecked = vm.SelectedCategoryId == 4;
         }
     }
 }

@@ -153,6 +153,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="InvoicePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ItemPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -270,6 +274,7 @@
     <Compile Include="DataModel\ViewModel\BudgetViewModel.cs" />
     <Compile Include="DataModel\ViewModel\DriverStyleViewModel.cs" />
     <Compile Include="DataModel\ViewModel\HistoryWorksViewModel.cs" />
+    <Compile Include="DataModel\ViewModel\MainMenuViewModel.cs" />
     <Compile Include="DataModel\ViewModel\PCViewModel.cs" />
     <Compile Include="DataModel\ViewModel\ServiceInfoViewModel.cs" />
     <Compile Include="DataModel\ViewModel\ServicePointViewModel.cs" />
@@ -285,6 +290,9 @@
     <Compile Include="DataModel\ViewModel\WorkTypeViewModel.cs" />
     <Compile Include="EVMPage.xaml.cs">
       <DependentUpon>EVMPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="InvoicePage.xaml.cs">
+      <DependentUpon>InvoicePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ItemPage.xaml.cs">
       <DependentUpon>ItemPage.xaml</DependentUpon>

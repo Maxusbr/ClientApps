@@ -44,6 +44,15 @@ namespace KOT
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             _vm = DataContext as BudgetViewModel;
+            MainMenuControl.HideMenu += MainMenuControl_HideMenu;
+        }
+
+        private void MainMenuControl_HideMenu(object sender, EventArgs e)
+        {
+            FlyoutMenu.Hide();
+            var type = sender as Type;
+            if (type == null || type == typeof(BudgetPage)) return;
+            Frame.Navigate(type);
         }
 
         private async void All_Click(object sender, RoutedEventArgs e)
@@ -101,6 +110,11 @@ namespace KOT
         {
             if(_vm == null) return;
             _vm.CloseDetail();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof (InvoicePage), _vm);
         }
     }
 }

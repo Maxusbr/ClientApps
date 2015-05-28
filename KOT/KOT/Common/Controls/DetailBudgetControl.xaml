@@ -8,7 +8,7 @@
     x:Class="KOT.Common.Controls.DetailBudgetControl"
     mc:Ignorable="d"
     d:DesignHeight="180"
-    d:DesignWidth="400" MinHeight="340" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
+    d:DesignWidth="400" MinHeight="340" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" LayoutUpdated="UserControl_LayoutUpdated">
 	<UserControl.Resources>
 		
 		<Style x:Key="AppBarToggleButtonStyle" TargetType="AppBarToggleButton">
@@ -169,10 +169,8 @@
 				<BitmapIcon UriSource="ms-appx:///Assets/drawable-xxhdpi/ic_rashod_24dp.png"/>
 			</AppBarToggleButton.Icon>
 		</AppBarToggleButton>
-		<Button HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Foreground="{x:Null}" BorderBrush="{x:Null}" MinHeight="0" MinWidth="0" Padding="0" Grid.Row="5" Style="{StaticResource ClearButtonStyle}" Grid.ColumnSpan="2" Margin="0">
-			<Image Source="ms-appx:///Assets/drawable-xxhdpi/ic_add_40dp.png" Height="32" Width="32"/>
-		</Button>
-		<ListView Grid.RowSpan="5" Grid.Column="1" MinWidth="250" ItemsSource="{Binding ListItem}" ItemTemplate="{StaticResource DataTemplate}" VerticalContentAlignment="Top" ItemContainerStyle="{StaticResource ListViewItemStyle}" BorderBrush="{StaticResource DividerText}" BorderThickness="0,0,0,1"/>
+        <ListView Grid.RowSpan="5" Grid.Column="1" MinWidth="250" ScrollViewer.VerticalScrollMode="Enabled"
+                  ItemsSource="{Binding ListItem}" ItemTemplate="{StaticResource DataTemplate}" VerticalContentAlignment="Top" ItemContainerStyle="{StaticResource ListViewItemStyle}" BorderBrush="{StaticResource DividerText}" BorderThickness="0,0,0,1"/>
 		<Button Content="Закрыть" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="5" BorderThickness="0" Style="{StaticResource LinkButtonStyle}" MinHeight="40" Foreground="{StaticResource AccentColor}" Grid.Column="1" Padding="0" Click="Button_Click"/>
 
 	</Grid>
