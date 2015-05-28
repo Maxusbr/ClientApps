@@ -311,6 +311,15 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             catch { }
         }
 
+        public void GetCarSettings(int carID)
+        {
+            try
+            {
+                TCPConnection.Instance.SendData("BR" + carID.ToString());
+            }
+            catch { }
+        }
+
 
 
 
@@ -382,6 +391,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                 case 's':
                 case 'S':
                     FillCurrentOBD(row);
+                    break;
+                case 'r':
+                case 'R':
+                    FillCarSettings(row);
                     break;
 
             }
@@ -650,6 +663,25 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                     Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                         {
                             CarStorage.Instance.SetCurrentOBD(temp);
+                        }));
+            }
+            catch { }
+        }
+
+
+        /// <summary>
+        /// Заполнить данные по текущим настройкам автомобиля
+        /// </summary>
+        /// <param name="row"></param>
+        private void FillCarSettings(string row)
+        {
+            try
+            {
+                CarSettingsExemplarModel model = JsonConvert.DeserializeObject<CarSettingsExemplarModel>(row);
+                if (Application.Current != null)
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            CarStorage.Instance.SetCurrentCarSettings(model);
                         }));
             }
             catch { }

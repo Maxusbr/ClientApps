@@ -46,6 +46,7 @@
     <Compile Include="Car\CarAccHistoryModel.cs" />
     <Compile Include="Car\CarDTCHistoryModel.cs" />
     <Compile Include="Car\CarEnabledPIDs.cs" />
+    <Compile Include="Car\CarSettingsExemplarModel.cs" />
     <Compile Include="Car\CarStateFullModel.cs" />
     <Compile Include="Car\CarStateModel.cs" />
     <Compile Include="Car\CarStateOBDModel.cs" />

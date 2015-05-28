@@ -75,5 +75,14 @@ namespace DTCDev.Client.Cars.Service.Controls
             grdDetails.Children.Clear();
             grdContentPlacer.Visibility = Visibility.Collapsed;
         }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            grdDetails.Children.Clear();
+            grdContentPlacer.Visibility = Visibility.Visible;
+            txtContentHeader.Text = "Диагностика автомобиля";
+            Car.CarSettingsView view = new Car.CarSettingsView();
+            grdDetails.Children.Add(view);
+        }
     }
 }

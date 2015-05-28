@@ -32,13 +32,21 @@ namespace DTCDev.Client.Cars.Service.Engine.Storage
         public event EventHandler LoadComplete, LoadError;
         public event EventHandler ErrorsLoaded;
         public event EventHandler CurrentOBDLoaded;
+        /// <summary>
+        /// Оконачание загрузки текущего экземпляра выбранного автомобиля
+        /// </summary>
+        public event EventHandler LoadCurrentCarSettingsComplete;
 
         public CarStorage()
         {
             _instance = this;
         }
 
+
         private List<DISP_Car> _cars = new List<DISP_Car>();
+        /// <summary>
+        /// список всех автомобилей в системе
+        /// </summary>
         public List<DISP_Car> Cars
         {
             get { return _cars; }
@@ -46,6 +54,9 @@ namespace DTCDev.Client.Cars.Service.Engine.Storage
         }
 
         private DISP_Car _selectedCar;
+        /// <summary>
+        /// Выбранный пользователем автомобиль из списка
+        /// </summary>
         public DISP_Car SelectedCar
         {
             get { return _selectedCar; }
@@ -62,6 +73,20 @@ namespace DTCDev.Client.Cars.Service.Engine.Storage
         private List<WorksWithFlagDataModel> _carWorks = new List<WorksWithFlagDataModel>();
         public List<WorksWithFlagDataModel> CarWorks { get { return _carWorks; } set { _carWorks = value; } }
 
+        private CarSettingsExemplarModel _carSettingsExemplar;
+        /// <summary>
+        /// Текущие настройки экземпляра автомобиля
+        /// </summary>
+        public CarSettingsExemplarModel CarSettingsExemplar
+        {
+            get { return _carSettingsExemplar; }
+            set
+            {
+                _carSettingsExemplar = value;
+                if (LoadCurrentCarSettingsComplete != null)
+                    LoadCurrentCarSettingsComplete(this, new EventArgs());
+            }
+        }
 
 
         public void Start()
@@ -190,6 +215,11 @@ namespace DTCDev.Client.Cars.Service.Engine.Storage
                 CarsWorksUpdated(this, new EventArgs());
         }
 
+        public void SetCurrentCarSettings(CarSettingsExemplarModel model)
+        {
+            CarSettingsExemplar = model;
+        }
+
 
 
 
@@ -246,6 +276,13 @@ namespace DTCDev.Client.Cars.Service.Engine.Storage
                 Thread.Sleep(1000);
                 StartCurrentOBD();
             }
+        }
+
+
+
+        public void GetCarSettings()
+        {
+            CarsHandler.Instance.GetCarSettings(SelectedCar.CarModel.ID);
         }
     }
 }
