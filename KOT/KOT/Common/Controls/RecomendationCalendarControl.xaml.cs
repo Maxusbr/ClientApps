@@ -21,8 +21,6 @@ namespace KOT.Common.Controls
     public sealed partial class RecomendationCalendarControl : UserControl
     {
         private WorksViewModel _vm;
-        private static bool _isScrolling = false;
-        private static bool _isTaped = false;
         public RecomendationCalendarControl()
         {
             this.InitializeComponent();

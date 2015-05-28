@@ -15,6 +15,9 @@
 			<SolidColorBrush x:Key="PrimeryText" Color="#FF212121"/>
 			<SolidColorBrush x:Key="SecondaryText" Color="#FF727272"/>
 			<SolidColorBrush x:Key="DividerText" Color="#FFB6B6B6"/>
+			<SolidColorBrush x:Key="PivotHeaderForegroundSelectedBrush" Color="#FFE91E63" />
+			<SolidColorBrush x:Key="PivotHeaderForegroundUnselectedBrush" Color="#FF727272" />
+			<x:Double x:Key="PivotHeaderItemFontSize">16</x:Double>
 		</ResourceDictionary>
     </Application.Resources>
 

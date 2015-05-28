@@ -31,6 +31,12 @@ namespace KOT.DataModel.Model
 
         [JsonProperty(PropertyName = "X")]
         public int EngMedianSpeed { get; set; }
+        //Время запуска двигателя
+        [JsonProperty(PropertyName = "F")]
+        public DateTimeDataModel StartEng { get; set; }
+        //Время остановки двигателя
+        [JsonProperty(PropertyName = "G")]
+        public DateTimeDataModel EndEng { get; set; }
     }
 
 }

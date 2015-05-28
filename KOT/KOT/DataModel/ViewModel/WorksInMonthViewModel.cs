@@ -27,7 +27,7 @@ namespace KOT.DataModel.ViewModel
         public void UpdateDayInMonth()
         {
             var dayweek = ((int)Date.DayOfWeek == 0) ? 7 : (int)Date.DayOfWeek;
-            for (var i = 1 - dayweek; i < DateTime.DaysInMonth(Date.Year, Date.Month); i++)
+            for (var i = 1 - dayweek; i <= DateTime.DaysInMonth(Date.Year, Date.Month); i++)
             {
                 var day = new WorksInMonthViewModel(new DateTime(Date.AddDays(i).Year, Date.AddDays(i).Month, Date.AddDays(i).Day),
                     i<0);

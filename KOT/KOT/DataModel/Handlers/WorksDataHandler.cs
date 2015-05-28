@@ -20,6 +20,23 @@ namespace KOT.DataModel.Handlers
         public WorksDataHandler()
         {
             _instance = this;
+            
+        }
+
+        private readonly ObservableCollection<WorkTypeViewModel> _recomendetWorkTypes = new ObservableCollection<WorkTypeViewModel>();
+        public static ObservableCollection<WorkTypeViewModel> RecomendetWorkTypes
+        {
+            get { return Instance._recomendetWorkTypes; }
+
+        }
+
+        public async static Task UpdateWork()
+        {
+            await Instance.UpdateWorkAsync();
+        }
+
+        private async Task UpdateWorkAsync()
+        {
             //if (DesignMode.DesignModeEnabled)
             {
                 RecomendetWorkTypes.Add(new WorkTypeViewModel(
@@ -108,14 +125,5 @@ namespace KOT.DataModel.Handlers
                     }));
             }
         }
-
-        private readonly ObservableCollection<WorkTypeViewModel> _recomendetWorkTypes = new ObservableCollection<WorkTypeViewModel>();
-        public static ObservableCollection<WorkTypeViewModel> RecomendetWorkTypes
-        {
-            get { return Instance._recomendetWorkTypes; }
-
-        }
-
-
     }
 }

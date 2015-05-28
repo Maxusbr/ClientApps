@@ -14,28 +14,20 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // Документацию по шаблону элемента пустой страницы см. по адресу http://go.microsoft.com/fwlink/?LinkID=390556
-using KOT.Common;
+using KOT.Common.Controls;
 
 namespace KOT
 {
     /// <summary>
     /// Пустая страница, которую можно использовать саму по себе или для перехода внутри фрейма.
     /// </summary>
-    public sealed partial class LoginPage : Page
+    public sealed partial class EVMPage : Page
     {
-        private readonly NavigationHelper navigationHelper;
-        private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
-
-        public LoginPage()
+        public EVMPage()
         {
             this.InitializeComponent();
-            navigationHelper = new NavigationHelper(this);
         }
 
-        public ObservableDictionary DefaultViewModel
-        {
-            get { return _defaultViewModel; }
-        }
         /// <summary>
         /// Вызывается перед отображением этой страницы во фрейме.
         /// </summary>
@@ -45,15 +37,25 @@ namespace KOT
         {
         }
 
-        private void btLogin_Click(object sender, RoutedEventArgs e)
+        private void DateSelect_Closed(object sender)
         {
-
+            var dt = sender as DateWeekSelectControl;
+            if(dt == null) return;
         }
 
-        private void btDemo_Click(object sender, RoutedEventArgs e)
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(EVMPage));
+            MainMenuControl.HideMenu += MainMenuControl_HideMenu;
         }
+
+        private void MainMenuControl_HideMenu(object sender, EventArgs e)
+        {
+            FlyoutMenu.Hide();
+            var type = sender as Type;
+            if (type == null || type == typeof(EVMPage)) return;
+            Frame.Navigate(type);
+        }
+
 
     }
 }

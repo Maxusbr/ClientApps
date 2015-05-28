@@ -1126,7 +1126,7 @@
                             <Image Source="ms-appx:///Assets/drawable-xxhdpi/ic_to_calendar_24dp.png"/>
                         </Border>
                         <Border x:Name="ListTO" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="2" BorderThickness="{TemplateBinding BorderThickness}" Visibility="Collapsed" Padding="2,0">
-                            <Image Source="Assets/drawable-xxhdpi/ic_to_listview_24dp.png"/>
+                            <Image Source="ms-appx:///Assets/drawable-xxhdpi/ic_to_listview_24dp.png"/>
                         </Border>
                     </Grid>
                 </ControlTemplate>
