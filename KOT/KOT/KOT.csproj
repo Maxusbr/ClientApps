@@ -246,7 +246,9 @@
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="DataModel\DataSource.cs" />
     <Compile Include="DataModel\Handlers\BudgetHandler.cs" />
+    <Compile Include="DataModel\Handlers\CarsHandler.cs" />
     <Compile Include="DataModel\Handlers\HistoryWorkHandler.cs" />
+    <Compile Include="DataModel\Handlers\LoginHandler.cs" />
     <Compile Include="DataModel\Handlers\MapsElementsDataHandler.cs" />
     <Compile Include="DataModel\Handlers\PCHandler.cs" />
     <Compile Include="DataModel\Handlers\WorksDataHandler.cs" />
@@ -263,12 +265,14 @@
     <Compile Include="DataModel\Model\PlacesClassesModel.cs" />
     <Compile Include="DataModel\Model\PlacesModel.cs" />
     <Compile Include="DataModel\Model\PointDetailsModel.cs" />
+    <Compile Include="DataModel\Model\ReciveMessageModel.cs" />
     <Compile Include="DataModel\Model\SCarData.cs" />
     <Compile Include="DataModel\Model\SNaviData.cs" />
     <Compile Include="DataModel\Model\SpendingClassesModel.cs" />
     <Compile Include="DataModel\Model\SpendingModel.cs" />
     <Compile Include="DataModel\Model\TripAdvisorModel.cs" />
     <Compile Include="DataModel\Model\WorkType.cs" />
+    <Compile Include="DataModel\Network\TcpConnection.cs" />
     <Compile Include="DataModel\SampleDataSource.cs" />
     <Compile Include="DataModel\ViewModel\BudgetItemViewModel.cs" />
     <Compile Include="DataModel\ViewModel\BudgetViewModel.cs" />
@@ -425,9 +429,7 @@
       <Private>True</Private>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DataModel\Network\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

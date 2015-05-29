@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ViewModel="using:KOT.DataModel.ViewModel"
     x:Class="KOT.Common.Controls.MainMenuControl"
-    mc:Ignorable="d" HorizontalAlignment="Left" VerticalAlignment="Top"
+    mc:Ignorable="d" HorizontalAlignment="Left" VerticalAlignment="Top" RequestedTheme="Light" MinWidth="245" MinHeight="420"
     >
     <UserControl.Resources>
         <x:Double x:Key="CheckBoxAndRadioButtonMinWidthSize2">168</x:Double>
@@ -66,6 +66,130 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="ToggleButtonStyle" TargetType="AppBarToggleButton">
+            <Setter Property="Foreground" Value="{ThemeResource AppBarItemForegroundThemeBrush}"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="AppBarToggleButton">
+                        <Border x:Name="LayoutRoot" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="2" BorderThickness="{TemplateBinding BorderThickness}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="ApplicationViewStates">
+                                    <VisualState x:Name="FullSize"/>
+                                    <VisualState x:Name="Compact"/>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="Pressed"/>
+                                    <VisualState x:Name="Disabled"/>
+                                    <VisualState x:Name="Checked">
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="0" To="180" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Rotation)" Storyboard.TargetName="Content" />
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="CheckedPressed"/>
+                                    <VisualState x:Name="CheckedDisabled"/>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <StackPanel Orientation="Horizontal">
+                                <ContentPresenter x:Name="Content" AutomationProperties.AccessibilityView="Raw" Content="{TemplateBinding Icon}" Foreground="{TemplateBinding Background}" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                                    <ContentPresenter.RenderTransform>
+                                        <CompositeTransform/>
+                                    </ContentPresenter.RenderTransform>
+                                </ContentPresenter>
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <x:Double x:Key="ControlContentThemeFontSize">12</x:Double>
+        <Thickness x:Key="ListViewItemMargin">0</Thickness>
+        <SolidColorBrush x:Key="CheckBoxBackgroundThemeBrush" Color="Transparent"/>
+        <x:Double x:Key="CheckBoxBorderThemeThickness">2.5</x:Double>
+        <x:Double x:Key="ListViewItemContentOffsetX">-40.5</x:Double>
+        <Thickness x:Key="ListViewItemMultiselectCheckBoxMargin">0,9.5,0,0</Thickness>
+        <Thickness x:Key="GridViewItemMultiselectBorderThickness">2.5</Thickness>
+        <x:Double x:Key="ListViewItemDisabledThemeOpacity">0.4</x:Double>
+        <x:Double x:Key="ListViewItemContentTranslateX">40.5</x:Double>
+        <x:Double x:Key="ListViewItemReorderHintThemeOffset">32</x:Double>
+        <Style x:Key="ListViewItemStyle" TargetType="ListViewItem">
+        	<Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+        	<Setter Property="Background" Value="Transparent"/>
+        	<Setter Property="TabNavigation" Value="Local"/>
+        	<Setter Property="IsHoldingEnabled" Value="False"/>
+        	<Setter Property="Margin" Value="{ThemeResource ListViewItemMargin}"/>
+        	<Setter Property="HorizontalContentAlignment" Value="Left"/>
+        	<Setter Property="VerticalContentAlignment" Value="Center"/>
+        	<Setter Property="Template">
+        		<Setter.Value>
+        			<ControlTemplate TargetType="ListViewItem">
+        				<Border x:Name="ContentBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+        					<Border.RenderTransform>
+        						<TranslateTransform x:Name="ContentBorderTranslateTransform"/>
+        					</Border.RenderTransform>
+        					<Grid Height="40">
+        						<Image Source="ms-appx:///Assets/drawable-xxhdpi/logo_reg_page_120dp.png" HorizontalAlignment="Left" Width="26" Margin="21,0,0,0"/>
+        						<ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Foreground="{StaticResource PrimeryText}"/>
+        					</Grid>
+        				</Border>
+        			</ControlTemplate>
+        		</Setter.Value>
+        	</Setter>
+        	<Setter Property="FontSize" Value="16"/>
+        	<Setter Property="Padding" Value="68,0,0,0"/>
+        </Style>
+        <Style x:Key="PlusRadioButtonStyle" TargetType="RadioButton">
+        	<Setter Property="Background" Value="{ThemeResource PhoneRadioCheckBoxBrush}"/>
+        	<Setter Property="BorderBrush" Value="{ThemeResource PhoneRadioCheckBoxBorderBrush}"/>
+        	<Setter Property="FontSize" Value="{ThemeResource TextStyleLargeFontSize}"/>
+        	<Setter Property="FontFamily" Value="{ThemeResource PhoneFontFamilyNormal}"/>
+        	<Setter Property="HorizontalContentAlignment" Value="Left"/>
+        	<Setter Property="VerticalContentAlignment" Value="Top"/>
+        	<Setter Property="HorizontalAlignment" Value="Left"/>
+        	<Setter Property="VerticalAlignment" Value="Top"/>
+        	<Setter Property="Padding" Value="{ThemeResource CheckBoxAndRadioButtonTextPaddingThickness}"/>
+        	<Setter Property="MinWidth" Value="{ThemeResource CheckBoxAndRadioButtonMinWidthSize2}"/>
+        	<Setter Property="Template">
+        		<Setter.Value>
+        			<ControlTemplate TargetType="RadioButton">
+        				<Grid Background="Transparent">
+        					<VisualStateManager.VisualStateGroups>
+        						<VisualStateGroup x:Name="CommonStates">
+        							<VisualState x:Name="Normal"/>
+        							<VisualState x:Name="MouseOver"/>
+        							<VisualState x:Name="PointerOver"/>
+        							<VisualState x:Name="Pressed">
+        								<Storyboard>
+        									<PointerDownThemeAnimation Storyboard.TargetName="Container"/>
+        								</Storyboard>
+        							</VisualState>
+        							<VisualState x:Name="Disabled"/>
+        						</VisualStateGroup>
+        						<VisualStateGroup x:Name="CheckStates">
+        							<VisualState x:Name="Checked">
+        								<Storyboard>
+        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentPresenter.Foreground)" Storyboard.TargetName="ContentPresenter">
+        										<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource AccentColor}"/>
+        									</ObjectAnimationUsingKeyFrames>
+        								</Storyboard>
+        							</VisualState>
+        							<VisualState x:Name="Unchecked"/>
+        							<VisualState x:Name="Indeterminate"/>
+        						</VisualStateGroup>
+        					</VisualStateManager.VisualStateGroups>
+        					<Border x:Name="Container" Padding="68,8,18,8" Background="{TemplateBinding Background}">
+        						<ContentPresenter x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" FontSize="{TemplateBinding FontSize}" FontFamily="{TemplateBinding FontFamily}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+        					</Border>
+        					<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="+" VerticalAlignment="Center" Margin="25,0,0,0" FontSize="26.667"/>
+        				</Grid>
+        			</ControlTemplate>
+        		</Setter.Value>
+        	</Setter>
+        </Style>
     </UserControl.Resources>
 
     <UserControl.DataContext>
@@ -77,6 +201,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <Border Padding="24,12,0,8">
             <Border.Background>
@@ -89,11 +214,16 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Image Height="56" Source="ms-appx:///Assets/drawable-xxhdpi/logo_reg_page_120dp.png" Width="56" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,8"/>
-                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Style="{StaticResource BaseTextBlockStyle}" Foreground="White" Grid.Row="1"/>
-                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Style="{StaticResource BodyTextBlockStyle}" Foreground="White" Grid.Row="2" FontSize="16"/>
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding NameDrive}" VerticalAlignment="Top" Style="{StaticResource BaseTextBlockStyle}" Foreground="White" Grid.Row="1"/>
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding MarkModel}" VerticalAlignment="Top" Style="{StaticResource BodyTextBlockStyle}" Foreground="White" Grid.Row="2" FontSize="16"/>
+                <AppBarToggleButton x:Name="appBarToggleButton" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource ToggleButtonStyle}" Grid.Row="2" Margin="0,0,8,0" IsChecked="False">
+                    <AppBarToggleButton.Icon>
+                        <BitmapIcon UriSource="ms-appx:///Assets/drawable-xxhdpi/ic_arrow_drop_down_24dp.png" Width="24" Height="24"/>
+                    </AppBarToggleButton.Icon>
+                </AppBarToggleButton>
             </Grid>
         </Border>
-        <Border VerticalAlignment="Top" Background="White" Grid.Row="1" Padding="0" BorderBrush="{StaticResource DividerText}" BorderThickness="0,0,0,1">
+        <Border VerticalAlignment="Top" Background="White" Grid.Row="1" Padding="0" BorderBrush="{StaticResource DividerText}" BorderThickness="0,0,0,1" Visibility="{Binding IsChecked, Converter={StaticResource InvertBooleanToVisibilityConverter}, ElementName=appBarToggleButton}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
@@ -107,7 +237,7 @@
                 <RadioButton x:Name="Money" Content="Бюджет" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{StaticResource MainMenuRadioButtonStyle}" IsChecked="{Binding IsBudgetCheck, Mode=TwoWay}" Grid.Row="3" Foreground="{StaticResource PrimeryText}" Click="Money_Checked"/>
             </Grid>
         </Border>
-        <Border VerticalAlignment="Top" Background="White" Grid.Row="2" Padding="0">
+        <Border VerticalAlignment="Top" Background="White" Grid.Row="2" Padding="0" Visibility="{Binding IsChecked, Converter={StaticResource InvertBooleanToVisibilityConverter}, ElementName=appBarToggleButton}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
@@ -117,6 +247,16 @@
                 <RadioButton x:Name="Alarm" Content="Уведомления" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{StaticResource MainMenuRadioButtonStyle}" IsChecked="{Binding IsAlarmCheck, Mode=TwoWay}" Foreground="{StaticResource PrimeryText}" Click="Alarm_Checked"/>
                 <RadioButton x:Name="Settings" Content="Настройки" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{StaticResource MainMenuRadioButtonStyle}" IsChecked="{Binding IsSettingsCheck, Mode=TwoWay}" Grid.Row="1" Foreground="{StaticResource PrimeryText}" Click="Settings_Checked"/>
                 <RadioButton x:Name="About" Content="КОТ и создатели" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{StaticResource MainMenuRadioButtonStyle}" IsChecked="{Binding IsAboutCheck, Mode=TwoWay}" Grid.Row="2" Foreground="{StaticResource AccentColor}" Click="About_Checked"/>
+            </Grid>
+        </Border>
+        <Border Background="White" Grid.Row="3" Padding="0" Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=appBarToggleButton}" BorderBrush="{StaticResource DividerText}" BorderThickness="0,0,1,1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <ListView ItemsSource="{Binding Cars}" SelectedItem="{Binding SelectedCar, Mode=TwoWay}" DisplayMemberPath="CarNumber" ItemContainerStyle="{StaticResource ListViewItemStyle}" FontSize="24"/>
+                <RadioButton x:Name="AddProfile" Content="Добавить профиль" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{StaticResource PlusRadioButtonStyle}" Grid.Row="1" Foreground="{StaticResource AccentColor}" Click="AddProfile_Checked" Background="WhiteSmoke"/>
             </Grid>
         </Border>
 
