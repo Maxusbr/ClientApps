@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Networking;
 using Windows.Networking.Connectivity;
@@ -20,8 +22,6 @@ namespace KOT.DataModel.Network
         readonly StreamSocket _socket = new StreamSocket();
 
         private static TcpConnection _instance;
-        private readonly Task _listener;
-
         public static TcpConnection Instance
         {
             get { return _instance ?? (_instance = new TcpConnection()); }
@@ -31,7 +31,31 @@ namespace KOT.DataModel.Network
         {
             _instance = this;
             _hostName = new HostName(Adress);
-            //_listener = (new Task(_listener_ConnectionReceived));
+            IsError += TcpConnection_IsError;
+            _querys.CollectionChanged += _querys_CollectionChanged;
+        }
+
+        void _querys_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            
+        }
+
+        async void TcpConnection_IsError(string msg)
+        {
+            
+        }
+
+        private readonly ObservableCollection<string> _querys = new ObservableCollection<string>(); 
+
+        public delegate void ErrorEvent(string msg);
+        private event ErrorEvent IsError;
+        private DataWriter _writer;
+        private DataReader _reader;
+        private static int _cunt;
+
+        protected virtual void OnErrorRead(string msg)
+        {
+            if (IsError != null) IsError(msg);
         }
 
         public async Task Connect()
@@ -39,7 +63,8 @@ namespace KOT.DataModel.Network
             try
             {
                 await _socket.ConnectAsync(_hostName, Port.ToString(), SocketProtectionLevel.PlainSocket);
-                //_listener.Start();
+                _writer = new DataWriter(_socket.OutputStream);
+                _reader = new DataReader(_socket.InputStream);
             }
             catch (Exception e)
             {
@@ -49,25 +74,25 @@ namespace KOT.DataModel.Network
 
         private async Task<string> _listener_ConnectionReceived()
         {
-            var reader = new DataReader(_socket.InputStream);
+            
             try
             {
-                var sizeFieldCount = await reader.LoadAsync(sizeof(uint));
+                var sizeFieldCount = await _reader.LoadAsync(sizeof(uint));
                 if (sizeFieldCount != sizeof(uint))
                 {
                     return "";
                 }
                 var bLenght = new byte[sizeFieldCount];
-                reader.ReadBytes(bLenght);
+                _reader.ReadBytes(bLenght);
 
                 var lenght = BitConverter.ToUInt32(bLenght, 0);
 
-                var actualStringLength = await reader.LoadAsync(lenght);
-                return lenght != actualStringLength ? "" : reader.ReadString(actualStringLength);
+                var actualStringLength = await _reader.LoadAsync(lenght);
+                return lenght != actualStringLength ? "" : _reader.ReadString(actualStringLength);
             }
             catch (Exception exception)
             {
-                return exception.Message;
+                return "ER" + exception.Message;
                 if (SocketError.GetStatus(exception.HResult) == SocketErrorStatus.Unknown)
                 {
                     //throw;
@@ -82,8 +107,24 @@ namespace KOT.DataModel.Network
 
         private async Task<ReciveMessageModel> SendAsync(string msg)
         {
+            await Loop(_cunt);
+            _cunt++;
             await SendPacket(Encoding.UTF8.GetBytes(msg));
-            return Split(await _listener_ConnectionReceived());
+            var res = Split(await _listener_ConnectionReceived());
+            if (res.Px != msg[0] || res.Fx != msg[1])
+            {
+                OnErrorRead(msg);
+            }
+            _cunt--;
+            return res;
+        }
+
+        async Task Loop(int cnt)
+        {
+            while (_cunt > 0)
+            {
+                await Task.Delay(cnt + 53);
+            }
         }
 
         protected async Task SendPacket(byte[] p)
@@ -94,9 +135,9 @@ namespace KOT.DataModel.Network
                 var packet = new byte[p.Length + sizeof(uint)];
                 Array.Copy(header, packet, sizeof(uint));
                 Array.Copy(p, 0, packet, sizeof(uint), p.Length);
-                var writer = new DataWriter(_socket.OutputStream);
-                writer.WriteBytes(packet);
-                await writer.StoreAsync();
+                
+                _writer.WriteBytes(packet);
+                await _writer.StoreAsync();
             }
             catch (Exception e)
             {

@@ -61,8 +61,9 @@ namespace KOT
                 Navigate();
         }
 
-        private void Navigate()
+        private async void Navigate()
         {
+            await CarsHandler.Update();
             MainMenuViewModel.IsPcCheck = true;
             Frame.Navigate(typeof(EVMPage));
         }

@@ -4,8 +4,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
 using KOT.DataModel.Model;
+using KOT.DataModel.Network;
 using KOT.DataModel.ViewModel;
+using Newtonsoft.Json;
 
 namespace KOT.DataModel.Handlers
 {
@@ -14,6 +17,7 @@ namespace KOT.DataModel.Handlers
         private static HistoryWorkHandler _instance;
         private DateTime _startDate;
         private DateTime _endDate;
+        private string CarId { get { return CarsHandler.SelectedCar.DID; } }
         public static HistoryWorkHandler Instance
         {
             get { return _instance ?? (_instance = new HistoryWorkHandler()); }
@@ -69,7 +73,9 @@ namespace KOT.DataModel.Handlers
 
         private async Task UpdateHistoryAsync()
         {
-            //if (DesignMode.DesignModeEnabled)
+            #region DesignMode
+
+            if (DesignMode.DesignModeEnabled)
             {
                 _historyWorks.Add(new WorkFromHistoryViewModel(new CarHistoryWorkReport
                 {
@@ -78,7 +84,8 @@ namespace KOT.DataModel.Handlers
                     Date = new DateDataModel(DateTime.Now.AddDays(-16)),
                     Cost = 154,
                     Comment = "Comment 2",
-                    Distance = 280, Worker = "Бригадир"
+                    Distance = 280,
+                    Worker = "Бригадир"
                 }));
                 _historyWorks.Add(new WorkFromHistoryViewModel(new CarHistoryWorkReport
                 {
@@ -87,7 +94,8 @@ namespace KOT.DataModel.Handlers
                     Date = new DateDataModel(DateTime.Now.AddDays(-52)),
                     Cost = 154,
                     Comment = "Comment 3",
-                    Distance = 280, Worker = "Мастер"
+                    Distance = 280,
+                    Worker = "Мастер"
                 }));
                 _historyWorks.Add(new WorkFromHistoryViewModel(new CarHistoryWorkReport
                 {
@@ -96,7 +104,8 @@ namespace KOT.DataModel.Handlers
                     Date = new DateDataModel(DateTime.Now.AddDays(-92)),
                     Cost = 154,
                     Comment = "Comment 4",
-                    Distance = 280, Worker = "Пользователь"
+                    Distance = 280,
+                    Worker = "Пользователь"
                 }));
                 _historyWorks.Add(new WorkFromHistoryViewModel(new CarHistoryWorkReport
                 {
@@ -105,10 +114,34 @@ namespace KOT.DataModel.Handlers
                     Date = new DateDataModel(DateTime.Now.AddDays(-125)),
                     Cost = 154,
                     Comment = "Comment 5",
-                    Distance = 280, Worker = "Гаражный мастер"
+                    Distance = 280,
+                    Worker = "Гаражный мастер"
                 }));
             }
+
+            #endregion
+
+            _historyWorks.Clear();
+            var res = await TcpConnection.Send("BD" + CarId);
+            if (!string.IsNullOrEmpty(res.Msg))
+                Split(res.Msg);
+
             UpdateSource();
+        }
+
+        private void Split(string msg)
+        {
+            try
+            {
+                foreach (var el in JsonConvert.DeserializeObject<CarHistoryWorkReport[]>(msg))
+                {
+                    _historyWorks.Add(new WorkFromHistoryViewModel(el));
+                }
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
     }

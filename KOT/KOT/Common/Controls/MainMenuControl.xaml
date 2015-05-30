@@ -75,7 +75,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="AppBarToggleButton">
-                        <Border x:Name="LayoutRoot" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="2" BorderThickness="{TemplateBinding BorderThickness}">
+                        <Border x:Name="LayoutRoot" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="2" BorderThickness="{TemplateBinding BorderThickness}" Background="#00000000">
                             <VisualStateManager.VisualStateGroups>
                                 <VisualStateGroup x:Name="ApplicationViewStates">
                                     <VisualState x:Name="FullSize"/>
@@ -94,7 +94,7 @@
                                     <VisualState x:Name="CheckedDisabled"/>
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                 <ContentPresenter x:Name="Content" AutomationProperties.AccessibilityView="Raw" Content="{TemplateBinding Icon}" Foreground="{TemplateBinding Background}" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
                                     <ContentPresenter.RenderTransform>
                                         <CompositeTransform/>
@@ -216,14 +216,14 @@
                 <Image Height="56" Source="ms-appx:///Assets/drawable-xxhdpi/logo_reg_page_120dp.png" Width="56" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,8"/>
                 <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding NameDrive}" VerticalAlignment="Top" Style="{StaticResource BaseTextBlockStyle}" Foreground="White" Grid.Row="1"/>
                 <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding MarkModel}" VerticalAlignment="Top" Style="{StaticResource BodyTextBlockStyle}" Foreground="White" Grid.Row="2" FontSize="16"/>
-                <AppBarToggleButton x:Name="appBarToggleButton" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource ToggleButtonStyle}" Grid.Row="2" Margin="0,0,8,0" IsChecked="False">
+                <AppBarToggleButton x:Name="appBarToggleButton" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{StaticResource ToggleButtonStyle}" Grid.Row="2" Margin="0,0,8,0" IsChecked="False" HorizontalContentAlignment="Right">
                     <AppBarToggleButton.Icon>
                         <BitmapIcon UriSource="ms-appx:///Assets/drawable-xxhdpi/ic_arrow_drop_down_24dp.png" Width="24" Height="24"/>
                     </AppBarToggleButton.Icon>
                 </AppBarToggleButton>
             </Grid>
         </Border>
-        <Border VerticalAlignment="Top" Background="White" Grid.Row="1" Padding="0" BorderBrush="{StaticResource DividerText}" BorderThickness="0,0,0,1" Visibility="{Binding IsChecked, Converter={StaticResource InvertBooleanToVisibilityConverter}, ElementName=appBarToggleButton}">
+        <Border VerticalAlignment="Top" Background="White" Grid.Row="1" Padding="0" BorderBrush="{StaticResource DividerText}" BorderThickness="0,0,1,1" Visibility="{Binding IsChecked, Converter={StaticResource InvertBooleanToVisibilityConverter}, ElementName=appBarToggleButton}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
@@ -237,7 +237,7 @@
                 <RadioButton x:Name="Money" Content="Бюджет" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{StaticResource MainMenuRadioButtonStyle}" IsChecked="{Binding IsBudgetCheck, Mode=TwoWay}" Grid.Row="3" Foreground="{StaticResource PrimeryText}" Click="Money_Checked"/>
             </Grid>
         </Border>
-        <Border VerticalAlignment="Top" Background="White" Grid.Row="2" Padding="0" Visibility="{Binding IsChecked, Converter={StaticResource InvertBooleanToVisibilityConverter}, ElementName=appBarToggleButton}">
+        <Border VerticalAlignment="Top" Background="White" Grid.Row="2" Padding="0" Visibility="{Binding IsChecked, Converter={StaticResource InvertBooleanToVisibilityConverter}, ElementName=appBarToggleButton}" BorderBrush="{StaticResource DividerText}" BorderThickness="0,0,1,1">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
@@ -255,7 +255,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <ListView ItemsSource="{Binding Cars}" SelectedItem="{Binding SelectedCar, Mode=TwoWay}" DisplayMemberPath="CarNumber" ItemContainerStyle="{StaticResource ListViewItemStyle}" FontSize="24"/>
+                <ListView ItemsSource="{Binding Cars}" SelectedItem="{Binding SelectedCar, Mode=TwoWay}" DisplayMemberPath="CarNumber" ItemContainerStyle="{StaticResource ListViewItemStyle}" FontSize="24" Tapped="ListView_Tapped"/>
                 <RadioButton x:Name="AddProfile" Content="Добавить профиль" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{StaticResource PlusRadioButtonStyle}" Grid.Row="1" Foreground="{StaticResource AccentColor}" Click="AddProfile_Checked" Background="WhiteSmoke"/>
             </Grid>
         </Border>

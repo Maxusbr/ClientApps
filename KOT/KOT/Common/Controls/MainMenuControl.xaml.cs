@@ -83,5 +83,10 @@ namespace KOT.Common.Controls
         {
 
         }
+
+        private void ListView_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            appBarToggleButton.IsChecked = false;
+        }
     }
 }

@@ -4,8 +4,12 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
+using Windows.UI.Xaml.Media.Animation;
 using KOT.DataModel.Model;
+using KOT.DataModel.Network;
 using KOT.DataModel.ViewModel;
+using Newtonsoft.Json;
 
 namespace KOT.DataModel.Handlers
 {
@@ -17,10 +21,11 @@ namespace KOT.DataModel.Handlers
             get { return _instance ?? (_instance = new WorksDataHandler()); }
         }
 
+        private string CarId { get { return CarsHandler.SelectedCar.DID; } }
         public WorksDataHandler()
         {
             _instance = this;
-            
+
         }
 
         private readonly ObservableCollection<WorkTypeViewModel> _recomendetWorkTypes = new ObservableCollection<WorkTypeViewModel>();
@@ -37,7 +42,9 @@ namespace KOT.DataModel.Handlers
 
         private async Task UpdateWorkAsync()
         {
-            //if (DesignMode.DesignModeEnabled)
+            #region DesignMode
+
+            if (DesignMode.DesignModeEnabled)
             {
                 RecomendetWorkTypes.Add(new WorkTypeViewModel(
                     new WorkType
@@ -123,6 +130,26 @@ namespace KOT.DataModel.Handlers
                         PeriodicTime = 4,
                         PresentModel = 2
                     }));
+            }
+            #endregion
+            RecomendetWorkTypes.Clear();
+            var res = await TcpConnection.Send("BC" + CarId);
+            if (!string.IsNullOrEmpty(res.Msg))
+                Split(res.Msg);
+        }
+
+        private void Split(string msg)
+        {
+            try
+            {
+                foreach (var el in JsonConvert.DeserializeObject<WorkType[]>(msg))
+                {
+                    RecomendetWorkTypes.Add(new WorkTypeViewModel(el));
+                }
+            }
+            catch (Exception)
+            {
+
             }
         }
     }

@@ -30,6 +30,12 @@ namespace KOT.DataModel.ViewModel
             if (DesignMode.DesignModeEnabled)
                 SelectedMonth = YearWorks[4];
             UpdateWork();
+            CarsHandler.SelectionChanged += CarsHandler_SelectionChanged;
+        }
+
+        void CarsHandler_SelectionChanged(object sender, EventArgs e)
+        {
+            UpdateWork();
         }
 
         private async void UpdateWork()

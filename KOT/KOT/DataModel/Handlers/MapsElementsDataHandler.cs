@@ -22,25 +22,7 @@ namespace KOT.DataModel.Handlers
 
         private async Task GetMapElementsAsync()
         {
-            var dataUri = new Uri(DataSource.Url + "GetTemplates");
-            //try
-            //{
-            //    var request = (HttpWebRequest)WebRequest.Create(dataUri);
-            //    request.Method = "GET";
-            //    //request.ContentType = "text/plain";
-            //    using (var response = await request.GetResponseAsync())
-            //    {
-            //        using (var stream = response.GetResponseStream())
-            //        {
 
-            //        }
-            //    }
-
-            //}
-            //catch
-            //{
-
-            //}
             AddElements(new PlacesModel
             {
                 idCategory = 3, Latitude = 557500, Longitude = 376300, Adress = "Adress 1", Name = "Service", MinPrice = 250, Score = 90
@@ -113,19 +95,9 @@ namespace KOT.DataModel.Handlers
 
         private async Task<PointDetailsModel> GetDetailAsync(PlacesModel model)
         {
-            var dataUri = new Uri(DataSource.Url + "GetTemplates");
             try
             {
-                var request = (HttpWebRequest)WebRequest.Create(dataUri);
-                request.Method = "GET";
-                //request.ContentType = "text/plain";
-                using (var response = await request.GetResponseAsync())
-                {
-                    using (var stream = response.GetResponseStream())
-                    {
-
-                    }
-                }
+                
 
             }
             catch

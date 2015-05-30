@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
 using KOT.DataModel.Model;
+using KOT.DataModel.Network;
+using KOT.DataModel.ViewModel;
+using Newtonsoft.Json;
 
 namespace KOT.DataModel.Handlers
 {
@@ -21,7 +25,7 @@ namespace KOT.DataModel.Handlers
         {
             _instance = this;
         }
-
+        private string CarId { get { return CarsHandler.SelectedCar.DID; } }
         public static SpendingModel Model { get { return Instance._model; } }
 
         public static async Task UpdateSource()
@@ -31,7 +35,9 @@ namespace KOT.DataModel.Handlers
         private DateTime _current = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
         private async Task UpdateSourceAsync()
         {
-            //if (DesignMode.DesignModeEnabled)
+            #region DesignMode
+
+            if (DesignMode.DesignModeEnabled)
             {
                 _model = new SpendingModel { DID = "1", TotalCost = 6456 };
                 _model.Spends.Add(new OneSpendItem
@@ -76,6 +82,25 @@ namespace KOT.DataModel.Handlers
                     Sum = 741,
                     idClass = 2
                 });
+            }
+
+            #endregion
+
+            var res = await TcpConnection.Send("CA");
+            //var res = await TcpConnection.Send("CB" + CarId);
+            if (!string.IsNullOrEmpty(res.Msg))
+                Split(res.Msg);
+        }
+
+        private void Split(string msg)
+        {
+            try
+            {
+                _model = JsonConvert.DeserializeObject<SpendingModel>(msg);
+            }
+            catch (Exception)
+            {
+
             }
         }
     }

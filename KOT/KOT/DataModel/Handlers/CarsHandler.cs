@@ -61,6 +61,7 @@ namespace KOT.DataModel.Handlers
         private async Task UpdateAsync()
         {
             var res = await TcpConnection.Send("BA");
+            if (res.Px != 'B' || res.Fx != 'A') return;
             Cars.Clear();
             try
             {

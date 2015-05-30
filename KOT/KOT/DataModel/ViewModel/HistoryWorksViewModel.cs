@@ -18,6 +18,12 @@ namespace KOT.DataModel.ViewModel
         public HistoryWorksViewModel()
         {
             HistoryWorks.CollectionChanged += HistoryWorks_CollectionChanged;
+            CarsHandler.SelectionChanged += CarsHandler_SelectionChanged;
+            UpdateHistory();
+        }
+
+        void CarsHandler_SelectionChanged(object sender, EventArgs e)
+        {
             UpdateHistory();
         }
 
@@ -40,12 +46,13 @@ namespace KOT.DataModel.ViewModel
 
         public string DateRange
         {
-            get { return string.Format("{0} - {1}", HistoryWorks.Min(o => o.Date).ToString("d"), HistoryWorks.Max(o => o.Date).ToString("d")); }
+            get { return HistoryWorks.Count>0? 
+                string.Format("{0} - {1}", HistoryWorks.Min(o => o.Date).ToString("d"), HistoryWorks.Max(o => o.Date).ToString("d")): ""; }
         }
 
         public string CostSumm
         {
-            get { return string.Format("{0} руб.", HistoryWorks.Sum(o => o.Cost)); }
+            get { return HistoryWorks.Count>0? string.Format("{0} руб.", HistoryWorks.Sum(o => o.Cost)):""; }
         }
 
         #region PropertyChanged

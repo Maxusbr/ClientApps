@@ -16,7 +16,13 @@ namespace KOT.DataModel.ViewModel
     {
         public PCViewModel()
         {
+            CarsHandler.SelectionChanged += CarsHandler_SelectionChanged;
             PCHandler.Instance.SourceChenged += Instance_SourceChenged;
+            
+        }
+
+        void CarsHandler_SelectionChanged(object sender, EventArgs e)
+        {
             PCHandler.UpdateSource();
         }
 

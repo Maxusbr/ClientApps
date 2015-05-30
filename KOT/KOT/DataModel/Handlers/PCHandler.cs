@@ -6,7 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using KOT.DataModel.Model;
+using KOT.DataModel.Network;
 using KOT.DataModel.ViewModel;
+using Newtonsoft.Json;
 
 namespace KOT.DataModel.Handlers
 {
@@ -21,17 +23,6 @@ namespace KOT.DataModel.Handlers
         public PCHandler()
         {
             _instance = this;
-            if (DesignMode.DesignModeEnabled)
-                _styleDriver = new DrivingStyle
-                {
-                    DID = "1",
-                    CurrentDrivingStyle = 67,
-                    CurrentEcoStyle = 89,
-                    TodayDrivingScore = 58,
-                    TodayEcoScore = 68,
-                    TotalDrivingScore = 68,
-                    TotalEcoScore = 98
-                };
         }
 
         public event EventHandler SourceChenged;
@@ -40,7 +31,7 @@ namespace KOT.DataModel.Handlers
             EventHandler handler = SourceChenged;
             if (handler != null) handler(this, EventArgs.Empty);
         }
-
+        private string CarId { get { return CarsHandler.SelectedCar.DID; } }
         private DrivingStyle _styleDriver = new DrivingStyle();
         private DateTime _current = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
         private DateTime _startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
@@ -73,7 +64,10 @@ namespace KOT.DataModel.Handlers
         private async Task UpdateSourceAsync()
         {
             ListTrip.Clear();
-            //if (DesignMode.DesignModeEnabled)
+
+            #region DesignMode
+
+            if (DesignMode.DesignModeEnabled)
             {
                 ListTrip.Add(new TripAdvisorViewModel(new TripAdvisorModel
                 {
@@ -123,7 +117,26 @@ namespace KOT.DataModel.Handlers
                     EngMedianSpeed = 70,
                     EngTripTime = 180,
                 }));
+                _styleDriver = new DrivingStyle
+                {
+                    DID = "1",
+                    CurrentDrivingStyle = 67,
+                    CurrentEcoStyle = 89,
+                    TodayDrivingScore = 58,
+                    TodayEcoScore = 68,
+                    TotalDrivingScore = 68,
+                    TotalEcoScore = 98
+                };
             }
+
+            #endregion
+
+            var res = await TcpConnection.Send("BI" + CarId);
+            if (!string.IsNullOrEmpty(res.Msg))
+                Split(res.Fx, res.Msg);
+            res = await TcpConnection.Send("BH" + CarId);
+            if (!string.IsNullOrEmpty(res.Msg))
+                Split(res.Fx, res.Msg);
             OnSourceChenged();
         }
 
@@ -136,6 +149,24 @@ namespace KOT.DataModel.Handlers
         {
             await Instance.GetDriverStileAsync();
 
+        }
+
+        private void Split(char fx, string msg)
+        {
+            try
+            {
+                if (fx == 'I' || fx == 'i')
+                    foreach (var el in JsonConvert.DeserializeObject<TripAdvisorModel[]>(msg))
+                    {
+                        ListTrip.Add(new TripAdvisorViewModel(el));
+                    }
+                if (fx == 'H' || fx == 'i')
+                    _styleDriver = JsonConvert.DeserializeObject<DrivingStyle>(msg);
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         private async Task GetDriverStileAsync()
