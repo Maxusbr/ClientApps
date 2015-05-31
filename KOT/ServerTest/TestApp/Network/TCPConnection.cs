@@ -158,6 +158,8 @@ namespace KOTServerTester.Network
                     LoginHandler.Instance.Split(fx, row);
                 if (px == 'b' || px == 'B')
                     CarsHandler.Instance.Split(fx, row);
+                if (px == 'd' || px == 'D')
+                    GeoHandler.Instance.Split(fx, row);
                 //if (px == 'c' || px == 'C')
                 //    ClientsHandler.Instance.Split(fx, row);
                 //if (px == 'd' || px == 'D')

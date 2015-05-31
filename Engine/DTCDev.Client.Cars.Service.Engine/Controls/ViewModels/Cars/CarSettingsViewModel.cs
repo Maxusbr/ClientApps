@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Windows;
 
 namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Cars
 {
@@ -23,6 +24,13 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Cars
             }
             else
                 LoadCarSettings();
+            CarStorage.Instance.UpdateProtocolTypeComplete += Instance_UpdateProtocolTypeComplete;
+        }
+
+        void Instance_UpdateProtocolTypeComplete(object sender, EventArgs e)
+        {
+            ProtocolType = CarStorage.Instance.NewProtocolType;
+            Years = CarStorage.Instance.NewYears;
         }
 
         void Marks_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -53,6 +61,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Cars
                 if (SpecificationDataStorage.Instance.SelectedMark == value) return;
                 SpecificationDataStorage.Instance.SelectedMark = value;
                 this.OnPropertyChanged("Mark");
+                CheckChanges();
             }
         }
 
@@ -64,6 +73,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Cars
                 if (SpecificationDataStorage.Instance.SelectedModel == value) return;
                 SpecificationDataStorage.Instance.SelectedModel = value;
                 this.OnPropertyChanged("Model");
+                CheckChanges();
             }
         }
 
@@ -75,6 +85,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Cars
                 if (SpecificationDataStorage.Instance.SelectedBody == value) return;
                 SpecificationDataStorage.Instance.SelectedBody = value;
                 this.OnPropertyChanged("Body");
+                CheckChanges();
             }
         }
 
@@ -86,6 +97,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Cars
                 if (SpecificationDataStorage.Instance.SelectedEngineType == value) return;
                 SpecificationDataStorage.Instance.SelectedEngineType = value;
                 this.OnPropertyChanged("EngineType");
+                CheckChanges();
             }
         }
 
@@ -97,6 +109,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Cars
                 if (SpecificationDataStorage.Instance.SelectedEngineVolume == value) return;
                 SpecificationDataStorage.Instance.SelectedEngineVolume = value;
                 this.OnPropertyChanged("EngineVolume");
+                CheckChanges();
             }
         }
         private KVPBase _transmissionType;
@@ -109,12 +122,15 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Cars
                 if (_transmissionType == value) return;
                 _transmissionType = value;
                 this.OnPropertyChanged("TransmissionType");
+                CheckChanges();
             }
         }
 
 
         void Instance_LoadCurrentCarSettingsComplete(object sender, EventArgs e)
         {
+            Years = CarStorage.Instance.CarSettingsExemplar.Years;
+            ProtocolType = CarStorage.Instance.CarSettingsExemplar.ProtocolType;
             Mark = Marks.Where(p => p.id == CarStorage.Instance.CarSettingsExemplar.IDMark).FirstOrDefault();
             SpecificationDataStorage.Instance.LoadModelsComplete += Instance_LoadModelsComplete;
         }
@@ -151,6 +167,125 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Cars
         {
             SpecificationDataStorage.Instance.LoadTransmissionsComplete -= Instance_LoadTransmissionsComplete;
             TransmissionType = TransmissionTypes.Where(p => p.id == CarStorage.Instance.CarSettingsExemplar.IDTransmission).FirstOrDefault();
+        }
+
+        private string _years;
+        public string Years
+        {
+            get { return _years; }
+            set
+            {
+                _years = value;
+                this.OnPropertyChanged("Years");
+            }
+        }
+
+        private string _protocolType;
+        public string ProtocolType
+        {
+            get { return _protocolType; }
+            set
+            {
+                _protocolType = value;
+                this.OnPropertyChanged("ProtocolType");
+            }
+        }
+
+        private Visibility _visChanges = Visibility.Collapsed;
+
+        public Visibility VisChanges
+        {
+            get { return _visChanges; }
+            set
+            {
+                _visChanges = value;
+                this.OnPropertyChanged("VisChanges");
+            }
+        }
+
+        private bool _enableSave = false;
+        public bool EnableSave
+        {
+            get { return _enableSave; }
+            set
+            {
+                _enableSave = value;
+                this.OnPropertyChanged("EnableSave");
+            }
+        }
+
+        private void CheckChanges()
+        {
+            if (Mark == null)
+                VisChanges = Visibility.Visible;
+            else if (Model == null)
+                VisChanges = Visibility.Visible;
+            else if (Body == null)
+                VisChanges = Visibility.Visible;
+            else if (EngineType == null)
+                VisChanges = Visibility.Visible;
+            else if (EngineVolume == null)
+                VisChanges = Visibility.Visible;
+            else if (TransmissionType == null)
+                VisChanges = Visibility.Visible;
+            else if (Mark.id != CarStorage.Instance.CarSettingsExemplar.IDMark ||
+                Model.id != CarStorage.Instance.CarSettingsExemplar.IDModel ||
+                Body.id != CarStorage.Instance.CarSettingsExemplar.IDBody ||
+                EngineType.id != CarStorage.Instance.CarSettingsExemplar.IDEngineType ||
+                EngineVolume.id != CarStorage.Instance.CarSettingsExemplar.IDEngine ||
+                TransmissionType.id != CarStorage.Instance.CarSettingsExemplar.IDTransmission)
+                VisChanges = Visibility.Visible;
+            else
+                VisChanges = Visibility.Collapsed;
+
+            if(VisChanges==Visibility.Visible)
+            {
+                ProtocolType = "";
+                Years = "";
+                CheckEnableSave();
+            }
+            else
+            {
+                ProtocolType = CarStorage.Instance.CarSettingsExemplar.ProtocolType;
+                Years = CarStorage.Instance.CarSettingsExemplar.Years;
+            }
+        }
+
+        private void CheckEnableSave()
+        {
+            if (Mark != null && Model != null && Body != null && EngineVolume != null && EngineType != null && TransmissionType != null)
+            {
+                EnableSave = true;
+                CarStorage.Instance.GetProtocolAndYear(new Models.CarsSending.Car.CarSettingsExemplarModel
+                {
+                    IDBody = Body.id,
+                    IDEngine = EngineVolume.id,
+                    IDEngineType = EngineType.id,
+                    IDMark = Mark.id,
+                    IDModel = Model.id,
+                    IDTransmission = TransmissionType.id
+                });
+            }
+            else
+                EnableSave = false;
+        }
+
+        private RelayCommand _saveCommand;
+
+        public RelayCommand SaveCommand { get { return _saveCommand ?? (_saveCommand = new RelayCommand(a => { StartSave(); })); } }
+
+        private void StartSave()
+        {
+            CarStorage.Instance.SaveNewSettings(new Models.CarsSending.Car.CarSettingsExemplarModel
+            {
+                IDBody = Body.id,
+                IDEngine = EngineVolume.id,
+                IDEngineType = EngineType.id,
+                IDMark = Mark.id,
+                IDModel = Model.id,
+                IDTransmission = TransmissionType.id,
+                ProtocolType = CarStorage.Instance.SelectedCar.CarModel.DID
+            });
         }
     }
 }

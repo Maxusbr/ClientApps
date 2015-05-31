@@ -22,7 +22,10 @@
                 <RowDefinition Height="35"/>
                 <RowDefinition Height="35"/>
                 <RowDefinition Height="35"/>
-                
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="40"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -50,8 +53,10 @@
                       ItemsSource="{Binding TransmissionTypes}" SelectedItem="{Binding TransmissionType, Mode=TwoWay}"/>
             <TextBlock Text="Года выпуска" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="8" Margin="0,10,0,9"/>
             <TextBlock Text="Тип протокола" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="9" Margin="0,10,0,9"/>
-            <TextBlock Text="Года выпуска" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="8" Margin="0,10,0,9"/>
-            <TextBlock Text="Тип протокола" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="9" Margin="0,10,0,9"/>
+            <TextBlock Text="{Binding Path=Years}" Grid.Column="2" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="8" Margin="0,10,0,9"/>
+            <TextBlock Text="{Binding Path=ProtocolType}" Grid.Column="2" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="9" Margin="0,10,0,9"/>
+            <TextBlock Text="Вы изменили тип автомобиля." Grid.Row="11" Grid.ColumnSpan="3" TextAlignment="Center" Visibility="{Binding Path=VisChanges}" VerticalAlignment="Center" FontWeight="Bold"/>
+            <Button Command="{Binding Path=SaveCommand}" Grid.Row="13" Content="Сохранить изменения" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding Path=VisChanges}" IsEnabled="{Binding Path=EnableSave}"/>
         </Grid>    
     </Grid>
 </UserControl>

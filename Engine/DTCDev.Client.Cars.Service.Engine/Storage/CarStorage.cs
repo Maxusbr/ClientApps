@@ -37,6 +37,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Storage
         /// </summary>
         public event EventHandler LoadCurrentCarSettingsComplete;
 
+        public event EventHandler UpdateProtocolTypeComplete;
+
         public CarStorage()
         {
             _instance = this;
@@ -87,6 +89,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Storage
                     LoadCurrentCarSettingsComplete(this, new EventArgs());
             }
         }
+
+        public string NewProtocolType { get; set; }
+
+        public string NewYears { get; set; }
 
 
         public void Start()
@@ -220,6 +226,14 @@ namespace DTCDev.Client.Cars.Service.Engine.Storage
             CarSettingsExemplar = model;
         }
 
+        public void SetNewYearAndProtocol(string protocol, string year)
+        {
+            NewProtocolType = protocol;
+            NewYears = year;
+            if(UpdateProtocolTypeComplete!=null)
+                UpdateProtocolTypeComplete(this, new EventArgs());
+        }
+
 
 
 
@@ -284,5 +298,16 @@ namespace DTCDev.Client.Cars.Service.Engine.Storage
         {
             CarsHandler.Instance.GetCarSettings(SelectedCar.CarModel.ID);
         }
+
+        public void GetProtocolAndYear(CarSettingsExemplarModel model)
+        {
+            CarsHandler.Instance.GetNewYearAndProtocol(model);
+        }
+
+        public void SaveNewSettings(CarSettingsExemplarModel model)
+        {
+            CarsHandler.Instance.SaveNewSettings(model);
+        }
+
     }
 }

@@ -92,6 +92,11 @@ namespace KOTServerTester
                         CarsHandler.Instance.GetCarWorksHistory(devID);
                     }
                     break;
+                case "DC":
+                    {
+                        GeoHandler.Instance.GetGeoTypes();
+                    }
+                    break;
                 case "BE":
                     CarsHandler.Instance.GetAlarmsState();
                     break;
@@ -108,6 +113,7 @@ namespace KOTServerTester
             Console.WriteLine("BC - get works for one car(BC request)");
             Console.WriteLine("BD - get work history (BD request)");
             Console.WriteLine("BE - get alarms list (BE request)");
+            Console.WriteLine("DC - get geo object classes");
             Console.WriteLine("*************************************");
         }
     }

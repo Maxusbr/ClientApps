@@ -320,6 +320,24 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             catch { }
         }
 
+        public void GetNewYearAndProtocol(CarSettingsExemplarModel model)
+        {
+            try
+            {
+                TCPConnection.Instance.SendData("BT" + JsonConvert.SerializeObject(model));
+            }
+            catch { }
+        }
+
+        public void SaveNewSettings(CarSettingsExemplarModel model)
+        {
+            try
+            {
+                TCPConnection.Instance.SendData("BU" + JsonConvert.SerializeObject(model));
+            }
+            catch { }
+        }
+
 
 
 
@@ -395,6 +413,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                 case 'r':
                 case 'R':
                     FillCarSettings(row);
+                    break;
+                case 't':
+                case 'T':
+                    FillNewSettingsInfo(row);
                     break;
 
             }
@@ -683,6 +705,20 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                         {
                             CarStorage.Instance.SetCurrentCarSettings(model);
                         }));
+            }
+            catch { }
+        }
+
+        private void FillNewSettingsInfo(string row)
+        {
+            try
+            {
+                CarSettingsExemplarModel model = JsonConvert.DeserializeObject<CarSettingsExemplarModel>(row);
+                if (Application.Current != null)
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        CarStorage.Instance.SetNewYearAndProtocol(model.ProtocolType, model.Years);
+                    }));
             }
             catch { }
         }
