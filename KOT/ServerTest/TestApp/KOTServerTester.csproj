@@ -47,6 +47,7 @@
     <Compile Include="CAR.cs" />
     <Compile Include="Handlers\CarsHandler.cs" />
     <Compile Include="Handlers\GeoHandler.cs" />
+    <Compile Include="Handlers\PlacesModel.cs" />
     <Compile Include="Models\CarListBaseDataModel.cs" />
     <Compile Include="Models\PlacesClassesModel.cs" />
     <Compile Include="Network\ClientCl.cs" />

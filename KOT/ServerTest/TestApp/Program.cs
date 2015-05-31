@@ -97,6 +97,23 @@ namespace KOTServerTester
                         GeoHandler.Instance.GetGeoTypes();
                     }
                     break;
+                case "DD":
+                    {
+                        Console.WriteLine("Pls category or zero if all categories:");
+                        string sCat = Console.ReadLine();
+                        int idCat = 0;
+                        Int32.TryParse(sCat, out idCat);
+                        Console.WriteLine("Pls latitude * 10.000. For example - 553421 :");
+                        string sLat = Console.ReadLine();
+                        int lat = 0;
+                        Int32.TryParse(sLat, out lat);
+                        Console.WriteLine("Pls longitude * 10.000. For example 371243 :");
+                        string sLon = Console.ReadLine();
+                        int lon = 0;
+                        Int32.TryParse(sLon, out lon);
+                        GeoHandler.Instance.GetPlaces(idCat, lat, lon);
+                    }
+                    break;
                 case "BE":
                     CarsHandler.Instance.GetAlarmsState();
                     break;

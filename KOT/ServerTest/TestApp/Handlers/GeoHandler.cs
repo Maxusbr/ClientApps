@@ -40,6 +40,15 @@ namespace KOTServerTester.Handlers
             catch { }
         }
 
+        public void GetPlaces(int idType, int lat, int lon)
+        {
+            try
+            {
+                TCPConnection.Instance.SendData("DD" + idType.ToString() + ";" + lat.ToString() + ";" + lon.ToString());
+            }
+            catch { }
+        }
+
 
 
 
@@ -51,6 +60,9 @@ namespace KOTServerTester.Handlers
                 case 'C':
                     SplitGeoServiceTypes(row);
                     break;
+                case 'D':
+                    SplitPlaces(row);
+                    break;
             }
         }
 
@@ -61,6 +73,15 @@ namespace KOTServerTester.Handlers
             foreach (var item in temp)
             {
                 Console.WriteLine("Geo service - " + item.ClassName + ", id " + item.ID);
+            }
+        }
+
+        private void SplitPlaces(string row)
+        {
+            List<PlacesModel> places = JsonConvert.DeserializeObject<List<PlacesModel>>(row);
+            foreach (var item in places)
+            {
+                Console.WriteLine(item.Name + ", Lat - " + item.Latitude.ToString() + "; lon - " + item.Longitude.ToString());
             }
         }
     }
