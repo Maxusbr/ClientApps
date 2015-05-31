@@ -11,6 +11,7 @@ using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using KOT.Annotations;
+using KOT.DataModel.Handlers;
 using KOT.DataModel.Model;
 
 namespace KOT.DataModel.ViewModel
@@ -248,7 +249,7 @@ namespace KOT.DataModel.ViewModel
 
         internal async void SendComment()
         {
-            await DataSource.SendComment(UserRate, UserComment);
+            await MapSourceHandler.SendComment(UserRate, UserComment);
         }
     }
 }

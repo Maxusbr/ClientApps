@@ -12,7 +12,7 @@
 
     <Grid>
 
-        <Maps:MapControl x:Name="Map" MapServiceToken="{Binding ServiceToken}" Center="{Binding Center, Mode=TwoWay}" ZoomLevel="14">
+        <Maps:MapControl x:Name="Map" MapServiceToken="{Binding ServiceToken}" ZoomLevel="14">
             <Maps:MapItemsControl x:Name="MapControls" ItemsSource="{Binding Services}">
                 <Maps:MapItemsControl.ItemTemplate>
                     <DataTemplate>

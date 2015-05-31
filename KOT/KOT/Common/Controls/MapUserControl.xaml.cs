@@ -20,6 +20,7 @@ using Windows.UI.Xaml.Navigation;
 
 // Шаблон элемента пользовательского элемента управления задокументирован по адресу http://go.microsoft.com/fwlink/?LinkId=234236
 using KOT.DataModel;
+using KOT.DataModel.Handlers;
 using KOT.DataModel.ViewModel;
 
 namespace KOT.Common.Controls
@@ -42,40 +43,40 @@ namespace KOT.Common.Controls
         {
             this.InitializeComponent();
             InitializeControls();
+            MapSourceHandler.CenterUpdate += SetCenterLocation;
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            
             UpdateMapElements();
         }
 
         private void UpdateMapElements()
         {
-            DataSource.GetMapElements();
+            MapSourceHandler.GetMapElements();
         }
 
         private void InitializeControls()
         {
-            DefaultViewModel["Center"] = new Geopoint(new BasicGeoposition { Altitude = 0, Latitude = 55.75, Longitude = 37.62 });
-            DefaultViewModel["ServiceToken"] = "dIjWUGuzClDyimeHLXa9bw";
+            DefaultViewModel["Center"] = MapSourceHandler.CenterMap;
+            DefaultViewModel["ServiceToken"] = "7Z4mDC8JoJ496vUs6bQDzQ";
             if (!DesignMode.DesignModeEnabled)
             {
-                Map.Children.Add(DataSource.Phone);
-                Map.Children.Add(DataSource.Kot);
+                Map.Children.Add(MapSourceHandler.Phone);
+                Map.Children.Add(MapSourceHandler.Kot);
             }
-            MapControls.ItemsSource = DataSource.ServicePoints;
-            DataSource.ServicePoints.CollectionChanged += ServicePoints_CollectionChanged;
-            
+            MapControls.ItemsSource = MapSourceHandler.ServicePoints;
+            MapSourceHandler.ServicePoints.CollectionChanged += ServicePoints_CollectionChanged;
+
         }
 
         private async void ServicePoints_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            var positions = DataSource.ServicePoints.Select(el => el.Location.Position).ToList();
-            positions.Add(DataSource.Kot.Location.Position);
+            var positions = MapSourceHandler.ServicePoints.Select(el => el.Location.Position).ToList();
+            positions.Add(MapSourceHandler.Kot.Location.Position);
             var box = GeoboundingBox.TryCompute(positions);
 
-            SetCenterLocation(new Geopoint(box.Center)) ;
+            SetCenterLocation(new Geopoint(box.Center));
             await Map.TrySetViewBoundsAsync(box, null, MapAnimationKind.Default);
         }
 
@@ -83,9 +84,30 @@ namespace KOT.Common.Controls
         {
             Map.Routes.Clear();
             Busy.IsActive = true;
-            var routeResult = await DataSource.UpdatePhone(p);
+            var routeResult = await MapSourceHandler.UpdatePhone(p);
             Busy.IsActive = false;
-            if (!p || routeResult == null || routeResult.Status != MapRouteFinderStatus.Success) return;
+            if (!p) return;
+            if (routeResult == null || routeResult.Status != MapRouteFinderStatus.Success)
+            {
+                var kot = MapSourceHandler.Kot.Location.Position;
+                var phone = MapSourceHandler.Phone.Location.Position;
+                var nw = new BasicGeoposition
+                {
+                    Latitude = Math.Max(kot.Latitude, phone.Latitude),
+                    Longitude = Math.Min(kot.Longitude, phone.Longitude)
+                };
+                var se = new BasicGeoposition
+                {
+                    Latitude = Math.Min(kot.Latitude, phone.Latitude),
+                    Longitude = Math.Max(kot.Longitude, phone.Longitude)
+                };
+
+                await Map.TrySetViewBoundsAsync(
+                new GeoboundingBox(nw, se),
+                null,
+                MapAnimationKind.Bow);
+                return;
+            }
             var viewOfRoute = new MapRouteView(routeResult.Route)
             {
                 RouteColor = Color.FromArgb(255, 233, 30, 99),
@@ -101,7 +123,7 @@ namespace KOT.Common.Controls
 
         public async void SetCenterLocation(Geopoint point)
         {
-            await Map.TrySetViewAsync(point ?? DataSource.Kot.Location);
+            await Map.TrySetViewAsync(point ?? MapSourceHandler.Kot.Location);
         }
 
         private void ServiceElement_Click(object sender, RoutedEventArgs e)

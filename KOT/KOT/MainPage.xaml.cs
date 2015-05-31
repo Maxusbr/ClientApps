@@ -23,6 +23,7 @@ using KOT.Common;
 // Документацию по шаблону элемента пустой страницы см. по адресу http://go.microsoft.com/fwlink/?LinkID=390556
 using KOT.Common.Controls;
 using KOT.DataModel;
+using KOT.DataModel.Handlers;
 using KOT.DataModel.Model;
 using KOT.DataModel.ViewModel;
 
@@ -67,7 +68,7 @@ namespace KOT
 
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            DefaultViewModel["Source"] = DataSource.Instance;
+            DefaultViewModel["Source"] = MapSourceHandler.Instance;
             MainMenuControl.HideMenu += MainMenuControl_HideMenu;
             MainMenuControl.ShowAlarm += MainMenuControl_ShowAlarm;
         }

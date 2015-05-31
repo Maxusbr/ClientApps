@@ -37,15 +37,15 @@ namespace KOT.DataModel.Network
 
         void _querys_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            
+
         }
 
         async void TcpConnection_IsError(string msg)
         {
-            
+
         }
 
-        private readonly ObservableCollection<string> _querys = new ObservableCollection<string>(); 
+        private readonly ObservableCollection<string> _querys = new ObservableCollection<string>();
 
         public delegate void ErrorEvent(string msg);
         private event ErrorEvent IsError;
@@ -74,7 +74,7 @@ namespace KOT.DataModel.Network
 
         private async Task<string> _listener_ConnectionReceived()
         {
-            
+
             try
             {
                 var sizeFieldCount = await _reader.LoadAsync(sizeof(uint));
@@ -121,9 +121,13 @@ namespace KOT.DataModel.Network
 
         async Task Loop(int cnt)
         {
+            var maxt = 0;
             while (_cunt > 0)
             {
                 await Task.Delay(cnt + 53);
+                maxt++;
+                if (maxt < 500) continue;
+                _cunt--; break;
             }
         }
 
@@ -135,7 +139,7 @@ namespace KOT.DataModel.Network
                 var packet = new byte[p.Length + sizeof(uint)];
                 Array.Copy(header, packet, sizeof(uint));
                 Array.Copy(p, 0, packet, sizeof(uint), p.Length);
-                
+
                 _writer.WriteBytes(packet);
                 await _writer.StoreAsync();
             }
@@ -147,7 +151,7 @@ namespace KOT.DataModel.Network
 
         ReciveMessageModel Split(string msg)
         {
-            return msg.Length < 2 ? new ReciveMessageModel{Msg = "error"} : 
+            return msg.Length < 2 ? new ReciveMessageModel { Msg = "error" } :
                 new ReciveMessageModel { Px = msg[0], Fx = msg[1], Msg = msg.Substring(2) };
         }
     }

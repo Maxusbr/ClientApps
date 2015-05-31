@@ -32,6 +32,7 @@ namespace KOT.DataModel.Handlers
 
         private async Task<bool> LoginAsync(string user, string pass)
         {
+            if (_isAuth) return _isAuth;
             _login = user;
             _password = pass;
             if (_login == string.Empty || _password == string.Empty) return false;

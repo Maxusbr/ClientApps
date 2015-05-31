@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
-  <Identity Name="KOT" Publisher="CN=Максим" Version="1.0.0.0" />
-  <mp:PhoneIdentity PhoneProductId="76fe5cba-eb12-4df1-8df8-af1d83aa4f70" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Identity Name="294MACStudio.KOT" Publisher="CN=699EF8AA-7608-4639-BDDA-924489DB3E52" Version="1.1.0.0" />
+  <mp:PhoneIdentity PhoneProductId="4ceec935-9411-4f63-a72e-48a4dbc521d4" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>KOT</DisplayName>
-    <PublisherDisplayName>Максим</PublisherDisplayName>
+    <PublisherDisplayName>MACStudio</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Prerequisites>
