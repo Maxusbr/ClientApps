@@ -124,7 +124,7 @@ namespace KOT
                 HistoryWorkHandler.UpdateDate(dt.AddMonths(-6), dt);
                 return;
             }
-            FlyoutBase.ShowAttachedFlyout(this);
+            FlyOut.Visibility = Visibility.Visible;
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
@@ -134,16 +134,12 @@ namespace KOT
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            var fl = FlyoutBase.GetAttachedFlyout(this);
-            if (fl == null) return;
-            fl.Hide();
+            FlyOut.Visibility = Visibility.Collapsed;
         }
 
         private void OK_Click(object sender, RoutedEventArgs e)
         {
-            var fl = FlyoutBase.GetAttachedFlyout(this);
-            if (fl == null) return;
-            fl.Hide();
+            FlyOut.Visibility = Visibility.Collapsed;
             DateTime start;
             DateTime end;
             if (!DateTime.TryParse(EndDate.Text, out end))
@@ -169,7 +165,7 @@ namespace KOT
         {
             var dt = sender as DateWeekSelectControl;
             if (dt == null) return;
-            StartDate.Text = dt.Date.ToString("d");
+            EndDate.Text = dt.Date.ToString("d");
             EndDateSelect.Hide();
         }
     }

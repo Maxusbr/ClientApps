@@ -8,7 +8,7 @@
     x:Class="KOT.Common.Controls.DriverStyleControl"
     mc:Ignorable="d"
     d:DesignHeight="500"
-    d:DesignWidth="400">
+    d:DesignWidth="400" Loaded="UserControl_Loaded">
 
     <UserControl.DataContext>
         <viewModel:DriverStyleViewModel/>
@@ -29,18 +29,18 @@
         <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="Безопасность" VerticalAlignment="Center" FontSize="16" Foreground="{StaticResource PrimeryText}"/>
         <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="Эко" VerticalAlignment="Center" FontSize="16" Foreground="{StaticResource PrimeryText}"
                    Grid.Row="0" Grid.Column="1"/>
-        <local:CircularProgressBar Value="{Binding CurrentDrivingStyle, Mode=OneWay}" FgBrush="#FF673AB7" FontBrush="#FF673AB7" BgBrush="White" HoleBrush="White" Width="126" Height="126" Grid.Row="1"
+        <local:CircularProgressBar RateValue="{Binding CurrentDrivingStyle}" FgBrush="#FF673AB7" FontBrush="#FF673AB7" BgBrush="White" HoleBrush="White" Width="126" Height="126" Grid.Row="1"
                                    Grid.Column="0" Margin="0,8,0,24"/>
-        <local:CircularProgressBar Value="{Binding CurrentEcoStyle, Mode=OneWay}" FgBrush="#FF009688" FontBrush="#FF009688" BgBrush="White" HoleBrush="White" Width="126" Height="126" Grid.Row="1" Grid.Column="1" Margin="0,8,0,24" Padding="0"/>
-        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding TodayDrivingScore, Mode=OneWay}" VerticalAlignment="Bottom" FontSize="16" Foreground="{StaticResource PrimeryText}" Grid.Row="2"
+        <local:CircularProgressBar RateValue="{Binding CurrentEcoStyle}" FgBrush="#FF009688" FontBrush="#FF009688" BgBrush="White" HoleBrush="White" Width="126" Height="126" Grid.Row="1" Grid.Column="1" Margin="0,8,0,24" Padding="0"/>
+        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding TodayDrivingScore}" VerticalAlignment="Bottom" FontSize="16" Foreground="{StaticResource PrimeryText}" Grid.Row="2"
                    Grid.Column="0" />
-        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding TodayEcoScore, Mode=OneWay}" VerticalAlignment="Bottom" FontSize="16" Foreground="{StaticResource PrimeryText}" Grid.Column="1" Grid.Row="2"/>
+        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding TodayEcoScore}" VerticalAlignment="Bottom" FontSize="16" Foreground="{StaticResource PrimeryText}" Grid.Column="1" Grid.Row="2"/>
         <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="баллов, за сутки" VerticalAlignment="Top" FontSize="13.333" Foreground="{StaticResource SecondaryText}" Grid.Row="3"
                    Grid.Column="0" />
         <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="%, за сутки" VerticalAlignment="Top" FontSize="13.333" Foreground="{StaticResource SecondaryText}" Grid.Column="1" Grid.Row="3"/>
-        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding TotalDrivingScore, Mode=OneWay}" VerticalAlignment="Bottom" FontSize="16" Foreground="{StaticResource PrimeryText}" Grid.Row="3"
+        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding TotalDrivingScore}" VerticalAlignment="Bottom" FontSize="16" Foreground="{StaticResource PrimeryText}" Grid.Row="3"
                    Grid.Column="0" />
-        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding TotalEcoScore, Mode=OneWay}" VerticalAlignment="Bottom" FontSize="16" Foreground="{StaticResource PrimeryText}" Grid.Column="1" Grid.Row="3"/>
+        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding TotalEcoScore}" VerticalAlignment="Bottom" FontSize="16" Foreground="{StaticResource PrimeryText}" Grid.Column="1" Grid.Row="3"/>
         <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="баллов, всего" VerticalAlignment="Top" FontSize="13.333" Foreground="{StaticResource SecondaryText}" Grid.Row="4"
                    Grid.Column="0" />
         <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="%, всего" VerticalAlignment="Top" FontSize="13.333" Foreground="{StaticResource SecondaryText}" Grid.Column="1" Grid.Row="4"/>

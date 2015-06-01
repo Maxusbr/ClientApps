@@ -12,61 +12,6 @@
     <Page.Resources>
 
     </Page.Resources>
-    <FlyoutBase.AttachedFlyout>
-        <Flyout FlyoutPresenterStyle="{StaticResource FlyoutPresenterStyle}" Placement="Full">
-            <Border HorizontalAlignment="Center" VerticalAlignment="Center" Background="White" BorderThickness="1" BorderBrush="{StaticResource DividerText}" Padding="8">
-                <Grid Width="224" Height="224">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="56"/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="48"/>
-                        <RowDefinition Height="48"/>
-                        <RowDefinition Height="48"/>
-                        <RowDefinition Height="24"/>
-                        <RowDefinition Height="48"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Показать работы:" VerticalAlignment="Center" Foreground="{StaticResource PrimeryText}" FontSize="13.333" Grid.ColumnSpan="2" Margin="8,16,0,16"/>
-                    <TextBlock HorizontalAlignment="Right" TextWrapping="Wrap" Text="с" VerticalAlignment="Center" Foreground="{StaticResource PrimeryText}" FontSize="12" Grid.Row="1"
-        			           Grid.Column="0" Margin="0,17,5,0"/>
-                    <TextBlock HorizontalAlignment="Right" TextWrapping="Wrap" Text="по" VerticalAlignment="Center" Foreground="{StaticResource PrimeryText}" FontSize="12" Grid.Row="2"
-        			           Grid.Column="0" Margin="0,17,5,16"/>
-                    <TextBox x:Name="StartDate" TextWrapping="Wrap" VerticalAlignment="Bottom" BorderThickness="0,0,0,1" PlaceholderText="дд.мм.гггг" FontSize="16" Style="{StaticResource TextBoxStyle}" Background="{x:Null}" Grid.Column="1" HorizontalAlignment="Left" Foreground="{StaticResource PrimeryText}" Grid.Row="1" Grid.ColumnSpan="2" MinWidth="100" Margin="0,0,0,2" IsReadOnly="True"/>
-                    <Button Content="" VerticalAlignment="Top" Style="{StaticResource LinkButtonStyle}" BorderBrush="{x:Null}" Grid.Row="1" MinHeight="48" Grid.Column="1">
-                        <Button.Flyout>
-                            <Flyout x:Name="StartDateSelect" FlyoutPresenterStyle="{StaticResource CurentFlyoutPresenterStyle}" Placement="Full">
-                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Background="White">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-                                    <Controls:DateWeekSelectControl HorizontalAlignment="Center" VerticalAlignment="Center" Close="StartDateSelect_OnClose"/>
-                                </Grid>
-                            </Flyout>
-                        </Button.Flyout>
-                    </Button>
-                    <TextBox x:Name="EndDate" TextWrapping="Wrap" VerticalAlignment="Bottom" BorderThickness="0,0,0,1" PlaceholderText="дд.мм.гггг" FontSize="16" Style="{StaticResource TextBoxStyle}" Background="{x:Null}" Grid.Column="1" HorizontalAlignment="Left" Foreground="{StaticResource PrimeryText}" Grid.Row="2" MinWidth="100" Grid.ColumnSpan="2" IsReadOnly="True"/>
-                    <Button Content="" VerticalAlignment="Top" Style="{StaticResource LinkButtonStyle}" BorderBrush="{x:Null}" Grid.Row="1" MinHeight="48" Grid.Column="1">
-                        <Button.Flyout>
-                            <Flyout x:Name="EndDateSelect" FlyoutPresenterStyle="{StaticResource CurentFlyoutPresenterStyle}" Placement="Full">
-                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Background="White">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-                                    <Controls:DateWeekSelectControl HorizontalAlignment="Center" VerticalAlignment="Center" Close="EndDateSelect_OnClose"/>
-                                </Grid>
-                            </Flyout>
-                        </Button.Flyout>
-                    </Button>
-                    <Button Content="ОТМЕНА" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource LinkButtonStyle}" BorderThickness="0" Foreground="{StaticResource AccentColor}" MinHeight="40" Grid.Row="4" Grid.Column="1" MinWidth="40" FontSize="14.667" Click="Cancel_Click" Margin="0,0,0.083,0"/>
-                    <Button Content="ГОТОВО" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource LinkButtonStyle}" BorderThickness="0" Foreground="{StaticResource AccentColor}" MinHeight="40" Grid.Row="4" Grid.Column="1" MinWidth="40" FontSize="14.667" Click="OK_Click" Grid.ColumnSpan="2" Margin="84,0,0.167,0"/>
-                </Grid>
-            </Border>
-        </Flyout>
-    </FlyoutBase.AttachedFlyout>
 
     <Page.DataContext>
         <ViewModel:WorksViewModel/>
@@ -168,6 +113,59 @@
             </AppBarButton>
 
         </Grid>
+        <Border x:Name="FlyOut" Grid.RowSpan="2" Background="#7F000000" Visibility="Collapsed">
+            <Border Background="White" BorderThickness="1" BorderBrush="{StaticResource DividerText}" Padding="8" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid Width="224" Height="224">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="56"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="48"/>
+                        <RowDefinition Height="48"/>
+                        <RowDefinition Height="48"/>
+                        <RowDefinition Height="24"/>
+                        <RowDefinition Height="48"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Показать работы:" VerticalAlignment="Center" Foreground="{StaticResource PrimeryText}" FontSize="13.333" Grid.ColumnSpan="2" Margin="8,16,0,16"/>
+                    <TextBlock HorizontalAlignment="Right" TextWrapping="Wrap" Text="с" VerticalAlignment="Center" Foreground="{StaticResource PrimeryText}" FontSize="12" Grid.Row="1"
+        				Grid.Column="0" Margin="0,17,5,0"/>
+                    <TextBlock HorizontalAlignment="Right" TextWrapping="Wrap" Text="по" VerticalAlignment="Center" Foreground="{StaticResource PrimeryText}" FontSize="12" Grid.Row="2"
+        				Grid.Column="0" Margin="0,17,5,16"/>
+                    <TextBox x:Name="StartDate" TextWrapping="Wrap" VerticalAlignment="Bottom" BorderThickness="0,0,0,1" PlaceholderText="дд.мм.гггг" FontSize="16" Style="{StaticResource TextBoxStyle}" Background="{x:Null}" Grid.Column="1" HorizontalAlignment="Left" Foreground="{StaticResource PrimeryText}" Grid.Row="1" Grid.ColumnSpan="2" MinWidth="100" Margin="0,0,0,2" IsReadOnly="True"/>
+                    <Button Content="" VerticalAlignment="Top" Style="{StaticResource LinkButtonStyle}" BorderBrush="{x:Null}" Grid.Row="1" MinHeight="48" Grid.Column="1">
+                        <Button.Flyout>
+                            <Flyout x:Name="StartDateSelect" FlyoutPresenterStyle="{StaticResource CurentFlyoutPresenterStyle}" Placement="Full">
+                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Background="White">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Controls:DateWeekSelectControl HorizontalAlignment="Center" VerticalAlignment="Center" Close="StartDateSelect_OnClose"/>
+                                </Grid>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+                    <TextBox x:Name="EndDate" TextWrapping="Wrap" VerticalAlignment="Bottom" BorderThickness="0,0,0,1" PlaceholderText="дд.мм.гггг" FontSize="16" Style="{StaticResource TextBoxStyle}" Background="{x:Null}" Grid.Column="1" HorizontalAlignment="Left" Foreground="{StaticResource PrimeryText}" Grid.Row="2" MinWidth="100" Grid.ColumnSpan="2" IsReadOnly="True"/>
+                    <Button Content="" VerticalAlignment="Top" Style="{StaticResource LinkButtonStyle}" BorderBrush="{x:Null}" Grid.Row="2" MinHeight="48" Grid.Column="1">
+                        <Button.Flyout>
+                            <Flyout x:Name="EndDateSelect" FlyoutPresenterStyle="{StaticResource CurentFlyoutPresenterStyle}" Placement="Full">
+                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Background="White">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Controls:DateWeekSelectControl HorizontalAlignment="Center" VerticalAlignment="Center" Close="EndDateSelect_OnClose"/>
+                                </Grid>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+                    <Button Content="ОТМЕНА" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource LinkButtonStyle}" BorderThickness="0" Foreground="{StaticResource AccentColor}" MinHeight="40" Grid.Row="4" Grid.Column="1" MinWidth="40" FontSize="14.667" Click="Cancel_Click" Margin="0,0,0.083,0"/>
+                    <Button Content="ГОТОВО" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource LinkButtonStyle}" BorderThickness="0" Foreground="{StaticResource AccentColor}" MinHeight="40" Grid.Row="4" Grid.Column="1" MinWidth="40" FontSize="14.667" Click="OK_Click" Grid.ColumnSpan="2" Margin="84,0,0.167,0"/>
+                </Grid>
+            </Border>
+        </Border>
         <ProgressRing x:Name="Busy" Background="#7F727272" Grid.Row="1" d:IsHidden="True"/>
     </Grid>
 </Page>

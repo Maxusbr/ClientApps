@@ -157,8 +157,11 @@ namespace KOT.DataModel.Handlers
                     {
                         ListTrip.Add(new TripAdvisorViewModel(el));
                     }
-                if (fx == 'H' || fx == 'i')
-                    _styleDriver = JsonConvert.DeserializeObject<DrivingStyle>(msg);
+                if (fx == 'H' || fx == 'h')
+                {
+                    var res = JsonConvert.DeserializeObject<DrivingStyle[]>(msg);
+                    _styleDriver = res.FirstOrDefault(o => o.DID.Equals(CarId));
+                }
             }
             catch (Exception)
             {
@@ -168,7 +171,7 @@ namespace KOT.DataModel.Handlers
 
         private async Task GetDriverStileAsync()
         {
-            //if (DesignMode.DesignModeEnabled)
+            if (DesignMode.DesignModeEnabled)
             _styleDriver = new DrivingStyle
             {
                 DID = "1",
@@ -179,9 +182,9 @@ namespace KOT.DataModel.Handlers
                 TotalDrivingScore = 68,
                 TotalEcoScore = 98
             };
-            //var res = await TcpConnection.Send("BH" + CarId);
-            //if (!string.IsNullOrEmpty(res.Msg))
-            //    Split(res.Fx, res.Msg);
+            var res = await TcpConnection.Send("BH" + CarId);
+            if (!string.IsNullOrEmpty(res.Msg))
+                Split(res.Fx, res.Msg);
         }
     }
 }
