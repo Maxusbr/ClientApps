@@ -8,8 +8,7 @@
     xmlns:ViewModel="using:KOT.DataModel.ViewModel"
     xmlns:Controls1="using:WinRTXamlToolkit.Controls"
     x:Class="KOT.TOPage"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" RequestedTheme="Light">
+    mc:Ignorable="d" RequestedTheme="Light">
     <Page.Resources>
         
     </Page.Resources>
@@ -108,12 +107,12 @@
 			</AppBarButton>
 			<AppBarButton x:Name="BackButton" HorizontalAlignment="Center" Icon="Back" Label="appbarbutton" VerticalAlignment="Center" Grid.Row="1" Style="{StaticResource AppBarButtonStyle}" Foreground="White" Visibility="Collapsed" Click="BackButton_Click"/>
 			<AppBarButton x:Name="History" HorizontalAlignment="Center" Label="appbarbutton" VerticalAlignment="Center" Grid.Row="1"
-				Grid.Column="2" Margin="4" Style="{StaticResource AppBarButtonStyle}" Width="46" Height="46" Click="History_Click">
+				Grid.Column="2" Margin="4" Style="{StaticResource AppBarButtonStyle}" Width="46" Height="46" Click="History_Click" Padding="2,0">
 				<AppBarButton.Icon>
 					<BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_to_history_24dp.png" Margin="5,0"/>
 				</AppBarButton.Icon>
 			</AppBarButton>
-			<AppBarToggleButton x:Name="CalendarListToggle" HorizontalAlignment="Left" Label="appbartogglebutton" VerticalAlignment="Top" Grid.Row="1" Grid.Column="3" Style="{StaticResource TOAppBarToggleButtonStyle}" Margin="4" IsChecked="False" Width="46" Height="46" Click="AppBarToggleButton_Click">
+			<AppBarToggleButton x:Name="CalendarListToggle" HorizontalAlignment="Left" Label="appbartogglebutton" VerticalAlignment="Top" Grid.Row="1" Grid.Column="3" Style="{StaticResource TOAppBarToggleButtonStyle}" Margin="4" IsChecked="False" Width="46" Height="46" Click="AppBarToggleButton_Click" Padding="6,0">
 				<AppBarToggleButton.Icon>
 					<BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_to_calendar_24dp.png" Foreground="White"/>
 				</AppBarToggleButton.Icon>

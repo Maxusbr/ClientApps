@@ -4,15 +4,15 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="126" d:DesignWidth="126" Loaded="UserControl_Loaded" SizeChanged="UserControl_SizeChanged">
+    d:DesignHeight="130" d:DesignWidth="130" Loaded="UserControl_Loaded" SizeChanged="UserControl_SizeChanged" Width="Auto" Height="Auto">
     
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Ellipse Name="bgCircle" RenderTransformOrigin="0.5,0.5" Fill="Black">
             <Ellipse.RenderTransform>
-                <CompositeTransform ScaleX="0.98" ScaleY="0.98"/>
+                <CompositeTransform ScaleX="0.95" ScaleY="0.95"/>
             </Ellipse.RenderTransform>
         </Ellipse>
-        <Path Name="path" StrokeThickness="1.5" Margin="0" Fill="White"/>
+        <Path Name="path" StrokeThickness="0" Fill="White"/>
         <Ellipse Name="hole" RenderTransformOrigin="0.5,0.5" Fill="White">
             <Ellipse.RenderTransform>
             	<CompositeTransform ScaleY="0.89" ScaleX="0.89"/>

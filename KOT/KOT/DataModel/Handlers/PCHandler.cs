@@ -134,9 +134,6 @@ namespace KOT.DataModel.Handlers
             var res = await TcpConnection.Send("BI" + CarId);
             if (!string.IsNullOrEmpty(res.Msg))
                 Split(res.Fx, res.Msg);
-            res = await TcpConnection.Send("BH" + CarId);
-            if (!string.IsNullOrEmpty(res.Msg))
-                Split(res.Fx, res.Msg);
             OnSourceChenged();
         }
 
@@ -182,6 +179,9 @@ namespace KOT.DataModel.Handlers
                 TotalDrivingScore = 68,
                 TotalEcoScore = 98
             };
+            //var res = await TcpConnection.Send("BH" + CarId);
+            //if (!string.IsNullOrEmpty(res.Msg))
+            //    Split(res.Fx, res.Msg);
         }
     }
 }

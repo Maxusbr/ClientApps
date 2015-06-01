@@ -16,14 +16,15 @@ namespace KOT.DataModel.ViewModel
     {
         public PCViewModel()
         {
-            CarsHandler.SelectionChanged += CarsHandler_SelectionChanged;
             PCHandler.Instance.SourceChenged += Instance_SourceChenged;
-            
+            CarsHandler.SelectionChanged += CarsHandler_SelectionChanged;
+            if (PCHandler.Instance.ListTrip.Count == 0) PCHandler.UpdateSource();
         }
 
         void CarsHandler_SelectionChanged(object sender, EventArgs e)
         {
             PCHandler.UpdateSource();
+            TotalDistance = string.Format("{0} км", PCHandler.Instance.ListTrip.Sum(o => o.CurrentDistance));
         }
 
         void Instance_SourceChenged(object sender, EventArgs e)
@@ -51,6 +52,7 @@ namespace KOT.DataModel.ViewModel
         private string _tripTime;
         private string _distance;
         private bool _isReady;
+        private string _totalDistance;
         public ObservableCollection<TripAdvisorViewModel> EndtTrip { get { return _endTrip; } }
 
         public bool IsReady
@@ -143,10 +145,14 @@ namespace KOT.DataModel.ViewModel
                 enddt = EndDate + ts;
 
             var list = PCHandler.Instance.ListTrip.Where(o => o.StartEng >= startdt && o.EndEng <= enddt).ToList();
-
+            if (list.Count == 0)
+            {
+                Distance = TripTime = MedianSpeed = string.Empty;return;
+            }
             Distance = string.Format("{0} км", list.Sum(o => o.EngCurrentDistance));
             TripTime = string.Format("{0} минут", list.Sum(o => o.EngTripTime));
             MedianSpeed = string.Format("{0} км/ч", Math.Round(list.Average(o => o.EngMedianSpeed), 2));
+            
             IsReady = true;
         }
 
@@ -180,6 +186,17 @@ namespace KOT.DataModel.ViewModel
                 if (value == _medianSpeed) return;
                 _medianSpeed = value;
                 OnPropertyChanged("MedianSpeed");
+            }
+        }
+
+        public string TotalDistance
+        {
+            get { return _totalDistance; }
+            set
+            {
+                if (value == _totalDistance) return;
+                _totalDistance = value;
+                OnPropertyChanged("TotalDistance");
             }
         }
 

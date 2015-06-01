@@ -86,8 +86,8 @@ namespace KOT.DataModel.Handlers
 
             #endregion
 
-            var res = await TcpConnection.Send("CA");
-            //var res = await TcpConnection.Send("CB" + CarId);
+            //var res = await TcpConnection.Send("CA" + CarId);
+            var res = await TcpConnection.Send("CB" + CarId);
             if (!string.IsNullOrEmpty(res.Msg))
                 Split(res.Msg);
         }

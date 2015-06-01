@@ -330,7 +330,7 @@
             <RowDefinition/>
             <RowDefinition Height="80"/>
         </Grid.RowDefinitions>
-        <TextBlock HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding CostSumm}" VerticalAlignment="Center" Foreground="{StaticResource SecondaryText}" Margin="0,0,16,0"/>
+        <TextBlock HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding TotalDistance}" VerticalAlignment="Center" Foreground="{StaticResource SecondaryText}" Margin="0,0,16,0"/>
         <Canvas Grid.Row="1">
             <Path Data="M10,56 L378.333,56" Height="3" Canvas.Left="10" Stretch="Fill" Stroke="{StaticResource DividerText}" Canvas.Top="45" UseLayoutRounding="False" Width="380" StrokeDashArray="0.5 6" StrokeDashCap="Round" StrokeEndLineCap="Round" StrokeStartLineCap="Round" StrokeLineJoin="Round" StrokeThickness="2"/>
             <Image Source="ms-appx:///Assets/drawable-xxhdpi/ic_car_48dp.png" Height="56" Canvas.Left="301" HorizontalAlignment="Right" Canvas.Top="18"/>

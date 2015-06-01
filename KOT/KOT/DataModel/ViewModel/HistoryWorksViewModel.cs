@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
 using Windows.UI.Xaml.Data;
 using KOT.Annotations;
 using KOT.DataModel.Handlers;
@@ -17,6 +18,7 @@ namespace KOT.DataModel.ViewModel
     {
         public HistoryWorksViewModel()
         {
+            if (DesignMode.DesignModeEnabled) return;
             HistoryWorks.CollectionChanged += HistoryWorks_CollectionChanged;
             CarsHandler.SelectionChanged += CarsHandler_SelectionChanged;
             UpdateHistory();

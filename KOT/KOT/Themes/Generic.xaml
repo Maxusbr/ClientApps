@@ -415,7 +415,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="AppBarButton">
-                    <Grid x:Name="LayoutRoot" Background="Transparent">
+                    <Border Padding="{TemplateBinding Padding}">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="ApplicationViewStates">
                                 <VisualState x:Name="FullSize"/>
@@ -445,12 +445,14 @@
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <Grid HorizontalAlignment="Center">
-                            <Grid x:Name="ContentRoot" Background="Transparent">
-                                <ContentPresenter x:Name="Content" AutomationProperties.AccessibilityView="Raw" Content="{TemplateBinding Icon}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
+                        <Grid x:Name="LayoutRoot" Background="Transparent">
+                            <Grid HorizontalAlignment="Center">
+                                <Grid x:Name="ContentRoot" Background="Transparent">
+                                    <ContentPresenter x:Name="Content" AutomationProperties.AccessibilityView="Raw" Content="{TemplateBinding Icon}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
+                                </Grid>
                             </Grid>
                         </Grid>
-                    </Grid>
+                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -1123,10 +1125,10 @@
                                 <VisualState x:Name="CheckedDisabled"/>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <Border x:Name="CalendarTO" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="2" BorderThickness="{TemplateBinding BorderThickness}" Padding="2,0">
+                        <Border x:Name="CalendarTO" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="2" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
                             <Image Source="ms-appx:///Assets/drawable-xxhdpi/ic_to_calendar_24dp.png"/>
                         </Border>
-                        <Border x:Name="ListTO" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="2" BorderThickness="{TemplateBinding BorderThickness}" Visibility="Collapsed" Padding="2,0">
+                        <Border x:Name="ListTO" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="2" BorderThickness="{TemplateBinding BorderThickness}" Visibility="Collapsed" Padding="{TemplateBinding Padding}">
                             <Image Source="ms-appx:///Assets/drawable-xxhdpi/ic_to_listview_24dp.png"/>
                         </Border>
                     </Grid>

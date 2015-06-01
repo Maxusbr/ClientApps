@@ -23,6 +23,7 @@ namespace KOT.DataModel.ViewModel
 
         public WorksViewModel()
         {
+            if (DesignMode.DesignModeEnabled) return;
             for (var i = DateTime.Now.Year; i < DateTime.Now.Year + 10; i++)
                 YearList.Add(i);
             SelectedYear = DateTime.Now.Year;

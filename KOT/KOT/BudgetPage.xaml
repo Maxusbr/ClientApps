@@ -7,8 +7,7 @@
     xmlns:Controls="using:KOT.Common.Controls"
     xmlns:ViewModel="using:KOT.DataModel.ViewModel"
     x:Class="KOT.BudgetPage"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" RequestedTheme="Light" Loaded="Page_Loaded">
+    mc:Ignorable="d" RequestedTheme="Light" Loaded="Page_Loaded">
 
     <Page.Resources>
         <DataTemplate x:Key="CategoryPivotItemHeaderTemplate">
@@ -111,7 +110,7 @@
         <ViewModel:BudgetViewModel/>
     </Page.DataContext>
 
-    <Grid>
+    <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>

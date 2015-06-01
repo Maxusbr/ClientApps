@@ -26,9 +26,10 @@ namespace KOT.DataModel.Handlers
             _instance = this;
             if (DesignMode.DesignModeEnabled)
             {
-                Cars.Add(new CarListBaseDataModel{CarNumber = "Demo 1"});
-                Cars.Add(new CarListBaseDataModel { CarNumber = "Demo 2" });
-                Cars.Add(new CarListBaseDataModel { CarNumber = "Demo 3" });
+                Cars.Add(new CarListBaseDataModel{DID = "", CarNumber = "Demo 1"});
+                Cars.Add(new CarListBaseDataModel {DID = "",  CarNumber = "Demo 2" });
+                Cars.Add(new CarListBaseDataModel {DID = "",  CarNumber = "Demo 3" });
+                SelectedCar = Cars[0];
             }
         }
 
@@ -69,6 +70,7 @@ namespace KOT.DataModel.Handlers
                 {
                     Cars.Add(el);
                 }
+                if (SelectedCar == null) SelectedCar = Cars.FirstOrDefault();
             }
             catch (Exception e)
             {

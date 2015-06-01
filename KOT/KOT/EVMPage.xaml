@@ -6,8 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:Controls="using:KOT.Common.Controls"
     x:Class="KOT.EVMPage"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" RequestedTheme="Light" Loaded="Page_Loaded">
+    mc:Ignorable="d" RequestedTheme="Light" Loaded="Page_Loaded">
     <Page.Resources>
         <Thickness x:Key="PivotPortraitThemePadding">19,29,0,0</Thickness>
         <Thickness x:Key="PivotLandscapeThemePadding">19,25,0,0</Thickness>
@@ -76,7 +75,7 @@
         </DataTemplate>
     </Page.Resources>
 
-    <Grid>
+    <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>

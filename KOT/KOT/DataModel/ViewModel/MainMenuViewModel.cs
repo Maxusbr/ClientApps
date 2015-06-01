@@ -35,8 +35,8 @@ namespace KOT.DataModel.ViewModel
         private async void UpdateSource()
         {
             if (CarsHandler.Cars.Count == 0) await CarsHandler.Update();
-            if (SelectedCar == null)
-                SelectedCar = CarsHandler.Cars.Count == 0 ? new CarListBaseDataModel() : CarsHandler.Cars[0];
+            //if (SelectedCar == null)
+            //    SelectedCar = CarsHandler.Cars.Count == 0 ? new CarListBaseDataModel() : CarsHandler.Cars[0];
         }
 
         public static bool IsMapCheck { get; set; }

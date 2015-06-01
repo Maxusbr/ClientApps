@@ -31,7 +31,7 @@
                    Grid.Row="0" Grid.Column="1"/>
         <local:CircularProgressBar Value="{Binding CurrentDrivingStyle, Mode=OneWay}" FgBrush="#FF673AB7" FontBrush="#FF673AB7" BgBrush="White" HoleBrush="White" Width="126" Height="126" Grid.Row="1"
                                    Grid.Column="0" Margin="0,8,0,24"/>
-        <local:CircularProgressBar Value="{Binding CurrentEcoStyle, Mode=OneWay}" FgBrush="#FF009688" FontBrush="#FF009688" BgBrush="White" HoleBrush="White" Width="126" Height="126" Grid.Row="1" Grid.Column="1" Margin="0,8,0,24"/>
+        <local:CircularProgressBar Value="{Binding CurrentEcoStyle, Mode=OneWay}" FgBrush="#FF009688" FontBrush="#FF009688" BgBrush="White" HoleBrush="White" Width="126" Height="126" Grid.Row="1" Grid.Column="1" Margin="0,8,0,24" Padding="0"/>
         <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding TodayDrivingScore, Mode=OneWay}" VerticalAlignment="Bottom" FontSize="16" Foreground="{StaticResource PrimeryText}" Grid.Row="2"
                    Grid.Column="0" />
         <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding TodayEcoScore, Mode=OneWay}" VerticalAlignment="Bottom" FontSize="16" Foreground="{StaticResource PrimeryText}" Grid.Column="1" Grid.Row="2"/>
