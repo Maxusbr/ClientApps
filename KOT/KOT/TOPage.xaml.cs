@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Navigation;
 
 // Документацию по шаблону элемента пустой страницы см. по адресу http://go.microsoft.com/fwlink/?LinkID=390556
 using KOT.Common;
+using KOT.Common.Controls;
 using KOT.DataModel.Handlers;
 
 namespace KOT
@@ -91,7 +92,7 @@ namespace KOT
         {
             var butt = sender as ToggleMenuFlyoutItem;
             if (butt == null) return;
-            All.IsChecked = butt.Name == All.Name;
+            AllMonth.IsChecked = butt.Name == AllMonth.Name;
             Month1.IsChecked = butt.Name == Month1.Name;
             Month3.IsChecked = butt.Name == Month3.Name;
             Month6.IsChecked = butt.Name == Month6.Name;
@@ -103,7 +104,7 @@ namespace KOT
         {
             var dt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
             var nulldate = new DateTime(1, 1, 1);
-            if (All.IsChecked)
+            if (AllMonth.IsChecked)
             {
                 HistoryWorkHandler.UpdateDate(nulldate, dt);
                 return;
@@ -154,6 +155,22 @@ namespace KOT
         private void History_Click(object sender, RoutedEventArgs e)
         {
             Pivot.SelectedIndex = 2;
+        }
+
+        private void StartDateSelect_OnClose(object sender)
+        {
+            var dt = sender as DateWeekSelectControl;
+            if (dt == null) return;
+            StartDate.Text = dt.Date.ToString("d");
+            StartDateSelect.Hide();
+        }
+
+        private void EndDateSelect_OnClose(object sender)
+        {
+            var dt = sender as DateWeekSelectControl;
+            if (dt == null) return;
+            StartDate.Text = dt.Date.ToString("d");
+            EndDateSelect.Hide();
         }
     }
 }

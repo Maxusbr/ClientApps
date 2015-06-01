@@ -31,6 +31,13 @@ namespace KOT.DataModel.Handlers
             
             UpdatePositionPhone();
             UpdatePositionKot();
+            CarsHandler.SelectionChanged += CarsHandler_SelectionChanged;
+        }
+
+        async void CarsHandler_SelectionChanged(object sender, EventArgs e)
+        {
+            await UpdatePositionKotAsync();
+            OnCenterUpdate(CenterMap = new Geopoint(Kot.Location.Position));
         }
 
         public delegate void CenterUpdateEvent(Geopoint point);
@@ -61,9 +68,6 @@ namespace KOT.DataModel.Handlers
             while (true)
             {
                 await UpdatePositionKotAsync();
-                if (CenterMap == null) OnCenterUpdate(CenterMap = new Geopoint(Kot.Location.Position));
-                MapControl.SetLocation(Kot, Kot.Location);
-
                 await Task.Delay(new TimeSpan(0, 0, 10));
             }
         }
@@ -73,6 +77,8 @@ namespace KOT.DataModel.Handlers
             var res = await TcpConnection.Send("BB" + CarId);
             if (!string.IsNullOrEmpty(res.Msg))
                 await Split(res.Msg);
+            if (CenterMap == null) OnCenterUpdate(CenterMap = new Geopoint(Kot.Location.Position));
+            MapControl.SetLocation(Kot, Kot.Location);
         }
 
         async void UpdatePositionPhone()

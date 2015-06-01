@@ -358,7 +358,7 @@
         <TextBox x:Name="tbEneble" TextWrapping="Wrap" VerticalAlignment="Top" BorderThickness="0,0,0,1" PlaceholderText="дд.мм.гггг" FontSize="16" Style="{StaticResource TextBoxStyle}" Background="{x:Null}" HorizontalAlignment="Left" Text="{Binding StartDateString, Mode=TwoWay}" Foreground="{StaticResource PrimeryText}" Grid.Row="2" Margin="32,9.5,32,0"/>
         <Button Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource LinkButtonStyle}" BorderBrush="{x:Null}" Grid.Row="2" MinHeight="48" Margin="32,0">
             <Button.Flyout>
-                <Flyout x:Name="FlyoutEnable" FlyoutPresenterStyle="{StaticResource BordersFlyoutPresenterStyle}" Placement="Full">
+                <Flyout x:Name="FlyoutEnable" FlyoutPresenterStyle="{StaticResource CurentFlyoutPresenterStyle}" Placement="Full">
                     <Grid Background="White">
                         <Grid.RowDefinitions>
                             <RowDefinition/>
@@ -372,7 +372,7 @@
         <TextBox x:Name="tbDisable" TextWrapping="Wrap" VerticalAlignment="Top" BorderThickness="0,0,0,1" PlaceholderText="дд.мм.гггг" FontSize="16" Style="{StaticResource TextBoxStyle}" Background="{x:Null}" HorizontalAlignment="Right" Text="{Binding EndDateString, Mode=TwoWay}" Foreground="{StaticResource PrimeryText}" Grid.Row="2" Margin="32,9.5,32,0"/>
         <Button Content="" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource LinkButtonStyle}" BorderBrush="{x:Null}" Grid.Row="2" MinHeight="48" Margin="32,0">
             <Button.Flyout>
-                <Flyout x:Name="FlyoutDisable" FlyoutPresenterStyle="{StaticResource BordersFlyoutPresenterStyle}" Placement="Full">
+                <Flyout x:Name="FlyoutDisable" FlyoutPresenterStyle="{StaticResource CurentFlyoutPresenterStyle}" Placement="Full">
                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Background="White">
                         <Grid.RowDefinitions>
                             <RowDefinition/>
