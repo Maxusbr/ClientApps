@@ -1053,6 +1053,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                     {
                         HistoryRows.Insert(i, r);
                         inserted = true;
+                        break;
                     }
                 }
                 if (inserted == false)

@@ -157,6 +157,7 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
                     }
                 }
                 historyMessages.AddRange(data);
+                DateTime dateDisplayed = currentAsked + TimeSpan.FromDays(1);
                 if (Application.Current != null)
                     Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                         {
@@ -165,7 +166,7 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
                                 //добавляем сюда один день, так как прошло вычитание на этапе завершения запроса
                                 //к серверу
                                 //TODO: Костыль, подумать как лучше
-                                DayRefreshed(currentAsked + TimeSpan.FromDays(1), data);
+                                DayRefreshed(dateDisplayed, data);
                         }));
 
                 ThreadGetter();
