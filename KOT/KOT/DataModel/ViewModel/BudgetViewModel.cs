@@ -13,11 +13,17 @@ using KOT.DataModel.Model;
 
 namespace KOT.DataModel.ViewModel
 {
-    public class BudgetViewModel: INotifyPropertyChanged
+    public class BudgetViewModel : INotifyPropertyChanged
     {
         public BudgetViewModel()
         {
             Init();
+            CarsHandler.SelectionChanged += CarsHandler_SelectionChanged;
+        }
+
+        async void CarsHandler_SelectionChanged(object sender, EventArgs e)
+        {
+            await Update(_countMonth);
         }
         private DateTime _current = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
 
@@ -26,24 +32,42 @@ namespace KOT.DataModel.ViewModel
             await Update(1);
         }
 
+        private int _countMonth = 1;
+
         public async Task Update(int count)
         {
-            if (BudgetHandler.Model == null)
-                await BudgetHandler.UpdateSource();
+            _countMonth = count;
+            await BudgetHandler.UpdateSource();
             OnPropertyChanged("TotalCost");
-            PivotItems.Clear();
-            for (var i = count-1; i >= 0; i--)
+            if (count > 1 || PivotItems.Count == 0)
             {
-                PivotItems.Add(new BudgetItemViewModel(_current.AddMonths(-i), await GetModel(-i)));
+                _pivotItems.Clear();
+                for (var i = count - 1; i >= 0; i--)
+                {
+                    await AddPivot(i);
+                }
+                SelectedPivot = PivotItems[PivotItems.Count - 1];
             }
-            SelectedPivot =PivotItems[PivotItems.Count - 1];
+            else
+                await UpdateItem();
+        }
+
+        private async Task AddPivot(int i)
+        {
+            PivotItems.Add(new BudgetItemViewModel(_current.AddMonths(-i), await GetModel(-i)));
+        }
+
+        private async Task UpdateItem()
+        {
+            await PivotItems[0].Update(_current);
         }
 
         private async Task<SpendingModel> GetModel(int indx)
         {
             var res = new SpendingModel();
-            var st = _current.AddMonths(indx); 
-            var end = _current.AddMonths(indx+1);
+            var st = _current.AddMonths(indx);
+            var end = _current.AddMonths(indx + 1);
+            res.Spends.Clear();
             foreach (var el in BudgetHandler.Model.Spends.Where(o => o.Date.ToDate >= st && o.Date.ToDate < end))
             {
                 res.Spends.Add(el);
@@ -52,7 +76,7 @@ namespace KOT.DataModel.ViewModel
             return res;
         }
 
-        public string TotalCost { get { return string.Format("{0} руб.", BudgetHandler.Model.TotalCost) ; } }
+        public string TotalCost { get { return string.Format("{0} руб.", BudgetHandler.Model.TotalCost); } }
         private readonly ObservableCollection<BudgetItemViewModel> _pivotItems = new ObservableCollection<BudgetItemViewModel>();
         private BudgetItemViewModel _selectedPivot;
         private bool _visableDetails;

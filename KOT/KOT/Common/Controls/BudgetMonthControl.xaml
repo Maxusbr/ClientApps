@@ -8,7 +8,7 @@
     x:Class="KOT.Common.Controls.BudgetMonthControl"
     mc:Ignorable="d"
     d:DesignHeight="400"
-    d:DesignWidth="400" RequestedTheme="Light">
+    d:DesignWidth="400" RequestedTheme="Light" Loaded="UserControl_Loaded">
     <UserControl.Resources>
     </UserControl.Resources>
     <Grid>

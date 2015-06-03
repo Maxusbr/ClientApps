@@ -133,7 +133,7 @@ namespace KOT.DataModel.Handlers
 
             var res = await TcpConnection.Send("BI" + CarId);
             if (!string.IsNullOrEmpty(res.Msg))
-                Split(res.Fx, res.Msg);
+                await Split(res.Fx, res.Msg);
             OnSourceChenged();
         }
 
@@ -148,7 +148,7 @@ namespace KOT.DataModel.Handlers
 
         }
 
-        private void Split(char fx, string msg)
+        private async Task Split(char fx, string msg)
         {
             try
             {
@@ -184,7 +184,7 @@ namespace KOT.DataModel.Handlers
             };
             var res = await TcpConnection.Send("BH" + CarId);
             if (!string.IsNullOrEmpty(res.Msg))
-                Split(res.Fx, res.Msg);
+                await Split(res.Fx, res.Msg);
         }
     }
 }

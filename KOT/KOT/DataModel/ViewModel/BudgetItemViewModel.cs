@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using KOT.Annotations;
+using KOT.DataModel.Handlers;
 using KOT.DataModel.Model;
 
 namespace KOT.DataModel.ViewModel
@@ -15,7 +16,6 @@ namespace KOT.DataModel.ViewModel
     public class BudgetItemViewModel : INotifyPropertyChanged
     {
         private readonly SpendingViewModel _viewModel;
-        private readonly SpendingModel _model;
         private readonly ObservableCollection<OneSpendItem> _listItems = new ObservableCollection<OneSpendItem>();
 
         public BudgetItemViewModel()
@@ -29,8 +29,22 @@ namespace KOT.DataModel.ViewModel
         public BudgetItemViewModel(DateTime date, SpendingModel model)
         {
             Date = date;
-            _model = model;
+            Model = model;
             _viewModel = new SpendingViewModel(model);
+        }
+
+        public async Task Update(DateTime date)
+        {
+            var st = date;
+            var end = date.AddMonths(1);
+            var model = BudgetHandler.Model;
+            Model.DID = model.DID;
+            Model.Spends.Clear();
+            foreach (var el in model.Spends.Where(o => o.Date.ToDate >= st && o.Date.ToDate < end))
+                Model.Spends.Add(el);
+            Model.TotalCost = Model.Spends.Sum(o => o.Sum);
+            ViewModel.Update(model);
+            OnPropertyChanged("Header");
         }
 
         public string Header { get { return Date.ToString(@"MMMM `yy"); } }
@@ -49,7 +63,7 @@ namespace KOT.DataModel.ViewModel
 
         public ObservableCollection<OneSpendItem> ListItem { get { return _listItems; } }
 
-        public SpendingModel Model { get { return _model; } }
+        public SpendingModel Model { get; set; }
 
         public int SelectedCategoryId { get; set; }
 

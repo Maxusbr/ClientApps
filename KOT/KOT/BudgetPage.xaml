@@ -100,7 +100,7 @@
         <DataTemplate x:Key="PivotTemplate">
             <PivotItem Header="{Binding Header}" Margin="-19,-21,-19,0">
                 <Grid>
-                    <Controls:BudgetMonthControl DataContext="{Binding}" Click="BudgetMonthControl_OnClick"/>
+                    <Controls:BudgetMonthControl Click="BudgetMonthControl_OnClick"/>
                 </Grid>
             </PivotItem>
         </DataTemplate>

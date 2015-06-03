@@ -135,10 +135,10 @@ namespace KOT.DataModel.Handlers
             RecomendetWorkTypes.Clear();
             var res = await TcpConnection.Send("BC" + CarId);
             if (!string.IsNullOrEmpty(res.Msg))
-                Split(res.Msg);
+                await Split(res.Msg);
         }
 
-        private void Split(string msg)
+        private async Task Split(string msg)
         {
             try
             {

@@ -10,11 +10,17 @@ using KOT.DataModel.Model;
 
 namespace KOT.DataModel.ViewModel
 {
-    public class SpendingViewModel
+    public class SpendingViewModel:INotifyPropertyChanged
     {
-        private readonly SpendingModel _model;
+        private SpendingModel _model;
         private const double H = 200;
         private double _maxvalue;
+        private double _rashodCost;
+        private double _shopCost;
+        private double _carwashCost;
+        private double _parkingCost;
+        private double _gasCost;
+
         public SpendingViewModel()
         {
             if (DesignMode.DesignModeEnabled)
@@ -48,10 +54,15 @@ namespace KOT.DataModel.ViewModel
         }
         public SpendingViewModel(SpendingModel model)
         {
-            _model = model;
-            Calc();
+            Update(model);
         }
 
+        public void Update(SpendingModel model)
+        {
+            _model = model;
+            Calc();
+            
+        }
         private void Calc()
         {
             GasCost = _model.Spends.Where(w => w.idClass == 0).Sum(o => o.Sum);
@@ -60,6 +71,16 @@ namespace KOT.DataModel.ViewModel
             ShopCost = _model.Spends.Where(w => w.idClass == 3).Sum(o => o.Sum);
             RashodCost = _model.Spends.Where(w => w.idClass == 4).Sum(o => o.Sum);
             _maxvalue = Math.Max(GasCost, Math.Max(ParkingCost, Math.Max(CarwashCost, Math.Max(ShopCost, RashodCost))));
+            UpdateUi();
+        }
+
+        private void UpdateUi()
+        {
+            OnPropertyChanged("GasCostValue");
+            OnPropertyChanged("ParkingCostValue");
+            OnPropertyChanged("CarwashCostValue");
+            OnPropertyChanged("ShopCostValue");
+            OnPropertyChanged("RashodCostValue");
         }
 
         public string TotalCost { get { return _model.TotalCost > 0 ? string.Format("{0} руб.", _model.TotalCost) : ""; } }
@@ -84,15 +105,78 @@ namespace KOT.DataModel.ViewModel
 
         public double RashodCostValue { get { return RashodCost * H / _maxvalue; } }
 
-        public double GasCost { get; set; }
+        public double GasCost
+        {
+            get { return _gasCost; }
+            set
+            {
+                if (value.Equals(_gasCost)) return;
+                _gasCost = value;
+                OnPropertyChanged();
+                OnPropertyChanged("GasCostTxt");
+            }
+        }
 
-        public double ParkingCost { get; set; }
+        public double ParkingCost
+        {
+            get { return _parkingCost; }
+            set
+            {
+                if (value.Equals(_parkingCost)) return;
+                _parkingCost = value;
+                OnPropertyChanged();
+                OnPropertyChanged("ParkingCostTxt");
+            }
+        }
 
-        public double CarwashCost { get; set; }
+        public double CarwashCost
+        {
+            get { return _carwashCost; }
+            set
+            {
+                if (value.Equals(_carwashCost)) return;
+                _carwashCost = value;
+                OnPropertyChanged();
+                OnPropertyChanged("CarwashCostTxt");
+            }
+        }
 
-        public double ShopCost { get; set; }
+        public double ShopCost
+        {
+            get { return _shopCost; }
+            set
+            {
+                if (value.Equals(_shopCost)) return;
+                _shopCost = value;
+                OnPropertyChanged();
+                OnPropertyChanged("ShopCostTxt");
+            }
+        }
 
-        public double RashodCost { get; set; }
+        public double RashodCost
+        {
+            get { return _rashodCost; }
+            set
+            {
+                if (value.Equals(_rashodCost)) return;
+                _rashodCost = value;
+                OnPropertyChanged();
+                OnPropertyChanged("RashodCostTxt");
+            }
+        }
+
+        #region PropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
 
     }
 }

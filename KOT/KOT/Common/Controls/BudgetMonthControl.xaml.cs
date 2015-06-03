@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // Шаблон элемента пользовательского элемента управления задокументирован по адресу http://go.microsoft.com/fwlink/?LinkId=234236
+using KOT.DataModel.ViewModel;
 
 namespace KOT.Common.Controls
 {
@@ -56,13 +57,24 @@ namespace KOT.Common.Controls
             OnClose();
         }
 
+        private BudgetItemViewModel _vm;
         public delegate void CustomClickEvent(object sender);
         public event CustomClickEvent Click;
-
         private void OnClose()
         {
-            CustomClickEvent handler = Click;
-            if (handler != null) handler(this);
+            if (Click != null) Click(this);
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            _vm = DataContext as BudgetItemViewModel;
+            if (_vm == null) return;
+            _vm.PropertyChanged += _vm_PropertyChanged;
+        }
+
+        void _vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            UpdateLayout();
         }
     }
 }

@@ -124,12 +124,12 @@ namespace KOT.DataModel.Handlers
             _historyWorks.Clear();
             var res = await TcpConnection.Send("BD" + CarId);
             if (!string.IsNullOrEmpty(res.Msg))
-                Split(res.Msg);
+                await Split(res.Msg);
 
             UpdateSource();
         }
 
-        private void Split(string msg)
+        private async Task Split(string msg)
         {
             try
             {

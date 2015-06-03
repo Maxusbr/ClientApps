@@ -89,10 +89,10 @@ namespace KOT.DataModel.Handlers
             //var res = await TcpConnection.Send("CA" + CarId);
             var res = await TcpConnection.Send("CB" + CarId);
             if (!string.IsNullOrEmpty(res.Msg))
-                Split(res.Msg);
+                await Split(res.Msg);
         }
 
-        private void Split(string msg)
+        private async Task Split(string msg)
         {
             try
             {

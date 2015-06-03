@@ -31,7 +31,7 @@ namespace KOT.DataModel.Handlers
             
             UpdatePositionPhone();
             UpdatePositionKot();
-            CarsHandler.SelectionChanged += CarsHandler_SelectionChanged;
+            //CarsHandler.SelectionChanged += CarsHandler_SelectionChanged;
         }
 
         async void CarsHandler_SelectionChanged(object sender, EventArgs e)
@@ -57,9 +57,10 @@ namespace KOT.DataModel.Handlers
         public static KotElement Phone { get { return Instance._phone; } }
         private string CarId { get { return CarsHandler.SelectedCar.DID; } }
 
-        public static async void GetMapElements()
+        public static async Task GetMapElements()
         {
             ServicePoints.Clear();
+            await Instance.UpdatePositionKotAsync();
             await MapsElementsDataHandler.GetMapElements();
         }
 

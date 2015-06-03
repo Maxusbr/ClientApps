@@ -20,8 +20,8 @@ namespace KOT.DataModel.ViewModel
             Location = new Geopoint(new BasicGeoposition
             {
                 Altitude = 0,
-                Latitude = model.Latitude/10000.0,
-                Longitude = model.Longitude/10000.0
+                Latitude = model.Latitude/1000000.0,
+                Longitude = model.Longitude/1000000.0
             });
             NAP = new Point(0, 1);
             StylePoint = Application.Current.Resources["ServiceRadioButtonStyle"] as Style;
@@ -33,8 +33,8 @@ namespace KOT.DataModel.ViewModel
             Location = new Geopoint(new BasicGeoposition
             {
                 Altitude = 0,
-                Latitude = model.Latitude/10000.0,
-                Longitude = model.Longitude/10000.0
+                Latitude = model.Latitude/1000000.0,
+                Longitude = model.Longitude/1000000.0
             });
             NAP = new Point(0, 1);
             StylePoint = Application.Current.Resources[style] as Style;

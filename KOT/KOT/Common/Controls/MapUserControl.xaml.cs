@@ -43,7 +43,18 @@ namespace KOT.Common.Controls
         {
             this.InitializeComponent();
             InitializeControls();
-            MapSourceHandler.CenterUpdate += SetCenterLocation;
+            //MapSourceHandler.CenterUpdate += SetCenterLocation;
+            CarsHandler.SelectionChanged += CarsHandler_SelectionChanged;
+        }
+
+        private async void InstanceOnLoadSourceComplete(object sender, EventArgs eventArgs)
+        {
+            
+        }
+
+        void CarsHandler_SelectionChanged(object sender, EventArgs e)
+        {
+            UpdateMapElements();
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -51,9 +62,20 @@ namespace KOT.Common.Controls
             UpdateMapElements();
         }
 
-        private void UpdateMapElements()
+        private async void UpdateMapElements()
         {
-            MapSourceHandler.GetMapElements();
+            await MapSourceHandler.GetMapElements();
+            if (MapSourceHandler.ServicePoints.Count == 0)
+            {
+                SetCenterLocation(MapSourceHandler.Kot.Location);
+                return;
+            }
+            var positions = MapSourceHandler.ServicePoints.Select(el => el.Location.Position).ToList();
+            positions.Add(MapSourceHandler.Kot.Location.Position);
+            var box = GeoboundingBox.TryCompute(positions);
+
+            await Map.TrySetViewBoundsAsync(box, null, MapAnimationKind.Default);
+            SetCenterLocation(new Geopoint(box.Center));
         }
 
         private void InitializeControls()
@@ -66,18 +88,6 @@ namespace KOT.Common.Controls
                 Map.Children.Add(MapSourceHandler.Kot);
             }
             MapControls.ItemsSource = MapSourceHandler.ServicePoints;
-            MapSourceHandler.ServicePoints.CollectionChanged += ServicePoints_CollectionChanged;
-
-        }
-
-        private async void ServicePoints_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            var positions = MapSourceHandler.ServicePoints.Select(el => el.Location.Position).ToList();
-            positions.Add(MapSourceHandler.Kot.Location.Position);
-            var box = GeoboundingBox.TryCompute(positions);
-
-            SetCenterLocation(new Geopoint(box.Center));
-            await Map.TrySetViewBoundsAsync(box, null, MapAnimationKind.Default);
         }
 
         public async void AddRoute(bool p)
@@ -89,6 +99,10 @@ namespace KOT.Common.Controls
             if (!p) return;
             if (routeResult == null || routeResult.Status != MapRouteFinderStatus.Success)
             {
+                var positions = new List<BasicGeoposition>();
+                positions.Add(MapSourceHandler.Kot.Location.Position);
+                positions.Add(MapSourceHandler.Phone.Location.Position);
+                var box = GeoboundingBox.TryCompute(positions);
                 var kot = MapSourceHandler.Kot.Location.Position;
                 var phone = MapSourceHandler.Phone.Location.Position;
                 var nw = new BasicGeoposition
@@ -103,8 +117,8 @@ namespace KOT.Common.Controls
                 };
 
                 await Map.TrySetViewBoundsAsync(
-                new GeoboundingBox(nw, se),
-                null,
+                box//new GeoboundingBox(nw, se)
+                ,null,
                 MapAnimationKind.Bow);
                 return;
             }

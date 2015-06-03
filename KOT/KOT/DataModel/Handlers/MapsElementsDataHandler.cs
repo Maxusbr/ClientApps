@@ -16,8 +16,23 @@ namespace KOT.DataModel.Handlers
 {
     public class MapsElementsDataHandler
     {
-        private static readonly MapsElementsDataHandler Instance = new MapsElementsDataHandler();
-        
+        private static MapsElementsDataHandler _instance;
+        public static MapsElementsDataHandler Instance
+        {
+            get { return _instance ?? (_instance = new MapsElementsDataHandler()); }
+        }
+
+        public MapsElementsDataHandler()
+        {
+            _instance = this;
+        }
+
+        public static event EventHandler LoadSourceComplete;
+        private void OnLoadSourceComplete()
+        {
+            if (LoadSourceComplete != null) LoadSourceComplete(this, EventArgs.Empty);
+        }
+
         public static async Task GetMapElements(int id = 0)
         {
             await Instance.GetMapElementsAsync(id);
@@ -82,7 +97,7 @@ namespace KOT.DataModel.Handlers
                 var query = string.Format("DD{0};{1};{2}", id, latitude, longitude);
                 var res = await TcpConnection.Send(query);
                 if (!string.IsNullOrEmpty(res.Msg))
-                    Split(res.Fx,res.Msg);
+                    await Split(res.Fx,res.Msg);
             }
             catch (Exception e)
             {
@@ -93,16 +108,16 @@ namespace KOT.DataModel.Handlers
         {
             switch (model.idCategory)
             {
-                case 0:
+                case 1:
                     AddGasElement(model);
                     break;
-                case 1:
+                case 2:
                     AddWashElement(model);
                     break;
-                case 2:
+                case 3:
                     AddShopElement(model);
                     break;
-                case 3:
+                case 4:
                     AddServiceElement(model);
                     break;
             }
@@ -171,22 +186,23 @@ namespace KOT.DataModel.Handlers
 
             var res = await TcpConnection.Send("DE" + model.ID);
             if (!string.IsNullOrEmpty(res.Msg))
-                Split(res.Fx, res.Msg);
+                await Split(res.Fx, res.Msg);
             
             return _detail ?? new PointDetailsModel();
         }
 
-        private void Split(char fx, string msg)
+        private async Task Split(char fx, string msg)
         {
             try
             {
                 if (fx == 'D' || fx == 'd')
                 {
-                    PlacesModel[] temp = JsonConvert.DeserializeObject<PlacesModel[]>(msg);
+                    var temp = JsonConvert.DeserializeObject<PlacesModel[]>(msg);
                     foreach (var el in temp)
                     {
                         AddElements(el);
                     }
+                    OnLoadSourceComplete();
                 }
                 if (fx == 'E' || fx == 'e')
                     _detail = JsonConvert.DeserializeObject<PointDetailsModel>(msg);
