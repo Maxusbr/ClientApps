@@ -79,7 +79,7 @@ namespace KOT.DataModel.Handlers
             {
                 var latitude =(int)Math.Truncate(MapSourceHandler.Kot.Location.Position.Latitude * 10000);
                 var longitude = (int)Math.Truncate(MapSourceHandler.Kot.Location.Position.Longitude * 10000);
-                var query = string.Format("DC{0};{1};{2}", id, latitude, longitude);
+                var query = string.Format("DD{0};{1};{2}", id, latitude, longitude);
                 var res = await TcpConnection.Send(query);
                 if (!string.IsNullOrEmpty(res.Msg))
                     Split(res.Fx,res.Msg);
@@ -169,7 +169,7 @@ namespace KOT.DataModel.Handlers
 
             #endregion
 
-            var res = await TcpConnection.Send("DD" + model.ID);
+            var res = await TcpConnection.Send("DE" + model.ID);
             if (!string.IsNullOrEmpty(res.Msg))
                 Split(res.Fx, res.Msg);
             
@@ -180,12 +180,15 @@ namespace KOT.DataModel.Handlers
         {
             try
             {
-                if (fx == 'C' || fx == 'c')
-                    foreach (var el in JsonConvert.DeserializeObject<PlacesModel[]>(msg))
+                if (fx == 'D' || fx == 'd')
+                {
+                    PlacesModel[] temp = JsonConvert.DeserializeObject<PlacesModel[]>(msg);
+                    foreach (var el in temp)
                     {
                         AddElements(el);
                     }
-                if (fx == 'D' || fx == 'd')
+                }
+                if (fx == 'E' || fx == 'e')
                     _detail = JsonConvert.DeserializeObject<PointDetailsModel>(msg);
             }
             catch (Exception)

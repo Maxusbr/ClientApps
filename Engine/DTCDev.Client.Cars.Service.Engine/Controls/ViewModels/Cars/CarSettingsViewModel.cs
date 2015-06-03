@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows;
 
 namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Cars
@@ -25,6 +26,40 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Cars
             else
                 LoadCarSettings();
             CarStorage.Instance.UpdateProtocolTypeComplete += Instance_UpdateProtocolTypeComplete;
+            CarStorage.Instance.StartSendProtocolComplete += Instance_StartSendProtocolComplete;
+            CarStorage.Instance.GetSendStatusComplete += Instance_GetSendStatusComplete;
+        }
+
+        void Instance_GetSendStatusComplete(object sender, EventArgs e)
+        {
+            if (CarStorage.Instance.ProtocolSended)
+                VisSended = Visibility.Visible;
+            else
+                VisSended = Visibility.Collapsed;
+            if (CarStorage.Instance.ProtocolSubmited)
+                VisSubmited = Visibility.Visible;
+            else
+                VisSubmited = Visibility.Collapsed;
+
+            if (CarStorage.Instance.ProtocolSended && CarStorage.Instance.ProtocolSubmited)
+                new Thread(thrClose).Start();
+        }
+
+        private void thrClose()
+        {
+            Thread.Sleep(2000);
+            if (Application.Current != null)
+            {
+                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        VisStartComplete = Visibility.Collapsed;
+                    }));
+            }
+        }
+
+        void Instance_StartSendProtocolComplete(object sender, EventArgs e)
+        {
+            VisServer = Visibility.Visible;
         }
 
         void Instance_UpdateProtocolTypeComplete(object sender, EventArgs e)
@@ -203,6 +238,51 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Cars
             }
         }
 
+        private Visibility _visStartComplete = Visibility.Collapsed;
+        public Visibility VisStartComplete
+        {
+            get { return _visStartComplete; }
+            set
+            {
+                _visStartComplete = value;
+                this.OnPropertyChanged("VisStartComplete");
+            }
+        }
+
+        private Visibility _visServer = Visibility.Collapsed;
+        private Visibility _visSended = Visibility.Collapsed;
+        private Visibility _visSubmited = Visibility.Collapsed;
+
+        public Visibility VisServer
+        {
+            get { return _visServer; }
+            set
+            {
+                _visServer = value;
+                this.OnPropertyChanged("VisServer");
+            }
+        }
+
+        public Visibility VisSended
+        {
+            get { return _visSended; }
+            set
+            {
+                _visSended = value;
+                this.OnPropertyChanged("VisSended");
+            }
+        }
+
+        public Visibility VisSubmited
+        {
+            get { return _visSubmited; }
+            set
+            {
+                _visSubmited = value;
+                this.OnPropertyChanged("VisSubmited");
+            }
+        }
+
         private bool _enableSave = false;
         public bool EnableSave
         {
@@ -286,6 +366,11 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Cars
                 IDTransmission = TransmissionType.id,
                 ProtocolType = CarStorage.Instance.SelectedCar.CarModel.DID
             });
+            VisServer = Visibility.Collapsed;
+            VisSended = Visibility.Collapsed;
+            VisSubmited = Visibility.Collapsed;
+            VisStartComplete = Visibility.Visible;
+            EnableSave = false;
         }
     }
 }
