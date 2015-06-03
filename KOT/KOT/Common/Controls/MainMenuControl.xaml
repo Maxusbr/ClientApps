@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ViewModel="using:KOT.DataModel.ViewModel"
     x:Class="KOT.Common.Controls.MainMenuControl"
-    mc:Ignorable="d" RequestedTheme="Light" MinWidth="245" MinHeight="420" VerticalContentAlignment="Stretch"
+    mc:Ignorable="d" HorizontalAlignment="Left" VerticalAlignment="Top" RequestedTheme="Light" MinWidth="245" MinHeight="420"
     >
     <UserControl.Resources>
         <x:Double x:Key="CheckBoxAndRadioButtonMinWidthSize2">168</x:Double>
@@ -67,11 +67,7 @@
             </Setter>
         </Style>
         <Style x:Key="ToggleButtonStyle" TargetType="AppBarToggleButton">
-            <Setter Property="Foreground">
-            	<Setter.Value>
-            		<SolidColorBrush Color="White"/>
-            	</Setter.Value>
-            </Setter>
+            <Setter Property="Foreground" Value="{ThemeResource AppBarItemForegroundThemeBrush}"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
@@ -220,9 +216,9 @@
                 <Image Height="56" Source="ms-appx:///Assets/drawable-xxhdpi/logo_reg_page_120dp.png" Width="56" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,8"/>
                 <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding NameDrive}" VerticalAlignment="Top" Style="{StaticResource BaseTextBlockStyle}" Foreground="White" Grid.Row="1"/>
                 <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding MarkModel}" VerticalAlignment="Top" Style="{StaticResource BodyTextBlockStyle}" Foreground="White" Grid.Row="2" FontSize="16"/>
-                <AppBarToggleButton x:Name="appBarToggleButton" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{StaticResource ToggleButtonStyle}" Grid.Row="2" Margin="0,0,8,0" IsChecked="False" HorizontalContentAlignment="Right" RequestedTheme="Light">
+                <AppBarToggleButton x:Name="appBarToggleButton" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{StaticResource ToggleButtonStyle}" Grid.Row="2" Margin="0,0,8,0" IsChecked="False" HorizontalContentAlignment="Right">
                     <AppBarToggleButton.Icon>
-                        <BitmapIcon UriSource="ms-appx:///Assets/drawable-xxhdpi/ic_arrow_drop_down_24dp.png" Width="24" Height="24" Foreground="White"/>
+                        <BitmapIcon UriSource="ms-appx:///Assets/drawable-xxhdpi/ic_arrow_drop_down_24dp.png" Width="24" Height="24"/>
                     </AppBarToggleButton.Icon>
                 </AppBarToggleButton>
             </Grid>
@@ -250,7 +246,7 @@
                 </Grid.RowDefinitions>
                 <RadioButton x:Name="Alarm" Content="Уведомления" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{StaticResource MainMenuRadioButtonStyle}" IsChecked="{Binding IsAlarmCheck, Mode=TwoWay}" Foreground="{StaticResource PrimeryText}" Click="Alarm_Checked"/>
                 <RadioButton x:Name="Settings" Content="Настройки" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{StaticResource MainMenuRadioButtonStyle}" IsChecked="{Binding IsSettingsCheck, Mode=TwoWay}" Grid.Row="1" Foreground="{StaticResource PrimeryText}" Click="Settings_Checked"/>
-                <RadioButton x:Name="About" Content="КОТ и создатели" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{StaticResource MainMenuRadioButtonStyle}" IsChecked="{Binding IsAboutCheck, Mode=TwoWay}" Grid.Row="2" Foreground="{StaticResource PrimeryText}" Click="About_Checked"/>
+                <RadioButton x:Name="About" Content="КОТ и создатели" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{StaticResource MainMenuRadioButtonStyle}" IsChecked="{Binding IsAboutCheck, Mode=TwoWay}" Grid.Row="2" Foreground="{StaticResource AccentColor}" Click="About_Checked"/>
             </Grid>
         </Border>
         <Border Background="White" Grid.Row="3" Padding="0" Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=appBarToggleButton}" BorderBrush="{StaticResource DividerText}" BorderThickness="0,0,1,1">
