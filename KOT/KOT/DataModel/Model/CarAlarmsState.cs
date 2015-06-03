@@ -22,5 +22,8 @@ namespace KOT.DataModel.Model
         //Заперта ли дверь 0 – нет, 1 - да
         [JsonProperty(PropertyName = "D")]
         public int IsDoorClosed { get; set; }
+
+        [JsonProperty(PropertyName = "E")]
+        public int IsEvacuation { get; set; }
     }
 }

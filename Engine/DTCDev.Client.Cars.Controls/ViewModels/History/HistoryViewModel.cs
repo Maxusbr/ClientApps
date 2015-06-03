@@ -1046,7 +1046,18 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
             if (replaced == false)
             {
-                HistoryRows.Add(r);
+                bool inserted = false;
+                for (int i = 0; i < HistoryRows.Count(); i++)
+                {
+                    if (HistoryRows[i].Date < r.Date)
+                    {
+                        HistoryRows.Insert(i, r);
+                        inserted = true;
+                        break;
+                    }
+                }
+                if (inserted == false)
+                    HistoryRows.Add(r);
                 DistanceAll += r.Mileage;
             }
         }
