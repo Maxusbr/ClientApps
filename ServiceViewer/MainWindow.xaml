@@ -211,6 +211,7 @@
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="Стоимость работ" Padding="7" Click="menuItem_ClickSlideWorksSettings"/>
+                    <MenuItem Header="Настройки для тест-драйва" Padding="7" Click="menuItem_ClickTestDriveSettings"/>
                 </MenuItem>
                 <MenuItem Header="ПОМОЩЬ" Padding="10,2" >
                     <MenuItem Header="Справка" Padding="7" Click="MenuItem_ClickHelpChange"/>

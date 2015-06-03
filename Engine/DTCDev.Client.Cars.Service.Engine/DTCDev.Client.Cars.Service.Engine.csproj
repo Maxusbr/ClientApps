@@ -59,6 +59,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\ViewModels\AddNewCarTestDriveViewModel.cs" />
     <Compile Include="Controls\ViewModels\AddNewCarViewModel.cs">
       <SubType>Code</SubType>
     </Compile>

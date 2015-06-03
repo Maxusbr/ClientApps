@@ -362,5 +362,10 @@ namespace CarServiceViewer
             grdContent.Children.Clear();
             grdContent.Children.Add(view);
         }
+
+        private void menuItem_ClickTestDriveSettings(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

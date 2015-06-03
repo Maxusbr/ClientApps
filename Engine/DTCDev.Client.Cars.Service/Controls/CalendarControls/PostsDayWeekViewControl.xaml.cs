@@ -109,6 +109,7 @@ namespace DTCDev.Client.Cars.Service.Controls.CalendarControls
                       new OrderViewModel { DateWork = dateWork, PostID = vm.Post.ID, IsChanged = false, ID = vm.Orders.Count });
             order.IsCompleteSaved += OrderOnIsCompleteSaved;
             var detail = new CardOrder { DataContext = order };
+            ccDetail.Children.Clear();
             ccDetail.Children.Add(detail);
             tbPost.Text = vm.Post.Name;
             gDetail.Visibility = Visibility.Visible;
