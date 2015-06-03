@@ -269,6 +269,7 @@
     <Compile Include="DataModel\Model\PlacesModel.cs" />
     <Compile Include="DataModel\Model\PointDetailsModel.cs" />
     <Compile Include="DataModel\Model\ReciveMessageModel.cs" />
+    <Compile Include="DataModel\Model\RecomendationModel.cs" />
     <Compile Include="DataModel\Model\SCarData.cs" />
     <Compile Include="DataModel\Model\SNaviData.cs" />
     <Compile Include="DataModel\Model\SpendingClassesModel.cs" />
