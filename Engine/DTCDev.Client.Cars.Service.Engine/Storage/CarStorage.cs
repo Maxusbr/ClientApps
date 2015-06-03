@@ -38,6 +38,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Storage
         public event EventHandler LoadCurrentCarSettingsComplete;
 
         public event EventHandler UpdateProtocolTypeComplete;
+        public event EventHandler StartSendProtocolComplete;
+        public event EventHandler GetSendStatusComplete;
 
         public CarStorage()
         {
@@ -93,6 +95,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Storage
         public string NewProtocolType { get; set; }
 
         public string NewYears { get; set; }
+
+        public bool ProtocolSended { get; set; }
+
+        public bool ProtocolSubmited { get; set; }
 
 
         public void Start()
@@ -234,9 +240,32 @@ namespace DTCDev.Client.Cars.Service.Engine.Storage
                 UpdateProtocolTypeComplete(this, new EventArgs());
         }
 
+        public void SetStartSendProtocol()
+        {
+            if (StartSendProtocolComplete != null)
+                StartSendProtocolComplete(this, new EventArgs());
+            new Thread(ThreadGetStatus).Start();
+        }
+
+        public void SetSendStatus(bool sended, bool submited)
+        {
+            ProtocolSended = sended;
+            ProtocolSubmited = submited;
+            if (GetSendStatusComplete != null)
+                GetSendStatusComplete(this, new EventArgs());
+        }
 
 
 
+        private void ThreadGetStatus()
+        {
+            while(ProtocolSended==false && ProtocolSubmited==false)
+            {
+                Thread.Sleep(5000);
+                CarsHandler.Instance.GetSettingsStatus();
+            }
+            Console.WriteLine("OK");
+        }
 
 
 
@@ -308,6 +337,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Storage
         {
             CarsHandler.Instance.SaveNewSettings(model);
         }
+
+
 
     }
 }

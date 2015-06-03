@@ -57,6 +57,25 @@
             <TextBlock Text="{Binding Path=ProtocolType}" Grid.Column="2" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="9" Margin="0,10,0,9"/>
             <TextBlock Text="Вы изменили тип автомобиля." Grid.Row="11" Grid.ColumnSpan="3" TextAlignment="Center" Visibility="{Binding Path=VisChanges}" VerticalAlignment="Center" FontWeight="Bold"/>
             <Button Command="{Binding Path=SaveCommand}" Grid.Row="13" Content="Сохранить изменения" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding Path=VisChanges}" IsEnabled="{Binding Path=EnableSave}"/>
-        </Grid>    
+        </Grid>
+        <Grid Grid.Column="1" Margin="40" Visibility="{Binding Path=VisStartComplete}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Отправка на сервер" Grid.Column="2" FontSize="16" VerticalAlignment="Center"/>
+            <TextBlock Text="Отправлено контроллеру" Grid.Row="1" Grid.Column="2" FontSize="16" VerticalAlignment="Center"/>
+            <TextBlock Text="Получено подтверждение смены протокола" Grid.Row="2" Grid.Column="2" FontSize="16" VerticalAlignment="Center"/>
+            <Image Visibility="{Binding Path=VisServer}" Width="32" Height="32" Source="/DTCDev.Client.Cars.Service;component/Assets/Images/thumbs_up.png"/>
+            <Image Visibility="{Binding Path=VisSended}" Grid.Row="1" Width="32" Height="32" Source="/DTCDev.Client.Cars.Service;component/Assets/Images/thumbs_up.png"/>
+            <Image Visibility="{Binding Path=VisSubmited}" Grid.Row="2" Width="32" Height="32" Source="/DTCDev.Client.Cars.Service;component/Assets/Images/thumbs_up.png"/>
+        </Grid>
     </Grid>
 </UserControl>

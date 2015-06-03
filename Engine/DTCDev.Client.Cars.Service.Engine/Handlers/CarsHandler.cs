@@ -338,6 +338,15 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             catch { }
         }
 
+        public void GetSettingsStatus()
+        {
+            try
+            {
+                TCPConnection.Instance.SendData("BV");
+            }
+            catch { }
+        }
+
 
 
 
@@ -417,6 +426,14 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                 case 't':
                 case 'T':
                     FillNewSettingsInfo(row);
+                    break;
+                case 'u':
+                case 'U':
+                    FillstartSendProtocol();
+                    break;
+                case 'v':
+                case 'V':
+                    FillsendSatus(row);
                     break;
 
             }
@@ -721,6 +738,42 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                     }));
             }
             catch { }
+        }
+
+        private void FillstartSendProtocol()
+        {
+            try
+            {
+                if (Application.Current != null)
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        CarStorage.Instance.SetStartSendProtocol();
+                    }));
+            }
+            catch { }
+        }
+
+        private void FillsendSatus(string row)
+        {
+            string[] temp = row.Split(';');
+            bool sended = false;
+            bool submited = false;
+            if (temp[0] == "1")
+                sended = true;
+            else
+                sended = false;
+            if(temp.Length>1)
+            {
+                if (temp[1] == "1")
+                    submited = true;
+                else
+                    submited = false;
+            }
+            if (Application.Current != null)
+                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    CarStorage.Instance.SetSendStatus(sended, submited);
+                }));
         }
     }
 }
