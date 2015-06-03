@@ -256,6 +256,7 @@
     <Compile Include="DataModel\Handlers\WorksDataHandler.cs" />
     <Compile Include="DataModel\Model\CarAlarmsState.cs" />
     <Compile Include="DataModel\Model\CarHistoryWorkReport.cs" />
+    <Compile Include="DataModel\Model\CarListWorkDataModel.cs" />
     <Compile Include="DataModel\Model\CarListBaseDataModel.cs" />
     <Compile Include="DataModel\Model\CarStateFullModel.cs" />
     <Compile Include="DataModel\Model\CityModel.cs" />

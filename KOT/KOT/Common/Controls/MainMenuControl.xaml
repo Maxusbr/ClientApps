@@ -218,7 +218,7 @@
                 <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding MarkModel}" VerticalAlignment="Top" Style="{StaticResource BodyTextBlockStyle}" Foreground="White" Grid.Row="2" FontSize="16"/>
                 <AppBarToggleButton x:Name="appBarToggleButton" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{StaticResource ToggleButtonStyle}" Grid.Row="2" Margin="0,0,8,0" IsChecked="False" HorizontalContentAlignment="Right">
                     <AppBarToggleButton.Icon>
-                        <BitmapIcon UriSource="ms-appx:///Assets/drawable-xxhdpi/ic_arrow_drop_down_24dp.png" Width="24" Height="24"/>
+                        <BitmapIcon UriSource="ms-appx:///Assets/drawable-xxhdpi/ic_arrow_drop_down_24dp.png" Width="24" Height="24" Foreground="White"/>
                     </AppBarToggleButton.Icon>
                 </AppBarToggleButton>
             </Grid>
@@ -246,7 +246,7 @@
                 </Grid.RowDefinitions>
                 <RadioButton x:Name="Alarm" Content="Уведомления" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{StaticResource MainMenuRadioButtonStyle}" IsChecked="{Binding IsAlarmCheck, Mode=TwoWay}" Foreground="{StaticResource PrimeryText}" Click="Alarm_Checked"/>
                 <RadioButton x:Name="Settings" Content="Настройки" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{StaticResource MainMenuRadioButtonStyle}" IsChecked="{Binding IsSettingsCheck, Mode=TwoWay}" Grid.Row="1" Foreground="{StaticResource PrimeryText}" Click="Settings_Checked"/>
-                <RadioButton x:Name="About" Content="КОТ и создатели" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{StaticResource MainMenuRadioButtonStyle}" IsChecked="{Binding IsAboutCheck, Mode=TwoWay}" Grid.Row="2" Foreground="{StaticResource AccentColor}" Click="About_Checked"/>
+                <RadioButton x:Name="About" Content="КОТ и создатели" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{StaticResource MainMenuRadioButtonStyle}" IsChecked="{Binding IsAboutCheck, Mode=TwoWay}" Grid.Row="2" Foreground="{StaticResource PrimeryText}" Click="About_Checked"/>
             </Grid>
         </Border>
         <Border Background="White" Grid.Row="3" Padding="0" Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=appBarToggleButton}" BorderBrush="{StaticResource DividerText}" BorderThickness="0,0,1,1">

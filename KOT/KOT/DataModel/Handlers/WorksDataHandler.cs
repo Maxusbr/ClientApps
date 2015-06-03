@@ -142,7 +142,9 @@ namespace KOT.DataModel.Handlers
         {
             try
             {
-                foreach (var el in JsonConvert.DeserializeObject<WorkType[]>(msg))
+                var res = JsonConvert.DeserializeObject<CarListWorkDataModel>(msg);
+                if(res == null) return;
+                foreach (var el in res.WorkTypes)
                 {
                     RecomendetWorkTypes.Add(new WorkTypeViewModel(el));
                 }
