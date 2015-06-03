@@ -7,6 +7,7 @@ using DTCDev.Client.Cars.Service.Engine.Controls.ViewModels;
 using DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings;
 using DTCDev.Client.Cars.Service.Engine.Storage;
 using DTCDev.Models.CarBase.CarList;
+using DTCDev.Models.Service;
 using DTCDev.Models.User;
 
 namespace DTCDev.Client.Cars.Service.Engine.Handlers
@@ -30,7 +31,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
         public event EventHandler OrdersCollectionChanged;
         void Orders_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            if (OrdersCollectionChanged != null) OrdersCollectionChanged(sender, e);            
+            if (OrdersCollectionChanged != null) OrdersCollectionChanged(sender, e);
         }
 
         public event EventHandler ListPostCollectionChanged;
@@ -58,27 +59,36 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
 
         private void DesigneAddPostOrders()
         {
-            ListPost.Add(new PostViewModel { ID = 0, Name = "Post #1", StartWorkTime = 8, EndWorkTime = 17 });
-            ListPost.Add(new PostViewModel { ID = 1, Name = "Post #2", StartWorkTime = 9, EndWorkTime = 18 });
-            ListPost.Add(new PostViewModel { ID = 2, Name = "Post #3", StartWorkTime = 10, EndWorkTime = 19 });
+            foreach (var dep in PersonalHandler.Instance.Model.Departments)
+                foreach (var post in dep.Posts)
+                {
+                    ListPost.Add(new PostViewModel
+                    {
+                        ID = post.ID,
+                        Name = string.Format("{0} ({1})", post.Name, dep.Name),
+                        StartWorkTime = post.TimeFrom,
+                        EndWorkTime = post.TimeTo
+                    });
+                }
+
             Users.Add(new UserLightModel { Nm = "Иванов Петр Иванович" });
             Users.Add(new UserLightModel { Nm = "Петров Иван Сидорович" });
             Users.Add(new UserLightModel { Nm = "Сидоров Сидор Петрович" });
             Orders.Add(new OrderViewModel
             {
                 ID = Orders.Count,
-                PostID = 0,
+                PostID = 2,
                 User = Users[0],
-                Car =new DISP_Car{CarModel = new CarListBaseDataModel { CarNumber = "Demo1", Mark = "Audio", Model = "A3" }},
-                DateWork = Date + new TimeSpan(12, 0, 0), 
+                Car = new DISP_Car { CarModel = new CarListBaseDataModel { CarNumber = "Demo1", Mark = "Audio", Model = "A3" } },
+                DateWork = Date + new TimeSpan(12, 0, 0),
                 IsChanged = false
             });
             Orders.Add(new OrderViewModel
             {
                 ID = Orders.Count,
-                PostID = 0,
+                PostID = 3,
                 User = Users[1],
-                Car = new DISP_Car{CarModel = new CarListBaseDataModel { CarNumber = "Demo2", Mark = "Audio", Model = "A4" }},
+                Car = new DISP_Car { CarModel = new CarListBaseDataModel { CarNumber = "Demo2", Mark = "Audio", Model = "A4" } },
                 DateWork = Date + new TimeSpan(13, 0, 0),
                 IsChanged = false
             });
@@ -87,7 +97,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                 ID = Orders.Count,
                 PostID = 1,
                 User = Users[2],
-                Car = new DISP_Car{CarModel = new CarListBaseDataModel { CarNumber = "Demo3", Mark = "Audio", Model = "A5" }},
+                Car = new DISP_Car { CarModel = new CarListBaseDataModel { CarNumber = "Demo3", Mark = "Audio", Model = "A5" } },
                 DateWork = Date + new TimeSpan(14, 30, 0),
                 IsChanged = false
             });

@@ -42,7 +42,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             }
         }
 
-        ObservableCollection<DicDataModel> _listTypePost = new ObservableCollection<DicDataModel>();
+        readonly ObservableCollection<DicDataModel> _listTypePost = new ObservableCollection<DicDataModel>();
 
 
         public ObservableCollection<DicDataModel> ListTypePost
@@ -50,7 +50,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             get  { return _listTypePost; }
         }
 
-        private ObservableCollection<PostViewModel> _listPost = new ObservableCollection<PostViewModel>();
+        private readonly ObservableCollection<PostViewModel> _listPost = new ObservableCollection<PostViewModel>();
         public ObservableCollection<PostViewModel> ListPost { get { return _listPost; } }
 
         private PostViewModel _selectedPost;
@@ -154,7 +154,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
 
         private void CompleteSave(object obj)
         {
-            ServiceInfoDataModel.PostSettings post = new ServiceInfoDataModel.PostSettings();
+            var post = new ServiceInfoDataModel.PostSettings();
             if(SelectedPost!=null)
             {
                 post.ID = SelectedPost.ID;

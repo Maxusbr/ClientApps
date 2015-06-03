@@ -102,6 +102,7 @@ namespace DTCDev.Client.Cars.Service.Controls.CalendarControls
 
         private void ClickHour(PostOrdersViewModel vm, DataGridCellInfo cell)
         {
+            if(cell.Column.DisplayIndex == 0) return;
             var dateWork = vm.Date +
                 TimeSpan.Parse(cell.Column.Header.ToString());
             var order = new OrderViewModel(vm.Orders.FirstOrDefault(el => el.DateWork >= dateWork && el.DateWork < dateWork + new TimeSpan(0, 30, 0)) ??
