@@ -48,7 +48,13 @@ namespace KOT
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
+            CarsHandler.SelectionChanged += CarsHandler_SelectionChanged;
             Map.SelectionPoinChanged += Map_SelectionPoinChanged;
+        }
+
+        void CarsHandler_SelectionChanged(object sender, EventArgs e)
+        {
+            PhoneToggle.IsChecked = false;
         }
 
         private void Map_SelectionPoinChanged(object sender, EventArgs e)

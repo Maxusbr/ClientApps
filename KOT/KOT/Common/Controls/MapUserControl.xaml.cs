@@ -54,6 +54,7 @@ namespace KOT.Common.Controls
 
         void CarsHandler_SelectionChanged(object sender, EventArgs e)
         {
+            Map.Routes.Clear();
             UpdateMapElements();
         }
 

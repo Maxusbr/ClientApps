@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -58,6 +59,12 @@ namespace KOT.DataModel.Network
             if (IsError != null) IsError(msg);
         }
 
+        private async Task Reconect()
+        {
+            _socket.Dispose();
+            await Connect();
+        }
+
         public async Task Connect()
         {
             try
@@ -68,7 +75,7 @@ namespace KOT.DataModel.Network
             }
             catch (Exception e)
             {
-
+                Debug.WriteLine(e.Message);
             }
         }
 
@@ -90,10 +97,11 @@ namespace KOT.DataModel.Network
                 var actualStringLength = await _reader.LoadAsync(lenght);
                 return lenght != actualStringLength ? "" : _reader.ReadString(actualStringLength);
             }
-            catch (Exception exception)
+            catch (Exception e)
             {
-                return "ER" + exception.Message;
-                if (SocketError.GetStatus(exception.HResult) == SocketErrorStatus.Unknown)
+                Debug.WriteLine(e.Message);
+                return "ER" + e.Message;
+                if (SocketError.GetStatus(e.HResult) == SocketErrorStatus.Unknown)
                 {
                     //throw;
                 }
@@ -146,7 +154,7 @@ namespace KOT.DataModel.Network
             }
             catch (Exception e)
             {
-
+                Debug.WriteLine(e.Message);
             }
         }
 
