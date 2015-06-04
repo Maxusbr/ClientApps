@@ -21,7 +21,7 @@ namespace KOT.DataModel.ViewModel
             CarsHandler.SelectionChanged += CarsHandler_SelectionChanged;
         }
 
-        async void CarsHandler_SelectionChanged(object sender, EventArgs e)
+        public async void CarsHandler_SelectionChanged(object sender, EventArgs e)
         {
             await Update(_countMonth);
         }

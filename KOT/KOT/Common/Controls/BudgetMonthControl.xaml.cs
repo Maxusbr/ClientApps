@@ -29,31 +29,31 @@ namespace KOT.Common.Controls
 
         private void GasButton_Click(object sender, RoutedEventArgs e)
         {
-            IdClass = 0;
+            IdClass = 1;
             OnClose();
         }
 
         private void ParkingButton_Click(object sender, RoutedEventArgs e)
         {
-            IdClass = 1;
+            IdClass = 2;
             OnClose();
         }
 
         private void CarwashButton_Click(object sender, RoutedEventArgs e)
         {
-            IdClass = 2;
+            IdClass = 3;
             OnClose();
         }
 
         private void ShopButton_Click(object sender, RoutedEventArgs e)
         {
-            IdClass = 3;
+            IdClass = 4;
             OnClose();
         }
 
         private void RashodButton_Click(object sender, RoutedEventArgs e)
         {
-            IdClass = 4;
+            IdClass = 5;
             OnClose();
         }
 

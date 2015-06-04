@@ -100,16 +100,17 @@ namespace KOT.DataModel.Network
             }
         }
 
-        public async static Task<ReciveMessageModel> Send(string msg)
+        public async static Task<ReciveMessageModel> Send(string msg, bool waitresult = true)
         {
-            return await Instance.SendAsync(msg);
+            return await Instance.SendAsync(msg, waitresult);
         }
 
-        private async Task<ReciveMessageModel> SendAsync(string msg)
+        private async Task<ReciveMessageModel> SendAsync(string msg, bool waitresult )
         {
             await Loop(_cunt);
             _cunt++;
             await SendPacket(Encoding.UTF8.GetBytes(msg));
+            if (!waitresult ) return new ReciveMessageModel();
             var res = Split(await _listener_ConnectionReceived());
             if (res.Px != msg[0] || res.Fx != msg[1])
             {

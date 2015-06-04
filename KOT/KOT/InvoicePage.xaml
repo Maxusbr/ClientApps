@@ -222,7 +222,7 @@
                 </AppBarButton.Icon>
             </AppBarButton>
             <AppBarButton x:Name="OK" HorizontalAlignment="Center" Label="appbarbutton" VerticalAlignment="Center" Grid.Row="1"
-				Grid.Column="4" Margin="4" Style="{StaticResource AppBarButtonStyle}" Width="46" Height="46" Click="OK_Click">
+				Grid.Column="4" Margin="4" Style="{StaticResource AppBarButtonStyle}" Width="46" Height="46" Click="OK_Click" IsEnabled="False">
                 <AppBarButton.Icon>
                     <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_ok_24dp.png" Margin="5,0"/>
                 </AppBarButton.Icon>
@@ -244,11 +244,11 @@
             <Border Grid.ColumnSpan="2" Background="{StaticResource PrimeryColor}" BorderThickness="1"/>
             <Border BorderBrush="White" BorderThickness="0,0,1,0"/>
             <AppBarButton x:Name="ccBox" Foreground="White"  Width="48" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource AppBarButtonStyle}" Height="48"/>
-            <TextBox x:Name="tbCost" TextWrapping="Wrap" VerticalAlignment="Stretch" BorderThickness="0,0,0,1" PlaceholderText="xx xxxx,xx руб." FontSize="18.667" Style="{StaticResource TextBoxStyle}" Background="{x:Null}" Text="{Binding EndDateString, Mode=TwoWay}" Foreground="White" Grid.Column="1" Margin="0,0,0,10" MinWidth="180" HorizontalAlignment="Center" SelectionHighlightColor="White" BorderBrush="{x:Null}"/>
+            <TextBox x:Name="tbCost" TextWrapping="Wrap" VerticalAlignment="Stretch" BorderThickness="0,0,0,1" PlaceholderText="xx xxxx,xx руб." FontSize="18.667" Style="{StaticResource TextBoxStyle}" Background="{x:Null}" Foreground="White" Grid.Column="1" Margin="0,0,0,10" MinWidth="180" HorizontalAlignment="Center" BorderBrush="{x:Null}" TextChanged="tbCost_TextChanged" InputScope="Number"/>
             <ContentControl Foreground="{StaticResource PrimeryText}" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" Visibility="{Binding Visibility, ElementName=tbDate}">
                 <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_calendar_24dp.png" VerticalAlignment="Center" HorizontalAlignment="Center" Width="30" Height="30"/>
             </ContentControl>
-            <TextBox x:Name="tbDate" TextWrapping="Wrap" VerticalAlignment="Stretch" BorderThickness="0" PlaceholderText="дд.мм.гггг" FontSize="16" Style="{StaticResource TextBoxStyle}" Background="{x:Null}" Text="{Binding EndDateString, Mode=TwoWay}" Foreground="{StaticResource PrimeryText}" Grid.Row="1" Grid.Column="1" Margin="0" HorizontalAlignment="Left" MinWidth="180" Visibility="Collapsed"/>
+            <TextBox x:Name="tbDate" TextWrapping="Wrap" VerticalAlignment="Stretch" BorderThickness="0" PlaceholderText="дд.мм.гггг" FontSize="16" Style="{StaticResource TextBoxStyle}" Background="{x:Null}" Foreground="{StaticResource PrimeryText}" Grid.Row="1" Grid.Column="1" Margin="0" HorizontalAlignment="Left" MinWidth="180" Visibility="Collapsed" TextChanged="tbDate_TextChanged"/>
             <Button Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource LinkButtonStyle}" BorderBrush="{x:Null}" Grid.Row="1" MinHeight="48" Grid.Column="1" MinWidth="180" Foreground="{StaticResource PrimeryText}" Visibility="{Binding Visibility, ElementName=tbDate}">
                 <Button.Flyout>
                     <Flyout x:Name="DateFlyout" FlyoutPresenterStyle="{StaticResource CurentFlyoutPresenterStyle}" Placement="Full">
@@ -262,7 +262,7 @@
                     </Flyout>
                 </Button.Flyout>
             </Button>
-            <TextBox x:Name="tbComment" TextWrapping="Wrap" VerticalAlignment="Stretch" BorderThickness="0,0,0,1" PlaceholderText="Комментарий" FontSize="16" Style="{StaticResource IconTextBoxStyle}" Background="{x:Null}" Text="{Binding EndDateString, Mode=TwoWay}" Foreground="{StaticResource PrimeryText}" Grid.Row="2" Margin="0,0,0,8" MinWidth="300" MinHeight="48" Padding="7,0,8,0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Visibility="{Binding Visibility, ElementName=tbDate}"/>
+            <TextBox x:Name="tbComment" TextWrapping="Wrap" VerticalAlignment="Stretch" BorderThickness="0,0,0,1" PlaceholderText="Комментарий" FontSize="16" Style="{StaticResource IconTextBoxStyle}" Background="{x:Null}" Foreground="{StaticResource PrimeryText}" Grid.Row="2" Margin="0,0,0,8" MinWidth="300" MinHeight="48" Padding="7,0,8,0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Visibility="{Binding Visibility, ElementName=tbDate}"/>
 
         </Grid>
         <Border BorderBrush="{StaticResource DividerText}" Background="#FFF3F3F3" Grid.Row="3" BorderThickness="0,1,0,0" d:IsLocked="True">

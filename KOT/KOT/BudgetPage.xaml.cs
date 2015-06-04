@@ -39,6 +39,7 @@ namespace KOT
         /// Этот параметр обычно используется для настройки страницы.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)

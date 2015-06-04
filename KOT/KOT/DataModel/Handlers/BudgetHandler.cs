@@ -86,8 +86,8 @@ namespace KOT.DataModel.Handlers
 
             #endregion
 
-            //var res = await TcpConnection.Send("CA" + CarId);
-            var res = await TcpConnection.Send("CB" + CarId);
+            var res = await TcpConnection.Send("CA");
+            res = await TcpConnection.Send("CB" + CarId);
             if (!string.IsNullOrEmpty(res.Msg))
                 await Split(res.Msg);
         }
@@ -102,6 +102,24 @@ namespace KOT.DataModel.Handlers
             {
 
             }
+        }
+
+        internal async static void SaveInvoice(int id, DateTime dt, double val, string comment)
+        {
+            await Instance.SaveInvoiceAsync(id, dt, val, comment);
+        }
+
+        private async Task SaveInvoiceAsync(int id, DateTime dt, double val, string comment)
+        {
+            var model = new OneSpendItem
+            {
+                idClass = id,
+                Name = comment,
+                Date = new DateDataModel(dt),
+                Sum = (int)Math.Truncate(val)
+            };
+            var query = string.Format("CC{0};{1}", CarId, JsonConvert.SerializeObject(model));
+            await TcpConnection.Send(query, false);
         }
     }
 }
