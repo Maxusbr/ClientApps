@@ -119,7 +119,7 @@ namespace KOT.DataModel.Handlers
                 Sum = (int)Math.Truncate(val)
             };
             var query = string.Format("CC{0};{1}", CarId, JsonConvert.SerializeObject(model));
-            await TcpConnection.Send(query, false);
+            await TcpConnection.Send(query);
         }
     }
 }

@@ -65,11 +65,11 @@ namespace KOT.DataModel.ViewModel
         }
         private void Calc()
         {
-            GasCost = _model.Spends.Where(w => w.idClass == 0).Sum(o => o.Sum);
-            ParkingCost = _model.Spends.Where(w => w.idClass == 1).Sum(o => o.Sum);
-            CarwashCost = _model.Spends.Where(w => w.idClass == 2).Sum(o => o.Sum);
-            ShopCost = _model.Spends.Where(w => w.idClass == 3).Sum(o => o.Sum);
-            RashodCost = _model.Spends.Where(w => w.idClass == 4).Sum(o => o.Sum);
+            GasCost = _model.Spends.Where(w => w.idClass == 1).Sum(o => o.Sum);
+            ParkingCost = _model.Spends.Where(w => w.idClass == 2).Sum(o => o.Sum);
+            CarwashCost = _model.Spends.Where(w => w.idClass == 3).Sum(o => o.Sum);
+            ShopCost = _model.Spends.Where(w => w.idClass == 4).Sum(o => o.Sum);
+            RashodCost = _model.Spends.Where(w => w.idClass == 5).Sum(o => o.Sum);
             _maxvalue = Math.Max(GasCost, Math.Max(ParkingCost, Math.Max(CarwashCost, Math.Max(ShopCost, RashodCost))));
             UpdateUi();
         }
