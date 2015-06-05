@@ -31,7 +31,7 @@ namespace KOT.Common.Controls
             //if (DesignMode.DesignModeEnabled)
             {
                 SelectedYear = new YearClass(2015);
-                
+
             }
         }
 
@@ -40,8 +40,7 @@ namespace KOT.Common.Controls
 
         private void OnClose()
         {
-            CustomClickEvent handler = Close;
-            if (handler != null) handler(this);
+            if (Close != null) Close(this);
         }
 
         private YearClass _vm;
@@ -67,6 +66,12 @@ namespace KOT.Common.Controls
             {
                 return new DateTime(SelectedYear.Number, SelectedYear.SelectedMonth.Number,
                     SelectedYear.SelectedDay.Number);
+            }
+            set
+            {
+                SelectedYear.Number = value.Year;
+                SelectedYear.SelectedMonth = SelectedYear.Months.FirstOrDefault(o => o.Number == value.Month);
+                SelectedYear.SelectedDay = SelectedYear.SelectedMonth.Days.FirstOrDefault(o => o.Number == value.Day);
             }
         }
 
@@ -160,13 +165,22 @@ namespace KOT.Common.Controls
         #endregion
     }
 
-    public class YearClass:INotifyPropertyChanged
+    public class YearClass : INotifyPropertyChanged
     {
-        private readonly int _number;
+        private int _number;
         private readonly ObservableCollection<MonthClass> _months = new ObservableCollection<MonthClass>();
         private DayClass _selectedDay;
         private MonthClass _selectedMonth;
-        public int Number { get { return _number; } }
+        public int Number
+        {
+            get { return _number; }
+            set
+            {
+                if (value == _number) return;
+                _number = value;
+                OnPropertyChanged();
+            }
+        }
 
         public YearClass()
         {
@@ -196,7 +210,7 @@ namespace KOT.Common.Controls
                 SelectedMonth = Months[DateTime.Now.Month - 1];
                 SelectedDay = SelectedMonth.Days[DateTime.Now.Day - 1];
             }
-            
+
         }
 
         public ObservableCollection<MonthClass> Months { get { return _months; } }
@@ -253,7 +267,7 @@ namespace KOT.Common.Controls
 
     public class MonthClass
     {
-        private readonly int _number;
+        private int _number;
         private readonly ObservableCollection<DayClass> _days = new ObservableCollection<DayClass>();
         private DateTime _date;
         public MonthClass(int month, int year)
@@ -269,7 +283,14 @@ namespace KOT.Common.Controls
                 Days.Add(new DayClass(i, Number, year));
         }
 
-        public int Number { get { return _number; } }
+        public int Number
+        {
+            get { return _number; }
+            set
+            {
+                _number = value;
+            }
+        }
         public ObservableCollection<DayClass> Days { get { return _days; } }
 
         public override string ToString()
@@ -280,14 +301,21 @@ namespace KOT.Common.Controls
 
     public class DayClass
     {
-        private readonly int _number;
+        private int _number;
         private DateTime _date;
         public DayClass(int day, int month, int year)
         {
             _date = new DateTime(year, month, day);
             _number = day;
         }
-        public int Number { get { return _number; } }
+        public int Number
+        {
+            get { return _number; }
+            set
+            {
+                _number = value;
+            }
+        }
         public string DayWeek { get { return _date.ToString("dddd", CultureInfo.CurrentCulture); } }
 
         public override string ToString()

@@ -363,7 +363,13 @@
                                 <VisualState x:Name="Compact"/>
                             </VisualStateGroup>
                             <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="Normal">
+                            		<Storyboard>
+                            			<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentPresenter.Foreground)" Storyboard.TargetName="Content">
+                            				<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PrimeryText}"/>
+                            			</ObjectAnimationUsingKeyFrames>
+                            		</Storyboard>
+                            	</VisualState>
                                 <VisualState x:Name="Pressed">
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.Background)" Storyboard.TargetName="LayoutRoot">
@@ -373,15 +379,24 @@
                                                 </DiscreteObjectKeyFrame.Value>
                                             </DiscreteObjectKeyFrame>
                                         </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Disabled"/>
-                                <VisualState x:Name="Checked">
-                                    <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentPresenter.Foreground)" Storyboard.TargetName="Content">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource AccentColor}"/>
+                                        	<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource AccentColor}"/>
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                	<Storyboard>
+                                		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentPresenter.Foreground)" Storyboard.TargetName="Content">
+                                			<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource DividerText}"/>
+                                		</ObjectAnimationUsingKeyFrames>
+                                	</Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Checked">
+                                	<Storyboard>
+                                		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentPresenter.Foreground)" Storyboard.TargetName="Content">
+                                			<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource AccentColor}"/>
+                                		</ObjectAnimationUsingKeyFrames>
+                                	</Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="CheckedPressed">
                                     <Storyboard>
@@ -393,14 +408,24 @@
                                             </DiscreteObjectKeyFrame>
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentPresenter.Foreground)" Storyboard.TargetName="Content">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource AccentColor}"/>
+                                        	<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource AccentColor}"/>
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
-                                <VisualState x:Name="CheckedDisabled"/>
+                                <VisualState x:Name="CheckedDisabled">
+                                	<Storyboard>
+                                		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentPresenter.Foreground)" Storyboard.TargetName="Content">
+                                			<DiscreteObjectKeyFrame KeyTime="0">
+                                				<DiscreteObjectKeyFrame.Value>
+                                					<SolidColorBrush Color="#CCE91E63"/>
+                                				</DiscreteObjectKeyFrame.Value>
+                                			</DiscreteObjectKeyFrame>
+                                		</ObjectAnimationUsingKeyFrames>
+                                	</Storyboard>
+                                </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <ContentPresenter x:Name="Content" AutomationProperties.AccessibilityView="Raw" Content="{TemplateBinding Icon}" Foreground="{TemplateBinding Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <ContentPresenter x:Name="Content" AutomationProperties.AccessibilityView="Raw" Content="{TemplateBinding Icon}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -780,7 +805,7 @@
     </Style>
     <Style x:Key="BlankFlyoutPresenterStyle" TargetType="FlyoutPresenter">
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
-        <Setter Property="VerticalContentAlignment" Value="Top"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
         <Setter Property="IsTabStop" Value="False"/>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="MinHeight" Value="{ThemeResource FlyoutThemeMinHeight}"/>
@@ -790,7 +815,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="FlyoutPresenter">
-                    <Border x:Name="Background" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" FlowDirection="LeftToRight" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Border x:Name="Background" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" FlowDirection="LeftToRight" HorizontalAlignment="Left">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="OrientationStates">
                                 <VisualState x:Name="Portrait"/>
@@ -803,7 +828,7 @@
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <ScrollViewer x:Name="ScrollViewer" AutomationProperties.AccessibilityView="Raw" FlowDirection="{TemplateBinding FlowDirection}" HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}" HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}" Margin="{ThemeResource FlyoutContentPanelPortraitThemeMargin}" VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}" VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}" ZoomMode="{TemplateBinding ScrollViewer.ZoomMode}">
+                        <ScrollViewer x:Name="ScrollViewer" AutomationProperties.AccessibilityView="Raw" FlowDirection="{TemplateBinding FlowDirection}" HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}" HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}" Margin="{ThemeResource FlyoutContentPanelPortraitThemeMargin}" VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}" VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}" ZoomMode="{TemplateBinding ScrollViewer.ZoomMode}" VerticalContentAlignment="Stretch">
                             <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                         </ScrollViewer>
                     </Border>
@@ -815,7 +840,7 @@
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="Background" Value="{x:Null}"/>
         <Setter Property="Opacity" Value="1"/>
-        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
         <Setter Property="Margin" Value="0"/>
     </Style>
     <Thickness x:Key="MenuFlyoutPortraitBorderThemeThickness">0,1.5</Thickness>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -62,6 +63,21 @@ namespace KOT
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
+            AlarmHandler.Instance.Alarm += Instance_Alarm;
+        }
+
+        private void Instance_Alarm(object sender, PropertyChangedEventArgs e)
+        {
+
+            var alarm = new AlarmControl(e.PropertyName);
+            alarm.Close += alarm_Close;
+            grdContext.Children.Add(alarm);
+            AlarmBorder.Visibility = Visibility.Visible;
+        }
+
+        private void alarm_Close(object sender, EventArgs e)
+        {
+            grdContext.Children.Remove(sender as UIElement);
         }
 
         private void AppBarToggleButton_Click(object sender, RoutedEventArgs e)
@@ -167,6 +183,11 @@ namespace KOT
             if (dt == null) return;
             EndDate.Text = dt.Date.ToString("d");
             EndDateSelect.Hide();
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            MainMenuControl.Height = this.ActualHeight;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -15,6 +16,7 @@ using Windows.UI.Xaml.Navigation;
 
 // Документацию по шаблону элемента пустой страницы см. по адресу http://go.microsoft.com/fwlink/?LinkID=390556
 using KOT.Common.Controls;
+using KOT.DataModel.Handlers;
 
 namespace KOT
 {
@@ -35,26 +37,45 @@ namespace KOT
         /// Этот параметр обычно используется для настройки страницы.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            AlarmHandler.Instance.Alarm += Instance_Alarm;
         }
 
-        private void DateSelect_Closed(object sender)
+        void Instance_Alarm(object sender, PropertyChangedEventArgs e)
         {
-            var dt = sender as DateWeekSelectControl;
-            if(dt == null) return;
+            var alarm = new AlarmControl(e.PropertyName);
+            alarm.Close += alarm_Close;
+            grdContext.Children.Add(alarm);
+            AlarmBorder.Visibility = Visibility.Visible;
+        }
+
+        private void alarm_Close(object sender, EventArgs e)
+        {
+            grdContext.Children.Remove(sender as UIElement);
+            if(grdContext.Children.Count == 0)
+                AlarmBorder.Visibility = Visibility.Collapsed;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             MainMenuControl.HideMenu += MainMenuControl_HideMenu;
+            MainMenuControl.Height = this.ActualHeight;
         }
 
         private void MainMenuControl_HideMenu(object sender, EventArgs e)
         {
-            FlyoutMenu.Hide();
+            var fl = FlyoutBase.GetAttachedFlyout(this);
+            if (fl != null)
+                fl.Hide();
             var type = sender as Type;
             if (type == null || type == typeof(EVMPage)) return;
             Frame.Navigate(type);
         }
+
+        private void Tools_Click(object sender, RoutedEventArgs e)
+        {
+            FlyoutBase.ShowAttachedFlyout(this);
+        }
+
 
 
     }

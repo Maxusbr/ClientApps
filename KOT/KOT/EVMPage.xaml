@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:Controls="using:KOT.Common.Controls"
     x:Class="KOT.EVMPage"
-    mc:Ignorable="d" RequestedTheme="Light" Loaded="Page_Loaded">
+    mc:Ignorable="d" RequestedTheme="Light" Loaded="Page_Loaded" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
     <Page.Resources>
         <Thickness x:Key="PivotPortraitThemePadding">19,29,0,0</Thickness>
         <Thickness x:Key="PivotLandscapeThemePadding">19,25,0,0</Thickness>
@@ -74,6 +74,11 @@
             </Grid>
         </DataTemplate>
     </Page.Resources>
+    <FlyoutBase.AttachedFlyout>
+        <Flyout Placement="Left" FlyoutPresenterStyle="{StaticResource BlankFlyoutPresenterStyle}" >
+            <Controls:MainMenuControl x:Name="MainMenuControl" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        </Flyout>
+    </FlyoutBase.AttachedFlyout>
 
     <Grid Background="White">
         <Grid.RowDefinitions>
@@ -115,36 +120,33 @@
             <Border Background="{StaticResource DarkPrimeryColor}" Grid.ColumnSpan="5" />
             <Border Background="{StaticResource PrimeryColor}" Grid.Row="1" Grid.ColumnSpan="5" />
             <AppBarButton x:Name="Tools" HorizontalAlignment="Center" Label="appbarbutton" VerticalAlignment="Center" Grid.Row="1"
-				Grid.Column="0" Margin="4" Style="{StaticResource AppBarButtonStyle}" Width="46" Height="46">
-                <AppBarButton.Flyout>
-                    <Flyout x:Name="FlyoutMenu"  Placement="Left" FlyoutPresenterStyle="{StaticResource BlankFlyoutPresenterStyle}">
-                        <Controls:MainMenuControl x:Name="MainMenuControl" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-                    </Flyout>
-                </AppBarButton.Flyout>
+				Grid.Column="0" Margin="4" Style="{StaticResource AppBarButtonStyle}" Width="46" Height="46" Click="Tools_Click">
                 <AppBarButton.Icon>
-                    <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_nav_menu_24dp.png" Margin="5,0"/>
+                    <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_nav_menu_24dp.png" Margin="5,0" Width="32" Height="32"/>
                 </AppBarButton.Icon>
             </AppBarButton>
             <AppBarButton x:Name="Insurence" HorizontalAlignment="Center" Label="appbarbutton" VerticalAlignment="Center" Grid.Row="1"
 				Grid.Column="2" Margin="4" Style="{StaticResource AppBarButtonStyle}" Width="46" Height="46" >
                 <AppBarButton.Icon>
-                    <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_insurence_24dp.png" Margin="5,0"/>
+                    <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_insurence_24dp.png" Margin="5,0" Width="32" Height="32"/>
                 </AppBarButton.Icon>
             </AppBarButton>
             <AppBarButton x:Name="BarButton" HorizontalAlignment="Center" Label="appbarbutton" VerticalAlignment="Center" Grid.Row="1"
 				Grid.Column="4" Margin="4" Style="{StaticResource AppBarButtonStyle}" Width="46" Height="46">
                 <AppBarButton.Icon>
-                    <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_menu_24dp.png" Margin="5,0"/>
+                    <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_menu_24dp.png" Margin="5,0" Width="32" Height="32"/>
                 </AppBarButton.Icon>
             </AppBarButton>
-            <TextBlock x:Name="Lable" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Бортовой ЭВМ" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" FontSize="26.667" Margin="16,0,0,0" FontFamily="Segoe UI" Style="{StaticResource HeaderTextBlockStyle}" Foreground="White"/>
+            <TextBlock x:Name="Lable" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Бортовой ЭВМ" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" FontSize="21.333" Margin="16,0,0,0" FontFamily="Segoe UI" Style="{StaticResource HeaderTextBlockStyle}" Foreground="White"/>
             <AppBarButton x:Name="More" HorizontalAlignment="Center" Label="appbarbutton" VerticalAlignment="Center" Grid.Row="1" Width="46" Height="46" RequestedTheme="Dark" Foreground="{ThemeResource AppBarBorderThemeBrush}" Grid.Column="4" Visibility="Collapsed" Style="{StaticResource AppBarButtonStyle}" Background="White">
                 <AppBarButton.Icon>
-                    <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_filter_24dp.png" Margin="5,0"/>
+                    <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_filter_24dp.png" Margin="5,0" Width="32" Height="32"/>
                 </AppBarButton.Icon>
             </AppBarButton>
 
         </Grid>
-
+        <Border x:Name="AlarmBorder" Grid.Row="0" Grid.RowSpan="2" Background="#7F000000" Visibility="Collapsed">
+            <Grid x:Name="grdContext" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Border>
     </Grid>
 </Page>

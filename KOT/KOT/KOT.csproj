@@ -87,6 +87,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Common\Controls\AlarmControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Common\Controls\AutoEVMControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -193,6 +197,9 @@
     </Compile>
     <Compile Include="Common\BooleanToVisibilityConverter.cs" />
     <Compile Include="Common\BoolToValueConverter.cs" />
+    <Compile Include="Common\Controls\AlarmControl.xaml.cs">
+      <DependentUpon>AlarmControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Common\Controls\AutoEVMControl.xaml.cs">
       <DependentUpon>AutoEVMControl.xaml</DependentUpon>
     </Compile>
@@ -246,6 +253,7 @@
     <Compile Include="Common\ObservableDictionary.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
+    <Compile Include="DataModel\Handlers\AlarmHandler.cs" />
     <Compile Include="DataModel\Handlers\MapSourceHandler.cs" />
     <Compile Include="DataModel\Handlers\BudgetHandler.cs" />
     <Compile Include="DataModel\Handlers\CarsHandler.cs" />
@@ -278,6 +286,7 @@
     <Compile Include="DataModel\Model\WorkType.cs" />
     <Compile Include="DataModel\Network\TcpConnection.cs" />
     <Compile Include="DataModel\SampleDataSource.cs" />
+    <Compile Include="DataModel\ViewModel\AlarmViewModel.cs" />
     <Compile Include="DataModel\ViewModel\BudgetItemViewModel.cs" />
     <Compile Include="DataModel\ViewModel\BudgetViewModel.cs" />
     <Compile Include="DataModel\ViewModel\DriverStyleViewModel.cs" />

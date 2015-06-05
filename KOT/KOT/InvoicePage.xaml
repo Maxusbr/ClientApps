@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:Controls="using:KOT.Common.Controls"
     x:Class="KOT.InvoicePage"
-    mc:Ignorable="d" RequestedTheme="Light">
+    mc:Ignorable="d" RequestedTheme="Light" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
     <Page.Resources>
 
         <Style x:Key="AppBarToggleButtonStyle" TargetType="AppBarToggleButton">
@@ -218,16 +218,16 @@
             <AppBarButton x:Name="Cancel" HorizontalAlignment="Center" Label="appbarbutton" VerticalAlignment="Center" Grid.Row="1"
 				Grid.Column="0" Margin="4" Style="{StaticResource AppBarButtonStyle}" Width="46" Height="46" Click="Cancel_Click">
                 <AppBarButton.Icon>
-                    <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_close_24dp.png" Margin="5,0"/>
+                    <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_close_24dp.png" Margin="5,0" Width="32" Height="32"/>
                 </AppBarButton.Icon>
             </AppBarButton>
             <AppBarButton x:Name="OK" HorizontalAlignment="Center" Label="appbarbutton" VerticalAlignment="Center" Grid.Row="1"
 				Grid.Column="4" Margin="4" Style="{StaticResource AppBarButtonStyle}" Width="46" Height="46" Click="OK_Click" IsEnabled="False">
                 <AppBarButton.Icon>
-                    <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_ok_24dp.png" Margin="5,0"/>
+                    <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_ok_24dp.png" Margin="5,0" Width="32" Height="32"/>
                 </AppBarButton.Icon>
             </AppBarButton>
-            <TextBlock x:Name="Lable" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" FontSize="26.667" Margin="16,0,0,0" FontFamily="Segoe UI" Style="{StaticResource HeaderTextBlockStyle}" Foreground="White" Text="Счет"/>
+            <TextBlock x:Name="Lable" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" FontSize="21.333" Margin="16,0,0,0" FontFamily="Segoe UI" Style="{StaticResource HeaderTextBlockStyle}" Foreground="White" Text="Счет"/>
 
         </Grid>
         <Grid Grid.Row="2" Margin="16,0" VerticalAlignment="Top">
@@ -277,31 +277,33 @@
                 <AppBarToggleButton x:Name="GasButton" HorizontalAlignment="Stretch" Label="Бензин" VerticalAlignment="Stretch" 
         			Grid.Column="0" Foreground="{StaticResource PrimeryText}" Click="GasButton_Click" Style="{StaticResource AppBarToggleButtonStyle}">
                     <AppBarToggleButton.Icon>
-                        <BitmapIcon UriSource="ms-appx:///Assets/drawable-xxhdpi/ic_azs_24dp.png"/>
+                        <BitmapIcon UriSource="ms-appx:///Assets/drawable-xxhdpi/ic_azs_24dp.png" Width="32" Height="32"/>
                     </AppBarToggleButton.Icon>
                 </AppBarToggleButton>
                 <AppBarToggleButton x:Name="ParkingButton" HorizontalAlignment="Stretch" Label="Парковка" VerticalAlignment="Stretch" Foreground="{StaticResource PrimeryText}" Grid.Column="1" Click="ParkingButton_Click" Style="{StaticResource AppBarToggleButtonStyle}">
                     <AppBarToggleButton.Icon>
-                        <BitmapIcon UriSource="ms-appx:///Assets/drawable-xxhdpi/ic_parking_24dp.png"/>
+                        <BitmapIcon UriSource="ms-appx:///Assets/drawable-xxhdpi/ic_parking_24dp.png" Width="32" Height="32"/>
                     </AppBarToggleButton.Icon>
                 </AppBarToggleButton>
                 <AppBarToggleButton x:Name="CarwashButton" HorizontalAlignment="Stretch" Label="Мойка" VerticalAlignment="Stretch"  Foreground="{StaticResource PrimeryText}" Grid.Column="2" Click="CarwashButton_Click" Style="{StaticResource AppBarToggleButtonStyle}">
                     <AppBarToggleButton.Icon>
-                        <BitmapIcon UriSource="ms-appx:///Assets/drawable-xxhdpi/ic_carwash_24dp.png"/>
+                        <BitmapIcon UriSource="ms-appx:///Assets/drawable-xxhdpi/ic_carwash_24dp.png" Width="32" Height="32"/>
                     </AppBarToggleButton.Icon>
                 </AppBarToggleButton>
                 <AppBarToggleButton x:Name="ShopButton" HorizontalAlignment="Stretch" Label="З / Ч" VerticalAlignment="Stretch" Foreground="{StaticResource PrimeryText}" Grid.Column="3" Click="ShopButton_Click" Style="{StaticResource AppBarToggleButtonStyle}">
                     <AppBarToggleButton.Icon>
-                        <BitmapIcon UriSource="ms-appx:///Assets/drawable-xxhdpi/ic_zp_24dp.png"/>
+                        <BitmapIcon UriSource="ms-appx:///Assets/drawable-xxhdpi/ic_zp_24dp.png" Width="32" Height="32"/>
                     </AppBarToggleButton.Icon>
                 </AppBarToggleButton>
                 <AppBarToggleButton x:Name="RashodButton" HorizontalAlignment="Stretch" Label="Расходники" VerticalAlignment="Stretch"  Foreground="{StaticResource PrimeryText}" Grid.Column="4" Click="RashodButton_Click" Style="{StaticResource AppBarToggleButtonStyle}">
                     <AppBarToggleButton.Icon>
-                        <BitmapIcon UriSource="ms-appx:///Assets/drawable-xxhdpi/ic_rashod_24dp.png"/>
+                        <BitmapIcon UriSource="ms-appx:///Assets/drawable-xxhdpi/ic_rashod_24dp.png" Width="32" Height="32"/>
                     </AppBarToggleButton.Icon>
                 </AppBarToggleButton>
             </Grid>
         </Border>
-
+        <Border x:Name="AlarmBorder" Grid.Row="0" Grid.RowSpan="2" Background="#7F000000" Visibility="Collapsed">
+            <Grid x:Name="grdContext" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Border>
     </Grid>
 </Page>

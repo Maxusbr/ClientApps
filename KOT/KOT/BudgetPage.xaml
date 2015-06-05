@@ -7,7 +7,7 @@
     xmlns:Controls="using:KOT.Common.Controls"
     xmlns:ViewModel="using:KOT.DataModel.ViewModel"
     x:Class="KOT.BudgetPage"
-    mc:Ignorable="d" RequestedTheme="Light" Loaded="Page_Loaded">
+    mc:Ignorable="d" RequestedTheme="Light" Loaded="Page_Loaded" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
 
     <Page.Resources>
         <DataTemplate x:Key="CategoryPivotItemHeaderTemplate">
@@ -167,13 +167,13 @@
                     </Flyout>
                 </AppBarButton.Flyout>
                 <AppBarButton.Icon>
-                    <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_nav_menu_24dp.png" Margin="5,0"/>
+                    <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_nav_menu_24dp.png" Margin="5,0" Width="32" Height="32"/>
                 </AppBarButton.Icon>
             </AppBarButton>
             <AppBarButton x:Name="Filtr" HorizontalAlignment="Center" Label="appbarbutton" VerticalAlignment="Center" Grid.Row="1"
 				Grid.Column="2" Margin="4" Style="{StaticResource AppBarButtonStyle}" Width="46" Height="46" Visibility="{Binding VisableDetails, Converter={StaticResource InvertBooleanToVisibilityConverter}}" >
                 <AppBarButton.Icon>
-                    <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_filter_24dp.png" Margin="5,0"/>
+                    <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_filter_24dp.png" Margin="5,0" Width="32" Height="32"/>
                 </AppBarButton.Icon>
                 <AppBarButton.Flyout>
                     <MenuFlyout MenuFlyoutPresenterStyle="{StaticResource ServiceMenuFlyoutPresenterStyle}" Placement="Right">
@@ -187,17 +187,20 @@
             <AppBarButton x:Name="BarButton" HorizontalAlignment="Center" Label="appbarbutton" VerticalAlignment="Center" Grid.Row="1"
 				Grid.Column="4" Margin="4" Style="{StaticResource AppBarButtonStyle}" Width="46" Height="46">
                 <AppBarButton.Icon>
-                    <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_menu_24dp.png" Margin="5,0"/>
+                    <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_menu_24dp.png" Margin="5,0" Width="32" Height="32"/>
                 </AppBarButton.Icon>
             </AppBarButton>
-            <TextBlock x:Name="Lable" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Label}" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" FontSize="26.667" Margin="16,0,0,0" FontFamily="Segoe UI" Style="{StaticResource HeaderTextBlockStyle}" Foreground="White"/>
+            <TextBlock x:Name="Lable" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Label}" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" FontSize="21.333" Margin="16,0,0,0" FontFamily="Segoe UI" Style="{StaticResource HeaderTextBlockStyle}" Foreground="White"/>
             <AppBarButton x:Name="More" HorizontalAlignment="Center" Label="appbarbutton" VerticalAlignment="Center" Grid.Row="1" Width="46" Height="46" RequestedTheme="Dark" Foreground="{ThemeResource AppBarBorderThemeBrush}" Grid.Column="4" Visibility="Collapsed" Style="{StaticResource AppBarButtonStyle}" Background="White">
                 <AppBarButton.Icon>
-                    <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_filter_24dp.png" Margin="5,0"/>
+                    <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_filter_24dp.png" Margin="5,0" Width="32" Height="32"/>
                 </AppBarButton.Icon>
             </AppBarButton>
 
         </Grid>
+        <Border x:Name="AlarmBorder" Grid.Row="0" Grid.RowSpan="2" Background="#7F000000" Visibility="Collapsed">
+            <Grid x:Name="grdContext" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Border>
 
     </Grid>
 </Page>
