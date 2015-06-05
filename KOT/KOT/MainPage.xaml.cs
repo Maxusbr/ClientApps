@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -106,6 +107,7 @@ namespace KOT
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
+            AlarmHandler.Instance.Alarm += Instance_Alarm;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -162,6 +164,100 @@ namespace KOT
             Tools.Visibility = Visibility.Visible;
             ServiceInfo.VerticalAlignment = VerticalAlignment.Bottom;
             ServiceInfo.IsChecked = false;
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            MainMenuControl.Height = this.ActualHeight;
+        }
+
+        private void LightsOn_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateAlarmLine();
+            if(!LightsOn.IsChecked ?? false) return;
+            var alarm = new AlarmControl("IsLightsOn");
+            alarm.Close += alarm_Close;
+            grdContext.Children.Add(alarm);
+        }
+
+        private void DoorClosed_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateAlarmLine();
+            if (!DoorClosed.IsChecked ?? false) return;
+            var alarm = new AlarmControl("IsDoorClosed");
+            alarm.Close += alarm_Close;
+            grdContext.Children.Add(alarm);
+
+        }
+
+        private void Evacuation_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateAlarmLine();
+            if (!Evacuation.IsChecked ?? false) return;
+            var alarm = new AlarmControl("IsEvacuation");
+            alarm.Close += alarm_Close;
+            grdContext.Children.Add(alarm);
+        }
+
+        private void Alarm_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateAlarmLine();
+            if (!Alarm.IsChecked ?? false) return;
+            var alarm = new AlarmControl("AlarmLevel");
+            alarm.Close += alarm_Close;
+            grdContext.Children.Add(alarm);
+        }
+
+        private void Instance_Alarm(object sender, PropertyChangedEventArgs e)
+        {
+            UpdateAlarmLine();
+            AlarmLine.Visibility = Visibility.Visible;
+        }
+
+
+        private void alarm_Close(object sender, EventArgs e)
+        {
+            var alarm = sender as AlarmControl;
+            if (alarm != null)
+                UpdateModel(alarm.PropertyName);
+            grdContext.Children.Remove(alarm);
+            if (!IsAlarmed())
+                AlarmLine.Visibility = Visibility.Collapsed;
+        }
+
+        private void UpdateModel(string propertyName)
+        {
+            switch (propertyName)
+            {
+                case "AlarmLevel":
+                    AlarmHandler.Instance.CurentModel.AlarmLevel = 0;
+                    break;
+                case "IsLightsOn":
+                    AlarmHandler.Instance.CurentModel.IsLightsOn = 0;
+                    break;
+                case "IsDoorClosed":
+                    AlarmHandler.Instance.CurentModel.IsDoorClosed = 0;
+                    break;
+                case "IsEvacuation":
+                    AlarmHandler.Instance.CurentModel.IsEvacuation = 0;
+                    break;
+            }
+            UpdateAlarmLine();
+        }
+
+        private void UpdateAlarmLine()
+        {
+            Alarm.IsChecked = AlarmHandler.Instance.CurentModel.AlarmLevel != 0;
+            LightsOn.IsChecked = AlarmHandler.Instance.CurentModel.IsLightsOn != 0;
+            DoorClosed.IsChecked = AlarmHandler.Instance.CurentModel.IsDoorClosed != 0;
+            Evacuation.IsChecked = AlarmHandler.Instance.CurentModel.IsEvacuation != 0;
+            UpdateLayout();
+        }
+
+        private bool IsAlarmed()
+        {
+            return (Alarm.IsChecked ?? false) || (LightsOn.IsChecked ?? false) 
+                || (DoorClosed.IsChecked ?? false) || (Evacuation.IsChecked ?? false);
         }
     }
 }

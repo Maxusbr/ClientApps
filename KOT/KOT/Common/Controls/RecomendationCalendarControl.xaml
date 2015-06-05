@@ -52,7 +52,7 @@
 
     </UserControl.Resources>
     <FlyoutBase.AttachedFlyout>
-        <Flyout Placement="Full" FlyoutPresenterStyle="{StaticResource FlyoutPresenterStyle}">
+        <Flyout Placement="Full" FlyoutPresenterStyle="{StaticResource CurentFlyoutPresenterStyle}">
             <Grid Width="268" HorizontalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>

@@ -88,8 +88,8 @@ namespace KOT.DataModel.Handlers
 
             var position = await geolocator.GetGeopositionAsync();
             //TODO Раскоментировать перед релизом
-            MapControl.SetLocation(Phone, position.Coordinate.Point);
-            //MapControl.SetLocation(Phone, Phone.Location);
+            //MapControl.SetLocation(Phone, position.Coordinate.Point);
+            MapControl.SetLocation(Phone, Phone.Location);
 
         }
 

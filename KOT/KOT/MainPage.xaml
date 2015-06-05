@@ -10,73 +10,73 @@
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     x:Class="KOT.MainPage"
     mc:Ignorable="d" RequestedTheme="Light"
-    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Mode=Self}}">
+    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Mode=Self}}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Loaded="Page_Loaded">
     <Page.Resources>
-        
+
         <Style x:Key="CommandBarButtonStyle" TargetType="AppBarButton">
-        	<Setter Property="Foreground" Value="{ThemeResource AppBarItemForegroundThemeBrush}"/>
-        	<Setter Property="VerticalAlignment" Value="Top"/>
-        	<Setter Property="HorizontalAlignment" Value="Left"/>
-        	<Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
-        	<Setter Property="FontWeight" Value="Normal"/>
-        	<Setter Property="Template">
-        		<Setter.Value>
-        			<ControlTemplate TargetType="AppBarButton">
-        				<Border x:Name="border" BorderThickness="1" CornerRadius="2">
-        					<VisualStateManager.VisualStateGroups>
-        						<VisualStateGroup x:Name="ApplicationViewStates">
-        							<VisualState x:Name="FullSize"/>
-        							<VisualState x:Name="Compact">
-        								<Storyboard>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Width" Storyboard.TargetName="LayoutRoot">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="48"/>
-        									</ObjectAnimationUsingKeyFrames>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentPresenter.Foreground)" Storyboard.TargetName="Content">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource AccentColor}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        								</Storyboard>
-        							</VisualState>
-        						</VisualStateGroup>
-        						<VisualStateGroup x:Name="CommonStates">
-        							<VisualState x:Name="Normal"/>
-        							<VisualState x:Name="Pressed">
-        								<Storyboard>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.Background)" Storyboard.TargetName="border">
-        										<DiscreteObjectKeyFrame KeyTime="0">
-        											<DiscreteObjectKeyFrame.Value>
-        												<SolidColorBrush Color="#B2FF4081"/>
-        											</DiscreteObjectKeyFrame.Value>
-        										</DiscreteObjectKeyFrame>
-        									</ObjectAnimationUsingKeyFrames>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush)" Storyboard.TargetName="border">
-        										<DiscreteObjectKeyFrame KeyTime="0">
-        											<DiscreteObjectKeyFrame.Value>
-        												<SolidColorBrush Color="#B2C2185B"/>
-        											</DiscreteObjectKeyFrame.Value>
-        										</DiscreteObjectKeyFrame>
-        									</ObjectAnimationUsingKeyFrames>
-        								</Storyboard>
-        							</VisualState>
-        							<VisualState x:Name="Disabled">
-        								<Storyboard>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="Content">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarItemDisabledForegroundThemeBrush}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        								</Storyboard>
-        							</VisualState>
-        						</VisualStateGroup>
-        					</VisualStateManager.VisualStateGroups>
-        					<Grid x:Name="LayoutRoot" Background="Transparent">
-        						<Grid HorizontalAlignment="Center">
-        							<Grid x:Name="ContentRoot" Background="Transparent">
-        								<ContentPresenter x:Name="Content" AutomationProperties.AccessibilityView="Raw" Content="{TemplateBinding Icon}" Foreground="{TemplateBinding Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        							</Grid>
-        						</Grid>
-        					</Grid>
-        				</Border>
-        			</ControlTemplate>
-        		</Setter.Value>
-        	</Setter>
+            <Setter Property="Foreground" Value="{ThemeResource AppBarItemForegroundThemeBrush}"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="AppBarButton">
+                        <Border x:Name="border" BorderThickness="1" CornerRadius="2">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="ApplicationViewStates">
+                                    <VisualState x:Name="FullSize"/>
+                                    <VisualState x:Name="Compact">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Width" Storyboard.TargetName="LayoutRoot">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="48"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentPresenter.Foreground)" Storyboard.TargetName="Content">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource AccentColor}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.Background)" Storyboard.TargetName="border">
+                                                <DiscreteObjectKeyFrame KeyTime="0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <SolidColorBrush Color="#B2FF4081"/>
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush)" Storyboard.TargetName="border">
+                                                <DiscreteObjectKeyFrame KeyTime="0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <SolidColorBrush Color="#B2C2185B"/>
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="Content">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AppBarItemDisabledForegroundThemeBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Grid x:Name="LayoutRoot" Background="Transparent">
+                                <Grid HorizontalAlignment="Center">
+                                    <Grid x:Name="ContentRoot" Background="Transparent">
+                                        <ContentPresenter x:Name="Content" AutomationProperties.AccessibilityView="Raw" Content="{TemplateBinding Icon}" Foreground="{TemplateBinding Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
         <Thickness x:Key="MenuFlyoutPortraitBorderThemeThickness">1</Thickness>
         <Thickness x:Key="MenuFlyoutPortraitThemePadding">19,13.5,19,26</Thickness>
@@ -85,178 +85,179 @@
         <Thickness x:Key="MenuFlyoutLandscapeThemePadding">19,59.5,0,65</Thickness>
         <Thickness x:Key="MenuFlyoutRightLandscapeBorderThemeThickness">1,0,0,0</Thickness>
         <Style x:Key="ServiceMenuFlyoutPresenterStyle" TargetType="MenuFlyoutPresenter">
-        	<Setter Property="Background" Value="{ThemeResource AppBarBackgroundThemeBrush}"/>
-        	<Setter Property="BorderBrush" Value="{StaticResource PrimeryText}"/>
-        	<Setter Property="BorderThickness" Value="{ThemeResource MenuFlyoutPortraitBorderThemeThickness}"/>
-        	<Setter Property="Padding" Value="{ThemeResource MenuFlyoutPortraitThemePadding}"/>
-        	<Setter Property="MinHeight" Value="{ThemeResource FlyoutThemeMinHeight}"/>
-        	<Setter Property="Template">
-        		<Setter.Value>
-        			<ControlTemplate TargetType="MenuFlyoutPresenter">
-        				<Border x:Name="OuterBorder" BorderBrush="{TemplateBinding BorderBrush}" FlowDirection="LeftToRight" HorizontalAlignment="Right" Background="White" Margin="0,-40,10,0">
-        					<Border.RenderTransform>
-        						<ScaleTransform x:Name="OuterScaleTransform"/>
-        					</Border.RenderTransform>
-        					<VisualStateManager.VisualStateGroups>
-        						<VisualStateGroup x:Name="PlacementStates">
-        							<VisualState x:Name="None"/>
-        							<VisualState x:Name="TopPortrait">
-        								<Storyboard>
-        									<PointAnimation Duration="0:0:0" To="0,1" Storyboard.TargetProperty="RenderTransformOrigin" Storyboard.TargetName="InnerBorder"/>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderThickness" Storyboard.TargetName="OuterBorder">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="0,0,0,1.5"/>
-        										<DiscreteObjectKeyFrame KeyTime="0:0:0.50" Value="{ThemeResource MenuFlyoutPortraitBorderThemeThickness}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderThickness" Storyboard.TargetName="CenterBorder">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="0,0,0,1.5"/>
-        										<DiscreteObjectKeyFrame KeyTime="0:0:0.50" Value="{ThemeResource MenuFlyoutPortraitBorderThemeThickness}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" Storyboard.TargetName="ItemsPresenter">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource MenuFlyoutPortraitThemePadding}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        									<DoubleAnimation Duration="0:0:0.38" From="0.0" To="1.0" Storyboard.TargetProperty="ScaleX" Storyboard.TargetName="OuterScaleTransform"/>
-        									<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="ScaleY" Storyboard.TargetName="InnerScaleTransform">
-        										<LinearDoubleKeyFrame KeyTime="0:0:0" Value="0.0"/>
-        										<LinearDoubleKeyFrame KeyTime="0:0:0.38" Value="0.0"/>
-        										<LinearDoubleKeyFrame KeyTime="0:0:0.50" Value="1.0"/>
-        									</DoubleAnimationUsingKeyFrames>
-        								</Storyboard>
-        							</VisualState>
-        							<VisualState x:Name="BottomPortrait">
-        								<Storyboard>
-        									<PointAnimation Duration="0:0:0" To="0,0" Storyboard.TargetProperty="RenderTransformOrigin" Storyboard.TargetName="InnerBorder"/>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderThickness" Storyboard.TargetName="OuterBorder">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="0,1.5,0,0"/>
-        										<DiscreteObjectKeyFrame KeyTime="0:0:0.50" Value="{ThemeResource MenuFlyoutPortraitBorderThemeThickness}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderThickness" Storyboard.TargetName="CenterBorder">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="0,1.5,0,0"/>
-        										<DiscreteObjectKeyFrame KeyTime="0:0:0.50" Value="{ThemeResource MenuFlyoutPortraitBorderThemeThickness}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" Storyboard.TargetName="ItemsPresenter">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource MenuFlyoutPortraitThemePadding}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        									<DoubleAnimation Duration="0:0:0.38" From="0.0" To="1.0" Storyboard.TargetProperty="ScaleX" Storyboard.TargetName="OuterScaleTransform"/>
-        									<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="ScaleY" Storyboard.TargetName="InnerScaleTransform">
-        										<LinearDoubleKeyFrame KeyTime="0:0:0" Value="0.0"/>
-        										<LinearDoubleKeyFrame KeyTime="0:0:0.38" Value="0.0"/>
-        										<LinearDoubleKeyFrame KeyTime="0:0:0.50" Value="1.0"/>
-        									</DoubleAnimationUsingKeyFrames>
-        								</Storyboard>
-        							</VisualState>
-        							<VisualState x:Name="LeftLandscape">
-        								<Storyboard>
-        									<PointAnimation Duration="0:0:0" To="1,0" Storyboard.TargetProperty="RenderTransformOrigin" Storyboard.TargetName="InnerBorder"/>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderThickness" Storyboard.TargetName="OuterBorder">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="0,0,1.5,0"/>
-        										<DiscreteObjectKeyFrame KeyTime="0:0:0.50" Value="{ThemeResource MenuFlyoutLeftLandscapeBorderThemeThickness}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderThickness" Storyboard.TargetName="CenterBorder">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="0,0,1.5,0"/>
-        										<DiscreteObjectKeyFrame KeyTime="0:0:0.50" Value="{ThemeResource MenuFlyoutLeftLandscapeBorderThemeThickness}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" Storyboard.TargetName="ItemsPresenter">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource MenuFlyoutLandscapeThemePadding}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        									<DoubleAnimation Duration="0:0:0.38" From="0.0" To="1.0" Storyboard.TargetProperty="ScaleY" Storyboard.TargetName="OuterScaleTransform"/>
-        									<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="ScaleX" Storyboard.TargetName="InnerScaleTransform">
-        										<LinearDoubleKeyFrame KeyTime="0:0:0" Value="0.0"/>
-        										<LinearDoubleKeyFrame KeyTime="0:0:0.38" Value="0.0"/>
-        										<LinearDoubleKeyFrame KeyTime="0:0:0.50" Value="1.0"/>
-        									</DoubleAnimationUsingKeyFrames>
-        								</Storyboard>
-        							</VisualState>
-        							<VisualState x:Name="RightLandscape">
-        								<Storyboard>
-        									<PointAnimation Duration="0:0:0" To="0,0" Storyboard.TargetProperty="RenderTransformOrigin" Storyboard.TargetName="InnerBorder"/>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderThickness" Storyboard.TargetName="OuterBorder">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="1.5,0,0,0"/>
-        										<DiscreteObjectKeyFrame KeyTime="0:0:0.50" Value="{ThemeResource MenuFlyoutRightLandscapeBorderThemeThickness}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderThickness" Storyboard.TargetName="CenterBorder">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="1.5,0,0,0"/>
-        										<DiscreteObjectKeyFrame KeyTime="0:0:0.50" Value="{ThemeResource MenuFlyoutRightLandscapeBorderThemeThickness}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" Storyboard.TargetName="ItemsPresenter">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource MenuFlyoutLandscapeThemePadding}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        									<DoubleAnimation Duration="0:0:0.38" From="0.0" To="1.0" Storyboard.TargetProperty="ScaleY" Storyboard.TargetName="OuterScaleTransform"/>
-        									<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="ScaleX" Storyboard.TargetName="InnerScaleTransform">
-        										<LinearDoubleKeyFrame KeyTime="0:0:0" Value="0.0"/>
-        										<LinearDoubleKeyFrame KeyTime="0:0:0.38" Value="0.0"/>
-        										<LinearDoubleKeyFrame KeyTime="0:0:0.50" Value="1.0"/>
-        									</DoubleAnimationUsingKeyFrames>
-        								</Storyboard>
-        							</VisualState>
-        						</VisualStateGroup>
-        					</VisualStateManager.VisualStateGroups>
-        					<Border x:Name="CenterBorder" FlowDirection="LeftToRight" BorderBrush="{StaticResource PrimeryText}">
-        						<StackPanel x:Name="InnerBorder" FlowDirection="{TemplateBinding FlowDirection}" Background="White">
-        							<StackPanel.RenderTransform>
-        								<ScaleTransform x:Name="InnerScaleTransform"/>
-        							</StackPanel.RenderTransform>
-        							<ItemsPresenter x:Name="ItemsPresenter" FlowDirection="{TemplateBinding FlowDirection}" Margin="{TemplateBinding Padding}" Style="{TemplateBinding ItemContainerStyle}"/>
-        						</StackPanel>
-        					</Border>
-        				</Border>
-        			</ControlTemplate>
-        		</Setter.Value>
-        	</Setter>
-        	<Setter Property="FontSize" Value="21.333"/>
-        	<Setter Property="FontFamily" Value="Segoe WP SemiLight"/>
+            <Setter Property="Background" Value="{ThemeResource AppBarBackgroundThemeBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PrimeryText}"/>
+            <Setter Property="BorderThickness" Value="{ThemeResource MenuFlyoutPortraitBorderThemeThickness}"/>
+            <Setter Property="Padding" Value="{ThemeResource MenuFlyoutPortraitThemePadding}"/>
+            <Setter Property="MinHeight" Value="{ThemeResource FlyoutThemeMinHeight}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="MenuFlyoutPresenter">
+                        <Border x:Name="OuterBorder" BorderBrush="{TemplateBinding BorderBrush}" FlowDirection="LeftToRight" HorizontalAlignment="Right" Background="White" Margin="0,-40,10,0">
+                            <Border.RenderTransform>
+                                <ScaleTransform x:Name="OuterScaleTransform"/>
+                            </Border.RenderTransform>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="PlacementStates">
+                                    <VisualState x:Name="None"/>
+                                    <VisualState x:Name="TopPortrait">
+                                        <Storyboard>
+                                            <PointAnimation Duration="0:0:0" To="0,1" Storyboard.TargetProperty="RenderTransformOrigin" Storyboard.TargetName="InnerBorder"/>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderThickness" Storyboard.TargetName="OuterBorder">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="0,0,0,1.5"/>
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.50" Value="{ThemeResource MenuFlyoutPortraitBorderThemeThickness}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderThickness" Storyboard.TargetName="CenterBorder">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="0,0,0,1.5"/>
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.50" Value="{ThemeResource MenuFlyoutPortraitBorderThemeThickness}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" Storyboard.TargetName="ItemsPresenter">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource MenuFlyoutPortraitThemePadding}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <DoubleAnimation Duration="0:0:0.38" From="0.0" To="1.0" Storyboard.TargetProperty="ScaleX" Storyboard.TargetName="OuterScaleTransform"/>
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="ScaleY" Storyboard.TargetName="InnerScaleTransform">
+                                                <LinearDoubleKeyFrame KeyTime="0:0:0" Value="0.0"/>
+                                                <LinearDoubleKeyFrame KeyTime="0:0:0.38" Value="0.0"/>
+                                                <LinearDoubleKeyFrame KeyTime="0:0:0.50" Value="1.0"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="BottomPortrait">
+                                        <Storyboard>
+                                            <PointAnimation Duration="0:0:0" To="0,0" Storyboard.TargetProperty="RenderTransformOrigin" Storyboard.TargetName="InnerBorder"/>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderThickness" Storyboard.TargetName="OuterBorder">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="0,1.5,0,0"/>
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.50" Value="{ThemeResource MenuFlyoutPortraitBorderThemeThickness}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderThickness" Storyboard.TargetName="CenterBorder">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="0,1.5,0,0"/>
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.50" Value="{ThemeResource MenuFlyoutPortraitBorderThemeThickness}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" Storyboard.TargetName="ItemsPresenter">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource MenuFlyoutPortraitThemePadding}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <DoubleAnimation Duration="0:0:0.38" From="0.0" To="1.0" Storyboard.TargetProperty="ScaleX" Storyboard.TargetName="OuterScaleTransform"/>
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="ScaleY" Storyboard.TargetName="InnerScaleTransform">
+                                                <LinearDoubleKeyFrame KeyTime="0:0:0" Value="0.0"/>
+                                                <LinearDoubleKeyFrame KeyTime="0:0:0.38" Value="0.0"/>
+                                                <LinearDoubleKeyFrame KeyTime="0:0:0.50" Value="1.0"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="LeftLandscape">
+                                        <Storyboard>
+                                            <PointAnimation Duration="0:0:0" To="1,0" Storyboard.TargetProperty="RenderTransformOrigin" Storyboard.TargetName="InnerBorder"/>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderThickness" Storyboard.TargetName="OuterBorder">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="0,0,1.5,0"/>
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.50" Value="{ThemeResource MenuFlyoutLeftLandscapeBorderThemeThickness}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderThickness" Storyboard.TargetName="CenterBorder">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="0,0,1.5,0"/>
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.50" Value="{ThemeResource MenuFlyoutLeftLandscapeBorderThemeThickness}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" Storyboard.TargetName="ItemsPresenter">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource MenuFlyoutLandscapeThemePadding}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <DoubleAnimation Duration="0:0:0.38" From="0.0" To="1.0" Storyboard.TargetProperty="ScaleY" Storyboard.TargetName="OuterScaleTransform"/>
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="ScaleX" Storyboard.TargetName="InnerScaleTransform">
+                                                <LinearDoubleKeyFrame KeyTime="0:0:0" Value="0.0"/>
+                                                <LinearDoubleKeyFrame KeyTime="0:0:0.38" Value="0.0"/>
+                                                <LinearDoubleKeyFrame KeyTime="0:0:0.50" Value="1.0"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="RightLandscape">
+                                        <Storyboard>
+                                            <PointAnimation Duration="0:0:0" To="0,0" Storyboard.TargetProperty="RenderTransformOrigin" Storyboard.TargetName="InnerBorder"/>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderThickness" Storyboard.TargetName="OuterBorder">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="1.5,0,0,0"/>
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.50" Value="{ThemeResource MenuFlyoutRightLandscapeBorderThemeThickness}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderThickness" Storyboard.TargetName="CenterBorder">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="1.5,0,0,0"/>
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.50" Value="{ThemeResource MenuFlyoutRightLandscapeBorderThemeThickness}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" Storyboard.TargetName="ItemsPresenter">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource MenuFlyoutLandscapeThemePadding}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <DoubleAnimation Duration="0:0:0.38" From="0.0" To="1.0" Storyboard.TargetProperty="ScaleY" Storyboard.TargetName="OuterScaleTransform"/>
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="ScaleX" Storyboard.TargetName="InnerScaleTransform">
+                                                <LinearDoubleKeyFrame KeyTime="0:0:0" Value="0.0"/>
+                                                <LinearDoubleKeyFrame KeyTime="0:0:0.38" Value="0.0"/>
+                                                <LinearDoubleKeyFrame KeyTime="0:0:0.50" Value="1.0"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Border x:Name="CenterBorder" FlowDirection="LeftToRight" BorderBrush="{StaticResource PrimeryText}">
+                                <StackPanel x:Name="InnerBorder" FlowDirection="{TemplateBinding FlowDirection}" Background="White">
+                                    <StackPanel.RenderTransform>
+                                        <ScaleTransform x:Name="InnerScaleTransform"/>
+                                    </StackPanel.RenderTransform>
+                                    <ItemsPresenter x:Name="ItemsPresenter" FlowDirection="{TemplateBinding FlowDirection}" Margin="{TemplateBinding Padding}" Style="{TemplateBinding ItemContainerStyle}"/>
+                                </StackPanel>
+                            </Border>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FontSize" Value="21.333"/>
+            <Setter Property="FontFamily" Value="Segoe WP SemiLight"/>
         </Style>
         <MenuFlyout x:Key="ServiseInfo" MenuFlyoutPresenterStyle="{StaticResource ServiceMenuFlyoutPresenterStyle}" >
-        	<MenuFlyoutItem Text="Всё" Foreground="Black" Padding="0" Margin="0,5"/>
-        	<MenuFlyoutItem Text="Автозаправки" Foreground="Black" Padding="0" Margin="0,5"/>
-        	<MenuFlyoutItem Text="Автомойки" Foreground="Black" Padding="0" Margin="0,5"/>
-        	<MenuFlyoutItem Text="Магазины з/ч" Foreground="Black" Padding="0" Margin="0,5"/>
-        	<MenuFlyoutItem Text="Шиномонтажи" Foreground="Black" Padding="0" Margin="0,5"/>
+            <MenuFlyoutItem Text="Всё" Foreground="Black" Padding="0" Margin="0,5"/>
+            <MenuFlyoutItem Text="Автозаправки" Foreground="Black" Padding="0" Margin="0,5"/>
+            <MenuFlyoutItem Text="Автомойки" Foreground="Black" Padding="0" Margin="0,5"/>
+            <MenuFlyoutItem Text="Магазины з/ч" Foreground="Black" Padding="0" Margin="0,5"/>
+            <MenuFlyoutItem Text="Шиномонтажи" Foreground="Black" Padding="0" Margin="0,5"/>
         </MenuFlyout>
         <SolidColorBrush x:Key="PhoneRadioCheckBoxBrush" Color="Transparent"/>
         <x:Double x:Key="TextStyleLargeFontSize">18.14</x:Double>
         <FontFamily x:Key="PhoneFontFamilyNormal">Segoe WP</FontFamily>
         <Thickness x:Key="CheckBoxAndRadioButtonTextPaddingThickness">8,0,0,0</Thickness>
         <Style x:Key="FlyMenuRadioButtonStyle" TargetType="RadioButton">
-        	<Setter Property="Background" Value="{ThemeResource PhoneRadioCheckBoxBrush}"/>
-        	<Setter Property="BorderBrush" Value="{ThemeResource PhoneRadioCheckBoxBorderBrush}"/>
-        	<Setter Property="FontSize" Value="{ThemeResource TextStyleLargeFontSize}"/>
-        	<Setter Property="FontFamily" Value="{ThemeResource PhoneFontFamilyNormal}"/>
-        	<Setter Property="HorizontalContentAlignment" Value="Left"/>
-        	<Setter Property="VerticalContentAlignment" Value="Top"/>
-        	<Setter Property="HorizontalAlignment" Value="Left"/>
-        	<Setter Property="VerticalAlignment" Value="Top"/>
-        	<Setter Property="Padding" Value="{ThemeResource CheckBoxAndRadioButtonTextPaddingThickness}"/>
-        	<Setter Property="Template">
-        		<Setter.Value>
-        			<ControlTemplate TargetType="RadioButton">
-        				<Grid Background="Transparent">
-        					<VisualStateManager.VisualStateGroups>
-        						<VisualStateGroup x:Name="CommonStates">
-        							<VisualState x:Name="Normal"/>
-        							<VisualState x:Name="MouseOver"/>
-        							<VisualState x:Name="PointerOver"/>
-        							<VisualState x:Name="Pressed"/>
-        							<VisualState x:Name="Disabled"/>
-        						</VisualStateGroup>
-        						<VisualStateGroup x:Name="CheckStates">
-        							<VisualState x:Name="Checked">
-        								<Storyboard>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentPresenter.Foreground)" Storyboard.TargetName="ContentPresenter">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource AccentColor}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        								</Storyboard>
-        							</VisualState>
-        							<VisualState x:Name="Unchecked"/>
-        							<VisualState x:Name="Indeterminate"/>
-        						</VisualStateGroup>
-        					</VisualStateManager.VisualStateGroups>
-        					<ContentPresenter x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" FontSize="{TemplateBinding FontSize}" FontFamily="{TemplateBinding FontFamily}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-        				</Grid>
-        			</ControlTemplate>
-        		</Setter.Value>
-        	</Setter>
-        	<Setter Property="MinWidth" Value="120"/>
+            <Setter Property="Background" Value="{ThemeResource PhoneRadioCheckBoxBrush}"/>
+            <Setter Property="BorderBrush" Value="{ThemeResource PhoneRadioCheckBoxBorderBrush}"/>
+            <Setter Property="FontSize" Value="{ThemeResource TextStyleLargeFontSize}"/>
+            <Setter Property="FontFamily" Value="{ThemeResource PhoneFontFamilyNormal}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Top"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Padding" Value="{ThemeResource CheckBoxAndRadioButtonTextPaddingThickness}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Grid Background="Transparent">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="MouseOver"/>
+                                    <VisualState x:Name="PointerOver"/>
+                                    <VisualState x:Name="Pressed"/>
+                                    <VisualState x:Name="Disabled"/>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="CheckStates">
+                                    <VisualState x:Name="Checked">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(ContentPresenter.Foreground)" Storyboard.TargetName="ContentPresenter">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource AccentColor}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Unchecked"/>
+                                    <VisualState x:Name="Indeterminate"/>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <ContentPresenter x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" FontSize="{TemplateBinding FontSize}" FontFamily="{TemplateBinding FontFamily}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="MinWidth" Value="120"/>
         </Style>
+        
 
 
     </Page.Resources>
@@ -267,11 +268,11 @@
             </NavigationThemeTransition>
         </TransitionCollection>
     </Page.Transitions>
-	<Grid Background="Red">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="66"/>
-			<RowDefinition/>
-		</Grid.RowDefinitions>
+    <Grid Background="Red">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="66"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
         <Controls:MapUserControl x:Name="Map" Grid.Row="1"/>
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="&#xE1C9;" VerticalAlignment="Top" FontFamily="Segoe UI Symbol" FontSize="21.333" Grid.Row="1" Margin="294,79,0,0" Visibility="Collapsed"/>
         <StackPanel Orientation="Vertical" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,150,5,0">
@@ -312,134 +313,134 @@
             <Path Data="M22.1975,38.7339 L22.6458,41.5672 L20.03,42.0715 L19.4268,39.4767 z M21.4653,34.1075 L22.0623,37.8796 L18.4505,38.7498 L19.2946,42.2133 L15.7585,42.8951 L16.6167,43.4524 L19.4701,42.9336 L20.1568,45.7513 L21.015,46.3086 L20.1995,42.801 L23.707,42.1633 L23.0329,38.5099 L26.7218,37.521 L25.8636,36.9638 L22.8803,37.6825 L22.3235,34.6648 z M11.4325,31.097 L12.0538,32.7986 C12.0538,32.7986 9.92575,35.0004 9.92575,35.0004 L8.78318,32.6866 z M14.0144,29.7329 C13.7889,30.1351 12.8583,31.6129 12.8583,31.6129 L12.3851,30.5255 z M30.6372,8.85029 C37.466,8.71758 47.6663,17.7701 49.0725,20.9859 C53.145,30.2992 33.1921,42.4896 33.1921,42.4896 C30.3583,43.7116 28.7095,50.5455 27.1286,50.6959 C25.5477,50.8462 9.57542,42.1322 9.66791,39.3427 C9.74304,37.087 14.183,32.8014 15.9142,28.4405 C17.1461,25.1589 19.9784,15.3581 24.7955,15.8844 C22.6879,12.8769 27.3215,9.18779 29.989,8.89171 C30.2007,8.86821 30.417,8.85457 30.6372,8.85029 z M15.7149,0.000848 C16.5699,0.011569 17.508,0.12463 18.5406,0.375181 C18.7471,0.425292 18.9528,0.477294 19.1573,0.531205 C22.2251,1.3398 25.0401,2.57669 26.7346,4.2779 C26.89,4.43398 27.0361,4.59403 27.1721,4.75796 C27.8044,5.52058 29.7468,8.06467 28.666,8.84099 C27.4403,9.05443 24.5317,11.4286 23.9612,12.9257 C23.3907,14.4228 23.318,14.6141 23.3362,15.8423 C19.6946,14.1947 13.7611,10.9574 13.5876,11.3617 C13.3655,11.8792 14.6959,14.5402 12.7007,15.6485 C13.001,16.2494 19.3953,18.6326 19.3953,18.6326 C17.2078,21.3409 16.1641,24.9716 15.1439,27.6891 C15.0898,27.8254 12.0002,29.6412 12.0002,29.6412 L10.9006,27.1146 L9.84576,26.7513 L11.0802,30.1322 L7.38395,32.1046 L9.08196,35.391 L4.98632,37.2869 L6.04125,37.6502 L9.46317,36.1287 C9.46317,36.1287 8.76986,38.0399 8.75107,38.6038 C8.74101,38.9089 9.21095,39.8158 9.21095,39.8158 C4.78612,38.7426 0.674445,37.3816 0.190411,36.8162 C-0.842391,35.6099 2.7188,29.5486 1.52916,26.7012 C1.52916,26.7012 2.26566,6.5243 8.34741,2.76643 C9.86367,1.82966 12.0096,-0.045608 15.7149,0.000848 z" Fill="Black" Height="50.698" Canvas.Left="233.417" Stretch="Fill" Canvas.Top="279.909" UseLayoutRounding="False" Width="49.621"/>
 
         </Canvas>
-        <Border x:Name="AlarmLine" Grid.RowSpan="2" VerticalAlignment="Bottom" Background="#7FEAEAEA" BorderBrush="{StaticResource DividerText}" BorderThickness="0,1,0,0" Visibility="Collapsed" >
+        <Border x:Name="AlarmLine" Grid.RowSpan="2" Visibility="Collapsed" VerticalAlignment="Bottom" Background="#7FEAEAEA" BorderBrush="{StaticResource DividerText}" BorderThickness="0,1,0,0" >
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5">
-                <AppBarToggleButton x:Name="LightsOn" HorizontalAlignment="Stretch" Label="appbartogglebutton" VerticalAlignment="Stretch" Style="{StaticResource CommandBarToggleButtonStyle}" Width="60" Height="60" BorderThickness="1" Foreground="{StaticResource PrimeryText}" IsChecked="False" Margin="0,0,20,0">
-                	<AppBarToggleButton.Icon>
-                		<BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_phara_48dp.png" Foreground="{StaticResource PrimeryText}"/>
-                	</AppBarToggleButton.Icon>
+                <AppBarToggleButton x:Name="LightsOn" HorizontalAlignment="Stretch" Label="appbartogglebutton" VerticalAlignment="Stretch" Style="{StaticResource CommandBarToggleButtonStyle}" Width="60" Height="60" BorderThickness="1" IsChecked="False" Margin="0,0,20,0" Click="LightsOn_Click">
+                    <AppBarToggleButton.Icon>
+                        <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_phara_48dp.png"/>
+                    </AppBarToggleButton.Icon>
                 </AppBarToggleButton>
-                <AppBarToggleButton x:Name="DoorClosed" HorizontalAlignment="Stretch" Label="appbartogglebutton" VerticalAlignment="Stretch" Style="{StaticResource CommandBarToggleButtonStyle}" Width="60" Height="60" BorderThickness="1" Foreground="{StaticResource PrimeryText}" IsChecked="False" Margin="0,0,20,0">
-                	<AppBarToggleButton.Icon>
-                		<BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_door_48dp.png" Foreground="{StaticResource PrimeryText}"/>
-                	</AppBarToggleButton.Icon>
+                <AppBarToggleButton x:Name="DoorClosed" HorizontalAlignment="Stretch" Label="appbartogglebutton" VerticalAlignment="Stretch" Style="{StaticResource CommandBarToggleButtonStyle}" Width="60" Height="60" BorderThickness="1" Foreground="{StaticResource PrimeryText}" IsChecked="False" Margin="0,0,20,0" Click="DoorClosed_Click">
+                    <AppBarToggleButton.Icon>
+                        <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_door_48dp.png"/>
+                    </AppBarToggleButton.Icon>
                 </AppBarToggleButton>
-                <AppBarToggleButton x:Name="Evacuation" HorizontalAlignment="Stretch" Label="appbartogglebutton" VerticalAlignment="Stretch" Style="{StaticResource CommandBarToggleButtonStyle}" Width="60" Height="60" BorderThickness="1" Foreground="{StaticResource PrimeryText}" IsChecked="True" Margin="0,0,20,0">
-                	<AppBarToggleButton.Icon>
-                		<BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_evacution_48dp.png"/>
-                	</AppBarToggleButton.Icon>
+                <AppBarToggleButton x:Name="Evacuation" HorizontalAlignment="Stretch" Label="appbartogglebutton" VerticalAlignment="Stretch" Style="{StaticResource CommandBarToggleButtonStyle}" Width="60" Height="60" BorderThickness="1" Foreground="{StaticResource PrimeryText}" IsChecked="False" Margin="0,0,20,0" Click="Evacuation_Click">
+                    <AppBarToggleButton.Icon>
+                        <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_evacution_48dp.png"/>
+                    </AppBarToggleButton.Icon>
                 </AppBarToggleButton>
-                <AppBarToggleButton x:Name="Alarm" HorizontalAlignment="Stretch" Label="appbartogglebutton" VerticalAlignment="Stretch" Style="{StaticResource CommandBarToggleButtonStyle}" Width="60" Height="60" BorderThickness="1" Foreground="{StaticResource PrimeryText}" IsChecked="False">
-                	<AppBarToggleButton.Icon>
-                		<BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_hint_48dp.png" Foreground="{StaticResource PrimeryText}"/>
-                	</AppBarToggleButton.Icon>
+                <AppBarToggleButton x:Name="Alarm" HorizontalAlignment="Stretch" Label="appbartogglebutton" VerticalAlignment="Stretch" Style="{StaticResource CommandBarToggleButtonStyle}" Width="60" Height="60" BorderThickness="1" Foreground="{StaticResource PrimeryText}" IsChecked="False" Click="Alarm_Click">
+                    <AppBarToggleButton.Icon>
+                        <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_hint_48dp.png"/>
+                    </AppBarToggleButton.Icon>
                 </AppBarToggleButton>
             </StackPanel>
 
         </Border>
         <Controls:ServiceInfoRating x:Name="ServiceInfo" VerticalContentAlignment="Stretch" Grid.Row="1" HorizontalAlignment="Stretch" Checked="ServiceInfo_Checked" IsChecked="False" VerticalAlignment="Bottom" Visibility="Collapsed" >
-        	<FlyoutBase.AttachedFlyout>
-        		<Flyout/>
+            <FlyoutBase.AttachedFlyout>
+                <Flyout/>
             </FlyoutBase.AttachedFlyout>
         </Controls:ServiceInfoRating>
         <Border Margin="0,0,0,-8">
             <Border.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                	<GradientStop Color="#FF272727" Offset="0.832"/>
-                	<GradientStop Color="#00272727" Offset="1"/>
+                    <GradientStop Color="#FF272727" Offset="0.832"/>
+                    <GradientStop Color="#00272727" Offset="1"/>
                 </LinearGradientBrush>
             </Border.Background>
         </Border>
         <Grid x:Name="TopMenu">
             <Grid.ColumnDefinitions>
-            	<ColumnDefinition Width="56"/>
-            	<ColumnDefinition/>
-            	<ColumnDefinition Width="16"/>
-            	<ColumnDefinition Width="Auto"/>
-            	<ColumnDefinition Width="28"/>
+                <ColumnDefinition Width="56"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="28"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-            	<RowDefinition Height="10"/>
-            	<RowDefinition Height="56"/>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="56"/>
             </Grid.RowDefinitions>
-        	<Border Background="{StaticResource DarkPrimeryColor}" Grid.ColumnSpan="5" />
-        	<Border Background="{StaticResource PrimeryColor}" Grid.Row="1" Grid.ColumnSpan="5" />
-        	<AppBarButton x:Name="Tools" HorizontalAlignment="Center" Label="appbarbutton" VerticalAlignment="Center" Grid.Row="1"
+            <Border Background="{StaticResource DarkPrimeryColor}" Grid.ColumnSpan="5" />
+            <Border Background="{StaticResource PrimeryColor}" Grid.Row="1" Grid.ColumnSpan="5" />
+            <AppBarButton x:Name="Tools" HorizontalAlignment="Center" Label="appbarbutton" VerticalAlignment="Center" Grid.Row="1"
         		Grid.Column="0" Margin="4" Style="{StaticResource AppBarButtonStyle}" Width="46" Height="46">
-        		<AppBarButton.Flyout>
-        			<Flyout x:Name="FlyoutMenu"  Placement="Left" FlyoutPresenterStyle="{StaticResource BlankFlyoutPresenterStyle}">
-        				<Controls:MainMenuControl x:Name="MainMenuControl" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-        			</Flyout>
-        		</AppBarButton.Flyout>
-        		<AppBarButton.Icon>
-        			<BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_nav_menu_24dp.png" Margin="5,0"/>
-        		</AppBarButton.Icon>
-        	</AppBarButton>
-        	<AppBarButton x:Name="BackButton" HorizontalAlignment="Center" Icon="Back" Label="appbarbutton" VerticalAlignment="Center" Grid.Row="1" Style="{StaticResource AppBarButtonStyle}" Foreground="White" Click="BackButton_Click" Visibility="Collapsed"/>
-        	<AppBarButton x:Name="More" HorizontalAlignment="Center" Label="appbarbutton" VerticalAlignment="Center" Grid.Row="1" Margin="4" Width="46" Height="46" Grid.Column="3" RequestedTheme="Light" Foreground="{ThemeResource AppBarBorderThemeBrush}" Background="{ThemeResource AppBarBackgroundThemeBrush}">
-        		<AppBarButton.Resources>
-        			<Thickness x:Key="FlyoutContentPanelPortraitThemeMargin">0,25.5,20,0</Thickness>
-        			<Thickness x:Key="FlyoutContentPanelLandscapeThemeMargin">0,0,0,0</Thickness>
-        			<Style x:Key="ServiceFlyoutPresenterStyle" TargetType="FlyoutPresenter">
-        				<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-        				<Setter Property="VerticalContentAlignment" Value="Stretch"/>
-        				<Setter Property="IsTabStop" Value="False"/>
-        				<Setter Property="Background" Value="{StaticResource DividerText}"/>
-        				<Setter Property="Padding" Value="0"/>
-        				<Setter Property="MinHeight" Value="{ThemeResource FlyoutThemeMinHeight}"/>
-        				<Setter Property="ScrollViewer.HorizontalScrollMode" Value="Auto"/>
-        				<Setter Property="ScrollViewer.VerticalScrollMode" Value="Auto"/>
-        				<Setter Property="ScrollViewer.ZoomMode" Value="Disabled"/>
-        				<Setter Property="Template">
-        					<Setter.Value>
-        						<ControlTemplate TargetType="FlyoutPresenter">
-        							<Border x:Name="Background" BorderThickness="{TemplateBinding BorderThickness}" FlowDirection="LeftToRight" HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
-        								<VisualStateManager.VisualStateGroups>
-        									<VisualStateGroup x:Name="OrientationStates">
-        										<VisualState x:Name="Portrait"/>
-        										<VisualState x:Name="Landscape">
-        											<Storyboard>
-        												<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" Storyboard.TargetName="ScrollViewer">
-        													<DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource FlyoutContentPanelLandscapeThemeMargin}"/>
-        												</ObjectAnimationUsingKeyFrames>
-        											</Storyboard>
-        										</VisualState>
-        									</VisualStateGroup>
-        								</VisualStateManager.VisualStateGroups>
-        								<ScrollViewer x:Name="ScrollViewer" AutomationProperties.AccessibilityView="Raw" FlowDirection="{TemplateBinding FlowDirection}" HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}" HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}" Margin="{ThemeResource FlyoutContentPanelPortraitThemeMargin}" VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}" VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}" ZoomMode="{TemplateBinding ScrollViewer.ZoomMode}">
-        									<ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-        								</ScrollViewer>
-        							</Border>
-        						</ControlTemplate>
-        					</Setter.Value>
-        				</Setter>
-        				<Setter Property="BorderBrush" Value="{StaticResource PrimeryText}"/>
-        				<Setter Property="BorderThickness" Value="1"/>
-        				<Setter Property="HorizontalAlignment" Value="Right"/>
-        			</Style>
+                <AppBarButton.Flyout>
+                    <Flyout x:Name="FlyoutMenu"  Placement="Left" FlyoutPresenterStyle="{StaticResource BlankFlyoutPresenterStyle}">
+                        <Controls:MainMenuControl x:Name="MainMenuControl" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                    </Flyout>
+                </AppBarButton.Flyout>
+                <AppBarButton.Icon>
+                    <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_nav_menu_24dp.png" Margin="5,0"  Width="32" Height="32"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton x:Name="BackButton" HorizontalAlignment="Center" Icon="Back" Label="appbarbutton" VerticalAlignment="Center" Grid.Row="1" Style="{StaticResource AppBarButtonStyle}" Foreground="White" Click="BackButton_Click" Visibility="Collapsed"/>
+            <AppBarButton x:Name="More" HorizontalAlignment="Center" Label="appbarbutton" VerticalAlignment="Center" Grid.Row="1" Margin="4" Width="46" Height="46" Grid.Column="3" RequestedTheme="Light" Foreground="{ThemeResource AppBarBorderThemeBrush}" Background="{ThemeResource AppBarBackgroundThemeBrush}">
+                <AppBarButton.Resources>
+                    <Thickness x:Key="FlyoutContentPanelPortraitThemeMargin">0,25.5,20,0</Thickness>
+                    <Thickness x:Key="FlyoutContentPanelLandscapeThemeMargin">0,0,0,0</Thickness>
+                    <Style x:Key="ServiceFlyoutPresenterStyle" TargetType="FlyoutPresenter">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                        <Setter Property="IsTabStop" Value="False"/>
+                        <Setter Property="Background" Value="{StaticResource DividerText}"/>
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="MinHeight" Value="{ThemeResource FlyoutThemeMinHeight}"/>
+                        <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Auto"/>
+                        <Setter Property="ScrollViewer.VerticalScrollMode" Value="Auto"/>
+                        <Setter Property="ScrollViewer.ZoomMode" Value="Disabled"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="FlyoutPresenter">
+                                    <Border x:Name="Background" BorderThickness="{TemplateBinding BorderThickness}" FlowDirection="LeftToRight" HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="OrientationStates">
+                                                <VisualState x:Name="Portrait"/>
+                                                <VisualState x:Name="Landscape">
+                                                    <Storyboard>
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" Storyboard.TargetName="ScrollViewer">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource FlyoutContentPanelLandscapeThemeMargin}"/>
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                        <ScrollViewer x:Name="ScrollViewer" AutomationProperties.AccessibilityView="Raw" FlowDirection="{TemplateBinding FlowDirection}" HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}" HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}" Margin="{ThemeResource FlyoutContentPanelPortraitThemeMargin}" VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}" VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}" ZoomMode="{TemplateBinding ScrollViewer.ZoomMode}">
+                                            <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                        </ScrollViewer>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="BorderBrush" Value="{StaticResource PrimeryText}"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                    </Style>
 
-        			
-        		</AppBarButton.Resources>
-        		<AppBarButton.Icon>
-        			<BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_filter_24dp.png" Margin="5,0"/>
-        		</AppBarButton.Icon>
-        		<AppBarButton.Style>
-        			<StaticResource ResourceKey="AppBarButtonStyle"/>
-        		</AppBarButton.Style>
-        		<AppBarButton.Flyout>
-        			<MenuFlyout MenuFlyoutPresenterStyle="{StaticResource ServiceMenuFlyoutPresenterStyle}">
-        				<ToggleMenuFlyoutItem x:Name="All" Text="Всё" Style="{StaticResource ServiceToogleMenuStyle}" IsChecked="True" Click="All_Click"/>
-        				<ToggleMenuFlyoutItem x:Name="Gas" Text="Автозаправки" Style="{StaticResource ServiceToogleMenuStyle}" Click="All_Click" />
-        				<ToggleMenuFlyoutItem x:Name="Wash" Text="Автомойки" Style="{StaticResource ServiceToogleMenuStyle}" Click="All_Click" />
-        				<ToggleMenuFlyoutItem x:Name="Shops" Text="Магазины з/ч" Style="{StaticResource ServiceToogleMenuStyle}" Click="All_Click" />
-        				<ToggleMenuFlyoutItem x:Name="Tire" Text="Шиномонтажи" Style="{StaticResource ServiceToogleMenuStyle}" Click="All_Click" />
-        			</MenuFlyout>
-        		</AppBarButton.Flyout>
-        	</AppBarButton>
-        	<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Карта" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" FontSize="26.667" Margin="16,-1,0,0" FontFamily="Segoe UI" Foreground="{ThemeResource AppBarBackgroundThemeBrush}"/>
+
+                </AppBarButton.Resources>
+                <AppBarButton.Icon>
+                    <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_filter_24dp.png" Margin="5,0" Width="32" Height="32"/>
+                </AppBarButton.Icon>
+                <AppBarButton.Style>
+                    <StaticResource ResourceKey="AppBarButtonStyle"/>
+                </AppBarButton.Style>
+                <AppBarButton.Flyout>
+                    <MenuFlyout MenuFlyoutPresenterStyle="{StaticResource ServiceMenuFlyoutPresenterStyle}">
+                        <ToggleMenuFlyoutItem x:Name="All" Text="Всё" Style="{StaticResource ServiceToogleMenuStyle}" IsChecked="True" Click="All_Click"/>
+                        <ToggleMenuFlyoutItem x:Name="Gas" Text="Автозаправки" Style="{StaticResource ServiceToogleMenuStyle}" Click="All_Click" />
+                        <ToggleMenuFlyoutItem x:Name="Wash" Text="Автомойки" Style="{StaticResource ServiceToogleMenuStyle}" Click="All_Click" />
+                        <ToggleMenuFlyoutItem x:Name="Shops" Text="Магазины з/ч" Style="{StaticResource ServiceToogleMenuStyle}" Click="All_Click" />
+                        <ToggleMenuFlyoutItem x:Name="Tire" Text="Шиномонтажи" Style="{StaticResource ServiceToogleMenuStyle}" Click="All_Click" />
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Карта" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" FontSize="21.333" Margin="16,-1,0,0" FontFamily="Segoe UI" Foreground="{ThemeResource AppBarBackgroundThemeBrush}"/>
 
         </Grid>
         <ProgressRing x:Name="Busy" Background="#7F727272" Grid.Row="1" d:IsHidden="True"/>
-
+        <Grid x:Name="grdContext" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" Grid.RowSpan="2"/>
     </Grid>
 </Page>
