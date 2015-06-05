@@ -56,6 +56,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
         public event EventHandler PartsWorksLoadComplete;
         public event EventHandler LoadWorkTypesComplete;
         public event EventHandler LoadModelsComplete;
+        public event EventHandler LoadMarksComplete;
         public event EventHandler LoadBodiesComplete;
         public event EventHandler LoadEngineTypesComplete;
         public event EventHandler LoadEnginsComplete;
@@ -227,6 +228,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             data = data.OrderBy(p => p.Name).ToList();
             Marks.Clear();
             data.ForEach(o => Marks.Add(o));
+            if (LoadMarksComplete != null)
+                LoadMarksComplete(this, new EventArgs());
         }
 
         public void SetModels(List<KVPBase> data)

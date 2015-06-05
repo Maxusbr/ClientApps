@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using DTCDev.Client.Cars.Service.Engine.Handlers;
+using DTCDev.Client.Cars.Service.Engine.Storage;
 using DTCDev.Client.ViewModel;
 using DTCDev.Models.CarBase.CarList;
 using DTCDev.Models.CarBase.CarStatData;
@@ -14,7 +15,7 @@ using System.Windows;
 
 namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
 {
-    public class AddNewCarTestDriveViewModel : ViewModelBase, ICancelHandler
+    public class AddNewCarTestDriveViewModel : ViewModelBase
     {
         private string _carNumber;
         private int _distance;
@@ -22,20 +23,82 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
         private readonly CarsHandler _carHandler = CarsHandler.Instance;
         private readonly SpecificationDataStorage _storage = SpecificationDataStorage.Instance;
         private RelayCommand _saveCommand;
-        private RelayCommand _cancelCommand;
+        private RelayCommand _addCommand;
         private DateTime _dateProduce = DateTime.Now;
-        private DateTime _datePurchase = DateTime.Now;
         private bool _validateCarNumber;
+        private CarListDetailsDataModel _carDetail;
 
         public AddNewCarTestDriveViewModel()
         {
             _storage.Update();
+            _carHandler.OnGetCarDetailCompleteOnlyFill += Instance_OnGetCarDetailComplete;
+            _storage.LoadMarksComplete += _storage_LoadMarksComplete;
+            _storage.LoadModelsComplete +=_storage_LoadModelsComplete;
+            _storage.LoadBodiesComplete += _storage_LoadBodiesComplete;
+            _storage.LoadEngineTypesComplete += _storage_LoadEngineTypesComplete;
+            _storage.LoadEnginsComplete+=_storage_LoadEnginsComplete;
+            _storage.LoadTransmissionsComplete+=_storage_LoadTransmissionsComplete;
+            CarStorage.Instance.LoadComplete += Instance_LoadComplete;
+            UpdateCar();
         }
 
-        public event EventHandler CancelHandler;
-        protected virtual void OnCancelHandler()
+
+        private void _storage_LoadTransmissionsComplete(object sender, EventArgs e)
         {
-            if (CancelHandler != null) CancelHandler(this, EventArgs.Empty);
+            if (_carDetail == null) return;
+            TransmissionType = TransmissionTypes.FirstOrDefault(o => o.Name.Equals(_carDetail.TransmissionType));
+        }
+
+        private void _storage_LoadEnginsComplete(object sender, EventArgs e)
+        {
+            if (_carDetail == null) return;
+            EngineVolume = EngineVolumes.FirstOrDefault(o => o.Name.Equals(_carDetail.EngineVolume));
+        }
+
+        void _storage_LoadEngineTypesComplete(object sender, EventArgs e)
+        {
+            if (_carDetail == null) return;
+            EngineType = EngineTypes.FirstOrDefault(o => o.Name.Equals(_carDetail.EngineType));
+        }
+
+        private void _storage_LoadModelsComplete(object sender, EventArgs e)
+        {
+            if (_carDetail == null) return;
+            Model = Models.FirstOrDefault(o => o.Name.Equals(_carDetail.Model));
+        }
+
+        private void Instance_OnGetCarDetailComplete(CarListDetailsDataModel carDetail)
+        {
+            _carDetail = carDetail;
+            Distance = carDetail.CurrentDistance;
+            DateProduce = carDetail.DateProduce.ToDate;
+            Mark = Marks.FirstOrDefault(o => o.Name.Equals(carDetail.Mark));
+        }
+
+        void _storage_LoadBodiesComplete(object sender, EventArgs e)
+        {
+            if (_carDetail == null) return;
+            Body = Bodies[0];
+        }
+
+        void _storage_LoadMarksComplete(object sender, EventArgs e)
+        {
+            if (_carDetail == null) return;
+            if (!string.IsNullOrEmpty(_carDetail.Model))
+                Model = Models.FirstOrDefault(o => o.Name.Equals(_carDetail.Model));
+        }
+
+        private void Instance_LoadComplete(object sender, EventArgs e)
+        {
+            UpdateCar();
+        }
+
+        public event EventHandler OnSelectedCarChange;
+        private void SelectedCarChange(DISP_Car car)
+        {
+            VIN = car.CarModel.DID;
+            CarNumber = car.CarModel.CarNumber;
+            _carHandler.GetCarDetails(CarNumber, true);
         }
 
         public void OnPropertyChange(string property)
@@ -50,6 +113,26 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
         public ObservableCollection<KVPBase> EngineVolumes { get { return _storage.EngineVolumes; } }
         public ObservableCollection<KVPBase> TransmissionTypes { get { return _storage.TransTypes; } }
         public ObservableCollection<KVPBase> Bodies { get { return _storage.BodyTypes; } }
+
+        private readonly ObservableCollection<DISP_Car> _cars = new ObservableCollection<DISP_Car>();
+        public ObservableCollection<DISP_Car> Cars
+        {
+            get { return _cars; }
+        }
+
+        private DISP_Car _selectedCar;
+        public DISP_Car SelectedCar
+        {
+            get { return _selectedCar; }
+            set
+            {
+                if (_selectedCar == value) return;
+                _selectedCar = value;
+                OnPropertyChanged("SelectedCar");
+                if (value != null)
+                    SelectedCarChange(value);
+            }
+        }
 
         public string CarNumber
         {
@@ -91,7 +174,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             get { return _storage.SelectedMark; }
             set
             {
-                if (_storage.SelectedMark == value) return;
                 _storage.SelectedMark = value;
                 OnPropertyChange("Mark");
             }
@@ -102,7 +184,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             get { return _storage.SelectedModel; }
             set
             {
-                if (_storage.SelectedModel == value) return;
                 _storage.SelectedModel = value;
                 OnPropertyChange("Model");
             }
@@ -113,7 +194,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             get { return _storage.SelectedBody; }
             set
             {
-                if (_storage.SelectedBody == value) return;
                 _storage.SelectedBody = value;
                 OnPropertyChange("Body");
             }
@@ -124,7 +204,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             get { return _storage.SelectedEngineType; }
             set
             {
-                if (_storage.SelectedEngineType == value) return;
                 _storage.SelectedEngineType = value;
                 OnPropertyChange("EngineType");
             }
@@ -135,7 +214,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             get { return _storage.SelectedEngineVolume; }
             set
             {
-                if (_storage.SelectedEngineVolume == value) return;
                 _storage.SelectedEngineVolume = value;
                 OnPropertyChange("EngineVolume");
             }
@@ -182,8 +260,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
         {
             return CarNumber != null && Mark != null && Model != null &&
                 Body != null && EngineType != null && EngineVolume != null &&
-                TransmissionType != null && ValidateCarNumber && ClientName.Length>2 
-                && IsPhoneValid();
+                TransmissionType != null && ValidateCarNumber;
         }
 
         public DateTime DateProduce
@@ -194,100 +271,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
                 if (_dateProduce == value) return;
                 _dateProduce = value;
                 OnPropertyChanged("DateProduce");
-            }
-        }
-
-        public DateTime DatePurchase
-        {
-            get { return _datePurchase; }
-            set
-            {
-                if (_datePurchase == value) return;
-                _datePurchase = value;
-                OnPropertyChanged("DatePurchase");
-            }
-        }
-
-        private string _clientName = "";
-        public string ClientName
-        {
-            get { return _clientName; }
-            set
-            {
-                _clientName = value;
-                this.OnPropertyChanged("ClientName");
-            }
-        }
-
-        private string _phoneNumber="+7";
-        public string PhoneHumber
-        {
-            get { return _phoneNumber; }
-            set
-            {
-                _phoneNumber = value;
-                this.OnPropertyChanged("PhoneHumber");
-            }
-        }
-
-        private string _mail = "";
-        public string Mail
-        {
-            get { return _mail; }
-            set
-            {
-                _mail = value;
-                this.OnPropertyChanged("Mail");
-            }
-        }
-
-        private string _login = "";
-        public string Login
-        {
-            get { return _login; }
-            set
-            {
-                _login = value;
-                this.OnPropertyChanged("Login");
-            }
-        }
-
-        private CarWithSettingDevice _selectedDevice;
-        public CarWithSettingDevice SelectedDevice
-        {
-            get { return _selectedDevice; }
-            set
-            {
-                _selectedDevice = value;
-                this.OnPropertyChanged("SelectedDevice");
-                if (value == null)
-                    ErrorMessageVisibility = Visibility.Collapsed;
-                else if (value.IsPlug == 0)
-                    ErrorMessageVisibility = Visibility.Collapsed;
-                else
-                    ErrorMessageVisibility = Visibility.Visible;
-            }
-        }
-
-        private Visibility _errorMessageVisibility = Visibility.Collapsed;
-        public Visibility ErrorMessageVisibility
-        {
-            get { return _errorMessageVisibility; }
-            set
-            {
-                _errorMessageVisibility = value;
-                this.OnPropertyChanged("ErrorMessageVisibility");
-            }
-        }
-
-        private bool _showOnlyFree = false;
-        public bool ShowOnlyFree
-        {
-            get { return _showOnlyFree; }
-            set
-            {
-                _showOnlyFree = value;
-                this.OnPropertyChanged("ShowOnlyFree");
             }
         }
 
@@ -312,15 +295,22 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             //TODO заполнить ServiceWorks
         }
 
-        public RelayCommand CancelCommand
+        public RelayCommand AddCommand
         {
-            get { return _cancelCommand ?? (_cancelCommand = new RelayCommand(Cancel)); }
+            get { return _addCommand ?? (_addCommand = new RelayCommand(AddCar)); }
         }
 
 
-        private void Cancel(object obj)
+        private void AddCar(object obj)
         {
-            OnCancelHandler();
+            ClearValues();
+            SelectedCar = new DISP_Car{CarModel = new CarListBaseDataModel()};
+        }
+
+        private void ClearValues()
+        {
+            CarNumber = VIN = string.Empty;
+            TransmissionType = EngineVolume = EngineType = Body = Mark = Model = null;
         }
 
 
@@ -343,35 +333,24 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
                 id_Transmission = TransmissionType != null ? TransmissionType.id : 0,
                 CurrentDistance = Distance,
                 DateProduce = new DateDataModel(DateProduce),
-                DatePurchase = new DateDataModel(DatePurchase),
-                DID = SelectedDevice != null ? SelectedDevice.DID : "",
-                ClientLogin = Login,
-                ClientMail = Mail,
-                ClientName = ClientName,
-                ClientPhone = PhoneHumber
+
             };
             return model;
         }
 
-
-        private bool isValidEmail(string email)
+        void UpdateCar()
         {
-            string pattern = "[.\\-_a-z0-9]+@([a-z0-9][\\-a-z0-9]+\\.)+[a-z]{2,6}";
-            Match isMatch = Regex.Match(email, pattern, RegexOptions.IgnoreCase);
-            return isMatch.Success;
+            Cars.Clear();
+            foreach (var item in CarStorage.Instance.Cars)
+            {
+                Cars.Add(item);
+            }
         }
 
         private void IsValidateCarNumber()
         {
             var rg = new Regex(@"[A-ZА-Я]\d{3}[A-ZА-Я]{2}\d{2,3}");
-            ValidateCarNumber = !rg.IsMatch(CarNumber);
-        }
-
-        private bool IsPhoneValid()
-        {
-            string pattern = "^((8|\\+7)[\\- ]?)?(\\(?\\d{3}\\)?[\\- ]?)?[\\d\\- ]{7,10}$";
-            Match isMatch = Regex.Match(PhoneHumber, pattern, RegexOptions.IgnoreCase);
-            return isMatch.Success;
+            ValidateCarNumber = string.IsNullOrEmpty(CarNumber) || !rg.IsMatch(CarNumber);
         }
     }
 }

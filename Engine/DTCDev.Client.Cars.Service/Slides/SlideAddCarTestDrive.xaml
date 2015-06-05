@@ -10,6 +10,7 @@
              d:DesignHeight="600" d:DesignWidth="1000">
     <UserControl.Resources>
         <converters:PlugConvertor x:Key="pConvertor"/>
+        <converters:OnLineConverter x:Key="onlineConverter"/>
     </UserControl.Resources>
     <UserControl.DataContext>
         <viewModels:AddNewCarTestDriveViewModel/>
@@ -22,69 +23,8 @@
         </Grid.ColumnDefinitions>
 
         <Grid Margin="20">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="35"/>
-                <RowDefinition Height="35"/>
-                <RowDefinition Height="35"/>
-                <RowDefinition Height="35"/>
-                <RowDefinition Height="35"/>
-                <RowDefinition Height="35"/>
-                <RowDefinition Height="35"/>
-                <RowDefinition Height="35"/>
-                <RowDefinition Height="35"/>
-                <RowDefinition Height="35"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150"/>
-                <ColumnDefinition Width="15"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <TextBlock TextWrapping="Wrap" Text="VIN:" VerticalAlignment="Center" FontWeight="Bold" Margin="0,8,0,9"/>
-            <TextBox TextWrapping="Wrap" Text="{Binding VIN, Mode=TwoWay}" VerticalAlignment="Center" Grid.Row="0"
-                     Grid.Column="2" Margin="0,5"/>
-            <TextBlock TextWrapping="Wrap" Text="Гос. номер:" VerticalAlignment="Center" FontWeight="Bold" Margin="0,8,0,9" Grid.Row="1"
-                       Grid.Column="0" />
-            <TextBox TextWrapping="Wrap" Text="{Binding CarNumber, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="2" Margin="0,5" Grid.Row="1"/>
-            <TextBlock TextWrapping="Wrap" Text="Марка:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="2"
-                       Grid.Column="0" Margin="0,10,0,9"/>
-            <ComboBox VerticalAlignment="Center" Grid.Column="2" Grid.Row="2" ItemsSource="{Binding Marks}" 
-				SelectedItem="{Binding Mark, Mode=TwoWay}" Margin="0,5,0,4"/>
-            <TextBlock TextWrapping="Wrap" Text="Модель:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="3"
-                       Grid.Column="0" Margin="0,10,0,9"/>
-            <ComboBox VerticalAlignment="Center" Grid.Column="2" Grid.Row="3" ItemsSource="{Binding Models}" 
-				SelectedItem="{Binding Model, Mode=TwoWay}" Margin="0,4,0,5"/>
-            <TextBlock TextWrapping="Wrap" Text="Тип кузова:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="4"
-                       Grid.Column="0" Margin="0,10,0,9"/>
-            <ComboBox VerticalAlignment="Center" Grid.Column="2" Margin="0,5,0,4" Grid.Row="4" ItemsSource="{Binding Bodies}" 
-				SelectedItem="{Binding Body, Mode=TwoWay}"/>
-            <TextBlock TextWrapping="Wrap" Text="Тип двигателя:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="5"
-                       Grid.Column="0" Margin="0,10,0,9"/>
-            <ComboBox VerticalAlignment="Center" Grid.Column="2" Grid.Row="5" ItemsSource="{Binding EngineTypes}" 
-				SelectedItem="{Binding EngineType, Mode=TwoWay}" Margin="0,4,0,5"/>
-            <TextBlock TextWrapping="Wrap" Text="Объем двигателя:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="6"
-                       Grid.Column="0" Margin="0,10,0,9"/>
-            <ComboBox VerticalAlignment="Center" Grid.Column="2" Grid.Row="6" ItemsSource="{Binding EngineVolumes}" 
-				SelectedItem="{Binding EngineVolume, Mode=TwoWay}" Margin="0,5,0,4"/>
-            <TextBlock TextWrapping="Wrap" Text="Тип КПП:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="7"
-                       Grid.Column="0" Margin="0,10,0,9"/>
-            <ComboBox VerticalAlignment="Center" Grid.Column="2" Margin="0,4,0,5" Grid.Row="7" 
-				ItemsSource="{Binding TransmissionTypes}" SelectedItem="{Binding TransmissionType, Mode=TwoWay}"/>
-
-            <TextBlock TextWrapping="Wrap" Text="Пробег:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="8"
-                       Grid.Column="0" Margin="0,10,0,9"/>
-            <TextBox TextWrapping="Wrap" Text="{Binding Distance, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="2" Margin="0,5,0,4" Grid.Row="8" TextAlignment="Right"/>
-
-            <TextBlock TextWrapping="Wrap" Text="Дата выпуска:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="9"
-                       Grid.Column="0" Margin="0,10,0,9"/>
-            <DatePicker Grid.Row="9" Grid.Column="2" SelectedDate="{Binding DateProduce, Mode=TwoWay}" Style="{DynamicResource DatePickerStyle}" Height="30" BorderBrush="{x:Null}" Margin="0,2,0,3"/>
-
-        </Grid>
-
-        <Grid Grid.Column="2" Margin="0,30">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="300"/>
-                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="20"/>
@@ -93,17 +33,91 @@
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="80"/>
             </Grid.RowDefinitions>
-            <StackPanel Orientation="Horizontal" Grid.Row="4" Margin="0,20,0,0" HorizontalAlignment="Center">
-                <Button Content="Отмена" HorizontalAlignment="Center" VerticalAlignment="Top" 
-					Command="{Binding CancelCommand, Mode=OneWay}" Margin="15,0" Width="96"/>
-                <Button Content="Сохранить" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding SaveCommand, Mode=OneWay}" IsEnabled="{Binding EnableButtonNext, Mode=OneWay}" Margin="15,0" Width="96"/>
-            </StackPanel>
-            <DataGrid Grid.Row="2" AutoGenerateColumns="False" Margin="0,20" ItemsSource="{Binding Devices}" SelectedItem="{Binding SelectedDevice, Mode=TwoWay}">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Номер КОТа" IsReadOnly="True" Width="*" Binding="{Binding DID}"/>
-                    <DataGridTextColumn Header="Установлен" IsReadOnly="True" Binding="{Binding IsPlug, Converter={StaticResource pConvertor}}"/>
-                </DataGrid.Columns>
+            <Button Content="Добавить" HorizontalAlignment="Center" VerticalAlignment="Top" 
+        		Command="{Binding AddCommand, Mode=OneWay}" Width="96" Grid.Row="4"/>
+            <TextBlock Text="Список авто для тест-драйва" FontWeight="Bold"/>
+            <DataGrid ItemsSource="{Binding Cars}" ColumnWidth="*" SelectedItem="{Binding SelectedCar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+            	AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" Grid.Row="2" SelectionMode="Single">
+				<DataGrid.Columns>
+            		<DataGridTextColumn Binding="{Binding CarModel.CarNumber}" Header="Госномер" IsReadOnly="True"  Width="*" />
+            		<DataGridTextColumn Binding="{Binding CarModel.Mark}" Header="Марка" IsReadOnly="True"  Width="100" />
+            		<DataGridTextColumn Binding="{Binding CarModel.Model}" Header="Модель" IsReadOnly="True"  Width="100" />
+            	</DataGrid.Columns>
             </DataGrid>
+        </Grid>
+        <Grid Margin="0,30" Grid.Column="2">
+        	<Grid.ColumnDefinitions>
+        		<ColumnDefinition Width="300"/>
+        		<ColumnDefinition/>
+        	</Grid.ColumnDefinitions>
+        	<Grid.RowDefinitions>
+        		<RowDefinition Height="20"/>
+        		<RowDefinition Height="40"/>
+        		<RowDefinition/>
+        		<RowDefinition Height="40"/>
+        		<RowDefinition Height="80"/>
+        	</Grid.RowDefinitions>
+        	<Grid Grid.Row="2">
+        		<Grid.RowDefinitions>
+        			<RowDefinition Height="35"/>
+        			<RowDefinition Height="35"/>
+        			<RowDefinition Height="35"/>
+        			<RowDefinition Height="35"/>
+        			<RowDefinition Height="35"/>
+        			<RowDefinition Height="35"/>
+        			<RowDefinition Height="35"/>
+        			<RowDefinition Height="35"/>
+        			<RowDefinition Height="35"/>
+        			<RowDefinition Height="35"/>
+        			<RowDefinition/>
+        		</Grid.RowDefinitions>
+        		<Grid.ColumnDefinitions>
+        			<ColumnDefinition Width="150"/>
+        			<ColumnDefinition Width="15"/>
+        			<ColumnDefinition/>
+        		</Grid.ColumnDefinitions>
+        		<TextBlock TextWrapping="Wrap" Text="VIN:" VerticalAlignment="Center" FontWeight="Bold" Margin="0,8,0,9"/>
+        		<TextBox TextWrapping="Wrap" Text="{Binding VIN, Mode=TwoWay}" VerticalAlignment="Center" Grid.Row="0"
+        			Grid.Column="2" Margin="0,5"/>
+        		<TextBlock TextWrapping="Wrap" Text="Гос. номер:" VerticalAlignment="Center" FontWeight="Bold" Margin="0,8,0,9" Grid.Row="1"
+        			Grid.Column="0" />
+        		<TextBox TextWrapping="Wrap" Text="{Binding CarNumber, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="2" Margin="0,5" Grid.Row="1"/>
+        		<TextBlock TextWrapping="Wrap" Text="Марка:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="2"
+        			Grid.Column="0" Margin="0,10,0,9"/>
+        		<ComboBox VerticalAlignment="Center" Grid.Column="2" Grid.Row="2" ItemsSource="{Binding Marks}" 
+        			SelectedItem="{Binding Mark, Mode=TwoWay}" Margin="0,5,0,4"/>
+        		<TextBlock TextWrapping="Wrap" Text="Модель:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="3"
+        			Grid.Column="0" Margin="0,10,0,9"/>
+        		<ComboBox VerticalAlignment="Center" Grid.Column="2" Grid.Row="3" ItemsSource="{Binding Models}" 
+        			SelectedItem="{Binding Model, Mode=TwoWay}" Margin="0,4,0,5"/>
+        		<TextBlock TextWrapping="Wrap" Text="Тип кузова:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="4"
+        			Grid.Column="0" Margin="0,10,0,9"/>
+        		<ComboBox VerticalAlignment="Center" Grid.Column="2" Margin="0,5,0,4" Grid.Row="4" ItemsSource="{Binding Bodies}" 
+        			SelectedItem="{Binding Body, Mode=TwoWay}"/>
+        		<TextBlock TextWrapping="Wrap" Text="Тип двигателя:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="5"
+        			Grid.Column="0" Margin="0,10,0,9"/>
+        		<ComboBox VerticalAlignment="Center" Grid.Column="2" Grid.Row="5" ItemsSource="{Binding EngineTypes}" 
+        			SelectedItem="{Binding EngineType, Mode=TwoWay}" Margin="0,4,0,5"/>
+        		<TextBlock TextWrapping="Wrap" Text="Объем двигателя:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="6"
+        			Grid.Column="0" Margin="0,10,0,9"/>
+        		<ComboBox VerticalAlignment="Center" Grid.Column="2" Grid.Row="6" ItemsSource="{Binding EngineVolumes}" 
+        			SelectedItem="{Binding EngineVolume, Mode=TwoWay}" Margin="0,5,0,4"/>
+        		<TextBlock TextWrapping="Wrap" Text="Тип КПП:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="7"
+        			Grid.Column="0" Margin="0,10,0,9"/>
+        		<ComboBox VerticalAlignment="Center" Grid.Column="2" Margin="0,4,0,5" Grid.Row="7" 
+        			ItemsSource="{Binding TransmissionTypes}" SelectedItem="{Binding TransmissionType, Mode=TwoWay}"/>
+
+        		<TextBlock TextWrapping="Wrap" Text="Пробег:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="8"
+        			Grid.Column="0" Margin="0,10,0,9"/>
+        		<TextBox TextWrapping="Wrap" Text="{Binding Distance, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="2" Margin="0,5,0,4" Grid.Row="8" TextAlignment="Right"/>
+
+        		<TextBlock TextWrapping="Wrap" Text="Дата выпуска:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="9"
+        			Grid.Column="0" Margin="0,10,0,9"/>
+        		<DatePicker Grid.Row="9" Grid.Column="2" SelectedDate="{Binding DateProduce, Mode=TwoWay}" Style="{DynamicResource DatePickerStyle}" Height="30" BorderBrush="{x:Null}" Margin="0,2,0,3"/>
+
+        	</Grid>
+        	<TextBlock Text="Укажите параметры автомобиля" FontWeight="Bold"/>
+        	<Button Content="Сохранить" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding SaveCommand, Mode=OneWay}" IsEnabled="{Binding EnableButtonNext, Mode=OneWay}" Width="96" Grid.Row="4"/>
         </Grid>
     </Grid>
 </UserControl>

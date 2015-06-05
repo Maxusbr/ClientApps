@@ -7,7 +7,7 @@ namespace DTCDev.Models.Date
 {
     public class DateDataModel
     {
-        public DateDataModel(){}
+        public DateDataModel() { }
 
         public DateDataModel(DateTime dt)
         {
@@ -26,5 +26,7 @@ namespace DTCDev.Models.Date
         {
             return string.Format("{0:00}.{1:00}.{2:00}", D, M, Y);
         }
+
+        public DateTime ToDate { get { return new DateTime(Y, M, D > 0 ? D : 1); } }
     }
 }

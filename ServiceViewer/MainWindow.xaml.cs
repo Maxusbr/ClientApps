@@ -365,7 +365,9 @@ namespace CarServiceViewer
 
         private void menuItem_ClickTestDriveSettings(object sender, RoutedEventArgs e)
         {
-
+            var view = new SlideAddCarTestDrive();
+            grdContent.Children.Clear();
+            grdContent.Children.Add(view);
         }
     }
 }

@@ -32,7 +32,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
 
         public delegate void GetCarDetailHandler(CarListDetailsDataModel carDetail);
         public event GetCarDetailHandler OnGetCarDetailComplete;
-        
+        public event GetCarDetailHandler OnGetCarDetailCompleteOnlyFill;
+
         public delegate void HistoryWorksHandler(List<CarHistoryWorkReport> works);
         public event HistoryWorksHandler HistoryWorksLoaded;
         public delegate void CarDTCMonthHandler(List<CarDTCHistoryModel> data);
@@ -48,11 +49,17 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
         public event GetCarRecomendationsCompleteHandler GetCarRecomendationsComplete;
         public delegate void OrderRecomendationsLoadHandler(string text);
         public event OrderRecomendationsLoadHandler OrderRecomendationsLoad;
+        private bool _onlyFill;
 
 
         private void GetCarDetailComplete(CarListDetailsDataModel cardetail)
         {
-            if (OnGetCarDetailComplete != null) OnGetCarDetailComplete(cardetail);
+            if (_onlyFill)
+            {
+                if (OnGetCarDetailCompleteOnlyFill != null) OnGetCarDetailCompleteOnlyFill(cardetail);
+            }
+            else
+                if (OnGetCarDetailComplete != null) OnGetCarDetailComplete(cardetail);
         }
 
         /// <summary>
@@ -71,10 +78,12 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
         /// Запрос детальной информации по одному автомобилю
         /// </summary>
         /// <param name="carNumber"></param>
-        public void GetCarDetails(string carNumber)
+        /// <param name="onlyFill"></param>
+        public void GetCarDetails(string carNumber, bool onlyFill = false)
         {
             try
             {
+                _onlyFill = onlyFill;
                 TCPConnection.Instance.SendData("BB" + carNumber);
             }
             catch { }
@@ -192,7 +201,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             {
                 TimeSpan ts = DateTime.Now - DateTime.UtcNow;
                 int h = (int)ts.TotalHours;
-                TCPConnection.Instance.SendData("BH" + did + ";" + year.ToString() + ";" + month.ToString()+";"+day.ToString()+";"+h.ToString());
+                TCPConnection.Instance.SendData("BH" + did + ";" + year.ToString() + ";" + month.ToString() + ";" + day.ToString() + ";" + h.ToString());
             }
             catch { }
         }
@@ -762,7 +771,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                 sended = true;
             else
                 sended = false;
-            if(temp.Length>1)
+            if (temp.Length > 1)
             {
                 if (temp[1] == "1")
                     submited = true;
