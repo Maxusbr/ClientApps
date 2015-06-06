@@ -75,5 +75,11 @@ namespace KOT.Common.Controls
         {
             _vm.ShowAllPrices = !_vm.ShowAllPrices;
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var phone = string.IsNullOrEmpty(_vm.Phone) ? "+79780000000" : _vm.Phone;
+            Windows.ApplicationModel.Calls.PhoneCallManager.ShowPhoneCallUI(phone, _vm.Model.Name);
+        }
     }
 }

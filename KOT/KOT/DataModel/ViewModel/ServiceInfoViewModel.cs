@@ -126,8 +126,11 @@ namespace KOT.DataModel.ViewModel
                 OnPropertyChanged("Prices");
                 CommentsDetail = new CommentsDetailModel(value.Comments);
                 OnPropertyChanged("VisableListComment");
+                OnPropertyChanged("Phone");
             }
         }
+
+        public string Phone { get { return _details.Phone; } }
 
         public bool VisableListComment { get { return ListComment.Count > 0; } }
         public List<PointDetailsModel.CommentModel> Comments { get { return Details.Comments; } }

@@ -359,8 +359,10 @@
                         <ColumnDefinition Width="65"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" FontSize="16" Foreground="{StaticResource PrimeryText}" Grid.Column="1" Margin="20,0,0,0" Text="+X (XXX) XXX-XX-XX" FontFamily="Segoe UI"/>
                     <Image Source="ms-appx:///Assets/drawable-xxhdpi/ic_phone_24dp.png" Height="21" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                    <TextBlock x:Name="tbPhone" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" FontSize="16" Foreground="{StaticResource PrimeryText}" Grid.Column="1" Margin="20,0,0,0" Text="{Binding Phone, Mode=OneWay}" FontFamily="Segoe UI"/>
+                    <Button Content="Button" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{StaticResource ClearButtonStyle}" Foreground="{x:Null}" BorderBrush="{x:Null}" BorderThickness="0" MinHeight="0" Grid.Column="1" Click="Button_Click"/>
 
                 </Grid>
 
