@@ -16,6 +16,10 @@ namespace KOT.DataModel.Model
             Price = new List<PriceModel>();
         }
 
+        //телефон
+        [JsonProperty(PropertyName = "P")]
+        public string Phone { get; set; }
+
         //Комментарии
         [JsonProperty(PropertyName = "A")]
         public List<CommentModel> Comments { get; set; }
