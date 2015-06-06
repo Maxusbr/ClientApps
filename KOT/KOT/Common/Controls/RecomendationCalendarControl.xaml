@@ -69,12 +69,12 @@
                             <ItemsStackPanel Orientation="Horizontal" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Disabled" ItemsUpdatingScrollMode="KeepScrollOffset" />
                         </ItemsPanelTemplate>
                         <DataTemplate x:Key="MonthDataTemplate">
-                            <Grid>
-                                <ListView x:Name="Days" ItemsSource="{Binding WorksInDay}" HorizontalContentAlignment="Center" Margin="0" IsZoomedInView="False" SelectionMode="None" Width="268" IsItemClickEnabled="True" ItemClick="Days_ItemClick">
+                            <Grid Width="270">
+                                <ListView x:Name="Days" ItemsSource="{Binding WorksInDay}" HorizontalContentAlignment="Center" Margin="0" IsZoomedInView="False" SelectionMode="None" IsItemClickEnabled="True" ItemClick="Days_ItemClick">
                                     <ListView.Resources>
                                         <DataTemplate x:Key="DayDataTemplate">
                                             <Border Background="{Binding HasWorks, Converter={StaticResource DayHasWorkBoolToBrushConverter}, Mode=OneWay}" Width="18" Height="18">
-                                                <TextBlock TextWrapping="Wrap" Text="{Binding DayName, Mode=OneWay}" IsHitTestVisible="False" Foreground="{Binding ColorText}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                <TextBlock TextWrapping="Wrap" Text="{Binding DayName, Mode=OneWay}" IsHitTestVisible="False" Foreground="{Binding ColorText}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="9"/>
                                             </Border>
                                         </DataTemplate>
                                         <ItemsPanelTemplate x:Key="DayItemsPanelTemplate">

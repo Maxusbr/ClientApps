@@ -78,6 +78,8 @@ namespace KOT
         private void alarm_Close(object sender, EventArgs e)
         {
             grdContext.Children.Remove(sender as UIElement);
+            if (grdContext.Children.Count == 0)
+                AlarmBorder.Visibility = Visibility.Collapsed;
         }
 
         private void AppBarToggleButton_Click(object sender, RoutedEventArgs e)

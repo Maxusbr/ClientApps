@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using KOT.Annotations;
 using KOT.DataModel.Handlers;
-using KOT.DataModel.Model;
 
 namespace KOT.DataModel.ViewModel
 {
@@ -17,17 +16,16 @@ namespace KOT.DataModel.ViewModel
         {
 
         }
-        private const string AlarmHeader = "Удар!";
+        private const string AlarmHeader = "КОТ под Ударом!";
         private const string LightsOnHeader = "Свет!";
         private const string DoorClosedHeader = "Двери!";
         private const string EvacuationHeader = "Эвакуация!";
 
         private const string AlarmMsg = "Вашу машину кто-то стукнул.";
         private const string LightsOnMsg = "Уходя тушите свет.";
-        private const string DoorClosedMsg = "КОТ не трамвай, двери надо закрывать.";
+        private const string DoorClosedMsg = "КОТ не трамвай, двери закрывать надо.";
         private const string EvacuationMsg = "Мы абсолютно уверены, что вашего КОТ`а пытаются эвакуировать в неизвестном направлении.";
 
-        private CarAlarmsState _model;
         private string _header;
         private string _msg;
 

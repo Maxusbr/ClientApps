@@ -8,7 +8,7 @@
     x:Class="KOT.Common.Controls.AlarmControl"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="400" Loaded="UserControl_Loaded" HorizontalAlignment="Left" VerticalAlignment="Top">
+    d:DesignWidth="400" Loaded="UserControl_Loaded" HorizontalAlignment="Center" VerticalAlignment="Center">
 
     <UserControl.DataContext>
         <ViewModel:AlarmViewModel/>
@@ -23,10 +23,10 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
-            	<TextBlock TextWrapping="Wrap" Text="Внимание:" FontSize="26.667" Foreground="{StaticResource PrimeryText}"/>
-            	<TextBlock TextWrapping="Wrap" Text="{Binding Header}" FontSize="26.667" Foreground="{StaticResource PrimeryText}"/>
+                <TextBlock TextWrapping="Wrap" Text="Внимание:" FontSize="22" Foreground="{StaticResource PrimeryText}"/>
+                <TextBlock TextWrapping="Wrap" Text="{Binding Header}" FontSize="22" Foreground="{StaticResource PrimeryText}" Margin="5,0,0,0"/>
             </StackPanel>
-            <TextBlock TextWrapping="Wrap" Text="{Binding Msg}" Grid.Row="1" FontSize="13.333" Margin="0,5,0,0" Foreground="{StaticResource SecondaryText}" TextAlignment="Justify"/>
+            <TextBlock TextWrapping="Wrap" Text="{Binding Msg}" Grid.Row="1" FontSize="12" Margin="0,5,0,0" Foreground="{StaticResource SecondaryText}" TextAlignment="Justify"/>
             <Button Content="Закрыть" HorizontalAlignment="Center" VerticalAlignment="Top" Style="{StaticResource LinkButtonStyle}" BorderThickness="0" BorderBrush="{x:Null}" Foreground="{StaticResource AccentColor}" Click="Button_Click" Grid.Row="2"/>
         </Grid>
     </Border>
