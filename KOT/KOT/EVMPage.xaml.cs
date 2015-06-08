@@ -37,6 +37,7 @@ namespace KOT
         /// Этот параметр обычно используется для настройки страницы.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            var kothandler = MapSourceHandler.Instance;
             AlarmHandler.Instance.Alarm += Instance_Alarm;
         }
 

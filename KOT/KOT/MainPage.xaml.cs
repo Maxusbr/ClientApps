@@ -227,21 +227,7 @@ namespace KOT
 
         private void UpdateModel(string propertyName)
         {
-            switch (propertyName)
-            {
-                case "AlarmLevel":
-                    AlarmHandler.Instance.CurentModel.AlarmLevel = 0;
-                    break;
-                case "IsLightsOn":
-                    AlarmHandler.Instance.CurentModel.IsLightsOn = 0;
-                    break;
-                case "IsDoorClosed":
-                    AlarmHandler.Instance.CurentModel.IsDoorClosed = 0;
-                    break;
-                case "IsEvacuation":
-                    AlarmHandler.Instance.CurentModel.IsEvacuation = 0;
-                    break;
-            }
+            AlarmHandler.Instance.PressedAlarm(propertyName);
             UpdateAlarmLine();
         }
 

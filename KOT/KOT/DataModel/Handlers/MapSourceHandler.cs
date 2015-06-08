@@ -51,6 +51,7 @@ namespace KOT.DataModel.Handlers
 
         private readonly KotElement _kot = new KotElement { Location = new Geopoint(new BasicGeoposition { Altitude = 0, Latitude = 55.75, Longitude = 37.62 }) };
         private readonly KotElement _phone = new KotElement("PhoneRadioButtonStyle", null) { Visibility = Visibility.Collapsed };
+        private CarStateFullModel KotModel;
         
         public static Geopoint CenterMap { get; set; }
         public static KotElement Kot { get { return Instance._kot; } }
@@ -136,13 +137,14 @@ namespace KOT.DataModel.Handlers
             {
                 var res = JsonConvert.DeserializeObject<CarStateFullModel[]>(msg);
                 if (res == null) return;
-                var kot = res.FirstOrDefault(o => o.State.ID.Equals(CarId));
-                if (kot == null) return;
+                KotModel = res.FirstOrDefault(o => o.State.ID.Equals(CarId));
+                if (KotModel == null) return;
+                if (KotModel.State != null && KotModel.State.Navigation!=null && KotModel.State.Navigation.Speed > 1000) AlarmHandler.Instance.PressedAlarmList.Clear();
                 Kot.Location = new Geopoint(new BasicGeoposition
                 {
                     Altitude = 0,
-                    Latitude = kot.State.Navigation.Latitude / 10000.0,
-                    Longitude = kot.State.Navigation.Longitude / 10000.0,
+                    Latitude = KotModel.State.Navigation.Latitude / 10000.0,
+                    Longitude = KotModel.State.Navigation.Longitude / 10000.0,
                 });
 
             }

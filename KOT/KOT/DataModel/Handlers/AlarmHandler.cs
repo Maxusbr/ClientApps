@@ -28,8 +28,11 @@ namespace KOT.DataModel.Handlers
         }
 
         public event PropertyChangedEventHandler Alarm;
+
         protected virtual void OnAlarm(string propertyName)
         {
+            var res = PressedAlarmList.FirstOrDefault(o => o.Equals(propertyName));
+            if(res != null) return;
             if (Alarm != null) Alarm(this, new PropertyChangedEventArgs(propertyName));
         }
 
@@ -38,6 +41,8 @@ namespace KOT.DataModel.Handlers
             get { return Instance._curentModel; }
             set { Instance._curentModel = value; }
         }
+        private readonly List<string> _pressedAlarmList = new List<string>();
+        public List<string> PressedAlarmList { get { return _pressedAlarmList; } } 
 
         private string CarId { get { return CarsHandler.SelectedCar.DID; } }
 
@@ -84,5 +89,25 @@ namespace KOT.DataModel.Handlers
             }
         }
 
+
+        internal void PressedAlarm(string propertyName)
+        {
+            switch (propertyName)
+            {
+                case "AlarmLevel":
+                    Instance.CurentModel.AlarmLevel = 0;
+                    break;
+                case "IsLightsOn":
+                    Instance.CurentModel.IsLightsOn = 0;
+                    break;
+                case "IsDoorClosed":
+                    Instance.CurentModel.IsDoorClosed = 0;
+                    break;
+                case "IsEvacuation":
+                    Instance.CurentModel.IsEvacuation = 0;
+                    break;
+            }
+            PressedAlarmList.Add(propertyName);
+        }
     }
 }
