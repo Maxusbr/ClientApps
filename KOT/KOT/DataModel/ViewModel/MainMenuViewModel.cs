@@ -28,7 +28,7 @@ namespace KOT.DataModel.ViewModel
         public MainMenuViewModel()
         {
             _instance = this;
-            if (!DesignMode.DesignModeEnabled)
+            //if (!DesignMode.DesignModeEnabled)
                 UpdateSource();
         }
 

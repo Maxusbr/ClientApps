@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:Controls="using:KOT.Common.Controls"
-    x:Class="KOT.EVMPage"
+    x:Class="KOT.EVMPage" Width="Auto" Height="Auto"
     mc:Ignorable="d" RequestedTheme="Light" Loaded="Page_Loaded" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
     <Page.Resources>
         <Thickness x:Key="PivotPortraitThemePadding">19,29,0,0</Thickness>

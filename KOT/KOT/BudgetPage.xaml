@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:Controls="using:KOT.Common.Controls"
     xmlns:ViewModel="using:KOT.DataModel.ViewModel"
-    x:Class="KOT.BudgetPage"
+    x:Class="KOT.BudgetPage" Width="Auto" Height="Auto"
     mc:Ignorable="d" RequestedTheme="Light" Loaded="Page_Loaded" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
 
     <Page.Resources>
@@ -128,13 +128,13 @@
                         </Border.Background>
                     </Border>
                     <Controls:DetailBudgetControl DataContext="{Binding SelectedPivot}" Margin="0" Click="DetailBudgetControl_OnClick" Close="DetailBudgetControl_OnClose" />
-                    <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" BorderThickness="0" Foreground="{x:Null}" BorderBrush="{x:Null}" MinHeight="0" MinWidth="0" Padding="0" Style="{StaticResource ClearButtonStyle}" Margin="0,0,0,-22" Click="Button_Click">
-                        <Image Source="ms-appx:///Assets/drawable-xxhdpi/ic_add_40dp.png" Height="32" Width="32"/>
+                    <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" BorderThickness="0" Foreground="{x:Null}" BorderBrush="{x:Null}" MinHeight="0" MinWidth="0" Padding="0" Style="{StaticResource ClearButtonStyle}" Margin="0,0,0,-27" Click="Button_Click">
+                        <Image Source="ms-appx:///Assets/drawable-xxhdpi/ic_add_40dp.png" Height="42" Width="42"/>
                     </Button>
                 </Grid>
             </Border>
             <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" BorderThickness="0" Foreground="{x:Null}" BorderBrush="{x:Null}" MinHeight="0" MinWidth="0" Padding="0" Style="{StaticResource ClearButtonStyle}" Visibility="{Binding VisableDetails, Converter={StaticResource InvertBooleanToVisibilityConverter}}" Click="Button_Click">
-                <Image Source="ms-appx:///Assets/drawable-xxhdpi/ic_add_40dp.png" Height="32" Width="32"/>
+                <Image Source="ms-appx:///Assets/drawable-xxhdpi/ic_add_40dp.png" Height="42" Width="42"/>
             </Button>
         </Grid>
         <Border Margin="0,0,0,-8">

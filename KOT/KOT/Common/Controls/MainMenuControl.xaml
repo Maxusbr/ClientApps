@@ -238,7 +238,7 @@
                 <RadioButton x:Name="Money" Content="Бюджет" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{StaticResource MainMenuRadioButtonStyle}" IsChecked="{Binding IsBudgetCheck, Mode=TwoWay}" Grid.Row="3" Foreground="{StaticResource PrimeryText}" Click="Money_Checked"/>
             </Grid>
         </Border>
-        <Border VerticalAlignment="Top" Background="White" Grid.Row="2" Padding="0" Visibility="{Binding IsChecked, Converter={StaticResource InvertBooleanToVisibilityConverter}, ElementName=appBarToggleButton}" BorderBrush="{StaticResource DividerText}" BorderThickness="0,0,1,1">
+        <Border VerticalAlignment="Top" Background="White" Grid.Row="2" Padding="0" Visibility="{Binding IsChecked, Converter={StaticResource InvertBooleanToVisibilityConverter}, ElementName=appBarToggleButton}" BorderBrush="{StaticResource DividerText}" BorderThickness="0,0,1,0">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
