@@ -139,7 +139,7 @@ namespace KOT.DataModel.Handlers
                 if (res == null) return;
                 KotModel = res.FirstOrDefault(o => o.State.ID.Equals(CarId));
                 if (KotModel == null) return;
-                if (KotModel.State != null && KotModel.State.Navigation!=null && KotModel.State.Navigation.Speed > 1000) AlarmHandler.Instance.PressedAlarmList.Clear();
+                if (KotModel.State != null && KotModel.State.Navigation!=null && KotModel.State.Navigation.Speed > 100) AlarmHandler.Instance.PressedAlarmList.Clear();
                 Kot.Location = new Geopoint(new BasicGeoposition
                 {
                     Altitude = 0,
