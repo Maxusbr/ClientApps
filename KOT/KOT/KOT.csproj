@@ -276,6 +276,7 @@
     <Compile Include="DataModel\Model\PlacesClassesModel.cs" />
     <Compile Include="DataModel\Model\PlacesModel.cs" />
     <Compile Include="DataModel\Model\PointDetailsModel.cs" />
+    <Compile Include="DataModel\Model\PointsRequestModel.cs" />
     <Compile Include="DataModel\Model\ReciveMessageModel.cs" />
     <Compile Include="DataModel\Model\RecomendationModel.cs" />
     <Compile Include="DataModel\Model\SCarData.cs" />
