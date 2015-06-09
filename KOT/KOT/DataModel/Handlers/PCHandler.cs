@@ -72,50 +72,30 @@ namespace KOT.DataModel.Handlers
                 ListTrip.Add(new TripAdvisorViewModel(new TripAdvisorModel
                 {
                     DID = "1",
-                    StartEng = new DateTimeDataModel(_current.AddHours(4).AddMinutes(45)),
-                    EndEng = new DateTimeDataModel(_current.AddHours(5).AddMinutes(15)),
                     CurrentDistance = 150,
                     TripTime = 256,
                     MedianSpeed = 65,
-                    EngCurrentDistance = 50,
-                    EngMedianSpeed = 80,
-                    EngTripTime = 150,
                 }));
                 ListTrip.Add(new TripAdvisorViewModel(new TripAdvisorModel
                 {
                     DID = "1",
-                    StartEng = new DateTimeDataModel(_current.AddHours(8).AddMinutes(50)),
-                    EndEng = new DateTimeDataModel(_current.AddHours(9).AddMinutes(20)),
                     CurrentDistance = 180,
                     TripTime = 298,
                     MedianSpeed = 78,
-                    EngCurrentDistance = 60,
-                    EngMedianSpeed = 70,
-                    EngTripTime = 180,
                 }));
                 ListTrip.Add(new TripAdvisorViewModel(new TripAdvisorModel
                 {
                     DID = "1",
-                    StartEng = new DateTimeDataModel(_current.AddHours(-32).AddMinutes(45)),
-                    EndEng = new DateTimeDataModel(_current.AddHours(-32).AddMinutes(15)),
                     CurrentDistance = 150,
                     TripTime = 256,
                     MedianSpeed = 65,
-                    EngCurrentDistance = 50,
-                    EngMedianSpeed = 80,
-                    EngTripTime = 150,
                 }));
                 ListTrip.Add(new TripAdvisorViewModel(new TripAdvisorModel
                 {
                     DID = "1",
-                    StartEng = new DateTimeDataModel(_current.AddHours(-38).AddMinutes(50)),
-                    EndEng = new DateTimeDataModel(_current.AddHours(-36).AddMinutes(20)),
                     CurrentDistance = 180,
                     TripTime = 298,
                     MedianSpeed = 78,
-                    EngCurrentDistance = 60,
-                    EngMedianSpeed = 70,
-                    EngTripTime = 180,
                 }));
                 _styleDriver = new DrivingStyle
                 {

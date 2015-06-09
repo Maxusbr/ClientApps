@@ -16,8 +16,8 @@ namespace KOT.DataModel.ViewModel
         public TripAdvisorViewModel(TripAdvisorModel model)
         {
             _model = model;
-            StartEng = ToDateTime(_model.StartEng);
-            EndEng = ToDateTime(_model.EndEng);
+            //StartEng = ToDateTime(_model.StartEng);
+            //EndEng = ToDateTime(_model.EndEng);
             TimeStart = StartEng.ToString("t");
             TimeEnd = EndEng.ToString("t");
         }
@@ -33,12 +33,6 @@ namespace KOT.DataModel.ViewModel
         public int TripTime { get { return _model.TripTime; } }
 
         public int MedianSpeed { get { return _model.MedianSpeed; } }
-
-        public int EngCurrentDistance { get { return _model.EngCurrentDistance; } }
-
-        public int EngTripTime { get { return _model.EngTripTime; } }
-
-        public int EngMedianSpeed { get { return _model.EngMedianSpeed; } }
 
         public DateTime StartEng { get; set; }
 

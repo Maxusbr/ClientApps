@@ -149,9 +149,9 @@ namespace KOT.DataModel.ViewModel
             {
                 Distance = TripTime = MedianSpeed = string.Empty;return;
             }
-            Distance = string.Format("{0} км", list.Sum(o => o.EngCurrentDistance));
-            TripTime = string.Format("{0} минут", list.Sum(o => o.EngTripTime));
-            MedianSpeed = string.Format("{0} км/ч", Math.Round(list.Average(o => o.EngMedianSpeed), 2));
+            Distance = string.Format("{0} км", list.Sum(o => o.CurrentDistance));
+            TripTime = string.Format("{0} минут", list.Sum(o => o.TripTime));
+            MedianSpeed = string.Format("{0} км/ч", Math.Round(list.Average(o => o.MedianSpeed), 2));
             
             IsReady = true;
         }
