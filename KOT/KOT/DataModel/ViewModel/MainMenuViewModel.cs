@@ -19,8 +19,8 @@ namespace KOT.DataModel.ViewModel
         private static MainMenuViewModel _instance;
         private string _nameDrive = string.Empty;
         private string _markModel = string.Empty;
-        private CarListBaseDataModel _selectedCar;
-
+        private CarViewModel _selectedCar;
+        private readonly ObservableCollection<CarViewModel> _cars = new ObservableCollection<CarViewModel>();
         public static MainMenuViewModel Instance
         {
             get { return _instance ?? (_instance = new MainMenuViewModel()); }
@@ -37,6 +37,10 @@ namespace KOT.DataModel.ViewModel
             if (CarsHandler.Cars.Count == 0) await CarsHandler.Update();
             //if (SelectedCar == null)
             //    SelectedCar = CarsHandler.Cars.Count == 0 ? new CarListBaseDataModel() : CarsHandler.Cars[0];
+            Cars.Clear();
+            foreach (var el in CarsHandler.Cars)
+                Cars.Add(new CarViewModel(el));
+            _selectedCar = Cars.FirstOrDefault(o => o.DID.Equals(CarsHandler.SelectedCar.DID));
         }
 
         public static bool IsMapCheck { get; set; }
@@ -47,38 +51,41 @@ namespace KOT.DataModel.ViewModel
         public static bool IsSettingsCheck { get; set; }
         public static bool IsAboutCheck { get; set; }
 
-        public ObservableCollection<CarListBaseDataModel> Cars { get { return CarsHandler.Cars; } }
+        public ObservableCollection<CarViewModel> Cars { get { return _cars; } }
 
-        public CarListBaseDataModel SelectedCar
+        public CarViewModel SelectedCar
         {
             get
             {
-                return CarsHandler.SelectedCar;
+                return _selectedCar;
             }
             set
             {
-                if (Equals(value, CarsHandler.SelectedCar)) return;
-                CarsHandler.SelectedCar = value;
-                OnPropertyChanged("SelectedCar");
-                OnPropertyChanged("MarkModel");
-                OnPropertyChanged("NameDrive");
+                if (Equals(value, _selectedCar)) return;
+                _selectedCar = value;
+                CarsHandler.SelectedCar = CarsHandler.Cars.FirstOrDefault(o => o.DID.Equals(value.DID));
+                OnPropertyChanged();
             }
         }
 
-        public string NameDrive
+        public string DateEndService
         {
-            get { return SelectedCar.CarNumber; }
+            get { return SettingsHandler.Instance.DateEndService.ToString("d"); }
         }
 
-        public string MarkModel
+        public string Phone
         {
-            get { return string.Format("{0} {1}", SelectedCar.Mark, SelectedCar.Model); }
+            get { return SettingsHandler.Instance.Phone; }
+        }
+
+        public string Mail
+        {
+            get { return SettingsHandler.Instance.Mail; }
         }
 
         #region PropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
-
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -88,5 +95,25 @@ namespace KOT.DataModel.ViewModel
 
         #endregion
 
+    }
+
+    public class CarViewModel
+    {
+        private readonly CarListBaseDataModel _model;
+        public CarViewModel() { }
+        public CarViewModel(CarListBaseDataModel model)
+        {
+            _model = model;
+        }
+        public string DID { get { return _model.DID; } }
+        public string NameDrive
+        {
+            get { return _model.CarNumber; }
+        }
+
+        public string MarkModel
+        {
+            get { return string.Format("{0} {1}", _model.Mark, _model.Model); }
+        }
     }
 }

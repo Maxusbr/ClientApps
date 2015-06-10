@@ -25,6 +25,13 @@ namespace KOT.DataModel.Handlers
         {
             _instance = this;
             LoopUpdate();
+            CarsHandler.SelectionChanged += CarsHandler_SelectionChanged;
+        }
+
+        async void CarsHandler_SelectionChanged(object sender, EventArgs e)
+        {
+            PressedAlarmList.Clear();
+            await UpdateSourceAsync();
         }
 
         public event PropertyChangedEventHandler Alarm;

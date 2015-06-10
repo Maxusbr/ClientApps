@@ -70,7 +70,7 @@ namespace KOT.Common.Controls
         private void Settings_Checked(object sender, RoutedEventArgs e)
         {
             //TODO сохранить в DataSource активный пункт меню & NavigateTo SettingsControl 
-            //OnHideMenu(typeof(MainPage));
+            OnHideMenu(typeof(SettingsPage));
         }
 
         private void About_Checked(object sender, RoutedEventArgs e)
