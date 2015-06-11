@@ -5,6 +5,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using KOT.Annotations;
 using KOT.DataModel.Handlers;
 
@@ -16,18 +18,18 @@ namespace KOT.DataModel.ViewModel
         {
 
         }
-        private const string AlarmHeader = "КОТ под Ударом!";
-        private const string LightsOnHeader = "Свет!";
-        private const string DoorClosedHeader = "Двери!";
-        private const string EvacuationHeader = "Эвакуация!";
 
-        private const string AlarmMsg = "Вашу машину кто-то стукнул.";
-        private const string LightsOnMsg = "Уходя тушите свет.";
-        private const string DoorClosedMsg = "КОТ не трамвай, двери закрывать надо.";
-        private const string EvacuationMsg = "Мы абсолютно уверены, что вашего КОТ`а пытаются эвакуировать в неизвестном направлении.";
-
+        public AlarmViewModel(string propertyName, DateTime dt)
+        {
+            _selectedProperty = propertyName;
+            Update(propertyName);
+            TimeRecive = dt;
+        }
+        const string Link = "ms-appx:///Assets/drawable-xxhdpi/{0}.png";
         private string _header;
         private string _msg;
+        private bool _viewDetails;
+        private readonly string _selectedProperty;
 
         //Уровень удара – 0 – нет, 1- слабое, 2 – среднее, 3 - сильное
         public int AlarmLevel { get; set; }
@@ -60,29 +62,75 @@ namespace KOT.DataModel.ViewModel
             }
         }
 
+        public DateTime TimeRecive { get; set; }
+
+        public string Date { get { return TimeRecive.ToString("d"); } }
+
+        public string Time { get { return TimeRecive.ToString("t"); } }
+
         internal void Update(string propertyName)
         {
             //if (string.IsNullOrEmpty(propertyName)) return;
             switch (propertyName)
             {
                 case "AlarmLevel":
-                    Header = AlarmHeader;
-                    Msg = AlarmMsg;
+                    Header = AlarmHandler.AlarmHeader;
+                    Msg = AlarmHandler.AlarmMsg;
                     break;
-                case "IsLightsOn": 
-                    Header = LightsOnHeader;
-                    Msg = LightsOnMsg;
+                case "IsLightsOn":
+                    Header = AlarmHandler.LightsOnHeader;
+                    Msg = AlarmHandler.LightsOnMsg;
                     break;
-                case "IsDoorClosed": 
-                    Header = DoorClosedHeader;
-                    Msg = DoorClosedMsg;
+                case "IsDoorClosed":
+                    Header = AlarmHandler.DoorClosedHeader;
+                    Msg = AlarmHandler.DoorClosedMsg;
                     break;
-                case "IsEvacuation": 
-                    Header = EvacuationHeader;
-                    Msg = EvacuationMsg;
+                case "IsEvacuation":
+                    Header = AlarmHandler.EvacuationHeader;
+                    Msg = AlarmHandler.EvacuationMsg;
                     break;
             }
         }
+
+        public bool ViewDetails
+        {
+            get { return _viewDetails; }
+            set
+            {
+                if (value.Equals(_viewDetails)) return;
+                _viewDetails = value;
+                OnPropertyChanged();
+                OnPropertyChanged("ImageSource");
+            }
+        }
+
+        public ImageSource ImageSource
+        {
+            get { return GetImage(); }
+        }
+
+        private ImageSource GetImage()
+        {
+            var res = new Uri(string.Format(Link, GetImageName()));
+            return new BitmapImage(res);
+        }
+
+        string GetImageName()
+        {
+            switch (_selectedProperty)
+            {
+                case "AlarmLevel":
+                    return ViewDetails ? "ic_hint_alarm_48dp" : "ic_hint_48dp";
+                case "IsLightsOn":
+                    return ViewDetails ? "ic_phara_alarm_48dp" : "ic_phara_48dp";
+                case "IsDoorClosed":
+                    return ViewDetails ? "ic_door_alarm_48dp" : "ic_door_48dp";
+                case "IsEvacuation":
+                    return ViewDetails ? "ic_evacution_alarm_48dp" : "ic_evacution_48dp";
+            }
+            return "";
+        }
+
         #region PropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -95,6 +143,7 @@ namespace KOT.DataModel.ViewModel
         }
 
         #endregion
+
 
     }
 }

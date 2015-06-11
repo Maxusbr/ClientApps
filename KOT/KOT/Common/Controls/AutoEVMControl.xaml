@@ -328,7 +328,7 @@
             <RowDefinition Height="48"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
-            <RowDefinition Height="80"/>
+            <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
         <TextBlock HorizontalAlignment="Right" TextWrapping="Wrap" Text="{Binding TotalDistance}" VerticalAlignment="Center" Foreground="{StaticResource SecondaryText}" Margin="0,0,16,0"/>
         <Canvas Grid.Row="1">
@@ -336,7 +336,7 @@
             <Image Source="ms-appx:///Assets/drawable-xxhdpi/ic_car_48dp.png" Height="56" Canvas.Left="301" HorizontalAlignment="Right" Canvas.Top="18"/>
             <Image Height="14" Source="ms-appx:///Assets/drawable-xxhdpi/ic_point_16dp.png" Width="14" Canvas.Left="38" Canvas.Top="39"/>
         </Canvas>
-        <Border BorderThickness="1" Grid.Row="5" Background="{Binding IsReady, Converter={StaticResource BoolToBrushConverter}}" Padding="0,5">
+        <Border BorderThickness="1" Grid.Row="5" Background="{Binding IsReady, Converter={StaticResource BoolToBrushConverter}}" Padding="0,5,0,30">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition/>

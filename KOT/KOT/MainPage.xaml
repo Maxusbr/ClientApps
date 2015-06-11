@@ -10,7 +10,7 @@
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     x:Class="KOT.MainPage" Width="Auto" Height="Auto"
     mc:Ignorable="d" RequestedTheme="Light"
-    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Mode=Self}}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Loaded="Page_Loaded" Background="White">
+    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Mode=Self}}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Loaded="Page_Loaded">
     <Page.Resources>
 
         <Style x:Key="CommandBarButtonStyle" TargetType="AppBarButton">

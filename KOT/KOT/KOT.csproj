@@ -175,6 +175,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="NotificationPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PivotPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -296,6 +300,7 @@
     <Compile Include="DataModel\ViewModel\BudgetItemViewModel.cs" />
     <Compile Include="DataModel\ViewModel\BudgetViewModel.cs" />
     <Compile Include="DataModel\ViewModel\DriverStyleViewModel.cs" />
+    <Compile Include="DataModel\ViewModel\HistoryAlarmsViewModel.cs" />
     <Compile Include="DataModel\ViewModel\HistoryWorksViewModel.cs" />
     <Compile Include="DataModel\ViewModel\MainMenuViewModel.cs" />
     <Compile Include="DataModel\ViewModel\PCViewModel.cs" />
@@ -326,6 +331,9 @@
     </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NotificationPage.xaml.cs">
+      <DependentUpon>NotificationPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="PivotPage.xaml.cs">
       <DependentUpon>PivotPage.xaml</DependentUpon>

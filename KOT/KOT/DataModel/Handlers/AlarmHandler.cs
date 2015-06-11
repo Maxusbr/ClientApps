@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -7,12 +8,23 @@ using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
 using KOT.DataModel.Model;
 using KOT.DataModel.Network;
+using KOT.DataModel.ViewModel;
 using Newtonsoft.Json;
 
 namespace KOT.DataModel.Handlers
 {
     public class AlarmHandler
     {
+        public const string AlarmHeader = "КОТ под Ударом!";
+        public const string LightsOnHeader = "Свет!";
+        public const string DoorClosedHeader = "Двери!";
+        public const string EvacuationHeader = "Эвакуация!";
+
+        public const string AlarmMsg = "Вашу машину кто-то стукнул.";
+        public const string LightsOnMsg = "Уходя тушите свет.";
+        public const string DoorClosedMsg = "КОТ не трамвай, двери закрывать надо.";
+        public const string EvacuationMsg = "Мы абсолютно уверены, что вашего КОТ`а пытаются эвакуировать в неизвестном направлении.";
+        private readonly ObservableCollection<AlarmViewModel> _historyAlarmList = new ObservableCollection<AlarmViewModel>(); 
         private static AlarmHandler _instance;
         private CarAlarmsState _curentModel;
 
@@ -40,8 +52,11 @@ namespace KOT.DataModel.Handlers
         {
             var res = PressedAlarmList.FirstOrDefault(o => o.Equals(propertyName));
             if(res != null) return;
+            HistoryAlarmList.Insert(0, new AlarmViewModel(propertyName, DateTime.Now));
             if (Alarm != null) Alarm(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public ObservableCollection<AlarmViewModel> HistoryAlarmList { get { return _historyAlarmList; } }
 
         public CarAlarmsState CurentModel
         {

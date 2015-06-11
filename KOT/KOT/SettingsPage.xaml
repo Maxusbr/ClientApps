@@ -7,7 +7,7 @@
     xmlns:Controls="using:KOT.Common.Controls"
     xmlns:ViewModel="using:KOT.DataModel.ViewModel"
     x:Class="KOT.SettingsPage"
-    mc:Ignorable="d" Width="Auto" Height="Auto" RequestedTheme="Light" Loaded="Page_Loaded" Background="White">
+    mc:Ignorable="d" Width="Auto" Height="Auto" RequestedTheme="Light" Loaded="Page_Loaded">
 
     <Page.Resources>
         <Style x:Key="IconTextBoxStyle" TargetType="TextBox">
@@ -332,7 +332,7 @@
             <RowDefinition Height="72"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Border Margin="0,0,0,71.833" Grid.RowSpan="3">
+        <Border Margin="0,0,0,-8" Grid.Row="1">
             <Border.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="#FF272727" Offset="0.837"/>
@@ -340,7 +340,7 @@
                 </LinearGradientBrush>
             </Border.Background>
         </Border>
-        <Grid x:Name="TopMenu" Margin="0,0,0,7.833" Grid.RowSpan="2">
+        <Grid x:Name="TopMenu" Grid.RowSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="56"/>
                 <ColumnDefinition/>

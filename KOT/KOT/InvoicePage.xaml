@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:Controls="using:KOT.Common.Controls"
     x:Class="KOT.InvoicePage" Width="Auto" Height="Auto"
-    mc:Ignorable="d" RequestedTheme="Light" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Background="White">
+    mc:Ignorable="d" RequestedTheme="Light" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
     <Page.Resources>
 
         <Style x:Key="AppBarToggleButtonStyle" TargetType="AppBarToggleButton">
@@ -265,7 +265,7 @@
             <TextBox x:Name="tbComment" TextWrapping="Wrap" VerticalAlignment="Stretch" BorderThickness="0,0,0,1" PlaceholderText="Комментарий" FontSize="16" Style="{StaticResource IconTextBoxStyle}" Background="{x:Null}" Foreground="{StaticResource PrimeryText}" Grid.Row="2" Margin="0,0,0,8" MinWidth="300" MinHeight="48" Padding="7,0,8,0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Visibility="{Binding Visibility, ElementName=tbDate}"/>
 
         </Grid>
-        <Border BorderBrush="{StaticResource DividerText}" Background="#FFF3F3F3" Grid.Row="3" BorderThickness="0,1,0,0" d:IsLocked="True">
+        <Border BorderBrush="{StaticResource DividerText}" Background="#FFF3F3F3" Grid.Row="3" BorderThickness="0,1,0,0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
