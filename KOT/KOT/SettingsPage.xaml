@@ -7,7 +7,7 @@
     xmlns:Controls="using:KOT.Common.Controls"
     xmlns:ViewModel="using:KOT.DataModel.ViewModel"
     x:Class="KOT.SettingsPage"
-    mc:Ignorable="d" Width="Auto" Height="Auto" RequestedTheme="Light" Loaded="Page_Loaded">
+    mc:Ignorable="d" Width="Auto" Height="Auto" RequestedTheme="Light" Loaded="Page_Loaded" Background="White">
 
     <Page.Resources>
         <Style x:Key="IconTextBoxStyle" TargetType="TextBox">
@@ -323,7 +323,7 @@
         <ViewModel:SettingViewModel/>
     </Page.DataContext>
 
-    <Grid Background="White">
+    <Grid Background="White" Margin="0,0,0,24">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="8"/>

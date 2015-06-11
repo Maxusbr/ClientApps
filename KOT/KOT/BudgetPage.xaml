@@ -7,7 +7,7 @@
     xmlns:Controls="using:KOT.Common.Controls"
     xmlns:ViewModel="using:KOT.DataModel.ViewModel"
     x:Class="KOT.BudgetPage" Width="Auto" Height="Auto"
-    mc:Ignorable="d" RequestedTheme="Light" Loaded="Page_Loaded" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+    mc:Ignorable="d" RequestedTheme="Light" Loaded="Page_Loaded" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Background="White">
 
     <Page.Resources>
         <DataTemplate x:Key="CategoryPivotItemHeaderTemplate">
@@ -110,7 +110,7 @@
         <ViewModel:BudgetViewModel/>
     </Page.DataContext>
 
-    <Grid Background="White">
+    <Grid Background="White" Margin="0,0,0,24">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>

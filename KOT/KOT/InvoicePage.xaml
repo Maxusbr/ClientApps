@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:Controls="using:KOT.Common.Controls"
     x:Class="KOT.InvoicePage" Width="Auto" Height="Auto"
-    mc:Ignorable="d" RequestedTheme="Light" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+    mc:Ignorable="d" RequestedTheme="Light" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Background="White">
     <Page.Resources>
 
         <Style x:Key="AppBarToggleButtonStyle" TargetType="AppBarToggleButton">
@@ -186,7 +186,7 @@
 
     </Page.Resources>
 
-    <Grid Background="White">
+    <Grid Background="White" Margin="0,0,0,24">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="40"/>
