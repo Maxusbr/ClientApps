@@ -86,8 +86,8 @@
                                     <VisualState x:Name="IndeterminateDisabled"/>
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>
-                            <Border x:Name="border" Background="White" Grid.RowSpan="2" Visibility="Collapsed"/>
-                            <Border Padding="10,8,10,0" BorderBrush="{StaticResource DividerText}" BorderThickness="0,1,0,0" Height="78">
+                            <Border x:Name="border" Background="White" Grid.RowSpan="2" Visibility="Collapsed" Padding="{TemplateBinding Padding}"/>
+                            <Border Padding="{TemplateBinding Padding}" BorderBrush="{StaticResource DividerText}" BorderThickness="0,1,0,0">
                                 <Border.Background>
                                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                         <GradientStop Color="White" Offset="1"/>
@@ -103,12 +103,12 @@
 
                                     <ContentControl Content="ContentControl" VerticalAlignment="Center" Style="{Binding StylePoint}" d:IsHidden="True" HorizontalAlignment="Center"/>
                                     <StackPanel Orientation="Vertical" Grid.Column="1" Margin="20,0,0,0">
-                                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Model.Name}" VerticalAlignment="Top" FontSize="16" Foreground="{StaticResource PrimeryText}"/>
-                                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Model.Adress}" VerticalAlignment="Top" Foreground="{StaticResource SecondaryText}" Margin="0,5,0,0" FontSize="12"/>
-                                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding ServicePrice, Mode=OneWay}" VerticalAlignment="Top" Foreground="{StaticResource SecondaryText}" Margin="0,5,0,0" FontSize="12"/>
+                                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Model.Name}" VerticalAlignment="Top" Foreground="{StaticResource PrimeryText}"/>
+                                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Model.Adress}" VerticalAlignment="Top" Foreground="{StaticResource SecondaryText}" Margin="0,5,0,0" FontSize="11"/>
+                                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding ServicePrice, Mode=OneWay}" VerticalAlignment="Top" Foreground="{StaticResource SecondaryText}" Margin="0,5,0,0" FontSize="11"/>
                                     </StackPanel>
                                     <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="2" Margin="20,0">
-                                        <TextBlock Text="{Binding RateString}" HorizontalAlignment="Center" Margin="0" FontSize="16" Foreground="{Binding Background, Mode=OneWay}"/>
+                                        <TextBlock Text="{Binding RateString}" HorizontalAlignment="Center" Margin="0" Foreground="{Binding Background, Mode=OneWay}"/>
                                         <local:RatingControl Width="46" Background="#FF212121" Margin="10,7,10,0" Brush="{Binding Brush}" RateValue="{Binding Rate}" IsEnabled="False" IsUserRate="{Binding IsUserRate}"/>
                                         <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
                                             <TextBlock HorizontalAlignment="Center" Text="Отзывов: " Foreground="{StaticResource PrimeryText}"/>
@@ -311,11 +311,11 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="78"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Border Grid.RowSpan="5" Background="White" Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=toggleButton}"/>
-        <ToggleButton x:Name="toggleButton" Content="ToggleButton" VerticalAlignment="Stretch" Style="{StaticResource ToggleButtonStyle}" IsChecked="True"/>
+        <ToggleButton x:Name="toggleButton" Content="ToggleButton" VerticalAlignment="Stretch" Style="{StaticResource ToggleButtonStyle}" IsChecked="True" Padding="10"/>
         <Border Padding="10" BorderBrush="{StaticResource DividerText}" BorderThickness="0,1" Visibility="Collapsed">
             <Border.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -369,10 +369,10 @@
             </Border>
             <Border BorderBrush="{StaticResource DividerText}" BorderThickness="1,0,1,1" Background="White" Grid.Row="1" Padding="25,5,25,0">
                 <Grid VerticalAlignment="Top">
-                	<Grid.RowDefinitions>
-                		<RowDefinition/>
-                		<RowDefinition Height="Auto"/>
-                	</Grid.RowDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
                     <ListView VerticalAlignment="Top" DisplayMemberPath="" SelectionMode="None" IsSwipeEnabled="False" ItemsSource="{Binding Prices}" Header="Услуги">
                         <ListView.Resources>
                             <DataTemplate x:Key="DataTemplate">
@@ -382,9 +382,9 @@
                             </DataTemplate>
 
                         </ListView.Resources>
-                    	<ListView.Foreground>
-                    		<StaticResource ResourceKey="SecondaryText"/>
-                    	</ListView.Foreground>
+                        <ListView.Foreground>
+                            <StaticResource ResourceKey="SecondaryText"/>
+                        </ListView.Foreground>
                         <ListView.ItemContainerStyle>
                             <StaticResource ResourceKey="ListViewItemStyle"/>
                         </ListView.ItemContainerStyle>
@@ -402,119 +402,119 @@
                 </Grid>
             </Border>
             <Border Padding="0" Background="WhiteSmoke" Grid.Row="2" >
-            	<Button x:Name="RateButton" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Padding="0" MinWidth="0" MinHeight="48">
-            		<Button.Resources>
-            			<Thickness x:Key="PhoneBorderThickness">2.5</Thickness>
-            			<Thickness x:Key="PhoneButtonContentPadding">9.5,0,9.5,3.5</Thickness>
-            			<x:Double x:Key="PhoneButtonMinWidth">109</x:Double>
-            			<Thickness x:Key="PhoneTouchTargetOverhang">0,9.5</Thickness>
-            			<SolidColorBrush x:Key="ButtonDisabledBackgroundThemeBrush" Color="Transparent"/>
-            			<Style x:Key="ButtonStyle" TargetType="Button">
-            				<Setter Property="Background" Value="Transparent"/>
-            				<Setter Property="BorderBrush" Value="{ThemeResource PhoneForegroundBrush}"/>
-            				<Setter Property="Foreground" Value="{ThemeResource PhoneForegroundBrush}"/>
-            				<Setter Property="BorderThickness" Value="{ThemeResource PhoneBorderThickness}"/>
-            				<Setter Property="FontFamily" Value="{ThemeResource PhoneFontFamilyNormal}"/>
-            				<Setter Property="FontWeight" Value="{ThemeResource PhoneButtonFontWeight}"/>
-            				<Setter Property="FontSize" Value="{ThemeResource TextStyleLargeFontSize}"/>
-            				<Setter Property="Padding" Value="{ThemeResource PhoneButtonContentPadding}"/>
-            				<Setter Property="MinHeight" Value="{ThemeResource PhoneButtonMinHeight}"/>
-            				<Setter Property="MinWidth" Value="{ThemeResource PhoneButtonMinWidth}"/>
-            				<Setter Property="HorizontalAlignment" Value="Left"/>
-            				<Setter Property="VerticalAlignment" Value="Center"/>
-            				<Setter Property="Template">
-            					<Setter.Value>
-            						<ControlTemplate TargetType="Button">
-            							<Grid x:Name="Grid" Background="Transparent">
-            								<VisualStateManager.VisualStateGroups>
-            									<VisualStateGroup x:Name="CommonStates">
-            										<VisualStateGroup.Transitions>
-            											<VisualTransition From="Pressed" To="PointerOver">
-            												<Storyboard>
-            													<PointerUpThemeAnimation Storyboard.TargetName="Grid"/>
-            												</Storyboard>
-            											</VisualTransition>
-            											<VisualTransition From="PointerOver" To="Normal">
-            												<Storyboard>
-            													<PointerUpThemeAnimation Storyboard.TargetName="Grid"/>
-            												</Storyboard>
-            											</VisualTransition>
-            											<VisualTransition From="Pressed" To="Normal">
-            												<Storyboard>
-            													<PointerUpThemeAnimation Storyboard.TargetName="Grid"/>
-            												</Storyboard>
-            											</VisualTransition>
-            										</VisualStateGroup.Transitions>
-            										<VisualState x:Name="Normal"/>
-            										<VisualState x:Name="PointerOver"/>
-            										<VisualState x:Name="Pressed">
-            											<Storyboard>
-            												<PointerDownThemeAnimation Storyboard.TargetName="Grid"/>
-            												<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
-            													<DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonPressedForegroundThemeBrush}"/>
-            												</ObjectAnimationUsingKeyFrames>
-            											</Storyboard>
-            										</VisualState>
-            										<VisualState x:Name="Disabled">
-            											<Storyboard>
-            												<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
-            													<DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonDisabledForegroundThemeBrush}"/>
-            												</ObjectAnimationUsingKeyFrames>
-            												<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="Border">
-            													<DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonDisabledBorderThemeBrush}"/>
-            												</ObjectAnimationUsingKeyFrames>
-            												<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="Border">
-            													<DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonDisabledBackgroundThemeBrush}"/>
-            												</ObjectAnimationUsingKeyFrames>
-            											</Storyboard>
-            										</VisualState>
-            									</VisualStateGroup>
-            								</VisualStateManager.VisualStateGroups>
-            								<Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Margin="{ThemeResource PhoneTouchTargetOverhang}">
-            									<ContentPresenter x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-            								</Border>
-            							</Grid>
-            						</ControlTemplate>
-            					</Setter.Value>
-            				</Setter>
-            			</Style>
-            			
-            		</Button.Resources>
-            		<Button.Flyout>
-            			<Flyout Placement="Full" FlyoutPresenterStyle="{StaticResource FlyoutPresenterStyle}">
-            				<Border HorizontalAlignment="Center" VerticalAlignment="Center" Padding="20" BorderBrush="{StaticResource DividerText}" BorderThickness="1" Background="White" MinWidth="214" Width="320" >
-            					<Grid>
-            						<Grid.RowDefinitions>
-            							<RowDefinition Height="Auto"/>
-            							<RowDefinition/>
-            							<RowDefinition Height="Auto"/>
-            						</Grid.RowDefinitions>
-            						<local:RatingControl Width="150" VerticalAlignment="Top" RateValue="{Binding UserRate}" Height="24"/>
-            						<TextBox Margin="0,10" Text="{Binding UserComment}" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="1" FontSize="10.667" MinHeight="0" MinWidth="0" BorderThickness="0,0,0,1" Padding="7,0,8,0" AcceptsReturn="True" PlaceholderText="Поделитесь впечатлениями" Background="{x:Null}" BorderBrush="{StaticResource AccentColor}"/>
-            						<StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
-            							<Button x:Name="Cancel" Content="отменить" VerticalAlignment="Top" Style="{StaticResource ButtonStyle}" BorderThickness="0" MinWidth="0" MinHeight="0" Padding="5,0" Foreground="{StaticResource AccentColor}" MaxHeight="35" FontSize="13.333" Click="Cancel_Click"/>
-            							<Button x:Name="Send" Content="отправить" VerticalAlignment="Top" Style="{StaticResource ButtonStyle}" MinHeight="0" MinWidth="0" MaxHeight="35" Padding="5,0" BorderThickness="0" Foreground="{StaticResource AccentColor}" FontSize="13.333" Click="Send_Click"/>
-            						</StackPanel>
-            					</Grid>
-            				</Border>
-            			</Flyout>
-            		</Button.Flyout>
-            		<Button.Style>
-            			<StaticResource ResourceKey="ButtonStyle"/>
-            		</Button.Style>
-					<Grid Margin="0" VerticalAlignment="Center">
-            			<local:RatingControl  x:Name="UserRatingControl" Background="#FFE91E63" Brush="#FFE91E63" RateValue="{Binding UserRate, Mode=TwoWay}" VerticalAlignment="Center" ViewText="True" Height="24" Width="168"/>
-            		</Grid>
-				</Button>
+                <Button x:Name="RateButton" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Padding="0" MinWidth="0" MinHeight="48">
+                    <Button.Resources>
+                        <Thickness x:Key="PhoneBorderThickness">2.5</Thickness>
+                        <Thickness x:Key="PhoneButtonContentPadding">9.5,0,9.5,3.5</Thickness>
+                        <x:Double x:Key="PhoneButtonMinWidth">109</x:Double>
+                        <Thickness x:Key="PhoneTouchTargetOverhang">0,9.5</Thickness>
+                        <SolidColorBrush x:Key="ButtonDisabledBackgroundThemeBrush" Color="Transparent"/>
+                        <Style x:Key="ButtonStyle" TargetType="Button">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderBrush" Value="{ThemeResource PhoneForegroundBrush}"/>
+                            <Setter Property="Foreground" Value="{ThemeResource PhoneForegroundBrush}"/>
+                            <Setter Property="BorderThickness" Value="{ThemeResource PhoneBorderThickness}"/>
+                            <Setter Property="FontFamily" Value="{ThemeResource PhoneFontFamilyNormal}"/>
+                            <Setter Property="FontWeight" Value="{ThemeResource PhoneButtonFontWeight}"/>
+                            <Setter Property="FontSize" Value="{ThemeResource TextStyleLargeFontSize}"/>
+                            <Setter Property="Padding" Value="{ThemeResource PhoneButtonContentPadding}"/>
+                            <Setter Property="MinHeight" Value="{ThemeResource PhoneButtonMinHeight}"/>
+                            <Setter Property="MinWidth" Value="{ThemeResource PhoneButtonMinWidth}"/>
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Grid x:Name="Grid" Background="Transparent">
+                                            <VisualStateManager.VisualStateGroups>
+                                                <VisualStateGroup x:Name="CommonStates">
+                                                    <VisualStateGroup.Transitions>
+                                                        <VisualTransition From="Pressed" To="PointerOver">
+                                                            <Storyboard>
+                                                                <PointerUpThemeAnimation Storyboard.TargetName="Grid"/>
+                                                            </Storyboard>
+                                                        </VisualTransition>
+                                                        <VisualTransition From="PointerOver" To="Normal">
+                                                            <Storyboard>
+                                                                <PointerUpThemeAnimation Storyboard.TargetName="Grid"/>
+                                                            </Storyboard>
+                                                        </VisualTransition>
+                                                        <VisualTransition From="Pressed" To="Normal">
+                                                            <Storyboard>
+                                                                <PointerUpThemeAnimation Storyboard.TargetName="Grid"/>
+                                                            </Storyboard>
+                                                        </VisualTransition>
+                                                    </VisualStateGroup.Transitions>
+                                                    <VisualState x:Name="Normal"/>
+                                                    <VisualState x:Name="PointerOver"/>
+                                                    <VisualState x:Name="Pressed">
+                                                        <Storyboard>
+                                                            <PointerDownThemeAnimation Storyboard.TargetName="Grid"/>
+                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
+                                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonPressedForegroundThemeBrush}"/>
+                                                            </ObjectAnimationUsingKeyFrames>
+                                                        </Storyboard>
+                                                    </VisualState>
+                                                    <VisualState x:Name="Disabled">
+                                                        <Storyboard>
+                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
+                                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonDisabledForegroundThemeBrush}"/>
+                                                            </ObjectAnimationUsingKeyFrames>
+                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="Border">
+                                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonDisabledBorderThemeBrush}"/>
+                                                            </ObjectAnimationUsingKeyFrames>
+                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="Border">
+                                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ButtonDisabledBackgroundThemeBrush}"/>
+                                                            </ObjectAnimationUsingKeyFrames>
+                                                        </Storyboard>
+                                                    </VisualState>
+                                                </VisualStateGroup>
+                                            </VisualStateManager.VisualStateGroups>
+                                            <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Margin="{ThemeResource PhoneTouchTargetOverhang}">
+                                                <ContentPresenter x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                            </Border>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
 
-                
+                    </Button.Resources>
+                    <Button.Flyout>
+                        <Flyout Placement="Full" FlyoutPresenterStyle="{StaticResource FlyoutPresenterStyle}">
+                            <Border HorizontalAlignment="Center" VerticalAlignment="Center" Padding="20" BorderBrush="{StaticResource DividerText}" BorderThickness="1" Background="White" MinWidth="214" Width="320" >
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <local:RatingControl Width="150" VerticalAlignment="Top" RateValue="{Binding UserRate}" Height="24"/>
+                                    <TextBox Margin="0,10" Text="{Binding UserComment}" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="1" FontSize="10.667" MinHeight="0" MinWidth="0" BorderThickness="0,0,0,1" Padding="7,0,8,0" AcceptsReturn="True" PlaceholderText="Поделитесь впечатлениями" Background="{x:Null}" BorderBrush="{StaticResource AccentColor}"/>
+                                    <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
+                                        <Button x:Name="Cancel" Content="отменить" VerticalAlignment="Top" Style="{StaticResource ButtonStyle}" BorderThickness="0" MinWidth="0" MinHeight="0" Padding="5,0" Foreground="{StaticResource AccentColor}" MaxHeight="35" FontSize="13.333" Click="Cancel_Click"/>
+                                        <Button x:Name="Send" Content="отправить" VerticalAlignment="Top" Style="{StaticResource ButtonStyle}" MinHeight="0" MinWidth="0" MaxHeight="35" Padding="5,0" BorderThickness="0" Foreground="{StaticResource AccentColor}" FontSize="13.333" Click="Send_Click"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </Flyout>
+                    </Button.Flyout>
+                    <Button.Style>
+                        <StaticResource ResourceKey="ButtonStyle"/>
+                    </Button.Style>
+                    <Grid Margin="0" VerticalAlignment="Center">
+                        <local:RatingControl  x:Name="UserRatingControl" Background="#FFE91E63" Brush="#FFE91E63" RateValue="{Binding UserRate, Mode=TwoWay}" VerticalAlignment="Center" ViewText="True" Height="24" Width="168"/>
+                    </Grid>
+                </Button>
+
+
             </Border>
             <Border BorderBrush="{StaticResource DividerText}" BorderThickness="1" Background="White" Grid.Row="3" Padding="25,5">
                 <Grid VerticalAlignment="Top">
-                	<Grid.RowDefinitions>
-                		<RowDefinition Height="Auto"/>
-                		<RowDefinition/>
-                	</Grid.RowDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
                     <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Отзывы" VerticalAlignment="Top" Foreground="{StaticResource SecondaryText}" FontSize="13.333"/>
                     <ListView VerticalAlignment="Top" Header="{Binding CommentsDetail, Mode=OneWay}" ItemsSource="{Binding ListComment}" Grid.Row="1">
                         <ListView.Resources>
@@ -573,31 +573,31 @@
                                 </Grid>
                             </DataTemplate>
                             <DataTemplate x:Key="ItemDataTemplate">
-                            	<Grid>
-                            		<Grid.RowDefinitions>
-                            			<RowDefinition Height="Auto"/>
-                            			<RowDefinition Height="Auto"/>
-                            			<RowDefinition Height="Auto"/>
-                            		</Grid.RowDefinitions>
-                            		<Grid.ColumnDefinitions>
-                            			<ColumnDefinition/>
-                            			<ColumnDefinition/>
-                            		</Grid.ColumnDefinitions>
-                            		<TextBlock Text="{Binding Name}" HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}" Margin="{TemplateBinding Control.Padding}" VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}" Foreground="{StaticResource PrimeryText}"/>
-                            		<TextBlock Text="{Binding Dates}" Margin="{TemplateBinding Control.Padding}" VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}" Grid.Row="1" HorizontalAlignment="Left"/>
-                            		<TextBlock x:Name="contentPresenter" Text="{Binding Text}" HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}" Margin="{TemplateBinding Control.Padding}" VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}" Grid.Row="2" Foreground="{StaticResource PrimeryText}"/>
-                            		<local:RatingControl RateValue="{Binding Rate}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="12" IsEnabled="False" Grid.Column="1" Grid.Row="1"/>
-                            	</Grid>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding Name}" HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}" Margin="{TemplateBinding Control.Padding}" VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}" Foreground="{StaticResource PrimeryText}"/>
+                                    <TextBlock Text="{Binding Dates}" Margin="{TemplateBinding Control.Padding}" VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}" Grid.Row="1" HorizontalAlignment="Left"/>
+                                    <TextBlock x:Name="contentPresenter" Text="{Binding Text}" HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}" Margin="{TemplateBinding Control.Padding}" VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}" Grid.Row="2" Foreground="{StaticResource PrimeryText}"/>
+                                    <local:RatingControl RateValue="{Binding Rate}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="12" IsEnabled="False" Grid.Column="1" Grid.Row="1"/>
+                                </Grid>
                             </DataTemplate>
                         </ListView.Resources>
                         <ListView.Visibility>
                             <Binding Converter="{StaticResource BooleanToVisibilityConverter}" Path="VisableListComment"/>
                         </ListView.Visibility>
                         <ListView.ItemTemplate>
-                    		<StaticResource ResourceKey="ItemDataTemplate"/>
-                    	</ListView.ItemTemplate>
+                            <StaticResource ResourceKey="ItemDataTemplate"/>
+                        </ListView.ItemTemplate>
                         <ListView.ItemContainerStyle>
-                        	<StaticResource ResourceKey="ListViewItemStyle"/>
+                            <StaticResource ResourceKey="ListViewItemStyle"/>
                         </ListView.ItemContainerStyle>
                         <ListView.Foreground>
                             <StaticResource ResourceKey="SecondaryText"/>

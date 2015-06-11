@@ -186,12 +186,12 @@
 
     </Page.Resources>
 
-    <Grid Background="White" Margin="0,0,0,24">
+    <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="40"/>
             <RowDefinition/>
-            <RowDefinition Height="64"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Border Margin="0,0,0,-8">
             <Border.Background>
@@ -265,7 +265,7 @@
             <TextBox x:Name="tbComment" TextWrapping="Wrap" VerticalAlignment="Stretch" BorderThickness="0,0,0,1" PlaceholderText="Комментарий" FontSize="16" Style="{StaticResource IconTextBoxStyle}" Background="{x:Null}" Foreground="{StaticResource PrimeryText}" Grid.Row="2" Margin="0,0,0,8" MinWidth="300" MinHeight="48" Padding="7,0,8,0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Visibility="{Binding Visibility, ElementName=tbDate}"/>
 
         </Grid>
-        <Border BorderBrush="{StaticResource DividerText}" Background="#FFF3F3F3" Grid.Row="3" BorderThickness="0,1,0,0">
+        <Border BorderBrush="{StaticResource DividerText}" Background="#FFF3F3F3" Grid.Row="3" BorderThickness="0,1,0,0" Padding="0,4,0,20">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -302,7 +302,7 @@
                 </AppBarToggleButton>
             </Grid>
         </Border>
-        <Border x:Name="AlarmBorder" Grid.Row="0" Grid.RowSpan="2" Background="#7F000000" Visibility="Collapsed">
+        <Border x:Name="AlarmBorder" Grid.Row="0" Grid.RowSpan="4" Background="#7F000000" Visibility="Collapsed">
             <Grid x:Name="grdContext" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Border>
     </Grid>

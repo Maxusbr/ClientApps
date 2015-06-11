@@ -15,7 +15,7 @@
         <ViewModel:WorksViewModel/>
     </Page.DataContext>
 
-    <Grid Background="White" Margin="0,0,0,24">
+    <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="66"/>
             <RowDefinition/>
