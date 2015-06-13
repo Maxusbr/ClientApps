@@ -24,7 +24,7 @@
             </Grid.ColumnDefinitions>
 
             <DataPresenter:MAnalogPresenter Width="200" Height="200" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <DataPresenter:MAnalogPresenter Width="200" Height="200" Margin="0,10,10,0" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="2"/>
+            <DataPresenter:MAnalogPresenter Width="200" Height="200" Margin="0,10,10,0" Stop="10" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="2"/>
 
         </Grid>
         <!--<TabControl Margin="5">

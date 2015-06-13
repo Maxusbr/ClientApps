@@ -26,7 +26,7 @@ namespace DTCDev.Client.DataPresenter
         }
 
         private int _start = 0;
-        private int _stop = 250;
+        private int _stop = 180;
 
         public int Start
         {
@@ -34,6 +34,16 @@ namespace DTCDev.Client.DataPresenter
             set
             {
                 _start = value;
+                UpdateParams();
+            }
+        }
+
+        public int Stop
+        {
+            get { return _stop; }
+            set
+            {
+                _stop = value;
                 UpdateParams();
             }
         }
@@ -46,7 +56,15 @@ namespace DTCDev.Client.DataPresenter
 
         private void UpdateParams()
         {
-
+            int total = _stop - _start;
+            int step = total / 7;
+            txt1.Text = _start.ToString();
+            txt2.Text = (_start + step).ToString();
+            txt3.Text = (_start + step * 2).ToString();
+            txt4.Text = (_start + step * 3).ToString();
+            txt5.Text = (_start + step * 4).ToString();
+            txt6.Text = (_start + step * 5).ToString();
+            txt7.Text = (_start + step * 6).ToString();
         }
     }
 }

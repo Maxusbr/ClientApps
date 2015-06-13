@@ -76,6 +76,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="DataPresenter\MAnalogSmallPresenter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="EditedCombobox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -102,6 +106,9 @@
     </Compile>
     <Compile Include="DataPresenter\MAnalogPresenter.xaml.cs">
       <DependentUpon>MAnalogPresenter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DataPresenter\MAnalogSmallPresenter.xaml.cs">
+      <DependentUpon>MAnalogSmallPresenter.xaml</DependentUpon>
     </Compile>
     <Compile Include="EditedCombobox.xaml.cs">
       <DependentUpon>EditedCombobox.xaml</DependentUpon>
