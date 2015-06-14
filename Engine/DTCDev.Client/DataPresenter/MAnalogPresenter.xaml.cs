@@ -57,7 +57,7 @@ namespace DTCDev.Client.DataPresenter
         private void UpdateParams()
         {
             int total = _stop - _start;
-            int step = total / 7;
+            int step = total / 6;
             txt1.Text = _start.ToString();
             txt2.Text = (_start + step).ToString();
             txt3.Text = (_start + step * 2).ToString();
@@ -65,6 +65,49 @@ namespace DTCDev.Client.DataPresenter
             txt5.Text = (_start + step * 4).ToString();
             txt6.Text = (_start + step * 5).ToString();
             txt7.Text = (_start + step * 6).ToString();
+            _stop = _start + step * 6;
+            double totDouble = total;
+            _degreesPerStep = 270.0f / totDouble;
+        }
+
+        private int _lastVol = 0;
+
+        private double _degreesPerStep;
+
+        public void SetData(int vol)
+        {
+            if (_lastVol == vol)
+                return;
+            if (_stbBeginComplete == false)
+            {
+                _display = vol;
+                return;
+            }
+            double v = vol;
+            double ov = _lastVol;
+            double angleOld = ov * _degreesPerStep;
+            double angleNew = v * _degreesPerStep;
+            angleOld = Math.Round(angleOld);
+            angleNew = Math.Round(angleNew);
+            var da = new DoubleAnimation
+            {
+                From = angleOld,
+                To = angleNew,
+                Duration = TimeSpan.FromMilliseconds(500)
+            };
+            Storyboard sb = new Storyboard();
+            RotateTransform rt = (RotateTransform)((TransformGroup)brdrViewer.RenderTransform).Children[2];
+            rt.BeginAnimation(RotateTransform.AngleProperty, da);
+            _lastVol = vol;
+        }
+
+        bool _stbBeginComplete = false;
+        int _display = 0;
+
+        private void Storyboard_Completed(object sender, EventArgs e)
+        {
+            _stbBeginComplete = true;
+            SetData(_display);
         }
     }
 }

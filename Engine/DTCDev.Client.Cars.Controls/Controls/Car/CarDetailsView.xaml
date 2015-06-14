@@ -23,8 +23,9 @@
                 <ColumnDefinition Width="220"/>
             </Grid.ColumnDefinitions>
 
-            <DataPresenter:MAnalogPresenter Width="200" Height="200" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <DataPresenter:MAnalogPresenter Width="200" Height="200" Margin="0,10,10,0" Stop="10" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="2"/>
+            <DataPresenter:MAnalogPresenter x:Name="speedPresenter" Stop="180" Width="200" Height="200" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <DataPresenter:MAnalogPresenter x:Name="engineRPMPresenter" Width="200" Height="200" Margin="0,10,10,0" Stop="6000" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="2"/>
+            <DataPresenter:MAnalogSmallPresenter x:Name="sattelitePresenter" HorizontalAlignment="Left" Stop="30" Margin="119,115,0,0" VerticalAlignment="Top"/>
 
         </Grid>
         <!--<TabControl Margin="5">

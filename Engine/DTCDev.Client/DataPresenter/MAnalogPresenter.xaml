@@ -6,7 +6,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="200" Loaded="UserControl_Loaded">
     <UserControl.Resources>
-        <Storyboard x:Key="stbRange" Storyboard.TargetName="brdrViewer" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)">
+        <Storyboard x:Key="stbRange" Storyboard.TargetName="brdrViewer" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Completed="Storyboard_Completed">
             <DoubleAnimation From="0" To="270" Duration="0:0:0.5" />
             <DoubleAnimation From="270" To="0" BeginTime="0:0:0.5" Duration="0:0:0.5"/>
         </Storyboard>

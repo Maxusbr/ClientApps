@@ -51,6 +51,14 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
 
         private void UpdateData()
         {
+            speedPresenter.SetData((int)_currentCar.Current_Speed);
+            sattelitePresenter.SetData(_currentCar.Data.Navigation.Sattelites);
+            if(_currentCar.OBD.Where(p=>p.Key=="0C").FirstOrDefault()!=null)
+            {
+                int vol = 0;
+                Int32.TryParse(_currentCar.OBD.Where(p => p.Key == "0C").First().Value, out vol);
+                engineRPMPresenter.SetData(vol);
+            }
             //txtDate.Text = "Последняя связь - " + _currentCar.DateNavigation;
             //txtSpeed.Text = _currentCar.strSpeed;
             //txtSat.Text = _currentCar.CountSatelite.ToString();
@@ -59,7 +67,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
             //else
             //    txtFuel.Text = _currentCar.FuelLevel + " л.";
 
-            //PIDConverter converter = new PIDConverter();
+            PIDConverter converter = new PIDConverter();
             ////stkOBD.Children.Clear();
             //foreach (var item in _currentCar.OBD)
             //{

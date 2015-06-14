@@ -4,9 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-            Height="80" Width="80">
+            Height="75" Width="75">
     <UserControl.Resources>
-        <Storyboard x:Key="stbRange" Storyboard.TargetName="brdrViewer" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)">
+        <Storyboard x:Key="stbRange" Storyboard.TargetName="brdrViewer" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Completed="Storyboard_Completed">
             <DoubleAnimation From="0" To="270" Duration="0:0:0.5" />
             <DoubleAnimation From="270" To="0" BeginTime="0:0:0.5" Duration="0:0:0.5"/>
         </Storyboard>
@@ -65,17 +65,14 @@
             </Ellipse.Stroke>
         </Ellipse>
         <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="5" Grid.RowSpan="5">
-            <Border Width="2" Height="4" Background="LightGray" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
-            <Border Width="2" Height="4" Background="LightGray" VerticalAlignment="Top" HorizontalAlignment="Center"/>
-            <Border Width="4" Height="2" Background="LightGray" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-            <Border Width="4" Height="2" Background="LightGray" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-            <TextBlock x:Name="txt1" Text="0" VerticalAlignment="Bottom" Margin="10" Foreground="LightGray" HorizontalAlignment="Center" FontWeight="Bold"/>
-            <TextBlock x:Name="txt2" Text="30" VerticalAlignment="Bottom" Margin="33,0,126,30" Foreground="LightGray" HorizontalAlignment="Center" FontWeight="Bold"/>
-            <TextBlock x:Name="txt3" Text="60" VerticalAlignment="Bottom" Margin="10,0,149,82" Foreground="LightGray" HorizontalAlignment="Center" FontWeight="Bold"/>
-            <TextBlock x:Name="txt4" Text="90" VerticalAlignment="Bottom" Margin="33,0,126,133" Foreground="LightGray" HorizontalAlignment="Center" FontWeight="Bold"/>
-            <TextBlock x:Name="txt6" Text="150" VerticalAlignment="Bottom" Margin="125,0,34,133" Foreground="LightGray" HorizontalAlignment="Center" FontWeight="Bold"/>
-            <TextBlock x:Name="txt5" Text="120" VerticalAlignment="Bottom" Margin="80,0,79,154" Foreground="LightGray" HorizontalAlignment="Center" FontWeight="Bold"/>
-            <TextBlock x:Name="txt7"  Text="180" VerticalAlignment="Bottom" Margin="149,0,10,82" Foreground="LightGray" HorizontalAlignment="Center" FontWeight="Bold"/>
+            <Border Width="2" Height="3" Background="LightGray" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+            <Border Width="2" Height="3" Background="LightGray" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+            <Border Width="3" Height="2" Background="LightGray" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+            <Border Width="3" Height="2" Background="LightGray" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+            <TextBlock x:Name="txt1" Text="0" VerticalAlignment="Bottom" Margin="30,0,30,3" Foreground="LightGray" HorizontalAlignment="Center" FontWeight="Bold" FontSize="9"/>
+            <TextBlock x:Name="txt2" Text="0" VerticalAlignment="Bottom" Margin="4,0,0,29" Foreground="LightGray" HorizontalAlignment="Left" FontWeight="Bold" FontSize="9"/>
+            <TextBlock x:Name="txt4" Text="0" VerticalAlignment="Bottom" Margin="0,0,4,28" Foreground="LightGray" HorizontalAlignment="Right" FontWeight="Bold" FontSize="9"/>
+            <TextBlock x:Name="txt3" Text="0" VerticalAlignment="Bottom" Margin="0,0,0,52" Foreground="LightGray" HorizontalAlignment="Center" FontWeight="Bold" FontSize="9"/>
             <Border Width="1" Height="4" Background="LightGray" VerticalAlignment="Bottom" HorizontalAlignment="Center" RenderTransformOrigin="0.5,-8" >
                 <Border.RenderTransform>
                     <TransformGroup>
@@ -86,7 +83,7 @@
                     </TransformGroup>
                 </Border.RenderTransform>
             </Border>
-            <Border Width="1" Height="4" Background="LightGray" VerticalAlignment="Bottom" HorizontalAlignment="Center" RenderTransformOrigin="0.5,-8" >
+            <Border Width="1" Height="4" Background="LightGray" VerticalAlignment="Bottom" HorizontalAlignment="Center" RenderTransformOrigin="0.5,-7.6" >
                 <Border.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform/>
@@ -96,7 +93,7 @@
                     </TransformGroup>
                 </Border.RenderTransform>
             </Border>
-            <Border Width="1" Height="4" Background="LightGray" VerticalAlignment="Bottom" HorizontalAlignment="Center" RenderTransformOrigin="0.5,-8" >
+            <Border Width="1" Height="4" Background="LightGray" VerticalAlignment="Bottom" HorizontalAlignment="Center" RenderTransformOrigin="0.5,-7.4" >
                 <Border.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform/>
@@ -106,6 +103,7 @@
                     </TransformGroup>
                 </Border.RenderTransform>
             </Border>
+
         </Grid>
         <Border x:Name="brdrViewer" Grid.Column="3" Grid.Row="2" Grid.RowSpan="4" Width="4" Margin="3,10" RenderTransformOrigin="0.503,0.263">
             <Border.RenderTransform>
