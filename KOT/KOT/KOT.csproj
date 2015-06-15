@@ -292,7 +292,9 @@
     <Compile Include="DataModel\Model\SNaviData.cs" />
     <Compile Include="DataModel\Model\SpendingClassesModel.cs" />
     <Compile Include="DataModel\Model\SpendingModel.cs" />
+    <Compile Include="DataModel\Model\TimeModel.cs" />
     <Compile Include="DataModel\Model\TripAdvisorModel.cs" />
+    <Compile Include="DataModel\Model\TripRequestModel.cs" />
     <Compile Include="DataModel\Model\WorkType.cs" />
     <Compile Include="DataModel\Network\TcpConnection.cs" />
     <Compile Include="DataModel\SampleDataSource.cs" />

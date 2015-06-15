@@ -21,26 +21,32 @@ namespace KOT.DataModel.ViewModel
             if (PCHandler.Instance.ListTrip.Count == 0) PCHandler.UpdateSource();
         }
 
+        private void Instance_SourceChenged(string property)
+        {
+            switch (property)
+            {
+                case "StartDate":
+                    StartTrip.Clear();
+                    StartTrip.Add(new TripAdvisorViewModel("00:00", string.Empty));
+                    foreach (var el in PCHandler.Instance.ListTrip.Where(o => o.StartEng >= StartDate &&
+                            o.StartEng <= StartDate.AddHours(23).AddMinutes(59)))
+                        StartTrip.Add(el);
+                    break;
+                case "EndDate":
+                    EndtTrip.Clear();
+                    EndtTrip.Add(new TripAdvisorViewModel(string.Empty, "Текущее"));
+                    EndtTrip.Add(new TripAdvisorViewModel(string.Empty, "23:59"));
+                    foreach (var el in PCHandler.Instance.ListTrip.Where(o => o.EndEng >= EndDate &&
+                        o.EndEng <= EndDate.AddHours(23).AddMinutes(59)))
+                        EndtTrip.Add(el);
+                    break;
+            }
+        }
+
         void CarsHandler_SelectionChanged(object sender, EventArgs e)
         {
             PCHandler.UpdateSource();
             TotalDistance = string.Format("{0} км", PCHandler.Instance.ListTrip.Sum(o => o.CurrentDistance));
-        }
-
-        void Instance_SourceChenged(object sender, EventArgs e)
-        {
-            StartTrip.Clear();
-            EndtTrip.Clear();
-            StartTrip.Add(new TripAdvisorViewModel("00:00", string.Empty));
-            EndtTrip.Add(new TripAdvisorViewModel(string.Empty, "Текущее"));
-            EndtTrip.Add(new TripAdvisorViewModel(string.Empty, "23:59"));
-            foreach (var el in PCHandler.Instance.ListTrip.Where(o => o.StartEng >= StartDate && 
-                o.StartEng <= StartDate.AddHours(23).AddMinutes(59)))
-                StartTrip.Add(el);
-            foreach (var el in PCHandler.Instance.ListTrip.Where(o => o.EndEng >= EndDate && 
-                o.EndEng <= EndDate.AddHours(23).AddMinutes(59)))
-                EndtTrip.Add(el);
-
         }
 
         private readonly ObservableCollection<TripAdvisorViewModel> _starTrip = new ObservableCollection<TripAdvisorViewModel>();
@@ -71,6 +77,7 @@ namespace KOT.DataModel.ViewModel
             get { return PCHandler.StartDate; }
             set
             {
+                if(PCHandler.StartDate.Equals(value)) return;
                 IsReady = false;
                 PCHandler.StartDate = value;
             }
@@ -81,6 +88,7 @@ namespace KOT.DataModel.ViewModel
             get { return PCHandler.EndDate; }
             set
             {
+                if (PCHandler.StartDate.Equals(value)) return;
                 IsReady = false;
                 PCHandler.EndDate = value;
             }
@@ -147,12 +155,12 @@ namespace KOT.DataModel.ViewModel
             var list = PCHandler.Instance.ListTrip.Where(o => o.StartEng >= startdt && o.EndEng <= enddt).ToList();
             if (list.Count == 0)
             {
-                Distance = TripTime = MedianSpeed = string.Empty;return;
+                Distance = TripTime = MedianSpeed = string.Empty; return;
             }
             Distance = string.Format("{0} км", list.Sum(o => o.CurrentDistance));
             TripTime = string.Format("{0} минут", list.Sum(o => o.TripTime));
             MedianSpeed = string.Format("{0} км/ч", Math.Round(list.Average(o => o.MedianSpeed), 2));
-            
+
             IsReady = true;
         }
 

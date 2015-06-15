@@ -25,19 +25,27 @@ namespace KOT.DataModel.Handlers
             _instance = this;
         }
 
-        public event EventHandler SourceChenged;
-        protected virtual void OnSourceChenged()
+        public delegate void SourceChengedHandler(string property);
+        public event SourceChengedHandler SourceChenged;
+        protected virtual void OnSourceChenged(string property)
         {
-            EventHandler handler = SourceChenged;
-            if (handler != null) handler(this, EventArgs.Empty);
+            if (SourceChenged != null) SourceChenged(property);
         }
+
         private string CarId { get { return CarsHandler.SelectedCar.DID; } }
         private DrivingStyle _styleDriver = new DrivingStyle();
         private DateTime _current = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
         private DateTime _startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-        private DateTime _endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+        private DateTime _endDate = DateTime.Now;
         private readonly ObservableCollection<TripAdvisorViewModel> _listTrip = new ObservableCollection<TripAdvisorViewModel>();
         public ObservableCollection<TripAdvisorViewModel> ListTrip { get { return _listTrip; } }
+
+        private readonly ObservableCollection<TimeModel> _listStartPoint = new ObservableCollection<TimeModel>();
+        public ObservableCollection<TimeModel> ListStartPoint { get { return _listStartPoint; } }
+
+        private readonly ObservableCollection<TimeModel> _listEndPoint = new ObservableCollection<TimeModel>();
+        public ObservableCollection<TimeModel> ListEndPoint { get { return _listEndPoint; } }
+
 
         public static DrivingStyle DriverStyle { get { return Instance._styleDriver; } }
 
@@ -47,7 +55,7 @@ namespace KOT.DataModel.Handlers
             set
             {
                 Instance._startDate = value;
-                UpdateSource();
+                UpdateSource("StartDate");
             }
         }
 
@@ -57,11 +65,11 @@ namespace KOT.DataModel.Handlers
             set
             {
                 Instance._endDate = value;
-                UpdateSource();
+                UpdateSource("EndDate");
             }
         }
 
-        private async Task UpdateSourceAsync()
+        private async Task UpdateSourceAsync(string property)
         {
             ListTrip.Clear();
 
@@ -111,15 +119,50 @@ namespace KOT.DataModel.Handlers
 
             #endregion
 
-            var res = await TcpConnection.Send("BI" + CarId);
+            ReciveMessageModel res = null;
+            var request = string.Empty;
+            switch (property)
+            {
+                case "StartDate":
+                    ListStartPoint.Clear();
+                    request =
+                        JsonConvert.SerializeObject(new PointsRequestModel
+                        {
+                            Date = new DateDataModel(StartDate),
+                            DevID = CarId
+                        });
+                    res = await TcpConnection.Send("BN" + request);
+                    break;
+                case "EndDate":
+                    ListEndPoint.Clear();
+                    request =
+                        JsonConvert.SerializeObject(new PointsRequestModel
+                        {
+                            Date = new DateDataModel(EndDate),
+                            DevID = CarId
+                        });
+                    res = await TcpConnection.Send("BN" + request);
+                    break;
+                default:
+                    request =
+                        JsonConvert.SerializeObject(new TripRequestModel
+                        {
+                            Start = new DateTimeDataModel(StartDate), 
+                            Stop = new DateTimeDataModel(EndDate),
+                            devID = CarId
+                        });
+                    res = await TcpConnection.Send("BM" + request);
+                    break;
+            }
+            if (res == null) return;
             if (!string.IsNullOrEmpty(res.Msg))
                 await Split(res.Fx, res.Msg);
-            OnSourceChenged();
+            OnSourceChenged(property);
         }
 
-        internal async static void UpdateSource()
+        internal async static void UpdateSource(string property = "")
         {
-            await Instance.UpdateSourceAsync();
+            await Instance.UpdateSourceAsync(property);
         }
 
         internal async static Task GetDriverStile()
@@ -132,7 +175,10 @@ namespace KOT.DataModel.Handlers
         {
             try
             {
-                if (fx == 'I' || fx == 'i')
+                if (fx == 'N' || fx == 'n')
+                    foreach (var el in JsonConvert.DeserializeObject<TimeModel[]>(msg).Where(el => ListStartPoint.IndexOf(el) < 0))
+                        ListStartPoint.Add(el);
+                if (fx == 'M' || fx == 'm')
                     foreach (var el in JsonConvert.DeserializeObject<TripAdvisorModel[]>(msg))
                     {
                         ListTrip.Add(new TripAdvisorViewModel(el));
@@ -152,16 +198,16 @@ namespace KOT.DataModel.Handlers
         private async Task GetDriverStileAsync()
         {
             if (DesignMode.DesignModeEnabled)
-            _styleDriver = new DrivingStyle
-            {
-                DID = "1",
-                CurrentDrivingStyle = 67,
-                CurrentEcoStyle = 89,
-                TodayDrivingScore = 58,
-                TodayEcoScore = 68,
-                TotalDrivingScore = 68,
-                TotalEcoScore = 98
-            };
+                _styleDriver = new DrivingStyle
+                {
+                    DID = "1",
+                    CurrentDrivingStyle = 67,
+                    CurrentEcoStyle = 89,
+                    TodayDrivingScore = 58,
+                    TodayEcoScore = 68,
+                    TotalDrivingScore = 68,
+                    TotalEcoScore = 98
+                };
             var res = await TcpConnection.Send("BH" + CarId);
             if (!string.IsNullOrEmpty(res.Msg))
                 await Split(res.Fx, res.Msg);

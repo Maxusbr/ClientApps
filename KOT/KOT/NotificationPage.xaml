@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ViewModel="using:KOT.DataModel.ViewModel"
+    xmlns:Controls="using:KOT.Common.Controls"
     x:Class="KOT.NotificationPage"
     mc:Ignorable="d" Width="Auto" Height="Auto" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
 
@@ -45,8 +46,17 @@
             <AppBarButton x:Name="OK" HorizontalAlignment="Center" Label="appbarbutton" VerticalAlignment="Center" Grid.Row="1"
 				Grid.Column="4" Margin="4" Style="{StaticResource AppBarButtonStyle}" Width="46" Height="46" >
                 <AppBarButton.Icon>
-                    <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_menu_24dp.png" Margin="5,0" Width="32" Height="32"/>
+                    <BitmapIcon UriSource="Assets/drawable-xxhdpi/ic_filter_24dp.png" Margin="5,0" Width="32" Height="32"/>
                 </AppBarButton.Icon>
+                <AppBarButton.Flyout>
+                    <MenuFlyout MenuFlyoutPresenterStyle="{StaticResource ServiceMenuFlyoutPresenterStyle}" Placement="Right">
+                        <ToggleMenuFlyoutItem x:Name="AllMonth" Text="Всё" Style="{StaticResource ServiceToogleMenuStyle}" IsChecked="True" Click="All_Click" Margin="0,0,10,0"/>
+                        <ToggleMenuFlyoutItem x:Name="Month1" Text="За 1 месяц" Style="{StaticResource ServiceToogleMenuStyle}" Click="All_Click" Margin="0,0,10,0" />
+                        <ToggleMenuFlyoutItem x:Name="Month3" Text="За 3 месяца" Style="{StaticResource ServiceToogleMenuStyle}" Click="All_Click" Margin="0,0,10,0" />
+                        <ToggleMenuFlyoutItem x:Name="Month6" Text="За 6 месяцев" Style="{StaticResource ServiceToogleMenuStyle}" Click="All_Click" Margin="0,0,10,0" />
+                        <ToggleMenuFlyoutItem x:Name="SelectDate" Text="Задать дату" Style="{StaticResource ServiceToogleMenuStyle}" Click="All_Click" Margin="0,0,10,0" />
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
             </AppBarButton>
             <TextBlock x:Name="Lable" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" FontSize="21.333" Margin="16,0,0,0" FontFamily="Segoe UI" Style="{StaticResource HeaderTextBlockStyle}" Foreground="White" Text="Уведомления"/>
 
@@ -299,6 +309,59 @@
             </ListView.ItemTemplate>
 
         </ListView>
+        <Border x:Name="FlyOut" Grid.RowSpan="3" Background="#7F000000" Margin="0,0,0,-0.333" Visibility="Collapsed">
+            <Border Background="White" BorderThickness="1" BorderBrush="{StaticResource DividerText}" Padding="8" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid Width="224" Height="224">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="56"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="48"/>
+                        <RowDefinition Height="48"/>
+                        <RowDefinition Height="48"/>
+                        <RowDefinition Height="24"/>
+                        <RowDefinition Height="48"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Показать уведомления:" VerticalAlignment="Center" Foreground="{StaticResource PrimeryText}" FontSize="13.333" Grid.ColumnSpan="3" Margin="8,16,0,16"/>
+                    <TextBlock HorizontalAlignment="Right" TextWrapping="Wrap" Text="с" VerticalAlignment="Center" Foreground="{StaticResource PrimeryText}" FontSize="12" Grid.Row="1"
+        				Grid.Column="0" Margin="0,17,5,0"/>
+                    <TextBlock HorizontalAlignment="Right" TextWrapping="Wrap" Text="по" VerticalAlignment="Center" Foreground="{StaticResource PrimeryText}" FontSize="12" Grid.Row="2"
+        				Grid.Column="0" Margin="0,17,5,16"/>
+                    <TextBox x:Name="StartDate" TextWrapping="Wrap" VerticalAlignment="Bottom" BorderThickness="0,0,0,1" PlaceholderText="дд.мм.гггг" FontSize="16" Style="{StaticResource TextBoxStyle}" Background="{x:Null}" Grid.Column="1" HorizontalAlignment="Left" Foreground="{StaticResource PrimeryText}" Grid.Row="1" Grid.ColumnSpan="2" MinWidth="100" Margin="0,0,0,2" IsReadOnly="True"/>
+                    <Button Content="" VerticalAlignment="Top" Style="{StaticResource LinkButtonStyle}" BorderBrush="{x:Null}" Grid.Row="1" MinHeight="48" Grid.Column="1">
+                        <Button.Flyout>
+                            <Flyout x:Name="StartDateSelect" FlyoutPresenterStyle="{StaticResource CurentFlyoutPresenterStyle}" Placement="Full">
+                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Background="White">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Controls:DateWeekSelectControl HorizontalAlignment="Center" VerticalAlignment="Center" Close="StartDateSelect_OnClose"/>
+                                </Grid>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+                    <TextBox x:Name="EndDate" TextWrapping="Wrap" VerticalAlignment="Bottom" BorderThickness="0,0,0,1" PlaceholderText="дд.мм.гггг" FontSize="16" Style="{StaticResource TextBoxStyle}" Background="{x:Null}" Grid.Column="1" HorizontalAlignment="Left" Foreground="{StaticResource PrimeryText}" Grid.Row="2" MinWidth="100" Grid.ColumnSpan="2" IsReadOnly="True"/>
+                    <Button Content="" VerticalAlignment="Top" Style="{StaticResource LinkButtonStyle}" BorderBrush="{x:Null}" Grid.Row="2" MinHeight="48" Grid.Column="1">
+                        <Button.Flyout>
+                            <Flyout x:Name="EndDateSelect" FlyoutPresenterStyle="{StaticResource CurentFlyoutPresenterStyle}" Placement="Full">
+                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Background="White">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Controls:DateWeekSelectControl HorizontalAlignment="Center" VerticalAlignment="Center" Close="EndDateSelect_OnClose"/>
+                                </Grid>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+                    <Button Content="ОТМЕНА" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource LinkButtonStyle}" BorderThickness="0" Foreground="{StaticResource AccentColor}" MinHeight="40" Grid.Row="4" Grid.Column="1" MinWidth="40" FontSize="14.667" Click="CancelDate_Click" Margin="0,0,0.083,0"/>
+                    <Button Content="ГОТОВО" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource LinkButtonStyle}" BorderThickness="0" Foreground="{StaticResource AccentColor}" MinHeight="40" Grid.Row="4" Grid.Column="1" MinWidth="40" FontSize="14.667" Click="OK_Click" Grid.ColumnSpan="2" Margin="84,0,0.167,0"/>
+                </Grid>
+            </Border>
+        </Border>
         <Border x:Name="AlarmBorder" Grid.Row="0" Grid.RowSpan="3" Background="#7F000000" Visibility="Collapsed">
             <Grid x:Name="grdContext" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Border>

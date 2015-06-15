@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace KOT.DataModel.Model
 {
+    [JsonObject]
     public class DateTimeDataModel
     {
         //день
@@ -32,7 +34,7 @@ namespace KOT.DataModel.Model
             mm = dt.Minute;
             ss = dt.Second;
         }
-
+        [JsonIgnore]
         public DateTime ToDate { get { return new DateTime(Y, M, D); } }
     }
 }

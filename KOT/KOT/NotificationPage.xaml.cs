@@ -59,5 +59,76 @@ namespace KOT
         {
             Frame.GoBack();
         }
+
+        private void All_Click(object sender, RoutedEventArgs e)
+        {
+            var butt = sender as ToggleMenuFlyoutItem;
+            if (butt == null) return;
+            AllMonth.IsChecked = butt.Name == AllMonth.Name;
+            Month1.IsChecked = butt.Name == Month1.Name;
+            Month3.IsChecked = butt.Name == Month3.Name;
+            Month6.IsChecked = butt.Name == Month6.Name;
+            SelectDate.IsChecked = butt.Name == SelectDate.Name;
+            UpdateSelectedDate();
+        }
+
+        private void UpdateSelectedDate()
+        {
+            var dt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            var nulldate = new DateTime(1, 1, 1);
+            if (AllMonth.IsChecked)
+            {
+                AlarmHandler.UpdateDate(nulldate, dt);
+                return;
+            }
+            if (Month1.IsChecked)
+            {
+                AlarmHandler.UpdateDate(dt.AddMonths(-1), dt);
+                return;
+            }
+            if (Month3.IsChecked)
+            {
+                AlarmHandler.UpdateDate(dt.AddMonths(-3), dt);
+                return;
+            }
+            if (Month6.IsChecked)
+            {
+                AlarmHandler.UpdateDate(dt.AddMonths(-6), dt);
+                return;
+            }
+            FlyOut.Visibility = Visibility.Visible;
+        }
+
+        private void StartDateSelect_OnClose(object sender)
+        {
+            var dt = sender as DateWeekSelectControl;
+            if (dt == null) return;
+            StartDate.Text = dt.Date.ToString("d");
+            StartDateSelect.Hide();
+        }
+
+        private void EndDateSelect_OnClose(object sender)
+        {
+            var dt = sender as DateWeekSelectControl;
+            if (dt == null) return;
+            EndDate.Text = dt.Date.ToString("d");
+            EndDateSelect.Hide();
+        }
+
+        private void CancelDate_Click(object sender, RoutedEventArgs e)
+        {
+            FlyOut.Visibility = Visibility.Collapsed;
+        }
+
+        private void OK_Click(object sender, RoutedEventArgs e)
+        {
+            FlyOut.Visibility = Visibility.Collapsed;
+            DateTime start;
+            DateTime end;
+            if (!DateTime.TryParse(EndDate.Text, out end))
+                end = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            if (DateTime.TryParse(StartDate.Text, out start))
+                AlarmHandler.UpdateDate(start, end);
+        }
     }
 }

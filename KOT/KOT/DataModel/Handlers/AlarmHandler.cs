@@ -131,5 +131,16 @@ namespace KOT.DataModel.Handlers
             }
             PressedAlarmList.Add(propertyName);
         }
+
+        internal async static void UpdateDate(DateTime start, DateTime end)
+        {
+            StartDate = start;
+            EndDate = end;
+            //await UpdateSource();
+        }
+
+        public static DateTime StartDate { get; set; }
+
+        public static DateTime EndDate { get; set; }
     }
 }
