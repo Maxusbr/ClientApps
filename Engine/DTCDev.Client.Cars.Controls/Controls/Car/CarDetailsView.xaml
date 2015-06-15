@@ -7,12 +7,30 @@
              xmlns:Models="clr-namespace:DTCDev.Client.Cars.Controls.Models"
              xmlns:local="clr-namespace:DTCDev.Client.Cars.Controls.Controls.Map" 
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
+             xmlns:DataPresenter="clr-namespace:DTCDev.Client.DataPresenter;assembly=DTCDev.Client" 
              x:Class="DTCDev.Client.Cars.Controls.Controls.Car.CarDetailsView" 
              mc:Ignorable="d" 
              Height="220" d:DesignWidth="600">
-    <Grid Background="White">
-        <TabControl Margin="5">
+    <Grid >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid x:Name="grdParams" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="220"/>
+                <ColumnDefinition Width="106*"/>
+                <ColumnDefinition Width="220"/>
+            </Grid.ColumnDefinitions>
+
+            <DataPresenter:MAnalogPresenter x:Name="speedPresenter" Stop="180" Width="200" Height="200" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <DataPresenter:MAnalogPresenter x:Name="engineRPMPresenter" Width="200" Height="200" Margin="0,10,10,0" Stop="6000" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="2"/>
+            <DataPresenter:MAnalogSmallPresenter x:Name="sattelitePresenter" HorizontalAlignment="Left" Stop="30" Margin="119,115,0,0" VerticalAlignment="Top"/>
+
+        </Grid>
+        <!--<TabControl Margin="5">
             <TabItem Header="Текущие показатели">
+                
                 <Grid Margin="10,5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="200"/>
@@ -71,8 +89,8 @@
                     <Button Grid.Column="1" Grid.Row="3" Content="Сохранить" Command="{Binding Path=SaveSettingsCommand}" Margin="20,3"/>
                 </Grid>
             </TabItem>
-        </TabControl>
-        <Button x:Name="btnClose" Height="16" Width="20" Margin="0,5,5,0" Click="btnClose_Click" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Right">
+        </TabControl>-->
+        <Button x:Name="btnClose" Grid.Column="1" Height="16" Width="20" Margin="0,5,5,0" Click="btnClose_Click" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Right">
             <Grid>
                 <Border Width="2" Height="10" BorderBrush="#FF00CCFF" Background="#FF00CCFF" RenderTransformOrigin="0.5,0.5">
                     <Border.RenderTransform>
