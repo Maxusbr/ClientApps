@@ -23,6 +23,8 @@ namespace KOT.DataModel.Handlers
         public PCHandler()
         {
             _instance = this;
+            _starTime = _startDate;
+            _endTime = DateTime.Now;
         }
 
         public delegate void SourceChengedHandler(string property);
@@ -36,7 +38,7 @@ namespace KOT.DataModel.Handlers
         private DrivingStyle _styleDriver = new DrivingStyle();
         private DateTime _current = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
         private DateTime _startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-        private DateTime _endDate = DateTime.Now;
+        private DateTime _endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
         private readonly ObservableCollection<TripAdvisorViewModel> _listTrip = new ObservableCollection<TripAdvisorViewModel>();
         public ObservableCollection<TripAdvisorViewModel> ListTrip { get { return _listTrip; } }
 
@@ -69,7 +71,10 @@ namespace KOT.DataModel.Handlers
             }
         }
 
-        private async Task UpdateSourceAsync(string property)
+        private DateTime _starTime;
+        private DateTime _endTime;
+
+        private async Task UpdateSourceAsync(string property = "")
         {
             ListTrip.Clear();
 
@@ -147,8 +152,8 @@ namespace KOT.DataModel.Handlers
                     request =
                         JsonConvert.SerializeObject(new TripRequestModel
                         {
-                            Start = new DateTimeDataModel(StartDate), 
-                            Stop = new DateTimeDataModel(EndDate),
+                            Start = new DateTimeDataModel(_starTime),
+                            Stop = new DateTimeDataModel(_endTime),
                             devID = CarId
                         });
                     res = await TcpConnection.Send("BM" + request);
@@ -156,7 +161,7 @@ namespace KOT.DataModel.Handlers
             }
             if (res == null) return;
             if (!string.IsNullOrEmpty(res.Msg))
-                await Split(res.Fx, res.Msg);
+                await Split(res.Fx, res.Msg, property.Equals("EndDate"));
             OnSourceChenged(property);
         }
 
@@ -165,24 +170,34 @@ namespace KOT.DataModel.Handlers
             await Instance.UpdateSourceAsync(property);
         }
 
+        internal async static void UpdateSource(DateTime start, DateTime end)
+        {
+            Instance._starTime = start;
+            Instance._endTime = end;
+            await Instance.UpdateSourceAsync("Model");
+        }
+
+
         internal async static Task GetDriverStile()
         {
             await Instance.GetDriverStileAsync();
 
         }
 
-        private async Task Split(char fx, string msg)
+        private async Task Split(char fx, string msg, bool fillEnd = false)
         {
             try
             {
                 if (fx == 'N' || fx == 'n')
                     foreach (var el in JsonConvert.DeserializeObject<TimeModel[]>(msg).Where(el => ListStartPoint.IndexOf(el) < 0))
-                        ListStartPoint.Add(el);
+                        if (fillEnd) ListEndPoint.Add(el);
+                        else ListStartPoint.Add(el);
                 if (fx == 'M' || fx == 'm')
-                    foreach (var el in JsonConvert.DeserializeObject<TripAdvisorModel[]>(msg))
-                    {
-                        ListTrip.Add(new TripAdvisorViewModel(el));
-                    }
+                    TripModel = (JsonConvert.DeserializeObject<TripAdvisorModel[]>(msg)).FirstOrDefault(o => o.DID.Equals(CarId));
+                    //foreach (var el in JsonConvert.DeserializeObject<TripAdvisorModel[]>(msg))
+                    //{
+                    //    ListTrip.Add(new TripAdvisorViewModel(el));
+                    //}
                 if (fx == 'H' || fx == 'h')
                 {
                     var res = JsonConvert.DeserializeObject<DrivingStyle[]>(msg);
@@ -212,5 +227,7 @@ namespace KOT.DataModel.Handlers
             if (!string.IsNullOrEmpty(res.Msg))
                 await Split(res.Fx, res.Msg);
         }
+
+        public TripAdvisorModel TripModel { get; set; }
     }
 }
