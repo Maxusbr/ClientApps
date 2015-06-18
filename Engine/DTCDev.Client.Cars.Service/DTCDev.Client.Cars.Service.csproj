@@ -62,11 +62,17 @@
     <Compile Include="Controls\CalendarControls\CalendarCarItem.xaml.cs">
       <DependentUpon>CalendarCarItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CalendarControls\TestDriveView.xaml.cs">
+      <DependentUpon>TestDriveView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\CalendarControls\CardOrder.xaml.cs">
       <DependentUpon>CardOrder.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\CalendarControls\DateTimePicker.xaml.cs">
       <DependentUpon>DateTimePicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CalendarControls\TestDriveDayWeekViewControl.xaml.cs">
+      <DependentUpon>TestDriveDayWeekViewControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\CalendarControls\PostsDayWeekViewControl.xaml.cs">
       <DependentUpon>PostsDayWeekViewControl.xaml</DependentUpon>
@@ -135,6 +141,7 @@
     <Compile Include="Controls\Settings\UserSettings.xaml.cs">
       <DependentUpon>UserSettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Convertors\BoolToValueMultyConverter.cs" />
     <Compile Include="Convertors\DTCConverter.cs" />
     <Compile Include="Convertors\OnLineConverter.cs" />
     <Compile Include="Convertors\PlugConvertor.cs" />
@@ -286,11 +293,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\CalendarControls\TestDriveView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\CalendarControls\CardOrder.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\CalendarControls\DateTimePicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CalendarControls\TestDriveDayWeekViewControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

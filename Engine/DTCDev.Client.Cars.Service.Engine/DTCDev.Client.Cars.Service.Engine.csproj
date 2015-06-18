@@ -79,11 +79,15 @@
     <Compile Include="Controls\ViewModels\ICancelHandler.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controls\ViewModels\IDateList.cs" />
     <Compile Include="Controls\ViewModels\LoginViewModel.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controls\ViewModels\OrderViewModel.cs" />
+    <Compile Include="Controls\ViewModels\CarTestDrivesViewModel.cs" />
     <Compile Include="Controls\ViewModels\PostOrdersViewModel.cs" />
+    <Compile Include="Controls\ViewModels\Settings\TestDriveCarViewModel.cs" />
+    <Compile Include="Controls\ViewModels\TestDriveDayWeekViewModel.cs" />
     <Compile Include="Controls\ViewModels\PostsDayWeekViewModel.cs" />
     <Compile Include="Controls\ViewModels\Reports\OrderReportViewModel.cs" />
     <Compile Include="Controls\ViewModels\Reports\ReportsViewModel.cs" />
@@ -124,6 +128,7 @@
     <Compile Include="Network\TCPConnection.cs" />
     <Compile Include="Network\UpdateDriver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Storage\TestDriveCarStorage.cs" />
     <Compile Include="Storage\CarStorage.cs" />
     <Compile Include="Storage\DISP_Car.cs" />
     <Compile Include="Storage\HomeDataModel.cs" />

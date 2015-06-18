@@ -13,22 +13,23 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DTCDev.Client.Cars.Service.Engine.Controls.ViewModels;
+using DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings;
 
 namespace DTCDev.Client.Cars.Service.Controls.CalendarControls
 {
     /// <summary>
     /// Логика взаимодействия для DayViewControl.xaml
     /// </summary>
-    public partial class PostsDayWeekViewControl : UserControl
+    public partial class TestDriveDayWeekViewControl : UserControl
     {
-        readonly PostsDayWeekViewModel _vm;
-
-        public PostsDayWeekViewControl()
+        readonly TestDriveDayWeekViewModel _vm;
+        private CarTestDrivesViewModel _selectedCar;
+        public TestDriveDayWeekViewControl()
         {
             InitializeComponent();
-            _vm = DataContext as PostsDayWeekViewModel;
+            _vm = DataContext as TestDriveDayWeekViewModel;
             PostList.SelectedCellsChanged += PostList_SelectedCellsChanged;
-            _vm.PropertyChanged += _vm_PropertyChanged;
+            if (_vm != null) _vm.PropertyChanged += _vm_PropertyChanged;
             UpdateUI();
         }
 
@@ -48,7 +49,7 @@ namespace DTCDev.Client.Cars.Service.Controls.CalendarControls
         private void UpdateUIWeek()
         {
             PostList.Columns.Clear();
-            PostList.Columns.Add(new DataGridTextColumn { Header = "Название поста", Binding = new Binding("Post.Name") });
+            PostList.Columns.Add(new DataGridTextColumn { Header = "Автомобили", Binding = new Binding("Car.CurrentCar") });
             for (var i = 0; i < 7; i++)
             {
                 var column = new DataGridTemplateColumn
@@ -63,7 +64,7 @@ namespace DTCDev.Client.Cars.Service.Controls.CalendarControls
         private void UpdateUIDay()
         {
             PostList.Columns.Clear();
-            PostList.Columns.Add(new DataGridTextColumn { Header = "Название поста", Binding = new Binding("Post.Name") });
+            PostList.Columns.Add(new DataGridTextColumn { Header = "Автомобили", Binding = new Binding("Car.CurrentCar") });
             for (var i = _vm.StartTime; i < _vm.EndTime; i++)
             {
                 AddColumn(i, "{0}:00");
@@ -85,12 +86,12 @@ namespace DTCDev.Client.Cars.Service.Controls.CalendarControls
         private void PostList_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
         {
             if (e.AddedCells == null || e.AddedCells.Count == 0) return;
-            var vm = e.AddedCells[0].Item as PostOrdersViewModel;
-            if (vm == null) return;
+            _selectedCar = e.AddedCells[0].Item as CarTestDrivesViewModel;
+            if (_selectedCar == null) return;
             if (_vm.WeekStyle)
                 ClickDay(e.AddedCells[0]);
             else
-                ClickHour(vm, e.AddedCells[0]);
+                ClickHour(e.AddedCells[0]);
         }
 
         private void ClickDay(DataGridCellInfo cell)
@@ -100,26 +101,31 @@ namespace DTCDev.Client.Cars.Service.Controls.CalendarControls
             UpdateUI();
         }
 
-        private void ClickHour(PostOrdersViewModel vm, DataGridCellInfo cell)
+        private void ClickHour(DataGridCellInfo cell)
         {
-            if(cell.Column.DisplayIndex == 0) return;
-            var dateWork = vm.Date +
-                TimeSpan.Parse(cell.Column.Header.ToString());
-            var order = new OrderViewModel(vm.Orders.FirstOrDefault(el => el.DateWork >= dateWork && el.DateWork < dateWork + new TimeSpan(0, 30, 0)) ??
-                      new OrderViewModel { DateWork = dateWork, PostID = vm.Post.ID, IsChanged = false, ID = vm.Orders.Count });
-            order.IsCompleteSaved += OrderOnIsCompleteSaved;
-            var detail = new CardOrder { DataContext = order };
+            if (cell.Column.DisplayIndex == 0 || _selectedCar == null) return;
+            TimeSpan ts;
+            if (!TimeSpan.TryParse(cell.Column.Header.ToString(), out ts)) return;
+            var dateWork = _selectedCar.Date + ts;
+            var td =
+                _selectedCar.TestDrives.FirstOrDefault(
+                    el => el.DateWork >= dateWork && el.DateWork < dateWork + new TimeSpan(0, 30, 0));
+            var testdrive = td != null ? new TestDriveCarViewModel(td) :
+                      new TestDriveCarViewModel(dateWork, _selectedCar.Car.CurrentCar, _selectedCar.TestDrives.Count, false);
+            testdrive.IsCompleteSaved += TestDriveIsCompleteSaved;
+            var detail = new TestDriveView() { DataContext = testdrive };
             ccDetail.Children.Clear();
             ccDetail.Children.Add(detail);
-            tbPost.Text = vm.Post.Name;
+            tbCar.Text = _selectedCar.Car.CurrentCar.ToString();
             gDetail.Visibility = Visibility.Visible;
         }
 
-        private void OrderOnIsCompleteSaved(object sender, EventArgs eventArgs)
+        private void TestDriveIsCompleteSaved(object sender, EventArgs eventArgs)
         {
-            var order = sender as OrderViewModel;
-            if (order == null) return;
-            _vm.UpdateOrders(order);
+            var testdrive = sender as TestDriveCarViewModel;
+            if (testdrive == null) return;
+            _vm.Save(testdrive);
+            _selectedCar.Update(testdrive);
             gDetail.Visibility = Visibility.Collapsed;
             UpdateUIDay();
         }
@@ -131,10 +137,10 @@ namespace DTCDev.Client.Cars.Service.Controls.CalendarControls
 
         private void imgRight_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            _vm.Date =_vm.WeekStyle ?  _vm.Date.AddDays(7) : _vm.Date.AddDays(1);
+            _vm.Date = _vm.WeekStyle ? _vm.Date.AddDays(7) : _vm.Date.AddDays(1);
         }
     }
 
 
-    
+
 }

@@ -11,11 +11,12 @@ using DTCDev.Client.ViewModel;
 
 namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
 {
-    public class PostOrdersViewModel : ViewModelBase
+    public class PostOrdersViewModel : ViewModelBase, IDateList
     {
         private readonly PostViewModel _post;
         private readonly ObservableCollection<OrderViewModel> _orders = new ObservableCollection<OrderViewModel>();
         private int _selectedOrder = -1;
+        private readonly List<DateListModel> _datesList = new List<DateListModel>();
         public bool WeekStyle { get { return PostsHandler.Instance.WeekStyle; } }
         public DateTime Date { get { return PostsHandler.Instance.Date; } }
 
@@ -47,7 +48,25 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
                 Orders.Add(ord);
             }
             else
+            {
                 order.UpdateOrder(ord);
+            }
+            UpdateDatesList();
+        }
+
+        private void UpdateDatesList()
+        {
+            _datesList.Clear();
+            foreach (var el in Orders)
+            {
+                _datesList.Add(new DateListModel
+                {
+                    DateWork = el.DateWork,
+                    ToolTip = string.Format("{0} ({1})",
+                        el.User != null ? el.User.Nm : "User",
+                        el.Car != null ? el.Car.MarkModelName : "")
+                });
+            }
         }
 
         private void Order_IsCompleteSaved(object sender, EventArgs e)
@@ -63,6 +82,15 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             Post.PostType = post.PostType;
             Post.StartWorkTime = post.StartWorkTime;
             Post.EndWorkTime = post.EndWorkTime;
+        }
+
+        public int StartWorkTime { get { return Post.StartWorkTime; } }
+
+        public int EndWorkTime { get { return Post.EndWorkTime; } }
+
+        public List<DateListModel> DatesList
+        {
+            get { return _datesList; }
         }
     }
 }

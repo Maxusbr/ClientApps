@@ -168,6 +168,11 @@
                             <Image Source="Imgs/4.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
+                    <MenuItem Header="Запись на тест-драйв" Padding="7" Click="menuItem_TestDrive">
+                        <MenuItem.Icon>
+                            <Image Source="Imgs/4.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
                     <MenuItem Header="Календарь предстоящих работ" Padding="7" Click="menuItem_ClickCalendar">
                         <MenuItem.Icon>
                             <Image Source="Imgs/7.png"/>

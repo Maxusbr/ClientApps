@@ -6,7 +6,7 @@
              xmlns:ViewModels="clr-namespace:DTCDev.Client.Cars.Service.Engine.Controls.ViewModels;assembly=DTCDev.Client.Cars.Service.Engine" 
              xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:convertors="clr-namespace:DTCDev.Client.Cars.Service.Convertors"
-             x:Class="DTCDev.Client.Cars.Service.Controls.CalendarControls.PostsDayWeekViewControl" 
+             x:Class="DTCDev.Client.Cars.Service.Controls.CalendarControls.TestDriveDayWeekViewControl" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="1000">
     <UserControl.Resources>
@@ -154,7 +154,7 @@
 
     </UserControl.Resources>
     <UserControl.DataContext>
-        <ViewModels:PostsDayWeekViewModel/>
+        <ViewModels:TestDriveDayWeekViewModel/>
     </UserControl.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -172,7 +172,7 @@
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Состояния постов" VerticalAlignment="Top" Margin="0,0,0,15"/>
+            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Запись на тест-драйв" VerticalAlignment="Top" Margin="0,0,0,15"/>
             <Grid VerticalAlignment="Bottom" Grid.Row="1" HorizontalAlignment="Center">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -190,9 +190,9 @@
 
         </Grid>
 
-        <DataGrid x:Name="PostList" AutoGenerateColumns="False" ItemsSource="{Binding ListPostOrder}" Grid.Row="1" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" SelectionUnit="Cell" SelectionMode="Single" Margin="20,0" CanUserDeleteRows="False" CanUserResizeRows="False" GridLinesVisibility="All" >
+        <DataGrid x:Name="PostList" AutoGenerateColumns="False" ItemsSource="{Binding ListCarTest}" Grid.Row="1" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" SelectionUnit="Cell" SelectionMode="Single" Margin="20,0" CanUserDeleteRows="False" CanUserResizeRows="False" GridLinesVisibility="All" >
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Название поста" Binding="{Binding Post.Name}" ClipboardContentBinding="{x:Null}"/>
+                <DataGridTextColumn Header="Автомобили" Binding="{Binding Post.Name}" ClipboardContentBinding="{x:Null}"/>
                 <DataGridTemplateColumn ClipboardContentBinding="{x:Null}" Header="8:00" CellStyle="{DynamicResource StyleCell}" />
                 <DataGridTemplateColumn ClipboardContentBinding="{x:Null}" Header="8:30" CellStyle="{DynamicResource StyleCell}" />
             </DataGrid.Columns>
@@ -203,7 +203,7 @@
                 <RowDefinition />
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <TextBlock x:Name="tbPost" Text="" Margin="0,5,0,20"/>
+            <TextBlock x:Name="tbCar" Text="" Margin="0,5,0,20"/>
 
             <Grid x:Name="ccDetail" Grid.Row="1" />
 

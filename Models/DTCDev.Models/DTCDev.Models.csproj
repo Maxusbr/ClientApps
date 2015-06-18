@@ -59,6 +59,7 @@
     <Compile Include="Sender\SenderModel.cs" />
     <Compile Include="Sender\SendingMessageType.cs" />
     <Compile Include="User\PersonalDataModel.cs" />
+    <Compile Include="User\TestDriveUserModel.cs" />
     <Compile Include="User\UserDataModel.cs" />
     <Compile Include="User\UserLightModel.cs" />
   </ItemGroup>

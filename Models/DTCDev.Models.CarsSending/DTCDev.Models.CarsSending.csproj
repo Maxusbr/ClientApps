@@ -56,6 +56,7 @@
     <Compile Include="Car\SCarModel.cs" />
     <Compile Include="Car\SendFuelSettingsDataModel.cs" />
     <Compile Include="Car\SetCarPidsModel.cs" />
+    <Compile Include="Car\TestDriveModel.cs" />
     <Compile Include="DriverModel.cs" />
     <Compile Include="Navigation\SNaviData.cs" />
     <Compile Include="Order\CarOrderModel.cs" />

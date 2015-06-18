@@ -369,5 +369,12 @@ namespace CarServiceViewer
             grdContent.Children.Clear();
             grdContent.Children.Add(view);
         }
+
+        private void menuItem_TestDrive(object sender, RoutedEventArgs e)
+        {
+            var view = new TestDriveDayWeekViewControl();
+            grdContent.Children.Clear();
+            grdContent.Children.Add(view);
+        }
     }
 }

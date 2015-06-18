@@ -7,7 +7,7 @@
              xmlns:viewModels="clr-namespace:DTCDev.Client.Cars.Service.Engine.Controls.ViewModels;assembly=DTCDev.Client.Cars.Service.Engine" 
              x:Class="DTCDev.Client.Cars.Service.Slides.SlideAddCarTestDrive" 
              mc:Ignorable="d"
-             d:DesignHeight="600" d:DesignWidth="1000">
+             d:DesignHeight="1200" d:DesignWidth="1000">
     <UserControl.Resources>
         <converters:PlugConvertor x:Key="pConvertor"/>
         <converters:OnLineConverter x:Key="onlineConverter"/>
@@ -53,9 +53,9 @@
         	<Grid.RowDefinitions>
         		<RowDefinition Height="20"/>
         		<RowDefinition Height="40"/>
-        		<RowDefinition/>
+        		<RowDefinition Height="Auto"/>
         		<RowDefinition Height="40"/>
-        		<RowDefinition Height="80"/>
+        		<RowDefinition/>
         	</Grid.RowDefinitions>
         	<Grid Grid.Row="2">
         		<Grid.RowDefinitions>

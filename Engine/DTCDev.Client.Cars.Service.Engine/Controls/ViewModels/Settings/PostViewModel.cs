@@ -28,7 +28,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
         {
             ID = model.ID;
             Name = model.Name;
-            PostType = PersonalHandler.Instance.Model.PostTypes.Where(p => p.ID == model.idPostType).First();
+            PostType = PersonalHandler.Instance.Model.PostTypes.First(p => p.ID == model.idPostType);
             StartWorkTime = model.TimeFrom;
             EndWorkTime = model.TimeTo;
         }

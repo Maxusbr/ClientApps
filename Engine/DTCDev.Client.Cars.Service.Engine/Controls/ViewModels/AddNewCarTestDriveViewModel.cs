@@ -20,7 +20,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
         private string _carNumber;
         private int _distance;
         private KVPBase _transmissionType;
-        private readonly CarsHandler _carHandler = CarsHandler.Instance;
+        private readonly TestDriveCarStorage _carHandler = TestDriveCarStorage.Instance;
         private readonly SpecificationDataStorage _storage = SpecificationDataStorage.Instance;
         private RelayCommand _saveCommand;
         private RelayCommand _addCommand;
@@ -38,7 +38,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             _storage.LoadEngineTypesComplete += _storage_LoadEngineTypesComplete;
             _storage.LoadEnginsComplete+=_storage_LoadEnginsComplete;
             _storage.LoadTransmissionsComplete+=_storage_LoadTransmissionsComplete;
-            CarStorage.Instance.LoadComplete += Instance_LoadComplete;
+            _carHandler.LoadComplete += Instance_LoadComplete;
             UpdateCar();
         }
 
@@ -98,7 +98,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
         {
             VIN = car.CarModel.DID;
             CarNumber = car.CarModel.CarNumber;
-            _carHandler.GetCarDetails(CarNumber, true);
+            _carHandler.GetCarDetails(CarNumber);
         }
 
         public void OnPropertyChange(string property)
@@ -274,6 +274,20 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             }
         }
 
+        void UpdateCar()
+        {
+            Cars.Clear();
+            foreach (var item in _carHandler.Cars)
+            {
+                Cars.Add(item);
+            }
+        }
+
+        private void IsValidateCarNumber()
+        {
+            var rg = new Regex(@"[A-ZА-Я]\d{3}[A-ZА-Я]{2}\d{2,3}");
+            ValidateCarNumber = string.IsNullOrEmpty(CarNumber) || !rg.IsMatch(CarNumber);
+        }
 
 
 
@@ -286,13 +300,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
 
         private void Save(object obj)
         {
-            _carHandler.AddCar(GetCarServiceModel());
-            //TODO Получить список работ
-        }
-
-        void Instance_GetServiceWorksComplete(object sender, EventArgs e)
-        {
-            //TODO заполнить ServiceWorks
+            //TODO Сохранить изменения
         }
 
         public RelayCommand AddCommand
@@ -311,8 +319,9 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
         {
             CarNumber = VIN = string.Empty;
             TransmissionType = EngineVolume = EngineType = Body = Mark = Model = null;
+            Distance = 0;
+            DateProduce = DateTime.Now;
         }
-
 
         private CarServiceDataModel GetCarServiceModel()
         {
@@ -338,19 +347,5 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             return model;
         }
 
-        void UpdateCar()
-        {
-            Cars.Clear();
-            foreach (var item in CarStorage.Instance.Cars)
-            {
-                Cars.Add(item);
-            }
-        }
-
-        private void IsValidateCarNumber()
-        {
-            var rg = new Regex(@"[A-ZА-Я]\d{3}[A-ZА-Я]{2}\d{2,3}");
-            ValidateCarNumber = string.IsNullOrEmpty(CarNumber) || !rg.IsMatch(CarNumber);
-        }
     }
 }
