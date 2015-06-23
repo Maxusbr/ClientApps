@@ -87,6 +87,8 @@
     <Compile Include="Controls\ViewModels\CarTestDrivesViewModel.cs" />
     <Compile Include="Controls\ViewModels\PostOrdersViewModel.cs" />
     <Compile Include="Controls\ViewModels\Settings\TestDriveCarViewModel.cs" />
+    <Compile Include="Controls\ViewModels\Sklad\ItemSkladViewModel.cs" />
+    <Compile Include="Controls\ViewModels\Sklad\SkladStateViewModel.cs" />
     <Compile Include="Controls\ViewModels\TestDriveDayWeekViewModel.cs" />
     <Compile Include="Controls\ViewModels\PostsDayWeekViewModel.cs" />
     <Compile Include="Controls\ViewModels\Reports\OrderReportViewModel.cs" />
@@ -121,6 +123,7 @@
     <Compile Include="Handlers\PostsHandler.cs" />
     <Compile Include="Handlers\ReportsHandler.cs" />
     <Compile Include="Handlers\SettingsLoader.cs" />
+    <Compile Include="Handlers\SkladHandler.cs" />
     <Compile Include="Handlers\SpecificationDataStorage.cs" />
     <Compile Include="Network\ClientCl.cs" />
     <Compile Include="Network\LoginHandler.cs" />

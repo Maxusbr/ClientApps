@@ -179,7 +179,19 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             set
             {
                 _visableUserList = value;
+                VisableAddUser = !value;
                 OnPropertyChanged("VisableUserList");
+            }
+        }
+
+        private bool _visableAddUser = true;
+        public bool VisableAddUser
+        {
+            get { return _visableAddUser; }
+            set
+            {
+                _visableAddUser = value;
+                OnPropertyChanged("VisableAddUser");
             }
         }
 
@@ -214,6 +226,17 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             }
         }
 
+        private RelayCommand _cancelCommand;
+        public RelayCommand CancelCommand
+        {
+            get { return _cancelCommand ?? (_cancelCommand = new RelayCommand(Cancel)); }
+        }
+
+        private void Cancel(object obj)
+        {
+            IsSaved = false;
+            if (IsCompleteSaved != null) IsCompleteSaved(this, EventArgs.Empty);
+        }
 
         private RelayCommand _completeSaveCommand;
         public RelayCommand SaveCommand
@@ -245,14 +268,18 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
         {
             SelectedUser = null;
             VisableUserList = !UserName.Equals(_foundString = obj.ToString());
-            if (!VisableUserList) return;
-            ListUsers.Refresh();
+            if (VisableUserList) 
+                ListUsers.Refresh();
+            else
+                OnPropertyChanged("UserName");
+            VisableUserList = VisableUserList && _listUsers.View.Cast<object>().Any();
         }
 
         public event EventHandler IsCompleteSaved;
 
         protected virtual void CompleteSave(object sender)
         {
+            IsSaved = true;
             if (IsCompleteSaved != null) IsCompleteSaved(this, EventArgs.Empty);
         }
 
@@ -261,5 +288,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             var order = obj as OrderViewModel;
             return order != null && order.PostID == PostID && order.ID == ID;
         }
+
+        public bool IsSaved { get; set; }
     }
 }

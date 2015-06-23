@@ -1,0 +1,383 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:converters="clr-namespace:DTCDev.Client.Cars.Service.Convertors"
+             xmlns:sklad="clr-namespace:DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Sklad;assembly=DTCDev.Client.Cars.Service.Engine" 
+             xmlns:MetroChart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart" 
+             xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             x:Class="DTCDev.Client.Cars.Service.Slides.SlideSkladState" 
+             mc:Ignorable="d"
+             d:DesignHeight="1200"  >
+    <UserControl.Resources>
+        <MetroChart:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:PlugConvertor x:Key="pConvertor"/>
+        <converters:OnLineConverter x:Key="onlineConverter"/>
+        <Style x:Key="CenterAligneDataGridCellStyle" TargetType="{x:Type DataGridCell}">
+            <Setter Property="Custom:DataGridCellHelper.SaveDataGrid" Value="True"/>
+            <Setter Property="Foreground" Value="{DynamicResource BlackBrush}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                            <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Foreground" Value="{DynamicResource AccentSelectedColorBrush}"/>
+                </Trigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource Self}}" Value="True"/>
+                        <Condition Binding="{Binding (Custom:DataGridCellHelper.DataGrid).SelectionUnit, RelativeSource={RelativeSource Self}}" Value="Cell"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Background" Value="{DynamicResource AccentColorBrush}"/>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource Self}}" Value="True"/>
+                        <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type DataGridRow}}}" Value="False"/>
+                        <Condition Binding="{Binding (Custom:DataGridCellHelper.DataGrid).SelectionUnit, RelativeSource={RelativeSource Self}}" Value="CellOrRowHeader"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Background" Value="{DynamicResource AccentColorBrush}"/>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True"/>
+                        <Condition Binding="{Binding (Custom:DataGridCellHelper.DataGrid).SelectionUnit, RelativeSource={RelativeSource Self}}" Value="Cell"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Background" Value="{DynamicResource AccentColorBrush3}"/>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True"/>
+                        <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type DataGridRow}}}" Value="False"/>
+                        <Condition Binding="{Binding (Custom:DataGridCellHelper.DataGrid).SelectionUnit, RelativeSource={RelativeSource Self}}" Value="CellOrRowHeader"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Background" Value="{DynamicResource AccentColorBrush3}"/>
+                </MultiDataTrigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="{DynamicResource GrayBrush7}"/>
+                </Trigger>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsEnabled" Value="False"/>
+                        <Condition Property="IsSelected" Value="True"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Foreground" Value="{DynamicResource AccentSelectedColorBrush}"/>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="LeftAligneDataGridCellStyle" TargetType="{x:Type DataGridCell}">
+            <Setter Property="Custom:DataGridCellHelper.SaveDataGrid" Value="True"/>
+            <Setter Property="Foreground" Value="{DynamicResource BlackBrush}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                            <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Foreground" Value="{DynamicResource AccentSelectedColorBrush}"/>
+                </Trigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource Self}}" Value="True"/>
+                        <Condition Binding="{Binding (Custom:DataGridCellHelper.DataGrid).SelectionUnit, RelativeSource={RelativeSource Self}}" Value="Cell"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Background" Value="{DynamicResource AccentColorBrush}"/>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource Self}}" Value="True"/>
+                        <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type DataGridRow}}}" Value="False"/>
+                        <Condition Binding="{Binding (Custom:DataGridCellHelper.DataGrid).SelectionUnit, RelativeSource={RelativeSource Self}}" Value="CellOrRowHeader"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Background" Value="{DynamicResource AccentColorBrush}"/>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True"/>
+                        <Condition Binding="{Binding (Custom:DataGridCellHelper.DataGrid).SelectionUnit, RelativeSource={RelativeSource Self}}" Value="Cell"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Background" Value="{DynamicResource AccentColorBrush3}"/>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True"/>
+                        <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type DataGridRow}}}" Value="False"/>
+                        <Condition Binding="{Binding (Custom:DataGridCellHelper.DataGrid).SelectionUnit, RelativeSource={RelativeSource Self}}" Value="CellOrRowHeader"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Background" Value="{DynamicResource AccentColorBrush3}"/>
+                </MultiDataTrigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="{DynamicResource GrayBrush7}"/>
+                </Trigger>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsEnabled" Value="False"/>
+                        <Condition Property="IsSelected" Value="True"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Foreground" Value="{DynamicResource AccentSelectedColorBrush}"/>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <sklad:SkladStateViewModel/>
+    </UserControl.DataContext>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Grid Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="80"/>
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal" Grid.Row="4" VerticalAlignment="Top" HorizontalAlignment="Center">
+                <Button Content="Добавить товар" HorizontalAlignment="Center" VerticalAlignment="Top" 
+        			Command="{Binding AddPositionCommand, Mode=OneWay}" Margin="20,0"/>
+                <Button Content="Добавить на склад" HorizontalAlignment="Center" VerticalAlignment="Top" 
+                	Command="{Binding AddCommand, Mode=OneWay}" Margin="20,0"/>
+            </StackPanel>
+            <TextBlock Text="Склад" FontWeight="Bold"/>
+            <DataGrid ItemsSource="{Binding SkladeState}" SelectedItem="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+				AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" Grid.Row="2" SelectionMode="Single">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Type}" Header="Тип" IsReadOnly="True" CellStyle="{DynamicResource LeftAligneDataGridCellStyle}" />
+                    <DataGridTextColumn Binding="{Binding ArtNo}" Header="Артикул" IsReadOnly="True" CellStyle="{DynamicResource CenterAligneDataGridCellStyle}"/>
+                    <DataGridTextColumn Binding="{Binding Name}" Header="Название" IsReadOnly="True" CellStyle="{DynamicResource LeftAligneDataGridCellStyle}" />
+                    <DataGridTextColumn Binding="{Binding BaseValue}" Header="Кол-во в единице" IsReadOnly="True" CellStyle="{DynamicResource CenterAligneDataGridCellStyle}"/>
+                    <DataGridTextColumn Binding="{Binding Unit}" Header="Ед. изм" IsReadOnly="True" CellStyle="{DynamicResource CenterAligneDataGridCellStyle}"/>
+                    <DataGridTextColumn Binding="{Binding Quantity}" Header="На складе" IsReadOnly="True" CellStyle="{DynamicResource CenterAligneDataGridCellStyle}"/>
+                    <DataGridTextColumn Binding="{Binding Purchase}" Header="Закупочная цена" IsReadOnly="True" Width="SizeToHeader" CellStyle="{DynamicResource CenterAligneDataGridCellStyle}"/>
+                    <DataGridTextColumn Binding="{Binding Price}" Header="Розничная цена" IsReadOnly="True" Width="SizeToHeader" CellStyle="{DynamicResource CenterAligneDataGridCellStyle}"/>
+                    <!--<DataGridTemplateColumn ClipboardContentBinding="{x:Null}" Width="30">
+                        <DataGridTemplateColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <EventSetter Event="MouseLeftButtonDown" Handler="EventSetter_OnHandler" />
+                            </Style>
+                        </DataGridTemplateColumn.CellStyle>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border Background="#00000000">
+                                    <Image Source="/DTCDev.Client.Cars.Service;component/Assets/Images/AED/trash.png" Width="20"/>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>-->
+
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <TabControl Grid.Column="2" Visibility="{Binding VisableDetail, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}" 
+                    Margin="0,80,0,0" SelectedIndex="{Binding SelectedIndexTab, Mode=TwoWay}">
+            <TabItem Header="Редактировать">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="2" DataContext="{Binding SelectedItem}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="15"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock TextWrapping="Wrap" Text="Тип:" VerticalAlignment="Center" FontWeight="Bold" Margin="0,8,0,9"/>
+                        <TextBox TextWrapping="Wrap" Text="{Binding Type, Mode=TwoWay}" VerticalAlignment="Center" Grid.Row="0"
+        					Grid.Column="2" Margin="0,5"/>
+                        <ComboBox Margin="0,5" Grid.Row="0" Grid.Column="2" IsEditable="True" ItemsSource="{Binding Types}" SelectedValue="{Binding Type, Mode=TwoWay}"/>
+                        <TextBlock TextWrapping="Wrap" Text="Артикул:" VerticalAlignment="Center" FontWeight="Bold" Margin="0,8,0,9" Grid.Row="1"
+        					Grid.Column="0" />
+                        <TextBox TextWrapping="Wrap" Text="{Binding ArtNo, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="2" Margin="0,5" Grid.Row="1"/>
+                        <TextBlock TextWrapping="Wrap" Text="Производитель:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="2"
+        					Grid.Column="0" Margin="0,10,0,9"/>
+                        <ComboBox VerticalAlignment="Center" Grid.Column="2" Grid.Row="2" ItemsSource="{Binding Vendors}" 
+        					SelectedItem="{Binding Vendor, Mode=TwoWay}" Margin="0,5,0,4" IsEditable="True"/>
+                        <TextBlock TextWrapping="Wrap" Text="Название:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="3"
+        					Grid.Column="0" Margin="0,10,0,9"/>
+                        <TextBox x:Name="tbName" VerticalAlignment="Center" Grid.Column="2" Grid.Row="3" Text="{Binding Name, Mode=TwoWay}" Margin="0,4,0,5">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="TextChanged">
+                                    <i:InvokeCommandAction Command="{Binding TextChangedCommand}" CommandParameter="{Binding Text, ElementName=tbName}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBox>
+                        <TextBlock TextWrapping="Wrap" Text="Описание:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="4"
+        					Grid.Column="0" Margin="0,10,0,9"/>
+                        <TextBox VerticalAlignment="Center" Grid.Column="2" Margin="0,5,0,4" Grid.Row="4" Text="{Binding Info, Mode=TwoWay}"/>
+                        <TextBlock TextWrapping="Wrap" Text="Фото:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="5"
+        					Grid.Column="0" Margin="0,10,0,9"/>
+
+                        <TextBlock TextWrapping="Wrap" Text="Единица измерения:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="7"
+        					Grid.Column="0" Margin="0,10,0,9"/>
+                        <ComboBox VerticalAlignment="Center" Grid.Column="2" Grid.Row="7" ItemsSource="{Binding Units}" 
+        					SelectedValue="{Binding Unit, Mode=TwoWay}" Margin="0,5,0,4"/>
+                        <TextBlock TextWrapping="Wrap" Text="Содержание в сущности единиц:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="6"
+        					Grid.Column="0"/>
+                        <TextBox VerticalAlignment="Center" Grid.Column="2" Margin="0,4,0,5" Grid.Row="6" Text="{Binding BaseValue, Mode=TwoWay}" TextAlignment="Right"/>
+
+                        <TextBlock TextWrapping="Wrap" Text="Применимость:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="8"
+        					Grid.Column="0" Margin="0,10,0,9"/>
+                        <ComboBox ItemsSource="{Binding ListUses}" SelectedValue="{Binding Uses}" VerticalAlignment="Center" Grid.Column="2" Margin="0,5,0,4" Grid.Row="8"/>
+
+                        <TextBlock TextWrapping="Wrap" Text="Подразделение:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="9"
+        					Grid.Column="0"/>
+                        <ComboBox VerticalAlignment="Center" Grid.Column="2" Grid.Row="9" ItemsSource="{Binding Divisions}" 
+        					SelectedValue="{Binding Division, Mode=TwoWay}" Margin="0,5,0,4"/>
+
+                        <TextBlock TextWrapping="Wrap" Text="Количество на складе (шт):" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="10"
+        					Grid.Column="0"/>
+                        <TextBox VerticalAlignment="Center" Grid.Column="2" Margin="0,4,0,5" Grid.Row="10" Text="{Binding Quantity, Mode=TwoWay}" TextAlignment="Right"/>
+
+                        <TextBlock TextWrapping="Wrap" Text="Закупочная стоимость:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="11"
+        					Grid.Column="0"/>
+                        <TextBox VerticalAlignment="Center" Grid.Column="2" Margin="0,4,0,5" Grid.Row="11" Text="{Binding Purchase, Mode=TwoWay}" TextAlignment="Right"/>
+                        <TextBlock TextWrapping="Wrap" Text="Розничная стоимость:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="12"
+        					Grid.Column="0"/>
+                        <TextBox VerticalAlignment="Center" Grid.Column="2" Margin="0,4,0,5" Grid.Row="12" Text="{Binding Price, Mode=TwoWay}" TextAlignment="Right"/>
+                    </Grid>
+                    <TextBlock Text="Укажите параметры товара" FontWeight="Bold"/>
+                    
+                    <StackPanel Orientation="Horizontal" Grid.Row="4" HorizontalAlignment="Center">
+                        <Button Content="Сохранить" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding SaveCommand, Mode=OneWay}" IsEnabled="{Binding EnableButtonSave, Mode=OneWay}" Width="96" Grid.Row="4"/>
+                        <Button Content="Отменить" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding CancelCommand, Mode=OneWay}" Width="96" TabIndex="0" Margin="10,0"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Добавить на склад">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="15"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock TextWrapping="Wrap" Text="Товар:" VerticalAlignment="Center" FontWeight="Bold" Margin="0,8,0,9"/>
+                        <ComboBox Margin="0,5" Grid.Row="0" Grid.Column="2" IsEditable="True" ItemsSource="{Binding SkladeState}" SelectedValue="{Binding SelectedItem, Mode=TwoWay}"/>
+                        <TextBlock TextWrapping="Wrap" Text="Артикул:" VerticalAlignment="Center" FontWeight="Bold" Margin="0,8,0,9" Grid.Row="1"
+        					Grid.Column="0" />
+                        <TextBlock TextWrapping="Wrap" Text="Производитель:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="2"
+        					Grid.Column="0" Margin="0,10,0,9"/>
+                        <TextBlock TextWrapping="Wrap" Text="{Binding SelectedItem.ArtNo}" VerticalAlignment="Center" FontWeight="Bold" Margin="0,8,0,9" Grid.Row="1"
+        					Grid.Column="2" />
+                        <TextBlock TextWrapping="Wrap" Text="{Binding SelectedItem.Vendor}" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="2"
+        					Grid.Column="2" Margin="0,10,0,9"/>
+                        <TextBlock TextWrapping="Wrap" Text="Размерность:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="3"
+        					Grid.Column="0"/>
+                        <TextBlock TextWrapping="Wrap" Text="{Binding SelectedItem.Dimension}" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="3"
+        					Grid.Column="2" Margin="0,10,0,9"/>
+
+                        <TextBlock TextWrapping="Wrap" Text="Подразделение:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="4"
+        					Grid.Column="0"/>
+                        <ComboBox VerticalAlignment="Center" Grid.Column="2" Grid.Row="4" ItemsSource="{Binding SelectedItem.Divisions}" 
+        					SelectedValue="{Binding SelectedItem.Division, Mode=TwoWay}" Margin="0,5,0,4"/>
+
+                        <TextBlock TextWrapping="Wrap" Text="Количество (шт):" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="5"
+        					Grid.Column="0"/>
+                        <TextBox VerticalAlignment="Center" Grid.Column="2" Margin="0,4,0,5" Grid.Row="5" Text="{Binding SelectedItem.CurentCount, Mode=TwoWay}" TextAlignment="Right"/>
+
+                        <TextBlock TextWrapping="Wrap" Text="Стоимость единицы:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="6"
+        					Grid.Column="0"/>
+                        <TextBox VerticalAlignment="Center" Grid.Column="2" Margin="0,4,0,5" Grid.Row="6" Text="{Binding SelectedItem.CurentPurchase}" TextAlignment="Right"/>
+                        <TextBlock TextWrapping="Wrap" Text="Стоимость партии:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="7"
+        					Grid.Column="0"/>
+                        <TextBox VerticalAlignment="Center" Grid.Column="2" Margin="0,4,0,5" Grid.Row="7" Text="{Binding SelectedItem.CurentPurchaseTotal, Mode=TwoWay}" TextAlignment="Right"/>
+                        <TextBlock TextWrapping="Wrap" Text="Розничная стоимость:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="8"
+        					Grid.Column="0"/>
+                        <TextBox VerticalAlignment="Center" Grid.Column="2" Margin="0,4,0,5" Grid.Row="8" Text="{Binding SelectedItem.Price}" TextAlignment="Right"/>
+                    </Grid>
+                    <TextBlock Text="Укажите данные о пуступлении на склад" FontWeight="Bold"/>
+                    <StackPanel Orientation="Horizontal" Grid.Row="4" HorizontalAlignment="Center">
+                        <Button Content="Сохранить" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding SaveAddPositionCommand, Mode=OneWay}" IsEnabled="{Binding SelectedItem.EnableButtonSave, Mode=OneWay}" Width="96" TabIndex="0" Margin="10,0"/>
+                        <Button Content="Отменить" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding CancelCommand, Mode=OneWay}" IsEnabled="{Binding SelectedItem.EnableButtonSave, Mode=OneWay}" Width="96" TabIndex="0" Margin="10,0"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

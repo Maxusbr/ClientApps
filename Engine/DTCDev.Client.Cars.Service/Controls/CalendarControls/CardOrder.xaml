@@ -25,12 +25,11 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="110"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Дата:" VerticalAlignment="Top" Margin="0,5,0,20" Grid.Row="1"/>
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Клиент:" VerticalAlignment="Top" Grid.Row="2" Margin="0,5,0,20"/>
-        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Автомобиль:" VerticalAlignment="Top" Grid.Row="3" Margin="0,5,0,20"/>
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Перечень работ:" VerticalAlignment="Top" Grid.Row="4" Margin="0,5,0,20"/>
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Комментарии:" VerticalAlignment="Top" Grid.Row="5" Margin="0,5,0,20"/>
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Время выполнения:" VerticalAlignment="Top" Grid.Row="6" Margin="0,5,0,20"/>
@@ -48,24 +47,40 @@
                      Visibility="{Binding VisableUserList, Converter={StaticResource BooleanToVisibilityConverter}}"
                      ItemsSource="{Binding ListUsers}" SelectedItem="{Binding SelectedUser, Mode=TwoWay}"/>
         </StackPanel>
-        <ComboBox VerticalAlignment="Top" Margin="10,0,0,0" Grid.Row="3" Grid.Column="1" ItemsSource="{Binding Cars}" DisplayMemberPath="CarModel" SelectedItem="{Binding Car}"/>
+        <Grid Visibility="{Binding VisableAddUser, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="3" Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="110"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Автомобиль:" VerticalAlignment="Top" Margin="0,5,0,20"/>
+            <ComboBox VerticalAlignment="Top" Grid.Column="1" ItemsSource="{Binding Cars}" DisplayMemberPath="CarModel" SelectedItem="{Binding Car}" Margin="10,0,0,0"/>
+        </Grid>
         <Grid Grid.Column="1" Grid.Row="4" Margin="10,0,0,20">
-        	<Grid.ColumnDefinitions>
-        		<ColumnDefinition/>
-        		<ColumnDefinition Width="Auto"/>
-        	</Grid.ColumnDefinitions>
-        	<Grid.RowDefinitions>
-        		<RowDefinition Height="Auto"/>
-        		<RowDefinition/>
-        	</Grid.RowDefinitions>
-        	<Button Content="+" HorizontalAlignment="Left" VerticalAlignment="Top" MinWidth="25" Grid.Column="1" Margin="10,0,0,0" FontSize="18.667" Padding="5,-5,5,0" 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Button Content="+" HorizontalAlignment="Left" VerticalAlignment="Top" MinWidth="25" Grid.Column="1" Margin="10,0,0,0" FontSize="18.667" Padding="5,-5,5,0" 
                     Height="{Binding ActualHeight, ElementName=comboBox}" Command="{Binding AddWorkCommand}" IsEnabled="{Binding EnableAddWorkButton, Mode=OneWay}"/>
-        	<ComboBox x:Name="comboBox" VerticalAlignment="Top" ItemsSource="{Binding WorksList}" DisplayMemberPath="Name" 
+            <ComboBox x:Name="comboBox" VerticalAlignment="Top" ItemsSource="{Binding WorksList}" DisplayMemberPath="Name" 
                       SelectedItem="{Binding SelectedWork}" Margin="0,0,0,10" />
-        	<ListBox VerticalAlignment="Top" MaxHeight="150" MinHeight="100" DisplayMemberPath="Name" Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding SelectedWorks}" Padding="5,0"/>
+            <ListBox VerticalAlignment="Top" MaxHeight="150" MinHeight="100" DisplayMemberPath="Name" Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding SelectedWorks}" Padding="5,0"/>
         </Grid>
         <TextBox TextWrapping="Wrap" Text="{Binding Comment, Mode=TwoWay}" VerticalAlignment="Top" Grid.Column="1" Grid.Row="5" Margin="10,0,0,20" MinHeight="52" AcceptsTab="True" AcceptsReturn="True"/>
         <TextBox TextWrapping="Wrap" Text="{Binding NH}" VerticalAlignment="Top" Grid.Column="1" Grid.Row="6" Margin="10,0,0,0"/>
-        <Button x:Name="SaveButton" Content="Сохранить" VerticalAlignment="Top" Grid.Row="7" Command="{Binding SaveCommand}" IsEnabled="{Binding IsChanged}" Grid.ColumnSpan="2" Margin="20,20,20,0" />
+        <StackPanel Grid.ColumnSpan="2" Margin="20,20,20,0" Orientation="Horizontal" Grid.Row="7" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Button x:Name="SaveButton" Content="Сохранить" VerticalAlignment="Top" Command="{Binding SaveCommand}" IsEnabled="{Binding IsChanged}" Margin="0,0,20,0" />
+            <Button x:Name="CancelButton" Content="Отменить" VerticalAlignment="Top" Command="{Binding CancelCommand}" Margin="20,0" />
+        </StackPanel>
     </Grid>
 </UserControl>

@@ -64,6 +64,8 @@
     <Compile Include="Driver\DriverRuleDataModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Representations\AdressBaseDataModel.cs" />
+    <Compile Include="Shops\ItemSkladDataModel.cs" />
+    <Compile Include="Shops\ProductDataModel.cs" />
     <Compile Include="Shops\ShopBaseDataModel.cs" />
     <Compile Include="Users\UserBaseDataModel.cs" />
   </ItemGroup>

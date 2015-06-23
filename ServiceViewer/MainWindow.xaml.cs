@@ -376,5 +376,12 @@ namespace CarServiceViewer
             grdContent.Children.Clear();
             grdContent.Children.Add(view);
         }
+
+        private void menuItem_ClickSklad(object sender, RoutedEventArgs e)
+        {
+            var view = new SlideSkladState();
+            grdContent.Children.Clear();
+            grdContent.Children.Add(view);
+        }
     }
 }

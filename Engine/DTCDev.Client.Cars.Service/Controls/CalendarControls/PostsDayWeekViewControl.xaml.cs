@@ -102,7 +102,7 @@ namespace DTCDev.Client.Cars.Service.Controls.CalendarControls
 
         private void ClickHour(PostOrdersViewModel vm, DataGridCellInfo cell)
         {
-            if(cell.Column.DisplayIndex == 0) return;
+            if (cell.Column.DisplayIndex == 0) return;
             var dateWork = vm.Date +
                 TimeSpan.Parse(cell.Column.Header.ToString());
             var order = new OrderViewModel(vm.Orders.FirstOrDefault(el => el.DateWork >= dateWork && el.DateWork < dateWork + new TimeSpan(0, 30, 0)) ??
@@ -118,10 +118,13 @@ namespace DTCDev.Client.Cars.Service.Controls.CalendarControls
         private void OrderOnIsCompleteSaved(object sender, EventArgs eventArgs)
         {
             var order = sender as OrderViewModel;
-            if (order == null) return;
-            _vm.UpdateOrders(order);
+            if (order == null || _vm == null) return;
+            if (order.IsSaved)
+            {
+                _vm.UpdateOrders(order);
+                UpdateUIDay();
+            } 
             gDetail.Visibility = Visibility.Collapsed;
-            UpdateUIDay();
         }
 
         private void imgLeft_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -131,10 +134,10 @@ namespace DTCDev.Client.Cars.Service.Controls.CalendarControls
 
         private void imgRight_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            _vm.Date =_vm.WeekStyle ?  _vm.Date.AddDays(7) : _vm.Date.AddDays(1);
+            _vm.Date = _vm.WeekStyle ? _vm.Date.AddDays(7) : _vm.Date.AddDays(1);
         }
     }
 
 
-    
+
 }

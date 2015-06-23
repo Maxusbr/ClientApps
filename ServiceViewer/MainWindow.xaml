@@ -178,6 +178,11 @@
                             <Image Source="Imgs/7.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
+                    <MenuItem Header="Склад" Padding="7" Click="menuItem_ClickSklad">
+                        <MenuItem.Icon>
+                            <Image Source="Imgs/7.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </MenuItem>
                 <MenuItem Header="КЛИЕНТЫ" Padding="10,2">
                     <MenuItem Header="Список клиентов" Padding="7" Click="MenuItem_ClickClientList"/>
