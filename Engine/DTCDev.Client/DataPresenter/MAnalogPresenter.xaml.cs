@@ -27,6 +27,8 @@ namespace DTCDev.Client.DataPresenter
 
         private int _start = 0;
         private int _stop = 180;
+        private int _mn = 0;
+        private string _milest = "";
 
         public int Start
         {
@@ -48,6 +50,19 @@ namespace DTCDev.Client.DataPresenter
             }
         }
 
+        public string Milest
+        {
+            get { return _milest; }
+            set
+            {
+                _milest = value;
+                if (_mn < 1)
+                    txtData.Text = _milest;
+                else
+                    txtData.Text = _milest + ", x" + _mn.ToString();
+            }
+        }
+
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             //Storyboard sb = this.FindResource("stbRange") as Storyboard;
@@ -56,6 +71,11 @@ namespace DTCDev.Client.DataPresenter
 
         private void UpdateParams()
         {
+            if(Stop>999)
+            {
+                Stop = Stop / 1000;
+                _mn = 1000;
+            }
             int total = _stop - _start;
             int step = total / 6;
             txt1.Text = _start.ToString();

@@ -10,23 +10,68 @@
              xmlns:DataPresenter="clr-namespace:DTCDev.Client.DataPresenter;assembly=DTCDev.Client" 
              x:Class="DTCDev.Client.Cars.Controls.Controls.Car.CarDetailsView" 
              mc:Ignorable="d" 
-             Height="220" d:DesignWidth="600">
+             Height="230" d:DesignWidth="700" MinWidth="700">
     <Grid >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Grid x:Name="grdParams" Grid.Column="1">
+        <Grid x:Name="grdParams" Grid.Column="1" Background="#FF272528">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="211*"/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="220"/>
                 <ColumnDefinition Width="106*"/>
                 <ColumnDefinition Width="220"/>
             </Grid.ColumnDefinitions>
-
-            <DataPresenter:MAnalogPresenter x:Name="speedPresenter" Stop="180" Width="200" Height="200" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <DataPresenter:MAnalogPresenter x:Name="engineRPMPresenter" Width="200" Height="200" Margin="0,10,10,0" Stop="6000" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="2"/>
-            <DataPresenter:MAnalogSmallPresenter x:Name="sattelitePresenter" HorizontalAlignment="Left" Stop="30" Margin="119,115,0,0" VerticalAlignment="Top"/>
-
+            <Ellipse Visibility="Collapsed" Grid.RowSpan="2" Width="200"  StrokeThickness="2" RenderTransformOrigin="0.5,0.5" Stroke="#FFB9B9B9">
+                <Ellipse.Fill>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="White" Offset="1"/>
+                    </LinearGradientBrush>
+                </Ellipse.Fill>
+                <Ellipse.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-45"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse Visibility="Collapsed" Grid.RowSpan="2" Grid.Column="2" Width="200"  StrokeThickness="2" RenderTransformOrigin="0.5,0.5" Stroke="#FFB9B9B9">
+                <Ellipse.Fill>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="White" Offset="1"/>
+                    </LinearGradientBrush>
+                </Ellipse.Fill>
+                <Ellipse.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="45"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <DataPresenter:MAnalogPresenter x:Name="speedPresenter" Milest="km/h" Stop="180" Width="200" Height="200" Margin="15,5,5,5" Grid.Row="1" />
+            <DataPresenter:MAnalogPresenter x:Name="engineRPMPresenter" Milest="RPM" Width="200" Height="200" Stop="6000" Grid.Column="2" Margin="5,5,15,5" Grid.Row="1"/>
+            <DataPresenter:MAnalogSmallPresenter x:Name="sattelitePresenter" HorizontalAlignment="Left" Stop="30" Margin="123,112,0,0" VerticalAlignment="Top" Grid.Row="1"/>
+            <Border Grid.Column="1" Grid.Row="1" Margin="10" BorderThickness="2,0,2,0" BorderBrush="#FF5B5B5B">
+                <Border.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF171216" Offset="0"/>
+                        <GradientStop Color="#FF4F3542" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Border BorderThickness="0,2,0,2" BorderBrush="Black">
+                    
+                </Border>
+            </Border>
         </Grid>
         <!--<TabControl Margin="5">
             <TabItem Header="Текущие показатели">
