@@ -56,21 +56,12 @@
                     var nullable = (bool?)value;
                     flag = nullable.GetValueOrDefault();
                 }
-                if (parameter != null)
+                if (parameter == null) return flag ? Visibility.Visible : Visibility.Collapsed;
+                if (bool.Parse((string)parameter))
                 {
-                    if (bool.Parse((string)parameter))
-                    {
-                        flag = !flag;
-                    }
+                    flag = !flag;
                 }
-                if (flag)
-                {
-                    return Visibility.Visible;
-                }
-                else
-                {
-                    return Visibility.Collapsed;
-                }
+                return flag ? Visibility.Visible : Visibility.Collapsed;
             }
             catch (Exception ex)
             {

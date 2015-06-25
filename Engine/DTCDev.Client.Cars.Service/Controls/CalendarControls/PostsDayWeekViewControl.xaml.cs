@@ -106,13 +106,26 @@ namespace DTCDev.Client.Cars.Service.Controls.CalendarControls
             var dateWork = vm.Date +
                 TimeSpan.Parse(cell.Column.Header.ToString());
             var order = new OrderViewModel(vm.Orders.FirstOrDefault(el => el.DateWork >= dateWork && el.DateWork < dateWork + new TimeSpan(0, 30, 0)) ??
-                      new OrderViewModel { DateWork = dateWork, PostID = vm.Post.ID, IsChanged = false, ID = vm.Orders.Count });
+                      new OrderViewModel { DateWork = dateWork, PostID = vm.Post.ID, IsChanged = false, ID = vm.Orders.Count, CanDeleted = false });
             order.IsCompleteSaved += OrderOnIsCompleteSaved;
+            if(order.CanDeleted)order.Deleted +=order_Deleted;
             var detail = new CardOrder { DataContext = order };
             ccDetail.Children.Clear();
             ccDetail.Children.Add(detail);
             tbPost.Text = vm.Post.Name;
             gDetail.Visibility = Visibility.Visible;
+        }
+
+        private void order_Deleted(object sender, EventArgs e)
+        {
+            var order = sender as OrderViewModel;
+            if (order == null || _vm == null) return;
+            if (order.CanDeleted)
+            {
+                _vm.DeleteOrder(order);
+                UpdateUIDay();
+            }
+            gDetail.Visibility = Visibility.Collapsed;
         }
 
         private void OrderOnIsCompleteSaved(object sender, EventArgs eventArgs)

@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Data;
 using DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings;
@@ -22,12 +23,18 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
         private readonly SpecificationDataStorage _storage = SpecificationDataStorage.Instance;
         private readonly PostsHandler _handler = PostsHandler.Instance;
         private readonly CarStorage _carStorage = CarStorage.Instance;
+
         private DateTime _dateWork;
         private UserLightModel _user;
         private DISP_Car _car;
         private string _comment;
         private readonly ObservableCollection<WorksInfoDataModel> _selectedWorks = new ObservableCollection<WorksInfoDataModel>();
         private double _nh;
+        private UserLightModel _selectedUser;
+        private bool _isChanged;
+        private bool _visableUserList = false;
+        private bool _canDeleted = true;
+        private DateTime _dateProduce = DateTime.Now;
 
         public OrderViewModel(OrderViewModel model)
         {
@@ -35,12 +42,52 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             model.WorksList.ToList().ForEach(o => WorksList.Add(o));
             SelectedWorks.CollectionChanged += SelectedWorks_CollectionChanged;
             _storage.LoadWorkListComplete += _storage_LoadWorkListComplete;
+
+
+            _storage.LoadMarksComplete += _storage_LoadMarksComplete;
+            _storage.LoadModelsComplete += _storage_LoadModelsComplete;
+            _storage.LoadBodiesComplete += _storage_LoadBodiesComplete;
+            _storage.LoadEngineTypesComplete += _storage_LoadEngineTypesComplete;
+            _storage.LoadEnginsComplete += _storage_LoadEnginsComplete;
+            _storage.LoadTransmissionsComplete += _storage_LoadTransmissionsComplete;
+
+            _storage.Update();
             _storage.UpdateWorks();
+        }
+
+        void _storage_LoadBodiesComplete(object sender, EventArgs e)
+        {
+
+        }
+
+        void _storage_LoadMarksComplete(object sender, EventArgs e)
+        {
+
+        }
+
+        private void _storage_LoadTransmissionsComplete(object sender, EventArgs e)
+        {
+            ;
+        }
+
+        private void _storage_LoadEnginsComplete(object sender, EventArgs e)
+        {
+
+        }
+
+        void _storage_LoadEngineTypesComplete(object sender, EventArgs e)
+        {
+
+        }
+
+        private void _storage_LoadModelsComplete(object sender, EventArgs e)
+        {
+
         }
 
         void _storage_LoadWorkListComplete(object sender, EventArgs e)
         {
-            
+
         }
 
         void SelectedWorks_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -57,9 +104,13 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             _dateWork = model.DateWork;
             _isChanged = model.IsChanged;
             _nh = model.NH;
-            _user = model.User;
+            
+            _user = model.User ?? new UserLightModel();
+            VisableUserList = model.User == null;
+            _foundString = model.User != null ? _user.Nm : "";
 
             _selectedWorks.Clear();
+            CanDeleted = model.CanDeleted;
             model.SelectedWorks.ToList().ForEach(o => _selectedWorks.Add(o));
         }
 
@@ -68,15 +119,154 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
             {
                 ID = 1;
-                User = new UserLightModel { Nm = "User 1" };
+                User = new UserLightModel { Nm = "Иванов Петр Иванович" };
                 Car = new DISP_Car { CarModel = { CarNumber = "Demo2", Mark = "Audio", Model = "A5" } };
                 DateWork = DateTime.Now;
                 IsChanged = false;
+                _foundString = "User";
             }
         }
 
+        #region CarDetail
+
+        public ObservableCollection<KVPBase> Marks { get { return _storage.Marks; } }
+        public ObservableCollection<KVPBase> Models { get { return _storage.Models; } }
+        public ObservableCollection<KVPBase> EngineTypes { get { return _storage.EngineTypes; } }
+        public ObservableCollection<KVPBase> EngineVolumes { get { return _storage.EngineVolumes; } }
+        public ObservableCollection<KVPBase> TransmissionTypes { get { return _storage.TransTypes; } }
+        public ObservableCollection<KVPBase> Bodies { get { return _storage.BodyTypes; } }
+
+        private void IsValidateCarNumber()
+        {
+            var rg = new Regex(@"[A-ZА-Я]\d{3}[A-ZА-Я]{2}\d{2,3}");
+            ValidateCarNumber = string.IsNullOrEmpty(CarNumber) || !rg.IsMatch(CarNumber);
+        }
+
+        private string _carNumber;
+        public string CarNumber
+        {
+            get { return _carNumber; }
+            set
+            {
+                if (_carNumber == value) return;
+                _carNumber = value;
+                OnPropertyChanged("CarNumber");
+                IsValidateCarNumber();
+            }
+        }
+
+        private string _vin;
+        public string VIN
+        {
+            get { return _vin; }
+            set
+            {
+                _vin = value;
+                this.OnPropertyChanged("VIN");
+            }
+        }
+
+        private bool _validateCarNumber;
+        public bool ValidateCarNumber
+        {
+            get { return _validateCarNumber; }
+            set
+            {
+                if (_validateCarNumber == value) return;
+                _validateCarNumber = value;
+                OnPropertyChanged("ValidateCarNumber");
+            }
+        }
+
+        public KVPBase Mark
+        {
+            get { return _storage.SelectedMark; }
+            set
+            {
+                _storage.SelectedMark = value;
+                OnPropertyChanged("Mark");
+            }
+        }
+
+        public KVPBase Model
+        {
+            get { return _storage.SelectedModel; }
+            set
+            {
+                _storage.SelectedModel = value;
+                OnPropertyChanged("Model");
+            }
+        }
+
+        public KVPBase Body
+        {
+            get { return _storage.SelectedBody; }
+            set
+            {
+                _storage.SelectedBody = value;
+                OnPropertyChanged("Body");
+            }
+        }
+
+        public KVPBase EngineType
+        {
+            get { return _storage.SelectedEngineType; }
+            set
+            {
+                _storage.SelectedEngineType = value;
+                OnPropertyChanged("EngineType");
+            }
+        }
+
+        public KVPBase EngineVolume
+        {
+            get { return _storage.SelectedEngineVolume; }
+            set
+            {
+                _storage.SelectedEngineVolume = value;
+                OnPropertyChanged("EngineVolume");
+            }
+        }
+
+        private int intEngineVolume
+        {
+            get
+            {
+                var res = 0;
+                if (_storage.SelectedEngineVolume != null)
+                    int.TryParse(_storage.SelectedEngineVolume.Name, out res);
+                return res;
+            }
+        }
+
+        public KVPBase TransmissionType
+        {
+            get { return _storage.SelectedTransmission; }
+            set
+            {
+                if (_storage.SelectedTransmission == value) return;
+                _storage.SelectedTransmission = value;
+                OnPropertyChanged("TransmissionType");
+            }
+        }
+
+        public DateTime DateProduce
+        {
+            get { return _dateProduce; }
+            set
+            {
+                if (_dateProduce == value) return;
+                _dateProduce = value;
+                OnPropertyChanged("DateProduce");
+            }
+        }
+
+        #endregion
+
+
         public ObservableCollection<WorksInfoDataModel> WorksList { get { return _storage.WorkList; } }
 
+        private WorksInfoDataModel _selectedWork;
         public ObservableCollection<WorksInfoDataModel> SelectedWorks { get { return _selectedWorks; } }
 
         public List<DISP_Car> Cars { get { return _carStorage.Cars; } }
@@ -110,7 +300,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             }
         }
 
-        private UserLightModel _selectedUser;
         public UserLightModel SelectedUser
         {
             get { return _selectedUser; }
@@ -125,7 +314,27 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
 
         public string UserName
         {
-            get { return _user != null ? _user.Nm : ""; }
+            get { return _user != null && !string.IsNullOrEmpty(_user.Nm) ? _user.Nm : ""; }
+        }
+
+        public string Phone
+        {
+            get { return _user.Ph; }
+            set
+            {
+                _user.Ph = value;
+                OnPropertyChanged("Phone");
+            }
+        }
+
+        public string Email
+        {
+            get { return _user.Em; }
+            set
+            {
+                _user.Em = value;
+                OnPropertyChanged("Email");
+            }
         }
 
         public DISP_Car Car
@@ -161,7 +370,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             }
         }
 
-        private bool _isChanged;
         public bool IsChanged
         {
             get { return _isChanged; }
@@ -172,22 +380,22 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             }
         }
 
-        private bool _visableUserList = false;
         public bool VisableUserList
         {
             get { return _visableUserList; }
             set
             {
                 _visableUserList = value;
-                VisableAddUser = !value;
+                OnPropertyChanged("VisableAddUser");
                 OnPropertyChanged("VisableUserList");
             }
         }
 
-        private bool _visableAddUser = true;
+        private bool _visableAddUser = false;
         public bool VisableAddUser
         {
-            get { return _visableAddUser; }
+            get { return !string.IsNullOrEmpty(_foundString) && 
+                !_handler.Users.Any(o => o.Nm.ToLower().Contains(_foundString.ToLower())); }
             set
             {
                 _visableAddUser = value;
@@ -210,7 +418,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
                 _listUsers = new CollectionViewSource { Source = _handler.Users };
                 _listUsers.Filter += (o, e) =>
                 {
-                    e.Accepted = string.IsNullOrEmpty(_foundString) || ((UserLightModel)e.Item).Nm.Contains(_foundString);
+                    e.Accepted = string.IsNullOrEmpty(_foundString) ||
+                        ((UserLightModel)e.Item).Nm.ToLower().Contains(_foundString.ToLower());
                 };
                 return _listUsers.View;
             }
@@ -222,8 +431,47 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             set
             {
                 _selectedWork = value;
-                OnPropertyChanged("EnableAddWorkButton");                
+                OnPropertyChanged("EnableAddWorkButton");
             }
+        }
+
+        public bool IsSaved { get; set; }
+
+        public bool CanDeleted
+        {
+            get { return _canDeleted; }
+            set
+            {
+                _canDeleted = value;
+                OnPropertyChanged("CanDeleted");
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            var order = obj as OrderViewModel;
+            return order != null && order.PostID == PostID && order.ID == ID;
+        }
+
+
+
+        #region RelayCommands
+
+        private RelayCommand _textChangedCommand;
+        public RelayCommand TextChangedCommand
+        {
+            get { return _textChangedCommand ?? (_textChangedCommand = new RelayCommand(TextChanged)); }
+        }
+
+        private void TextChanged(object obj)
+        {
+            SelectedUser = null;
+            VisableUserList = !UserName.Equals(_foundString = obj.ToString()) || string.IsNullOrEmpty(_foundString);
+            if (VisableUserList)
+                ListUsers.Refresh();
+            else
+                OnPropertyChanged("UserName");
+            VisableUserList = VisableUserList && _listUsers.View.Cast<object>().Any();
         }
 
         private RelayCommand _cancelCommand;
@@ -244,15 +492,14 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             get { return _completeSaveCommand ?? (_completeSaveCommand = new RelayCommand(CompleteSave)); }
         }
 
-        private RelayCommand _textChangedCommand;
-        public RelayCommand TextChangedCommand
+        public event EventHandler IsCompleteSaved;
+        protected virtual void CompleteSave(object sender)
         {
-            get { return _textChangedCommand ?? (_textChangedCommand = new RelayCommand(TextChanged)); }
+            IsSaved = true;
+            if (IsCompleteSaved != null) IsCompleteSaved(this, EventArgs.Empty);
         }
 
         private RelayCommand _addWorkCommand;
-        private WorksInfoDataModel _selectedWork;
-
         public object AddWorkCommand
         {
             get { return _addWorkCommand ?? (_addWorkCommand = new RelayCommand(AddWork)); }
@@ -260,35 +507,28 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
 
         private void AddWork(object obj)
         {
-            if(_selectedWork == null) return;
+            if (_selectedWork == null) return;
             SelectedWorks.Add(_selectedWork);
         }
 
-        private void TextChanged(object obj)
+        private RelayCommand _deleteCommand;
+        public RelayCommand DeleteCommand
         {
-            SelectedUser = null;
-            VisableUserList = !UserName.Equals(_foundString = obj.ToString());
-            if (VisableUserList) 
-                ListUsers.Refresh();
-            else
-                OnPropertyChanged("UserName");
-            VisableUserList = VisableUserList && _listUsers.View.Cast<object>().Any();
+            get { return _deleteCommand ?? (_deleteCommand = new RelayCommand(DeleteOrder)); }
         }
 
-        public event EventHandler IsCompleteSaved;
-
-        protected virtual void CompleteSave(object sender)
+        private void DeleteOrder(object obj)
         {
-            IsSaved = true;
-            if (IsCompleteSaved != null) IsCompleteSaved(this, EventArgs.Empty);
+            if (CanDeleted)
+                OnDeleted(this);
         }
 
-        public override bool Equals(object obj)
+        public event EventHandler Deleted;
+        protected virtual void OnDeleted(object sender)
         {
-            var order = obj as OrderViewModel;
-            return order != null && order.PostID == PostID && order.ID == ID;
+            if (Deleted != null) Deleted(sender, EventArgs.Empty);
         }
 
-        public bool IsSaved { get; set; }
+        #endregion
     }
 }

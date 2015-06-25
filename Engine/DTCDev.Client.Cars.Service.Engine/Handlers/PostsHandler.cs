@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using DTCDev.Client.Cars.Service.Engine.Controls.ViewModels;
@@ -24,7 +25,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
         {
             _instance = this;
             ListPost.CollectionChanged += ListPost_CollectionChanged;
-            Orders.CollectionChanged += Orders_CollectionChanged;
+            //Orders.CollectionChanged += Orders_CollectionChanged;
             DesigneAddPostOrders();
         }
 
@@ -101,11 +102,25 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                 DateWork = Date + new TimeSpan(14, 30, 0),
                 IsChanged = false
             });
+
         }
 
-        internal void Save(OrderViewModel model)
+        internal void Save(OrderViewModel order)
         {
+            if (Orders.FirstOrDefault(o => o.Equals(order)) == null)
+            {
+                order.CanDeleted = true;
+                Orders.Add(order);
+            }
+            Orders_CollectionChanged(this, null);
+        }
 
+        internal void DeleteOrder(OrderViewModel order)
+        {
+            var ord = Orders.FirstOrDefault(o => o.Equals(order));
+            if(ord == null) return;
+            Orders.Remove(ord);
+            Orders_CollectionChanged(this, null);
         }
     }
 }

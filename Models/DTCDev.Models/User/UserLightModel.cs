@@ -12,5 +12,7 @@ namespace DTCDev.Models.User
         public string Nm { get; set; }
 
         public string Ph { get; set; }
+
+        public string Em { get; set; }
     }
 }

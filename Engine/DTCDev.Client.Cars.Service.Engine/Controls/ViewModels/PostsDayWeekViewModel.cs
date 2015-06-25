@@ -19,12 +19,19 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
             {
 
-            }
+            } 
+            _handler.OrdersCollectionChanged += _handler_OrdersCollectionChanged;
+            AddPostOrders();
+        }
+
+        void _handler_OrdersCollectionChanged(object sender, EventArgs e)
+        {
             AddPostOrders();
         }
 
         private void AddPostOrders()
         {
+            ListPostOrder.Clear();
             foreach (var post in _handler.ListPost)
             {
                 var el = ListPostOrder.FirstOrDefault(o => o.Post != null && o.Post.ID == post.ID);
@@ -132,6 +139,16 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             else
                 ord.UpdateOrder(model);
             _handler.Save(model);
+        }
+
+        public void DeleteOrder(OrderViewModel order)
+        {
+            var pos = ListPostOrder.FirstOrDefault(o => o.Post.ID == order.PostID);
+            if(pos == null) return;
+            var ord = pos.Orders.FirstOrDefault(o => o.Equals(order));
+            if (ord == null) return;
+            pos.Orders.Remove(ord);
+            _handler.DeleteOrder(order);
         }
     }
 }
