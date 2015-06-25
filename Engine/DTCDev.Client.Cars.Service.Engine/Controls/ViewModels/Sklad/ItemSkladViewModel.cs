@@ -20,19 +20,25 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Sklad
         public ItemSkladViewModel()
         {
             _model = new ItemSkladDataModel { ArtNo = "", BaseValue = 1, Division = new KVPBase(), Type = new KVPBase(), Unit = new KVPBase(), Vendor = new KVPBase() };
-            Uses = ListUses[0]; EnableButtonSave = false;
+            EnableButtonSave = false;
+            
         }
 
         public ItemSkladViewModel(ItemSkladDataModel model)
             : base()
         {
-            _model = model; CurentPurchase = model.Purchase;
+            _model = model; Update(model);
             EnableButtonSave = true;
         }
 
         public void Update(ItemSkladDataModel model)
         {
-            Price = model.Price;
+            _price = model.Price;
+            _vendorStr = model.Vendor.ToString();
+            _typeStr = model.Type.ToString();
+            _usesStr = model.Uses.ToString();
+            _divisionStr = model.Division.ToString();
+
             Purchase = model.Purchase;
             Quantity = model.Quantity;
             CurentPurchase = model.Purchase;
@@ -70,14 +76,27 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Sklad
         {
             get
             {
-                if (Vendors.FirstOrDefault(o => o.Name.Equals(_model.Vendor.Name)) == null)
-                    _model.Vendor = _handler.GetVendor(_model.Vendor.Name);
+                //if (Vendors.FirstOrDefault(o => o.Name.Equals(_model.Vendor.Name)) == null)
+                //    _model.Vendor = _handler.GetVendor(_model.Vendor.Name);
                 return _model.Vendor;
             }
             set
             {
-                _model.Vendor = _handler.GetVendor(value.Name);
+                if(_model.Vendor == value) return;
+                _model.Vendor = value;
+                if(value != null)
+                VendorStr = value.Name;
                 OnPropertyChanged("Vendor");
+            }
+        }
+
+        public string VendorStr
+        {
+            get { return _vendorStr; }
+            set
+            {
+                _vendorStr = value;
+                OnPropertyChanged("VendorStr");
             }
         }
 
@@ -87,14 +106,27 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Sklad
         {
             get
             {
-                if (Types.FirstOrDefault(o => o.Name.Equals(_model.Type.Name)) == null)
-                    _model.Type = _handler.GetTypes(_model.Type.Name);
+                //if (Types.FirstOrDefault(o => o.Name.Equals(_model.Type.Name)) == null)
+                //    _model.Type = _handler.GetTypes(_model.Type.Name);
                 return _model.Type;
             }
             set
             {
-                _model.Type = _handler.GetTypes(value.Name);
+                if(_model.Type == value) return;
+                _model.Type = value;
+                if (value != null)
+                    TypeStr = value.Name;
                 OnPropertyChanged("Type");
+            }
+        }
+
+        public string TypeStr
+        {
+            get { return _typeStr; }
+            set
+            {
+                _typeStr = value;
+                OnPropertyChanged("TypeStr");
             }
         }
 
@@ -123,13 +155,14 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Sklad
         {
             get
             {
-                if (Units.FirstOrDefault(o => o.Name.Equals(_model.Unit.Name)) == null)
-                    _model.Unit = _handler.GetUnit(_model.Unit.Name);
+                //if (Units.FirstOrDefault(o => o.Name.Equals(_model.Unit.Name)) == null)
+                //    _model.Unit = _handler.GetUnit(_model.Unit.Name);
                 return _model.Unit;
             }
             set
             {
-                _model.Unit = _handler.GetUnit(value.Name);
+                if (_model.Unit == value) return;
+                _model.Unit = value;
                 OnPropertyChanged("Unit");
             }
         }
@@ -150,14 +183,27 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Sklad
         {
             get
             {
-                if (ListUses.FirstOrDefault(o => o.Name.Equals(_model.Uses.Name)) == null)
-                    _model.Uses = _handler.GetUses(_model.Uses.Name);
+                //if (ListUses.FirstOrDefault(o => o.Name.Equals(_model.Uses.Name)) == null)
+                //    _model.Uses = _handler.GetUses(_model.Uses.Name);
                 return _model.Uses;
             }
             set
             {
-                _model.Uses = _handler.GetUses(value.Name);
+                if (_model.Uses == value) return;
+                _model.Uses = value;
+                if (value != null)
+                    UsesStr = value.Name;
                 OnPropertyChanged("Uses");
+            }
+        }
+
+        public string UsesStr
+        {
+            get { return _usesStr; }
+            set
+            {
+                _usesStr = value;
+                OnPropertyChanged("UsesStr");
             }
         }
 
@@ -167,14 +213,27 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Sklad
         {
             get
             {
-                if (Divisions.FirstOrDefault(o => o.Name.Equals(_model.Division.Name)) == null)
-                    _model.Division = _handler.GetDivision(_model.Division.Name);
+                //if (Divisions.FirstOrDefault(o => o.Name.Equals(_model.Division.Name)) == null)
+                //    _model.Division = _handler.GetDivision(_model.Division.Name);
                 return _model.Division;
             }
             set
             {
-                _model.Division = _handler.GetDivision(value.Name);
-                OnPropertyChanged("Uses");
+                if (_model.Division == value) return;
+                _model.Division = value;
+                if (value != null)
+                    DivisionStr = value.Name;
+                OnPropertyChanged("Division");
+            }
+        }
+
+        public string DivisionStr
+        {
+            get { return _divisionStr; }
+            set
+            {
+                _divisionStr = value;
+                OnPropertyChanged("DivisionStr");
             }
         }
 
@@ -190,14 +249,36 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Sklad
 
         public double Price
         {
-            get { return _model.Price; }
+            get { return _price; }
             set
             {
-                _model.Price = value;
+                if (_model.Price != value) UpdatePrice(_model.Price, value);
+                _price = value;
                 OnPropertyChanged("Price");
             }
         }
 
+        private void UpdatePrice(double oldValue, double newValue)
+        {
+            MsgUpdatePrice = string.Format("Старая цена - {0} руб., новая цена - {1} руб.", oldValue, newValue);
+        }
+
+        private string _msgUpdatePrice;
+        public string MsgUpdatePrice
+        {
+            get { return _msgUpdatePrice; }
+            set
+            {
+                _msgUpdatePrice = value;
+                OnPropertyChanged("MsgUpdatePrice");
+                OnPropertyChanged("VisableMsgUpdatePrice");
+            }
+        }
+
+        public bool VisableMsgUpdatePrice
+        {
+            get { return !string.IsNullOrEmpty(MsgUpdatePrice); }
+        }
         public int Quantity
         {
             get { return _model.Quantity; }
@@ -212,6 +293,12 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Sklad
         private double _curentPurchase;
         private double _curentPurchaseTotal;
         private bool _enableButtonSave;
+        private double _price;
+        private string _vendorStr;
+        private string _typeStr;
+        private string _divisionStr;
+        private string _usesStr;
+
 
         public int CurentCount
         {
@@ -292,6 +379,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Sklad
         {
             get
             {
+                
+                PrepareModel();
                 _model.Purchase = (_model.Purchase * _model.Quantity + CurentPurchase * CurentCount) / (_model.Quantity + CurentCount);
                 _model.Quantity += CurentCount;
                 return _model;
@@ -300,7 +389,21 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Sklad
 
         public ItemSkladDataModel Model
         {
-            get { return _model; }
+            get
+            {
+                PrepareModel();
+                return _model;
+            }
         }
+
+        private void PrepareModel()
+        {
+            _model.Price = Price;
+            if (Vendor == null || string.IsNullOrEmpty(Vendor.Name)) _model.Vendor = _handler.GetVendor(VendorStr);
+            if (Division == null || string.IsNullOrEmpty(Division.Name)) _model.Division = _handler.GetDivision(DivisionStr);
+            if (Type == null || string.IsNullOrEmpty(Type.Name)) _model.Type = _handler.GetTypes(TypeStr);
+            if (Uses == null || string.IsNullOrEmpty(Uses.Name)) _model.Uses = _handler.GetUses(UsesStr);
+        }
+
     }
 }

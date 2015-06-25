@@ -206,101 +206,105 @@
         <TabControl Grid.Column="2" Visibility="{Binding VisableDetail, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}" 
                     Margin="0,80,0,0" SelectedIndex="{Binding SelectedIndexTab, Mode=TwoWay}">
             <TabItem Header="Редактировать">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="20"/>
-                        <RowDefinition Height="40"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="40"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid Grid.Row="2" DataContext="{Binding SelectedItem}">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="150"/>
-                            <ColumnDefinition Width="15"/>
+                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock TextWrapping="Wrap" Text="Тип:" VerticalAlignment="Center" FontWeight="Bold" Margin="0,8,0,9"/>
-                        <TextBox TextWrapping="Wrap" Text="{Binding Type, Mode=TwoWay}" VerticalAlignment="Center" Grid.Row="0"
-        					Grid.Column="2" Margin="0,5"/>
-                        <ComboBox Margin="0,5" Grid.Row="0" Grid.Column="2" IsEditable="True" ItemsSource="{Binding Types}" SelectedValue="{Binding Type, Mode=TwoWay}"/>
-                        <TextBlock TextWrapping="Wrap" Text="Артикул:" VerticalAlignment="Center" FontWeight="Bold" Margin="0,8,0,9" Grid.Row="1"
-        					Grid.Column="0" />
-                        <TextBox TextWrapping="Wrap" Text="{Binding ArtNo, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="2" Margin="0,5" Grid.Row="1"/>
-                        <TextBlock TextWrapping="Wrap" Text="Производитель:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="2"
-        					Grid.Column="0" Margin="0,10,0,9"/>
-                        <ComboBox VerticalAlignment="Center" Grid.Column="2" Grid.Row="2" ItemsSource="{Binding Vendors}" 
-        					SelectedItem="{Binding Vendor, Mode=TwoWay}" Margin="0,5,0,4" IsEditable="True"/>
-                        <TextBlock TextWrapping="Wrap" Text="Название:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="3"
-        					Grid.Column="0" Margin="0,10,0,9"/>
-                        <TextBox x:Name="tbName" VerticalAlignment="Center" Grid.Column="2" Grid.Row="3" Text="{Binding Name, Mode=TwoWay}" Margin="0,4,0,5">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="TextChanged">
-                                    <i:InvokeCommandAction Command="{Binding TextChangedCommand}" CommandParameter="{Binding Text, ElementName=tbName}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </TextBox>
-                        <TextBlock TextWrapping="Wrap" Text="Описание:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="4"
-        					Grid.Column="0" Margin="0,10,0,9"/>
-                        <TextBox VerticalAlignment="Center" Grid.Column="2" Margin="0,5,0,4" Grid.Row="4" Text="{Binding Info, Mode=TwoWay}"/>
-                        <TextBlock TextWrapping="Wrap" Text="Фото:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="5"
-        					Grid.Column="0" Margin="0,10,0,9"/>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="2" DataContext="{Binding SelectedItem}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="15"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock TextWrapping="Wrap" Text="Тип:" VerticalAlignment="Center" FontWeight="Bold" Margin="0,8,0,9"/>
+                            <TextBox TextWrapping="Wrap" Text="{Binding Type, Mode=TwoWay}" VerticalAlignment="Center" Grid.Row="0"
+            					Grid.Column="2" Margin="0,5"/>
+                            <ComboBox Margin="0,5" Grid.Row="0" Grid.Column="2" IsEditable="True" ItemsSource="{Binding Types}" SelectedValue="{Binding Type, Mode=TwoWay}" Text="{Binding TypeStr, Mode=TwoWay}"/>
+                            <TextBlock TextWrapping="Wrap" Text="Артикул*:" VerticalAlignment="Center" FontWeight="Bold" Margin="0,8,0,9" Grid.Row="1"
+            					Grid.Column="0" />
+                            <TextBox TextWrapping="Wrap" Text="{Binding ArtNo, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="2" Margin="0,5" Grid.Row="1"/>
+                            <TextBlock TextWrapping="Wrap" Text="Производитель:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="2"
+            					Grid.Column="0" Margin="0,10,0,9"/>
+                            <ComboBox x:Name="cbVendors" VerticalAlignment="Center" Grid.Column="2" Grid.Row="2" ItemsSource="{Binding Vendors}" 
+            					SelectedItem="{Binding Vendor, Mode=TwoWay}" Margin="0,5,0,4" IsEditable="True" Text="{Binding VendorStr, Mode=TwoWay}"/>
+                            <TextBlock TextWrapping="Wrap" Text="Название*:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="3"
+            					Grid.Column="0" Margin="0,10,0,9"/>
+                            <TextBox x:Name="tbName" VerticalAlignment="Center" Grid.Column="2" Grid.Row="3" Text="{Binding Name, Mode=TwoWay}" Margin="0,4,0,5">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="TextChanged">
+                                        <i:InvokeCommandAction Command="{Binding TextChangedCommand}" CommandParameter="{Binding Text, ElementName=tbName}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </TextBox>
+                            <TextBlock TextWrapping="Wrap" Text="Описание:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="4"
+            					Grid.Column="0" Margin="0,10,0,9"/>
+                            <TextBox VerticalAlignment="Center" Grid.Column="2" Margin="0,5,0,4" Grid.Row="4" Text="{Binding Info, Mode=TwoWay}"/>
+                            <TextBlock TextWrapping="Wrap" Text="Фото:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="5"
+            					Grid.Column="0" Margin="0,10,0,9"/>
 
-                        <TextBlock TextWrapping="Wrap" Text="Единица измерения:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="7"
-        					Grid.Column="0" Margin="0,10,0,9"/>
-                        <ComboBox VerticalAlignment="Center" Grid.Column="2" Grid.Row="7" ItemsSource="{Binding Units}" 
-        					SelectedValue="{Binding Unit, Mode=TwoWay}" Margin="0,5,0,4"/>
-                        <TextBlock TextWrapping="Wrap" Text="Содержание в сущности единиц:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="6"
-        					Grid.Column="0"/>
-                        <TextBox VerticalAlignment="Center" Grid.Column="2" Margin="0,4,0,5" Grid.Row="6" Text="{Binding BaseValue, Mode=TwoWay}" TextAlignment="Right"/>
+                            <TextBlock TextWrapping="Wrap" Text="Единица измерения:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="7"
+            					Grid.Column="0" Margin="0,10,0,9"/>
+                            <ComboBox VerticalAlignment="Center" Grid.Column="2" Grid.Row="7" ItemsSource="{Binding Units}" 
+            					SelectedValue="{Binding Unit, Mode=TwoWay}" Margin="0,5,0,4"/>
+                            <TextBlock TextWrapping="Wrap" Text="Содержание в сущности единиц:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="6"
+            					Grid.Column="0"/>
+                            <TextBox VerticalAlignment="Center" Grid.Column="2" Margin="0,4,0,5" Grid.Row="6" Text="{Binding BaseValue, Mode=TwoWay}" TextAlignment="Right"/>
 
-                        <TextBlock TextWrapping="Wrap" Text="Применимость:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="8"
-        					Grid.Column="0" Margin="0,10,0,9"/>
-                        <ComboBox ItemsSource="{Binding ListUses}" SelectedValue="{Binding Uses}" VerticalAlignment="Center" Grid.Column="2" Margin="0,5,0,4" Grid.Row="8"/>
+                            <TextBlock TextWrapping="Wrap" Text="Применимость:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="8"
+            					Grid.Column="0" Margin="0,10,0,9"/>
+                            <ComboBox ItemsSource="{Binding ListUses}" SelectedValue="{Binding Uses}" VerticalAlignment="Center" Grid.Column="2" Margin="0,5,0,4" Grid.Row="8" IsEditable="True" Text="{Binding UsesStr, Mode=TwoWay}"/>
 
-                        <TextBlock TextWrapping="Wrap" Text="Подразделение:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="9"
-        					Grid.Column="0"/>
-                        <ComboBox VerticalAlignment="Center" Grid.Column="2" Grid.Row="9" ItemsSource="{Binding Divisions}" 
-        					SelectedValue="{Binding Division, Mode=TwoWay}" Margin="0,5,0,4"/>
+                            <TextBlock TextWrapping="Wrap" Text="Подразделение:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="9"
+            					Grid.Column="0"/>
+                            <ComboBox VerticalAlignment="Center" Grid.Column="2" Grid.Row="9" ItemsSource="{Binding Divisions}" 
+            					SelectedValue="{Binding Division, Mode=TwoWay}" Margin="0,5,0,4" IsEditable="True" Text="{Binding DivisionStr, Mode=TwoWay}"/>
 
-                        <TextBlock TextWrapping="Wrap" Text="Количество на складе (шт):" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="10"
-        					Grid.Column="0"/>
-                        <TextBox VerticalAlignment="Center" Grid.Column="2" Margin="0,4,0,5" Grid.Row="10" Text="{Binding Quantity, Mode=TwoWay}" TextAlignment="Right"/>
+                            <TextBlock TextWrapping="Wrap" Text="Количество на складе (шт):" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="10"
+            					Grid.Column="0"/>
+                            <TextBox VerticalAlignment="Center" Grid.Column="2" Margin="0,4,0,5" Grid.Row="10" Text="{Binding Quantity, Mode=TwoWay}" TextAlignment="Right"/>
 
-                        <TextBlock TextWrapping="Wrap" Text="Закупочная стоимость:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="11"
-        					Grid.Column="0"/>
-                        <TextBox VerticalAlignment="Center" Grid.Column="2" Margin="0,4,0,5" Grid.Row="11" Text="{Binding Purchase, Mode=TwoWay}" TextAlignment="Right"/>
-                        <TextBlock TextWrapping="Wrap" Text="Розничная стоимость:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="12"
-        					Grid.Column="0"/>
-                        <TextBox VerticalAlignment="Center" Grid.Column="2" Margin="0,4,0,5" Grid.Row="12" Text="{Binding Price, Mode=TwoWay}" TextAlignment="Right"/>
+                            <TextBlock TextWrapping="Wrap" Text="Закупочная стоимость:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="11"
+            					Grid.Column="0"/>
+                            <TextBox VerticalAlignment="Center" Grid.Column="2" Margin="0,4,0,5" Grid.Row="11" Text="{Binding Purchase, Mode=TwoWay}" TextAlignment="Right"/>
+                            <TextBlock TextWrapping="Wrap" Text="Розничная стоимость:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="12"
+            					Grid.Column="0"/>
+                            <TextBox VerticalAlignment="Center" Grid.Column="2" Margin="0,4,0,5" Grid.Row="12" Text="{Binding Price, Mode=TwoWay}" TextAlignment="Right"/>
+                            <TextBlock TextWrapping="Wrap" Text="* - поля, обязательны для заполнения" VerticalAlignment="Center" Grid.Row="13"
+            					Grid.Column="0" Grid.ColumnSpan="3" Margin="0,5,0,20"/>
+                        </Grid>
+                        <TextBlock Text="Укажите параметры товара" FontWeight="Bold"/>
+
+                        <StackPanel Orientation="Horizontal" Grid.Row="4" HorizontalAlignment="Center">
+                            <Button Content="Сохранить" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding SaveCommand, Mode=OneWay}" IsEnabled="{Binding EnableButtonSave, Mode=OneWay}" Width="96" Grid.Row="4"/>
+                            <Button Content="Отменить" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding CancelCommand, Mode=OneWay}" Width="96" TabIndex="0" Margin="10,0"/>
+                        </StackPanel>
                     </Grid>
-                    <TextBlock Text="Укажите параметры товара" FontWeight="Bold"/>
-                    
-                    <StackPanel Orientation="Horizontal" Grid.Row="4" HorizontalAlignment="Center">
-                        <Button Content="Сохранить" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding SaveCommand, Mode=OneWay}" IsEnabled="{Binding EnableButtonSave, Mode=OneWay}" Width="96" Grid.Row="4"/>
-                        <Button Content="Отменить" HorizontalAlignment="Center" VerticalAlignment="Top" Command="{Binding CancelCommand, Mode=OneWay}" Width="96" TabIndex="0" Margin="10,0"/>
-                    </StackPanel>
-                </Grid>
+                </ScrollViewer>
             </TabItem>
             <TabItem Header="Добавить на склад">
                 <Grid>
@@ -355,7 +359,7 @@
                         <TextBlock TextWrapping="Wrap" Text="Подразделение:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="4"
         					Grid.Column="0"/>
                         <ComboBox VerticalAlignment="Center" Grid.Column="2" Grid.Row="4" ItemsSource="{Binding SelectedItem.Divisions}" 
-        					SelectedValue="{Binding SelectedItem.Division, Mode=TwoWay}" Margin="0,5,0,4"/>
+        					SelectedValue="{Binding SelectedItem.Division, Mode=TwoWay}" Margin="0,5,0,4" IsEditable="True" Text="{Binding SelectedItem.DivisionStr, Mode=TwoWay}"/>
 
                         <TextBlock TextWrapping="Wrap" Text="Количество (шт):" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="5"
         					Grid.Column="0"/>
@@ -370,6 +374,8 @@
                         <TextBlock TextWrapping="Wrap" Text="Розничная стоимость:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="8"
         					Grid.Column="0"/>
                         <TextBox VerticalAlignment="Center" Grid.Column="2" Margin="0,4,0,5" Grid.Row="8" Text="{Binding SelectedItem.Price}" TextAlignment="Right"/>
+                        <TextBlock TextWrapping="Wrap" Text="{Binding SelectedItem.MsgUpdatePrice}" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="9"
+                        	Grid.Column="0" Grid.ColumnSpan="3" Foreground="#FF0080FF" Margin="0,5,0,20" Visibility="{Binding SelectedItem.VisableMsgUpdatePrice, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}"/>
                     </Grid>
                     <TextBlock Text="Укажите данные о пуступлении на склад" FontWeight="Bold"/>
                     <StackPanel Orientation="Horizontal" Grid.Row="4" HorizontalAlignment="Center">

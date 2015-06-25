@@ -64,7 +64,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Sklad
 
         private void SelectedItemOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            EnableButtonSave = true;
+            EnableButtonSave =SelectedItem != null && !string.IsNullOrEmpty(SelectedItem.Name) && 
+                !string.IsNullOrEmpty(SelectedItem.ArtNo);
         }
 
 
@@ -116,7 +117,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Sklad
         private void AddItem(object obj)
         {
             SelectedIndexTab = 0;
-            SelectedItem = new ItemSkladViewModel();
+            SelectedItem = new ItemSkladViewModel{Uses = _handler.Uses[0], Type = _handler.Types[0]};
         }
 
         public RelayCommand SaveCommand

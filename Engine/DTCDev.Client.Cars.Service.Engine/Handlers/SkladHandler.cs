@@ -35,6 +35,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             Units.Add(new KVPBase { id = 2, Name = "г" });
             Units.Add(new KVPBase { id = 3, Name = "кг" });
             Units.Add(new KVPBase { id = 4, Name = "шт." });
+            Uses.Add(new KVPBase{id = 0, Name = "Для всех"});
         }
 
         public void LoadCache()
@@ -166,10 +167,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
 
         private KVPBase GetKvpBase(ICollection<KVPBase> list, string value, string property)
         {
-            if (string.IsNullOrEmpty(value)) return new KVPBase { id = 0, Name = "" };
+            if (string.IsNullOrEmpty(value)) return new KVPBase { id = -1, Name = "" };
             var res = list.FirstOrDefault(o => o.Name.Equals(value));
             if (res != null) return res;
-            res = new KVPBase { Name = value, id = list.Count };
+            res = new KVPBase { Name = value, id = list.Count + 1 };
             list.Add(res);
             UpdateCache(list, property);
             return res;
