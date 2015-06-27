@@ -84,8 +84,8 @@
                                 <RowDefinition/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="22.12.2012" Foreground="White" x:Name="txtDateUpdate"/>
-                            <TextBlock Grid.Row="1" Text="00:00:00" Foreground="White" x:Name="txtTimeUpdate"/>
+                            <TextBlock Text="22.12.2012" Foreground="White" x:Name="txtDateUpdate" FontSize="11" FontWeight="Bold" FontFamily="Global Sans Serif"/>
+                            <TextBlock Grid.Row="1" Text="00:00:00" Foreground="White" x:Name="txtTimeUpdate" FontSize="11" FontWeight="Bold" FontFamily="Global Sans Serif"/>
                         </Grid>
                     </Grid>
                 </Border>
