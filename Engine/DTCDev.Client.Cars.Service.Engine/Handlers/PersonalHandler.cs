@@ -52,11 +52,12 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                 _selectedDep = value;
                 if (SelectedDepRereshed != null)
                     SelectedDepRereshed(this, new EventArgs());
+                GetPersons();
             }
         }
 
         public event EventHandler UserDataLoadComplete;
-        public event EventHandler PersonsDataLoadComplete;
+        public event EventHandler EmployeeDataLoadComplete;
 
 
 
@@ -145,15 +146,11 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
         /// </summary>
         public void GetPersons()
         {
-            if (SelectedDep == null)
+            if (_selectedDep == null)
                 return;
             else
             {
-                try
-                {
-                    TCPConnection.Instance.SendData("UM"+SelectedDep.id.ToString());
-                }
-                catch { }
+                SendRequest("UM" + _selectedDep.id.ToString());
             }
         }
         
@@ -199,6 +196,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                 case 'K':
                     //after add|edit department refresh settings model
                     GetUserData();
+                    break;
+                case 'm':
+                case 'M':
+                    ParseEmployers(row);
                     break;
             }
         }
@@ -246,6 +247,17 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                     {
                         PersonalStorage.Instance.FillCurrentMaster(id);
                     }));
+        }
+
+        private void ParseEmployers(string row)
+        {
+            try
+            {
+                List<EmployeeModel> data = JsonConvert.DeserializeObject<List<EmployeeModel>>(row);
+                if (EmployeeDataLoadComplete != null)
+                    EmployeeDataLoadComplete(this, new EventArgs());
+            }
+            catch { }
         }
 
         #endregion

@@ -11,13 +11,13 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
     {
         public ControlPersonalViewModel()
         {
-            PersonalHandler.Instance.PersonsDataLoadComplete += Instance_PersonsDataLoadComplete;
+            PersonalHandler.Instance.EmployeeDataLoadComplete += Instance_PersonsDataLoadComplete;
             PersonalHandler.Instance.GetPersons();
         }
 
         void Instance_PersonsDataLoadComplete(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
 

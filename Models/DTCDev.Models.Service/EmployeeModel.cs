@@ -39,5 +39,20 @@ namespace DTCDev.Models.Service
 
         [JsonProperty(PropertyName = "h")]
         public List<int> FunctionsAccess { get; set; }
+
+        [JsonProperty(PropertyName = "i")]
+        public string AddedName { get; set; }
+
+        [JsonProperty(PropertyName = "j")]
+        public int Locked { get; set; }
+
+        [JsonProperty(PropertyName = "k")]
+        public int idRole { get; set; }
+
+        [JsonIgnore]
+        public string AddedCUID { get; set; }
+
+        [JsonIgnore]
+        public string UID { get; set; }
     }
 }
