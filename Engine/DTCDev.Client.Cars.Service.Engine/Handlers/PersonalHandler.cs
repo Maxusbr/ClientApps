@@ -56,6 +56,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
         }
 
         public event EventHandler UserDataLoadComplete;
+        public event EventHandler PersonsDataLoadComplete;
 
 
 
@@ -121,16 +122,40 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             SendRequest("UJ");
         }
 
+        /// <summary>
+        /// Запрос на редактирование/добавление департамента
+        /// </summary>
+        /// <param name="model"></param>
         public void EditDepartment(ServiceInfoDataModel.DepModel model)
         {
             SendRequest("UK" + JsonConvert.SerializeObject(model));
         }
 
+        /// <summary>
+        /// Запрос на редактирование/добавление департамента
+        /// </summary>
+        /// <param name="model"></param>
         public void EditPost(ServiceInfoDataModel.PostSettings model)
         {
             SendRequest("UL" + JsonConvert.SerializeObject(model));
         }
 
+        /// <summary>
+        /// Запрос списка работников для департамента
+        /// </summary>
+        public void GetPersons()
+        {
+            if (SelectedDep == null)
+                return;
+            else
+            {
+                try
+                {
+                    TCPConnection.Instance.SendData("UM"+SelectedDep.id.ToString());
+                }
+                catch { }
+            }
+        }
         
 
         private void SendRequest(string req)

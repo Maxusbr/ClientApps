@@ -14,7 +14,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Network
     {
         ClientCl _socket;
 #if DEBUG
-        private const string _address = "195.208.184.73";//"127.0.0.1";
+        private const string _address = "127.0.0.1";
 #else
         private const string _address = "195.208.184.73";
 #endif
