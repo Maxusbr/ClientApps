@@ -39,7 +39,7 @@
         <Ellipse Margin="2" Grid.ColumnSpan="7" Grid.RowSpan="7">
             <Ellipse.Fill>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="#FF646161" Offset="0"/>
                     <GradientStop Color="White" Offset="1"/>
                     <GradientStop Color="#FFBBBBBB" Offset="0.193"/>
                     <GradientStop Color="#FF807E7E" Offset="0.365"/>

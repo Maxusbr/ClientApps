@@ -59,6 +59,8 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
                 Int32.TryParse(_currentCar.OBD.Where(p => p.Key == "0C").First().Value, out vol);
                 engineRPMPresenter.SetData(vol);
             }
+            txtDateUpdate.Text = _currentCar.DateLastUpdate.ToString("dd.MM.yyyy");
+            txtTimeUpdate.Text = _currentCar.DateLastUpdate.ToString("HH:mm:ss");
             //txtDate.Text = "Последняя связь - " + _currentCar.DateNavigation;
             //txtSpeed.Text = _currentCar.strSpeed;
             //txtSat.Text = _currentCar.CountSatelite.ToString();

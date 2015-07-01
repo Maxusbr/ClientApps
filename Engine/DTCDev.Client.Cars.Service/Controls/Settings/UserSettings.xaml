@@ -3,9 +3,59 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Settings="clr-namespace:DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings;assembly=DTCDev.Client.Cars.Service.Engine"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="500" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <Settings:ControlPersonalViewModel/>
+    </UserControl.DataContext>
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="23*"/>
+        </Grid.RowDefinitions>
+        <TextBlock TextWrapping="Wrap" Text="Настройка пользователей" Style="{DynamicResource TextHeaderStyle}" Grid.ColumnSpan="4" Margin="10"/>
+        <DataGrid Grid.Row="1" AutoGenerateColumns="False" Margin="4">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ФИО" Width="*"/>
+                <DataGridTextColumn Header="Должность"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Grid Grid.Column="2" Grid.Row="1" Margin="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="ФИО" Margin="4"/>
+            <TextBlock Text="Должность" Margin="4" Grid.Row="1"/>
+            <TextBlock Text="Логин" Margin="4" Grid.Row="2"/>
+            <TextBlock Text="Пароль" Margin="4" Grid.Row="3"/>
+            <TextBlock Text="E-Mail" Margin="4" Grid.Row="4"/>
+            <TextBlock Text="Телефон" Margin="4" Grid.Row="5"/>
+            <TextBlock Text="Настройки доступа" Margin="4" Grid.Row="6"/>
+
+            <TextBox Grid.Column="1" Text="OLOLO" Margin="2"/>
+            <ComboBox Grid.Column="1" Grid.Row="1" Margin="2"/>
+            <TextBox Grid.Column="1" Text="OLOLO" Margin="2" Grid.Row="2"/>
+            <TextBox Grid.Column="1" Text="OLOLO" Margin="2" Grid.Row="3"/>
+            <TextBox Grid.Column="1" Text="OLOLO" Margin="2" Grid.Row="4"/>
+            <TextBox Grid.Column="1" Text="OLOLO" Margin="2" Grid.Row="5"/>
+        </Grid>
     </Grid>
 </UserControl>

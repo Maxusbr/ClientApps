@@ -52,10 +52,12 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                 _selectedDep = value;
                 if (SelectedDepRereshed != null)
                     SelectedDepRereshed(this, new EventArgs());
+                GetPersons();
             }
         }
 
         public event EventHandler UserDataLoadComplete;
+        public event EventHandler EmployeeDataLoadComplete;
 
 
 
@@ -121,16 +123,36 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             SendRequest("UJ");
         }
 
+        /// <summary>
+        /// Запрос на редактирование/добавление департамента
+        /// </summary>
+        /// <param name="model"></param>
         public void EditDepartment(ServiceInfoDataModel.DepModel model)
         {
             SendRequest("UK" + JsonConvert.SerializeObject(model));
         }
 
+        /// <summary>
+        /// Запрос на редактирование/добавление департамента
+        /// </summary>
+        /// <param name="model"></param>
         public void EditPost(ServiceInfoDataModel.PostSettings model)
         {
             SendRequest("UL" + JsonConvert.SerializeObject(model));
         }
 
+        /// <summary>
+        /// Запрос списка работников для департамента
+        /// </summary>
+        public void GetPersons()
+        {
+            if (_selectedDep == null)
+                return;
+            else
+            {
+                SendRequest("UM" + _selectedDep.id.ToString());
+            }
+        }
         
 
         private void SendRequest(string req)
@@ -174,6 +196,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                 case 'K':
                     //after add|edit department refresh settings model
                     GetUserData();
+                    break;
+                case 'm':
+                case 'M':
+                    ParseEmployers(row);
                     break;
             }
         }
@@ -221,6 +247,17 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                     {
                         PersonalStorage.Instance.FillCurrentMaster(id);
                     }));
+        }
+
+        private void ParseEmployers(string row)
+        {
+            try
+            {
+                List<EmployeeModel> data = JsonConvert.DeserializeObject<List<EmployeeModel>>(row);
+                if (EmployeeDataLoadComplete != null)
+                    EmployeeDataLoadComplete(this, new EventArgs());
+            }
+            catch { }
         }
 
         #endregion

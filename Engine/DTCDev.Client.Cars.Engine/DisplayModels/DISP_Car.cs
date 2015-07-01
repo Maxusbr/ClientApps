@@ -266,6 +266,11 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
             }
         }
 
+        public DateTime DateLastUpdate
+        {
+            get { return Data != null ? new DateTime(Data.DateUpdate.Y, Data.DateUpdate.M, Data.DateUpdate.D, Data.DateUpdate.hh, Data.DateUpdate.mm, Data.DateUpdate.ss) : new DateTime(); }
+        }
+
         /// <summary>
         /// Текущий угол поворота автомобиля
         /// </summary>
