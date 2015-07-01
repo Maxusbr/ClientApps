@@ -24,6 +24,7 @@ namespace DTCDev.Client.Cars.Service.SideMenu
         {
             InitializeComponent();
             CarStorage.Instance.LastCarsUpdated += Instance_LastCarsUpdated;
+            CarStorage.Instance.LoadComplete += Instance_LastCarsUpdated;
         }
 
         public event EventHandler ClickClose;
@@ -42,6 +43,7 @@ namespace DTCDev.Client.Cars.Service.SideMenu
         private void DisplayLastCars()
         {
             wrp.Children.Clear();
+            if (CarStorage.Instance.Cars.Count == 0) return;
             foreach (var item in CarStorage.Instance.LastCarNumbers)
             {
                 DISP_Car car = CarStorage.Instance.GetCarByCarNumber(item);

@@ -38,11 +38,24 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
 
         public OrderViewModel(OrderViewModel model)
         {
+            WorksTree = new ObservableCollection<WorkTreeModel>();
+            WorksTree.Add(new WorkTreeModel
+            {
+                Name = "Периодические",
+                id = -1
+            });
+            WorksTree.Add(new WorkTreeModel
+            {
+                Name = "Остальные",
+                id = -2
+            });
+
             UpdateOrder(model);
             model.WorksList.ToList().ForEach(o => WorksList.Add(o));
             SelectedWorks.CollectionChanged += SelectedWorks_CollectionChanged;
-            _storage.LoadWorkListComplete += _storage_LoadWorkListComplete;
-
+            _storage.LoadOtherWorkListComplete += Instance_LoadOtherWorkListComplete;
+            _storage.LoadWorkListComplete += Instance_LoadWorkListComplete;
+            _storage.LoadWorkTypesComplete += Instance_LoadWorkTypesComplete;
 
             _storage.LoadMarksComplete += _storage_LoadMarksComplete;
             _storage.LoadModelsComplete += _storage_LoadModelsComplete;
@@ -52,7 +65,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             _storage.LoadTransmissionsComplete += _storage_LoadTransmissionsComplete;
 
             _storage.Update();
-            _storage.UpdateWorks();
+            _storage.UpdateWorkTypes();
+            
         }
 
         void _storage_LoadBodiesComplete(object sender, EventArgs e)
@@ -85,9 +99,70 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
 
         }
 
-        void _storage_LoadWorkListComplete(object sender, EventArgs e)
+        void Instance_LoadWorkTypesComplete(object sender, EventArgs e)
         {
+            foreach (var item in WorksTree)
+            {
+                item.Items.Clear();
+                foreach (var wt in _storage.WorkTypes)
+                {
+                    item.Items.Add(new WorkTreeModel
+                    {
+                        id = wt.id,
+                        Name = wt.Name,
+                        WGUID = "WT"
+                    });
+                }
+            }
+            _storage.UpdateWorks();
+        }
 
+        void Instance_LoadWorkListComplete(object sender, EventArgs e)
+        {
+            var model = WorksTree.First(p => p.id == -1);
+            foreach (var item in model.Items)
+            {
+                item.Items.Clear();
+                var temp = _storage.WorkList.Where(p => p.id_Class == item.id).ToList();
+                foreach (var w in temp)
+                {
+                    item.Items.Add(new WorkTreeModel
+                    {
+                        Cost = w.Cost,
+                        id = w.id,
+                        id_Class = w.id_Class,
+                        idWork = w.idWork,
+                        Name = w.Name,
+                        NH = w.NH,
+                        NHD = w.NHD,
+                        WGUID = w.WGUID
+                    });
+                }
+            }
+        }
+
+        void Instance_LoadOtherWorkListComplete(object sender, EventArgs e)
+        {
+            var model = WorksTree.First(p => p.id == -2);
+            foreach (var item in model.Items)
+            {
+                item.Items.Clear();
+                var temp = _storage.OtherWorkList.Where(p => p.id_Class == item.id).ToList();
+                foreach (var w in temp)
+                {
+                    item.Items.Add(new WorkTreeModel
+                    {
+                        Cost = w.Cost,
+                        id = w.id,
+                        id_Class = w.id_Class,
+                        idWork = w.idWork,
+                        Name = w.Name,
+                        NH = w.NH,
+                        NHD = w.NHD,
+                        WGUID = w.WGUID
+                    });
+                }
+            }
         }
 
         void SelectedWorks_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -263,7 +338,20 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
 
         #endregion
 
+        public ObservableCollection<WorkTreeModel> WorksTree { get; set; }
 
+        private WorkTreeModel _selectedWorkTree;
+        public WorkTreeModel SelectedWorkTree
+        {
+            get { return _selectedWorkTree; }
+            set
+            {
+                _selectedWorkTree = value;
+                OnPropertyChanged("SelectedWorkTree");
+                OnPropertyChanged("EnableAddWorkButton");
+            }
+        }
+        public ObservableCollection<WorksInfoDataModel> OtherWorksList { get { return _storage.OtherWorkList; } }
         public ObservableCollection<WorksInfoDataModel> WorksList { get { return _storage.WorkList; } }
 
         private WorksInfoDataModel _selectedWork;
@@ -405,7 +493,11 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
 
         public bool EnableAddWorkButton
         {
-            get { return _selectedWork != null && SelectedWorks.FirstOrDefault(o => o.Equals(_selectedWork)) == null; }
+            get
+            {
+                return SelectedWorkTree != null && SelectedWorkTree.id_Class > 0;
+                //_selectedWork != null && SelectedWorks.FirstOrDefault(o => o.Equals(_selectedWork)) == null;
+            }
         }
 
         private string _foundString = string.Empty;
@@ -507,8 +599,14 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
 
         private void AddWork(object obj)
         {
-            if (_selectedWork == null) return;
-            SelectedWorks.Add(_selectedWork);
+            //if (_selectedWork == null) return;
+            //SelectedWorks.Add(_selectedWork);
+
+            if (SelectedWorkTree == null) return;
+            var work = WorksList.FirstOrDefault(o => o.Name.Equals(SelectedWorkTree.Name) && o.id_Class == SelectedWorkTree.id_Class) 
+                ?? OtherWorksList.FirstOrDefault(o => o.Name.Equals(SelectedWorkTree.Name) && o.id_Class == SelectedWorkTree.id_Class);
+            if(work == null || SelectedWorks.IndexOf(work) >= 0) return;
+            SelectedWorks.Add(work);
         }
 
         private RelayCommand _deleteCommand;
@@ -529,6 +627,23 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             if (Deleted != null) Deleted(sender, EventArgs.Empty);
         }
 
+
+        private RelayCommand _deleteWorkCommand;
+        
+
+        public RelayCommand DeleteWorkCommand
+        {
+            get { return _deleteWorkCommand ?? (_deleteWorkCommand = new RelayCommand(DeleteWork)); }
+        }
+
+        private void DeleteWork(object obj)
+        {
+            var item = obj as System.Windows.Controls.ListBoxItem;
+            if (item == null) return;
+            var work = item.Content as WorksInfoDataModel;
+            if(work == null) return;
+            SelectedWorks.Remove(work);
+        }
         #endregion
     }
 }
