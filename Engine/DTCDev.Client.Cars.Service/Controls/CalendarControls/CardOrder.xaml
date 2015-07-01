@@ -8,17 +8,22 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
              xmlns:MetroChart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart" 
              x:Class="DTCDev.Client.Cars.Service.Controls.CalendarControls.CardOrder" 
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
               d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type={x:Type ViewModels:OrderViewModel}}">
     <UserControl.Resources>
         <MetroChart:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </UserControl.Resources>
-    <Grid Margin="10,0">
+    <Grid Margin="10,0" >
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="350"/>
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <ScrollViewer VerticalAlignment="Top" VerticalScrollBarVisibility="Auto" Padding="0,0,10,20" >
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,10,20" >
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -31,38 +36,38 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="150"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Дата:" VerticalAlignment="Top" Margin="0,5,0,20" FontWeight="Bold"/>
+                <TextBlock Text="Дата:" Margin="8" FontWeight="Bold"/>
                 <local:DateTimePicker SelectedDate="{Binding DateWork, Mode=TwoWay}" VerticalAlignment="Top"
-    				Grid.Column="1" Margin="10,0,0,0"/>
-                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Клиент:" VerticalAlignment="Top" Grid.Row="1" Margin="0,5,0,20" FontWeight="Bold"/>
-                <StackPanel Grid.Column="1" Margin="10,0,0,0" Orientation="Vertical" Grid.Row="1">
-                    <TextBox x:Name="tbUser" Text="{Binding UserName, Mode=OneWay}" VerticalAlignment="Top">
+    				Grid.Column="1" Margin="4"/>
+                <TextBlock Text="Клиент:" Grid.Row="1" Margin="8" FontWeight="Bold"/>
+                <StackPanel Grid.Column="1" Margin="4" Orientation="Vertical" Grid.Row="1">
+                    <TextBox x:Name="tbUser" Text="{Binding UserName, Mode=OneWay}" Margin="0,2">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="TextChanged">
                                 <i:InvokeCommandAction Command="{Binding TextChangedCommand}" CommandParameter="{Binding Text, ElementName=tbUser}"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </TextBox>
-                    <ListBox VerticalAlignment="Top" MaxHeight="150" MinHeight="100" Margin="0,5,0,20" DisplayMemberPath="Nm"
+                    <ListBox MaxHeight="150" MinHeight="100" Margin="0,5,0,20" DisplayMemberPath="Nm"
     					Visibility="{Binding VisableUserList, Converter={StaticResource BooleanToVisibilityConverter}}"
     					ItemsSource="{Binding ListUsers}" SelectedItem="{Binding SelectedUser, Mode=TwoWay}"/>
                 </StackPanel>
-                <Grid Visibility="{Binding VisableAddUser, Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Top" Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0" >
+                <Grid Visibility="{Binding VisableAddUser, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0" >
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="110"/>
+                        <ColumnDefinition Width="150"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Телефон:" VerticalAlignment="Top" FontWeight="Bold" Margin="0,5,0,20"/>
-                    <TextBox TextWrapping="Wrap" Text="{Binding Phone, Mode=TwoWay}" VerticalAlignment="Top" Grid.Column="1" AcceptsTab="True" AcceptsReturn="True" Margin="10,0,0,0"/>
-                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Email:" VerticalAlignment="Top" FontWeight="Bold" Margin="0,5,0,20" Grid.Row="1"/>
-                    <TextBox TextWrapping="Wrap" Text="{Binding Email, Mode=TwoWay}" VerticalAlignment="Top" Grid.Column="1" AcceptsTab="True" AcceptsReturn="True" Grid.Row="1" Margin="10,0,0,0"/>
+                    <TextBlock Text="Телефон:" FontWeight="Bold" Margin="8"/>
+                    <TextBox Text="{Binding Phone, Mode=TwoWay}" Grid.Column="1" AcceptsTab="True" AcceptsReturn="True" Margin="4"/>
+                    <TextBlock Text="Email:" FontWeight="Bold" Margin="8" Grid.Row="1"/>
+                    <TextBox Text="{Binding Email, Mode=TwoWay}" Grid.Column="1" AcceptsTab="True" AcceptsReturn="True" Grid.Row="1" Margin="4"/>
                 </Grid>
                 <Grid Grid.Row="3" Grid.ColumnSpan="2">
                     <Grid.RowDefinitions>
@@ -71,11 +76,11 @@
                         <RowDefinition Height="405*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="110"/>
+                        <ColumnDefinition Width="150"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Автомобиль:" VerticalAlignment="Top" Margin="0,5,0,20" FontWeight="Bold"/>
-                    <ComboBox VerticalAlignment="Top" Grid.Column="1" ItemsSource="{Binding Cars}" DisplayMemberPath="CarModel" SelectedItem="{Binding Car}" Margin="10,0,0,0" Visibility="{Binding VisableAddUser, ConverterParameter=true, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    <TextBlock FontSize="14" Text="Автомобиль:" Margin="8,16,8,8" FontWeight="Bold"/>
+                    <ComboBox Grid.Column="1" ItemsSource="{Binding Cars}" DisplayMemberPath="CarModel" SelectedItem="{Binding Car}" Margin="10,0,0,0" Visibility="{Binding VisableAddUser, ConverterParameter=true, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                     <Grid Visibility="{Binding VisableAddUser, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="2" Grid.ColumnSpan="2">
                         <Grid.RowDefinitions>
                             <RowDefinition />
@@ -91,100 +96,63 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="110"/>
-                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="8"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock TextWrapping="Wrap" Text="VIN:" VerticalAlignment="Center" FontWeight="Bold" Height="15.96" Margin="0,5,0,20"/>
-                        <TextBox TextWrapping="Wrap" Text="{Binding VIN, Mode=TwoWay}" VerticalAlignment="Top" Grid.Row="0"
-    						Grid.Column="2"/>
-                        <TextBlock TextWrapping="Wrap" Text="Гос. номер:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="1"
-    						Grid.Column="0" Height="15.96" Margin="0,5,0,20" />
-                        <TextBox TextWrapping="Wrap" Text="{Binding CarNumber, Mode=TwoWay}" VerticalAlignment="Top" Grid.Column="2" Grid.Row="1"/>
-                        <TextBlock TextWrapping="Wrap" Text="Марка:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="2"
-    						Grid.Column="0" Height="15.96" Margin="0,5,0,20"/>
-                        <ComboBox VerticalAlignment="Top" Grid.Column="2" Grid.Row="2" ItemsSource="{Binding Marks}" 
-    						SelectedItem="{Binding Mark, Mode=TwoWay}"/>
-                        <TextBlock TextWrapping="Wrap" Text="Модель:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="3"
-    						Grid.Column="0" Height="15.96" Margin="0,5,0,20"/>
-                        <ComboBox VerticalAlignment="Top" Grid.Column="2" Grid.Row="3" ItemsSource="{Binding Models}" 
+                        <TextBlock Text="VIN:" FontWeight="Bold" Margin="8"/>
+                        <TextBox Text="{Binding VIN, Mode=TwoWay}" Margin="4" Grid.Row="0" Grid.Column="2"/>
+                        <TextBlock Text="Гос. номер:" FontWeight="Bold" Grid.Row="1"
+    						Grid.Column="0" Margin="8" />
+                        <TextBox Text="{Binding CarNumber, Mode=TwoWay}" Grid.Column="2" Grid.Row="1" Margin="4"/>
+                        <TextBlock Text="Марка:" FontWeight="Bold" Grid.Row="2"
+    						Grid.Column="0" Margin="8"/>
+                        <ComboBox Grid.Column="2" Grid.Row="2" ItemsSource="{Binding Marks}" Margin="4" SelectedItem="{Binding Mark, Mode=TwoWay}"/>
+                        <TextBlock Text="Модель:" FontWeight="Bold" Grid.Row="3"
+    						Grid.Column="0" Margin="8"/>
+                        <ComboBox Grid.Column="2" Grid.Row="3" ItemsSource="{Binding Models}" Margin="4"
     						SelectedItem="{Binding Model, Mode=TwoWay}"/>
-                        <TextBlock TextWrapping="Wrap" Text="Тип кузова:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="4"
-    						Grid.Column="0" Height="15.96" Margin="0,5,0,20"/>
-                        <ComboBox VerticalAlignment="Top" Grid.Column="2" Grid.Row="4" ItemsSource="{Binding Bodies}" 
+                        <TextBlock Text="Тип кузова:" FontWeight="Bold" Grid.Row="4"
+    						Grid.Column="0" Margin="8"/>
+                        <ComboBox Grid.Column="2" Grid.Row="4" ItemsSource="{Binding Bodies}" Margin="4"
     						SelectedItem="{Binding Body, Mode=TwoWay}"/>
-                        <TextBlock TextWrapping="Wrap" Text="Тип двигателя:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="5"
-    						Grid.Column="0" Height="15.96" Margin="0,5,0,20"/>
-                        <ComboBox VerticalAlignment="Top" Grid.Column="2" Grid.Row="5" ItemsSource="{Binding EngineTypes}" 
+                        <TextBlock Text="Тип двигателя:" FontWeight="Bold" Grid.Row="5"
+    						Grid.Column="0" Margin="8"/>
+                        <ComboBox Grid.Column="2" Grid.Row="5" ItemsSource="{Binding EngineTypes}" Margin="4"
     						SelectedItem="{Binding EngineType, Mode=TwoWay}"/>
-                        <TextBlock TextWrapping="Wrap" Text="Объем двигателя:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="6"
-    						Grid.Column="0" Height="15.96" Margin="0,5,0,20"/>
-                        <ComboBox VerticalAlignment="Top" Grid.Column="2" Grid.Row="6" ItemsSource="{Binding EngineVolumes}" 
+                        <TextBlock Text="Объем двигателя:" FontWeight="Bold" Grid.Row="6"
+    						Grid.Column="0" Margin="8"/>
+                        <ComboBox Grid.Column="2" Grid.Row="6" ItemsSource="{Binding EngineVolumes}" Margin="4"
     						SelectedItem="{Binding EngineVolume, Mode=TwoWay}"/>
-                        <TextBlock TextWrapping="Wrap" Text="Тип КПП:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="7"
-    						Grid.Column="0" Height="15.96" Margin="0,5,0,20"/>
-                        <ComboBox VerticalAlignment="Top" Grid.Column="2" Grid.Row="7" 
+                        <TextBlock Text="Тип КПП:" FontWeight="Bold" Grid.Row="7"
+    						Grid.Column="0" Margin="8"/>
+                        <ComboBox Grid.Column="2" Grid.Row="7" Margin="4"
     						ItemsSource="{Binding TransmissionTypes}" SelectedItem="{Binding TransmissionType, Mode=TwoWay}"/>
 
-                        <TextBlock TextWrapping="Wrap" Text="Пробег:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="8"
-    						Grid.Column="0" Height="15.96" Margin="0,5,0,20"/>
-                        <TextBox TextWrapping="Wrap" Text="{Binding Distance, Mode=TwoWay}" VerticalAlignment="Top" Grid.Column="2" Grid.Row="8" TextAlignment="Right"/>
+                        <TextBlock Text="Пробег:" FontWeight="Bold" Grid.Row="8"
+    						Grid.Column="0" Margin="8"/>
+                        <TextBox Text="{Binding Distance, Mode=TwoWay}" Grid.Column="2" Grid.Row="8"  Margin="4"/>
 
-                        <TextBlock TextWrapping="Wrap" Text="Дата выпуска:" VerticalAlignment="Center" FontWeight="Bold" Grid.Row="9"
-    						Grid.Column="0" Height="15.96" Margin="0,5,0,20"/>
-                        <DatePicker Grid.Row="9" Grid.Column="2" SelectedDate="{Binding DateProduce, Mode=TwoWay}" Style="{DynamicResource DatePickerStyle}" BorderBrush="{x:Null}" VerticalAlignment="Top"/>
+                        <TextBlock Text="Дата выпуска:" FontWeight="Bold" Grid.Row="9"
+    						Grid.Column="0" Margin="8"/>
+                        <DatePicker Grid.Row="9" Grid.Column="2" SelectedDate="{Binding DateProduce, Mode=TwoWay}" Style="{DynamicResource DatePickerStyle}" BorderBrush="{x:Null}" Margin="4"/>
 
                     </Grid>
                 </Grid>
-                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Перечень работ:" VerticalAlignment="Top" Grid.Row="4" Margin="0,5,0,20" FontWeight="Bold"/>
-                <Grid Grid.Column="1" Grid.Row="4" Margin="10,0,0,20">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Button Content="Добавить" VerticalAlignment="Top" MinWidth="25" Margin="0,0,0,2"  Command="{Binding AddWorkCommand}" Visibility="Collapsed"/>
-                    <ComboBox VerticalAlignment="Top" ItemsSource="{Binding WorksList}" DisplayMemberPath="Name" 
-    					SelectedItem="{Binding SelectedWork}" Margin="0,0,0,10" Visibility="Collapsed" />
-                    <ListBox VerticalAlignment="Top" MaxHeight="150" MinHeight="100" Grid.Row="1" Grid.ColumnSpan="2" 
-                             ItemsSource="{Binding SelectedWorks}" Padding="5,0">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid HorizontalAlignment="Stretch" >
-                                	<Grid.ColumnDefinitions>
-                                		<ColumnDefinition/>
-                                		<ColumnDefinition Width="Auto"/>
-                                	</Grid.ColumnDefinitions>
-                            		<TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
-                            		<Button Content="X" Width="25" Command="{Binding DataContext.DeleteWorkCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}}}" 
-                            			CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}}" Height="Auto" Margin="5,0" HorizontalAlignment="Right" Grid.Column="1" />
-                            	</Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </Grid>
-                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Комментарии:" VerticalAlignment="Top" Grid.Row="5" Margin="0,5,0,20" FontWeight="Bold"/>
-                <TextBox TextWrapping="Wrap" Text="{Binding Comment, Mode=TwoWay}" VerticalAlignment="Top" Grid.Column="1" Grid.Row="5" Margin="10,0,0,20" MinHeight="52" AcceptsTab="True" AcceptsReturn="True"/>
-                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Время выполнения:" VerticalAlignment="Top" Grid.Row="6" Margin="0,5,0,20" FontWeight="Bold"/>
-                <TextBox TextWrapping="Wrap" Text="{Binding NH}" VerticalAlignment="Top" Grid.Column="1" Grid.Row="6" Margin="10,0,0,0"/>
-                <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal" Grid.Row="7" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,20,0,0">
-                    <Button x:Name="SaveButton1" Content="Сохранить" VerticalAlignment="Top" Command="{Binding SaveCommand}" IsEnabled="{Binding IsChanged}" Margin="0,0,10,0" Width="80" />
-                    <Button x:Name="CancelButton2" Content="Удалить" VerticalAlignment="Top" Command="{Binding DeleteCommand}" IsEnabled="{Binding CanDeleted}" Margin="10,0" Width="80" />
-                    <Button x:Name="CancelButton3" Content="Отменить" VerticalAlignment="Top" Command="{Binding CancelCommand}" Margin="10,0,0,0" Width="80" />
-                </StackPanel>
+                <TextBlock HorizontalAlignment="Left" Text="Комментарии:" Grid.Row="5" Margin="0,5,0,20" FontWeight="Bold"/>
+                <TextBox Text="{Binding Comment, Mode=TwoWay}" Grid.Column="1" Grid.Row="5" Margin="10,0,0,20" MinHeight="52" AcceptsTab="True" AcceptsReturn="True"/>
+                <TextBlock HorizontalAlignment="Left" Text="Время выполнения:" Grid.Row="6" Margin="8" FontWeight="Bold"/>
+                <TextBox Text="{Binding NH}" Grid.Column="1" Grid.Row="6" Margin="4"/>
             </Grid>
         </ScrollViewer>
-        <Grid Grid.Column="1" Margin="20,0,0,20">
+        <Grid Grid.Column="1" Margin="8">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="48"/>
             </Grid.RowDefinitions>
-            <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="Список работ:" VerticalAlignment="Top" FontWeight="Bold" Margin="0,0,0,10"/>
-            <TreeView Margin="20,0,20,20" ItemsSource="{Binding WorksTree}" SelectedItemChanged="TreeView_SelectedItemChanged" MinWidth="260" Grid.Row="1">
+            <TextBlock HorizontalAlignment="Center" Text="Укажите работы:" FontWeight="Bold" Margin="8"/>
+            <TreeView Margin="8" ItemsSource="{Binding WorksTree}" SelectedItemChanged="TreeView_SelectedItemChanged" MinWidth="260" Grid.Row="1" BorderThickness="1" BorderBrush="Gray">
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Items}">
                         <TextBlock Text="{Binding Name}"/>
@@ -201,7 +169,50 @@
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>
             </TreeView>
-            <Button VerticalAlignment="Top" Content="Добавить работу"  Command="{Binding AddWorkCommand}" IsEnabled="{Binding EnableAddWorkButton, Mode=OneWay}" Grid.Row="2" Margin="20,0"/>
+            <Button Content="Добавить работу"  Command="{Binding AddWorkCommand}" IsEnabled="{Binding EnableAddWorkButton, Mode=OneWay}" Grid.Row="2" Margin="8"/>
         </Grid>
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition/>
+                <RowDefinition Height="48"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="Заявляемые работы:" Margin="8" FontWeight="Bold"/>
+            <Grid Grid.Column="1" Grid.Row="1" Margin="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Button Content="Добавить" MinWidth="25" Margin="0,0,0,2"  Command="{Binding AddWorkCommand}" Visibility="Collapsed"/>
+                <ComboBox ItemsSource="{Binding WorksList}" DisplayMemberPath="Name" 
+    					SelectedItem="{Binding SelectedWork}" Margin="0,0,0,10" Visibility="Collapsed" />
+                <ListBox Grid.Row="1" Grid.ColumnSpan="2" BorderBrush="Gray" BorderThickness="1"
+                             ItemsSource="{Binding SelectedWorks}" Padding="5,0" Margin="8">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid HorizontalAlignment="Stretch" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding Name}" Margin="4" />
+                                <Button Content="X" Width="25" Command="{Binding DataContext.DeleteWorkCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}}}" 
+                            			CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}}" Height="Auto" Margin="5,0" HorizontalAlignment="Right" Grid.Column="1" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </Grid>
+
+        <StackPanel Grid.ColumnSpan="3" Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right" Margin="20,15">
+            <Button x:Name="SaveButton1" Content="Сохранить" Command="{Binding SaveCommand}" IsEnabled="{Binding IsChanged}" Margin="0,0,10,0" Width="80" />
+            <Button x:Name="CancelButton2" Content="Удалить" Command="{Binding DeleteCommand}" IsEnabled="{Binding CanDeleted}" Margin="10,0" Width="80" />
+            <Button x:Name="CancelButton3" Content="Отменить" Command="{Binding CancelCommand}" Margin="10,0,0,0" Width="80" />
+        </StackPanel>
     </Grid>
 </UserControl>

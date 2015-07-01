@@ -197,15 +197,15 @@
                 <DataGridTemplateColumn ClipboardContentBinding="{x:Null}" Header="8:30" CellStyle="{DynamicResource StyleCell}" />
             </DataGrid.Columns>
         </DataGrid>
-        <Grid x:Name="gDetail" Grid.Column="1" Margin="20,0" Grid.Row="1">
+        <Grid x:Name="gDetail" Grid.RowSpan="2" Visibility="Collapsed" Background="White">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
                 <RowDefinition />
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <TextBlock x:Name="tbPost" Text="" Margin="0,5,0,20"/>
+            <TextBlock x:Name="tbPost" Text="" Margin="8" FontSize="16"/>
 
-            <Grid x:Name="ccDetail" Grid.Row="1" />
+            <Grid x:Name="ccDetail" Grid.Row="1" Margin="20" />
 
         </Grid>
 

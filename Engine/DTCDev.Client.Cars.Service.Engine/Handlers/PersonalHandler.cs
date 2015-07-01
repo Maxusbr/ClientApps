@@ -249,6 +249,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                     }));
         }
 
+        /// <summary>
+        /// parse employers list data. Call EmployeeDataLoadComplete after complete
+        /// </summary>
+        /// <param name="row"></param>
         private void ParseEmployers(string row)
         {
             try
