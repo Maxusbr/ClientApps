@@ -21,7 +21,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Sklad
         {
             _model = new ItemSkladDataModel { ArtNo = "", BaseValue = 1, Division = new KVPBase(), Type = new KVPBase(), Unit = new KVPBase(), Vendor = new KVPBase() };
             EnableButtonSave = false;
-            
+
         }
 
         public ItemSkladViewModel(ItemSkladDataModel model)
@@ -74,18 +74,13 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Sklad
 
         public KVPBase Vendor
         {
-            get
-            {
-                //if (Vendors.FirstOrDefault(o => o.Name.Equals(_model.Vendor.Name)) == null)
-                //    _model.Vendor = _handler.GetVendor(_model.Vendor.Name);
-                return _model.Vendor;
-            }
+            get { return _model.Vendor; }
             set
             {
-                if(_model.Vendor == value) return;
+                if (_model.Vendor == value) return;
                 _model.Vendor = value;
-                if(value != null)
-                VendorStr = value.Name;
+                if (value != null)
+                    VendorStr = value.Name;
                 OnPropertyChanged("Vendor");
             }
         }
@@ -104,15 +99,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Sklad
 
         public KVPBase Type
         {
-            get
-            {
-                //if (Types.FirstOrDefault(o => o.Name.Equals(_model.Type.Name)) == null)
-                //    _model.Type = _handler.GetTypes(_model.Type.Name);
-                return _model.Type;
-            }
+            get { return _model.Type; }
             set
             {
-                if(_model.Type == value) return;
+                if (_model.Type == value) return;
                 _model.Type = value;
                 if (value != null)
                     TypeStr = value.Name;
@@ -153,12 +143,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Sklad
         public ObservableCollection<KVPBase> Units { get { return _handler.Units; } }
         public KVPBase Unit
         {
-            get
-            {
-                //if (Units.FirstOrDefault(o => o.Name.Equals(_model.Unit.Name)) == null)
-                //    _model.Unit = _handler.GetUnit(_model.Unit.Name);
-                return _model.Unit;
-            }
+            get { return _model.Unit; }
             set
             {
                 if (_model.Unit == value) return;
@@ -181,12 +166,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Sklad
 
         public KVPBase Uses
         {
-            get
-            {
-                //if (ListUses.FirstOrDefault(o => o.Name.Equals(_model.Uses.Name)) == null)
-                //    _model.Uses = _handler.GetUses(_model.Uses.Name);
-                return _model.Uses;
-            }
+            get { return _model.Uses; }
             set
             {
                 if (_model.Uses == value) return;
@@ -211,12 +191,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Sklad
 
         public KVPBase Division
         {
-            get
-            {
-                //if (Divisions.FirstOrDefault(o => o.Name.Equals(_model.Division.Name)) == null)
-                //    _model.Division = _handler.GetDivision(_model.Division.Name);
-                return _model.Division;
-            }
+            get { return _model.Division; }
             set
             {
                 if (_model.Division == value) return;
@@ -375,11 +350,13 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Sklad
             return string.Format("{0} ({1})", Name, ArtNo);
         }
 
+        /// <summary>
+        /// Модель товара для добавления на склад
+        /// </summary>
         public ItemSkladDataModel GetModel
         {
             get
             {
-                
                 PrepareModel();
                 _model.Purchase = (_model.Purchase * _model.Quantity + CurentPurchase * CurentCount) / (_model.Quantity + CurentCount);
                 _model.Quantity += CurentCount;
@@ -387,6 +364,9 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Sklad
             }
         }
 
+        /// <summary>
+        /// Модель товара для добавления в справочник
+        /// </summary>
         public ItemSkladDataModel Model
         {
             get

@@ -87,8 +87,20 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
         }
 
         readonly ObservableCollection<PostOrdersViewModel> _listPostOrder = new ObservableCollection<PostOrdersViewModel>();
-        private PostOrdersViewModel _selectedItem;
+        
         public ObservableCollection<PostOrdersViewModel> ListPostOrder { get { return _listPostOrder; } }
+
+        private PostOrdersViewModel _selectedItem;
+        public PostOrdersViewModel SelectedItem
+        {
+            get { return _selectedItem; }
+            set
+            {
+                _selectedItem = value;
+                OnPropertyChanged("SelectedItem");
+                OnPropertyChanged("PostName");
+            }
+        }
 
         public int StartTime
         {
@@ -103,17 +115,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             get
             {
                 return ListPostOrder.Count == 0 ? 17 : ListPostOrder.Max(o => o.Post.EndWorkTime);
-            }
-        }
-
-        public PostOrdersViewModel SelectedItem
-        {
-            get { return _selectedItem; }
-            set
-            {
-                _selectedItem = value;
-                OnPropertyChanged("SelectedItem");
-                OnPropertyChanged("PostName");
             }
         }
 

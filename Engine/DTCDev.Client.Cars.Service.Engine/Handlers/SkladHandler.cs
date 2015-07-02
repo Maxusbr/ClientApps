@@ -165,6 +165,13 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             return GetKvpBase(Divisions, value, "divisions");
         }
 
+        /// <summary>
+        /// Получение значения из списка. В случае отсутствия, добавить в список.
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="value"></param>
+        /// <param name="property"></param>
+        /// <returns></returns>
         private KVPBase GetKvpBase(ICollection<KVPBase> list, string value, string property)
         {
             if (string.IsNullOrEmpty(value)) return new KVPBase { id = -1, Name = "" };
@@ -301,6 +308,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             return "";
         }
 
+        /// <summary>
+        /// Добавить/обновить товар в справочнике на сервере
+        /// </summary>
+        /// <param name="item"></param>
         internal void AddPosition(ItemSkladDataModel item)
         {
             var itemSklad = SkladState.FirstOrDefault(o => o.id == item.id);
@@ -331,6 +342,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             }
         }
 
+        /// <summary>
+        /// Добавить/обновить товар на складе
+        /// </summary>
+        /// <param name="item"></param>
         internal void AddSkladPosition(ItemSkladDataModel item)
         {
             var itemSklad = SkladState.FirstOrDefault(o => o.id == item.id);

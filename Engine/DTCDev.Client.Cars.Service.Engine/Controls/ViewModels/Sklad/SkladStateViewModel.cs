@@ -26,12 +26,12 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Sklad
 
         void _handler_LoadVendorsComplete(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            //TODO Добавить список производителей
         }
 
         void _handler_LoadDivisionsComplete(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            //TODO Добавить список подразделений
         }
 
         void _handler_LoadSkladStateComplete(object sender, EventArgs e)
@@ -45,7 +45,9 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Sklad
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
                 SelectedItem = SkladeState[0];
         }
-
+        /// <summary>
+        /// список всех товаров
+        /// </summary>
         public ObservableCollection<ItemSkladViewModel> SkladeState { get { return _skladeState; } }
 
         public ItemSkladViewModel SelectedItem
@@ -120,11 +122,17 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Sklad
             SelectedItem = new ItemSkladViewModel{Uses = _handler.Uses[0], Type = _handler.Types[0]};
         }
 
+        /// <summary>
+        /// Сохранить изменения позиции в справочнике
+        /// </summary>
         public RelayCommand SaveCommand
         {
             get { return _saveCommand ?? (_saveCommand = new RelayCommand(Save)); }
         }
 
+        /// <summary>
+        /// Сохранить изменения позиции на складе
+        /// </summary>
         public RelayCommand SaveAddPositionCommand
         {
             get { return _saveAddPositionCommand ?? (_saveAddPositionCommand = new RelayCommand(SaveAddPosition)); }
