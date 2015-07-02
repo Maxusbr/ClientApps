@@ -1,5 +1,6 @@
 ﻿using DTCDev.Client.Cars.Service.Engine.Network;
 using DTCDev.Client.Cars.Service.Engine.Storage;
+using DTCDev.Models.CarBase.CarStatData;
 using DTCDev.Models.CarsSending.Service;
 using DTCDev.Models.Service;
 using DTCDev.Models.User;
@@ -59,7 +60,21 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
         public event EventHandler UserDataLoadComplete;
         public event EventHandler EmployeeDataLoadComplete;
 
+        public delegate void DataLoadCompleteHandler(List<KVPBase> list);
 
+        public event DataLoadCompleteHandler RolesLoadComplete;
+        protected virtual void OnRolesLoadComplete(List<KVPBase> list)
+        {
+            if (RolesLoadComplete != null) RolesLoadComplete(list);
+        }
+
+        public delegate void UserAddCompleteHandler(EmployeeModel model);
+        public event UserAddCompleteHandler UserAddComplete;
+
+        protected virtual void OnUserAddComplete(EmployeeModel model)
+        {
+            if (UserAddComplete != null) UserAddComplete(model);
+        }
 
 
         public void GetUserData()
@@ -153,7 +168,23 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                 SendRequest("UM" + _selectedDep.id.ToString());
             }
         }
-        
+
+        /// <summary>
+        /// Запрос на редактирование/добавление работника
+        /// </summary>
+        /// <param name="model"></param>
+        internal void EditUser(EmployeeModel model)
+        {
+            SendRequest("UE" + JsonConvert.SerializeObject(model));
+        }
+
+        /// <summary>
+        /// Получить список должностей
+        /// </summary>
+        internal void GetRoles()
+        {
+            SendRequest("UR");
+        }
 
         private void SendRequest(string req)
         {

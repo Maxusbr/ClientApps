@@ -87,6 +87,7 @@
     <Compile Include="Controls\ViewModels\CarTestDrivesViewModel.cs" />
     <Compile Include="Controls\ViewModels\PostOrdersViewModel.cs" />
     <Compile Include="Controls\ViewModels\Settings\ControlPersonalViewModel.cs" />
+    <Compile Include="Controls\ViewModels\Settings\EmployeeViewModel.cs" />
     <Compile Include="Controls\ViewModels\Settings\TestDriveCarViewModel.cs" />
     <Compile Include="Controls\ViewModels\Sklad\ItemSkladViewModel.cs" />
     <Compile Include="Controls\ViewModels\Sklad\SkladStateViewModel.cs" />
