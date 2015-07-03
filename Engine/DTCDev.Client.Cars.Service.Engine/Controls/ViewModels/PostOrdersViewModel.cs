@@ -63,7 +63,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
                 {
                     DateWork = el.DateWork,
                     ToolTip = string.Format("{0} ({1})",
-                        el.User != null ? el.User.Nm : "User",
+                        el.User != null && el.User.Tp == 0 ? el.User.Nm : "Через сайт",
                         el.Car != null ? el.Car.MarkModelName : "")
                 });
             }

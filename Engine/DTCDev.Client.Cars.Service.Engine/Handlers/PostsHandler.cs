@@ -73,7 +73,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                 }
 
             Users.Add(new UserLightModel { Nm = "Иванов Петр Иванович" });
-            Users.Add(new UserLightModel { Nm = "Петров Иван Сидорович" });
+            // Записан через сайт
+            Users.Add(new UserLightModel { Nm = "Петров Иван Сидорович", Tp = 1});
             Users.Add(new UserLightModel { Nm = "Сидоров Сидор Петрович" });
             Orders.Add(new OrderViewModel
             {

@@ -14,5 +14,10 @@ namespace DTCDev.Models.User
         public string Ph { get; set; }
 
         public string Em { get; set; }
+
+        /// <summary>
+        /// тип того, кто записывается на ТО
+        /// </summary>
+        public int Tp { get; set; }
     }
 }
