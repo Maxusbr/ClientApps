@@ -60,6 +60,7 @@
     <Compile Include="DriverModel.cs" />
     <Compile Include="Navigation\SNaviData.cs" />
     <Compile Include="Order\CarOrderModel.cs" />
+    <Compile Include="Order\CarOrderPostModel.cs" />
     <Compile Include="Order\WorkChangeModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Report\MialageReportModel.cs" />

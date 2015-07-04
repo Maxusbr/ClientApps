@@ -19,5 +19,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
     {
         public DateTime DateWork { get; set; }
         public string ToolTip { get; set; }
+        public bool Сondition { get; set; }
     }
 }

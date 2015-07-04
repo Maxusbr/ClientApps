@@ -64,14 +64,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
                     DateWork = el.DateWork,
                     ToolTip = string.Format("{0} ({1})",
                         el.User != null && el.User.Tp == 0 ? el.User.Nm : "Через сайт",
-                        el.Car != null ? el.Car.MarkModelName : "")
+                        el.Car != null ? el.Car.MarkModelName : ""), 
+                        Сondition = el.InUse
                 });
             }
-        }
-
-        private void Order_IsCompleteSaved(object sender, EventArgs e)
-        {
-
         }
 
         internal void Update(PostViewModel post)

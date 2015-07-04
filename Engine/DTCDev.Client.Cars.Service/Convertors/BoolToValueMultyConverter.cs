@@ -13,6 +13,7 @@ namespace DTCDev.Client.Cars.Service.Convertors
     {
         public T FalseValue { get; set; }
         public T TrueValue { get; set; }
+        public T СonditionValue { get; set; }
         public T DesibleValue { get; set; }
 
         public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -38,7 +39,7 @@ namespace DTCDev.Client.Cars.Service.Convertors
                 //vm.SelectedOrder = el.ID;
                 cell.IsEnabled = true;
                 cell.ToolTip = el.ToolTip;
-                return TrueValue;
+                return el.Сondition ? СonditionValue: TrueValue;
             }
             return FalseValue;
         }

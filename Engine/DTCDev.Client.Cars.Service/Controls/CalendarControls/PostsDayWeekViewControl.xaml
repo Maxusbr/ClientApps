@@ -82,7 +82,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <convertors:BoolToStyleConverter x:Key="BoolToStyleConverter" TrueValue="{StaticResource Blue1}" FalseValue="Transparent" DesibleValue="{StaticResource LightGray2}" />
+        <convertors:BoolToStyleConverter x:Key="BoolToStyleConverter" СonditionValue="{StaticResource Green1}" TrueValue="{StaticResource Blue1}" FalseValue="Transparent" DesibleValue="{StaticResource LightGray2}" />
         <Style x:Key="StyleCell" TargetType="{x:Type DataGridCell}">
             <Setter Property="Background" >
                 <Setter.Value>

@@ -14,6 +14,8 @@ using DTCDev.Client.Cars.Service.Engine.Storage;
 using DTCDev.Client.ViewModel;
 using DTCDev.Models.CarBase.CarList;
 using DTCDev.Models.CarBase.CarStatData;
+using DTCDev.Models.CarsSending.Order;
+using DTCDev.Models.Date;
 using DTCDev.Models.User;
 
 namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
@@ -49,7 +51,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
                 Name = "Остальные",
                 id = -2
             });
-
+            
             UpdateOrder(model);
             model.WorksList.ToList().ForEach(o => WorksList.Add(o));
             SelectedWorks.CollectionChanged += SelectedWorks_CollectionChanged;
@@ -179,7 +181,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             _dateWork = model.DateWork;
             _isChanged = model.IsChanged;
             _nh = model.NH;
-            
+            InUse = model.InUse;
+            IsCanMoveToUse = model.IsCanMoveToUse;
             _user = model.User ?? new UserLightModel();
             VisableUserList = model.User == null;
             _foundString = model.User != null ? _user.Nm : "";
@@ -545,7 +548,32 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             return order != null && order.PostID == PostID && order.ID == ID;
         }
 
+        public CarOrderPostModel GetModel()
+        {
+            if (Car == null || Car.CarModel == null) return null;
+            var model = new CarOrderPostModel
+                {
+                    CarNumber =  Car.CarModel.CarNumber,
+                    DateWork = new DateDataModel(DateWork), 
+                    UserComment = Comment
+                };
+            foreach (var item in SelectedWorks)
+                model.Works.Add(item);
+            return model;
+        }
 
+        public bool InUse { get; set; }
+
+        private bool _isCanMoveToUse;
+        public bool IsCanMoveToUse
+        {
+            get { return _isCanMoveToUse; }
+            set
+            {
+                _isCanMoveToUse = value;
+                OnPropertyChanged("CanDeleted");
+            }
+        }
 
         #region RelayCommands
 
@@ -629,8 +657,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
 
 
         private RelayCommand _deleteWorkCommand;
-        
-
         public RelayCommand DeleteWorkCommand
         {
             get { return _deleteWorkCommand ?? (_deleteWorkCommand = new RelayCommand(DeleteWork)); }
@@ -644,6 +670,21 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             if(work == null) return;
             SelectedWorks.Remove(work);
         }
+
+        private RelayCommand _moveToUseCommand;
+        public RelayCommand MoveToUseCommand
+        {
+            get { return _moveToUseCommand ?? (_moveToUseCommand = new RelayCommand(MoveToUse)); }
+        }
+
+        private void MoveToUse(object obj)
+        {
+            InUse = true;
+            IsCanMoveToUse = false;
+            _handler.InUse(this);
+            CompleteSave(this);
+        }
         #endregion
+
     }
 }
