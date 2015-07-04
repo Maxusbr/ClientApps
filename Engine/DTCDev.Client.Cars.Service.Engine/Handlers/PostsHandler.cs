@@ -145,6 +145,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             model.InUse = 1;
             model.DTCreate = new DateDataModel(DateTime.Now);
             UpdateOrderWork(model);
+            OrdersHandler.Instance.AddNewOrder(model);
         }
 
         /// <summary>

@@ -92,5 +92,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             }
             catch { }
         }
+
+        internal void AddNewOrder(CarOrderModel model)
+        {
+            //TODO Add NewOrder
+        }
     }
 }
