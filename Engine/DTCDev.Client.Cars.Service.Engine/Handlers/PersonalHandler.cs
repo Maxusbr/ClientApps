@@ -1,5 +1,6 @@
 ﻿using DTCDev.Client.Cars.Service.Engine.Network;
 using DTCDev.Client.Cars.Service.Engine.Storage;
+using DTCDev.Models;
 using DTCDev.Models.CarBase.CarStatData;
 using DTCDev.Models.CarsSending.Service;
 using DTCDev.Models.Service;
@@ -70,6 +71,9 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
 
         public delegate void UserAddCompleteHandler(EmployeeModel model);
         public event UserAddCompleteHandler UserAddComplete;
+
+        public delegate void EmployeeRolesLoadedHandler(List<DicDataModel> data);
+        public event EmployeeRolesLoadedHandler EmployeeRolesLoaded;
 
         protected virtual void OnUserAddComplete(EmployeeModel model)
         {
@@ -183,7 +187,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
         /// </summary>
         internal void GetRoles()
         {
-            SendRequest("UR");
+            SendRequest("UN");
         }
 
         private void SendRequest(string req)
@@ -231,6 +235,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                 case 'm':
                 case 'M':
                     ParseEmployers(row);
+                    break;
+                case 'n':
+                case 'N':
+
                     break;
             }
         }
@@ -293,6 +301,24 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                     EmployeeDataLoadComplete(this, new EventArgs());
             }
             catch { }
+        }
+
+        private void ParseRoles(string row)
+        {
+            try
+            {
+                List<DicDataModel> roles = JsonConvert.DeserializeObject<List<DicDataModel>>(row);
+                if (Application.Current != null && EmployeeRolesLoaded!=null)
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            EmployeeRolesLoaded(roles);
+                        }));
+            }
+            catch
+            {
+
+            }
+
         }
 
         #endregion
