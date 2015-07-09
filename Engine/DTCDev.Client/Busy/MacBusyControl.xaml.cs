@@ -115,7 +115,7 @@ namespace DTCDev.Client.Busy
                 if (!this.IsWaiting)
                 {
                     FrameworkContent.Opacity = 1;
-                    busyIndicator.Visibility = System.Windows.Visibility.Collapsed;
+                    brdrDisconnect.Visibility = busyIndicator.Visibility = System.Windows.Visibility.Collapsed;
                     WaitAnimation.Stop();
                 }
                 else
@@ -123,7 +123,7 @@ namespace DTCDev.Client.Busy
                     FrameworkContent.Opacity = .1;
                     WaitAnimation.Stop();
                     WaitAnimation.Begin();
-                    busyIndicator.Visibility = System.Windows.Visibility.Visible;
+                    brdrDisconnect.Visibility = busyIndicator.Visibility = System.Windows.Visibility.Visible;
                 }
             }
         }

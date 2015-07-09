@@ -1,6 +1,5 @@
-﻿<Window xmlns:Map="clr-namespace:DTCDev.Client.Cars.Controls.Controls.Map;assembly=DTCDev.Client.Cars.Controls"  
-        xmlns:controls="clr-namespace:DTCDev.Client.Cars.Controls.Controls;assembly=DTCDev.Client.Cars.Controls"  
-        xmlns:Win="clr-namespace:DTCDev.Client.Window;assembly=DTCDev.Client.Window"
+﻿<Window
+        xmlns:controls="clr-namespace:DTCDev.Client.Cars.Controls.Controls;assembly=DTCDev.Client.Cars.Controls"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Car="clr-namespace:DTCDev.Client.Cars.Controls.Controls.Car;assembly=DTCDev.Client.Cars.Controls"
