@@ -85,6 +85,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         void Instance_AccLoaded(CarAccHistoryModel model)
         {
             AccHistory = model;
+            IsEnabledRadio = true;
+            if (!IsCheckedSpeed) UpdateRoutes();
         }
 
         void Instance_OBDLoaded(OBDHistoryDataModel model)
@@ -97,7 +99,114 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             Lines = model;
         }
 
+        /// <summary>
+        /// Обновление трека
+        /// </summary>
+        internal void UpdateRoutes()
+        {
+            _routesModel.ClearRoutes();
+            if (IsCheckedWay) UpdateRouteWay();
+            if (IsCheckedAccelerate) UpdateRouteAccelerate();
+        }
 
+        /// <summary>
+        /// для градации используются показания акселерометра по осям YZ
+        /// </summary>
+        private void UpdateRouteAccelerate()
+        {
+            _routesModel = new RoutesModel();
+            if (AccHistory == null) return;
+            SpdNormal = (int)LeftValue;
+            SpdWarning = (int)RightValue;
+            var slowTask = new Task(delegate
+            {
+                if (AccHistory == null) return;
+                var firstLoc = DayStates.FirstOrDefault();
+                if (firstLoc == null) return;
+                var first = AccHistory.Data.FirstOrDefault();
+                if (first == null) return;
+                var curroute = RouteSelect.None;
+                var prev = new Location
+                {
+                    Latitude = firstLoc.Lt / 10000.0,
+                    Longitude = firstLoc.Ln / 10000.0,
+                    FirstPoint = true
+                };
+
+                foreach (var itemLoc in DayStates)
+                {
+                    var item = AccHistory.Data.FirstOrDefault(o => o.Date.ToDateTime().Equals(itemLoc.Date)) ?? first;
+                    var loc = new Location
+                    {
+                        Latitude = itemLoc.Lt / 10000.0,
+                        Longitude = itemLoc.Ln / 10000.0
+                    };
+                    curroute = SortLocation(prev, loc, curroute, Math.Max(item.Y, item.Z));
+                    prev = loc;
+                    first = item;
+                }
+            });
+            slowTask.ContinueWith(o =>
+            {
+                if (Application.Current != null)
+                    Application.Current.Dispatcher.BeginInvoke(new Action(UpdateCenter));
+            });
+            slowTask.Start();
+        }
+
+        /// <summary>
+        /// вместо скорости для цветовой градации используются показания акселерометра
+        /// </summary>
+        private void UpdateRouteWay()
+        {
+            _routesModel = new RoutesModel();
+            SpdNormal = (int) LeftValue;
+            SpdWarning = (int) RightValue;
+            var slowTask = new Task(delegate
+            {
+                if (AccHistory == null) return;
+                var firstLoc = DayStates.FirstOrDefault();
+                if (firstLoc == null) return;
+                var first = AccHistory.Data.FirstOrDefault();
+                if (first == null) return;
+                var curroute = RouteSelect.None;
+                var prev = new Location
+                {
+                    Latitude = firstLoc.Lt/10000.0,
+                    Longitude = firstLoc.Ln/10000.0,
+                    FirstPoint = true
+                };
+
+                foreach (var itemLoc in DayStates)
+                {
+                    var item = AccHistory.Data.FirstOrDefault(o => o.Date.ToDateTime().Equals(itemLoc.Date)) ?? first;
+                    var loc = new Location
+                    {
+                        Latitude = itemLoc.Lt/10000.0,
+                        Longitude = itemLoc.Ln/10000.0
+                    };
+                    curroute = SortLocation(prev, loc, curroute, item.X);
+                    prev = loc;
+                    first = item;
+                }
+            });
+            slowTask.ContinueWith(o =>
+            {
+                if (Application.Current != null)
+                    Application.Current.Dispatcher.BeginInvoke(new Action(UpdateCenter));
+            });
+            slowTask.Start();
+        }
+
+        /// <summary>
+        /// текущая модель отображения трека
+        /// </summary>
+        private void UpdateRouteSpeed()
+        {
+            SpdNormal = 900;
+            SpdWarning = 1200;
+            SortDataByDate(false);
+        }
 
         /// <summary>
         /// Clear all routes for map
@@ -127,14 +236,14 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         private DateTime _displayedHistoryDate;
 
         private List<CarStateModel> _dayStates = new List<CarStateModel>();
-        
+
         private DISP_Car _position = new DISP_Car();
 
         private bool _useAccelleration = true;
 
         private int _acceleration = 1;
 
-        
+
 
         private CarStateModel _selectedState;
 
@@ -154,9 +263,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         private Location _currentLocation;
 
-        private int SpdNormal = 90;
+        private int SpdNormal = 900;
 
-        private int SpdWarning = 120;
+        private int SpdWarning = 1200;
 
         private bool _periodSet = false;
 
@@ -513,15 +622,25 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             get { return _position; }
             set
             {
-                if (_position != null) _position.IsSelected = false;
+                if (_position != null)
+                {
+                    _position.IsSelected = false;
+                    _position.PropertyChanged -= PositionOnPropertyChanged;
+                }
                 _position = value;
                 _position.IsSelected = true;
                 this.OnPropertyChanged("Position");
-                if (value != null && value.Location != null)
+                if (value == null) return;
+                if (value.Location != null)
                     MapCenter = MapCenterUser = value.Location;
-                else
-                    MapCenter = new Location();
+                _position.PropertyChanged += PositionOnPropertyChanged;
             }
+        }
+
+        private void PositionOnPropertyChanged(object sender, PropertyChangedEventArgs arg)
+        {
+            if (arg.PropertyName.Equals("Location") && !EnableHistory)
+                MapCenter = MapCenterUser = Position.Location;
         }
 
         public bool UseAccelleration
@@ -675,9 +794,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         private RelayCommand _loadNext10Command;
 
-        public RelayCommand LoadNext10Command { get { return _loadNext10Command ?? (_loadNext10Command = new RelayCommand(a => LoadNext10Days())); }}
+        public RelayCommand LoadNext10Command { get { return _loadNext10Command ?? (_loadNext10Command = new RelayCommand(a => LoadNext10Days())); } }
 
-       
+
 
 
         private RelayCommand _showMaxSpeedCommand;
@@ -717,9 +836,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 int days = 10;
                 for (int i = 0; i < days; i++)
                 {
-                    GetCache(_lastLoadedDate - TimeSpan.FromDays(i+1));
+                    GetCache(_lastLoadedDate - TimeSpan.FromDays(i + 1));
                 }
-                HistoryHandler.Instance.StartLoadHistory(CarSelector.SelectedCar.Car.Id, _lastLoadedDate - TimeSpan.FromDays(days+1), _lastLoadedDate - TimeSpan.FromDays(1), UseAccelleration);
+                HistoryHandler.Instance.StartLoadHistory(CarSelector.SelectedCar.Car.Id, _lastLoadedDate - TimeSpan.FromDays(days + 1), _lastLoadedDate - TimeSpan.FromDays(1), UseAccelleration);
             }
         }
 
@@ -793,8 +912,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 {
                     GetCache(DateTime.Now - TimeSpan.FromDays(i));
                 }
+                IsEnabledRadio = false;
                 //Загружаем историю за последние 30 дней
-                HistoryHandler.Instance.StartLoadHistory(CarSelector.SelectedCar.Car.Id, DateTime.Now-TimeSpan.FromDays(days), DateTime.Now, UseAccelleration);
+                HistoryHandler.Instance.StartLoadHistory(CarSelector.SelectedCar.Car.Id, DateTime.Now - TimeSpan.FromDays(days), DateTime.Now, UseAccelleration);
             }
         }
 
@@ -867,7 +987,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                     foreach (var item in DayStates)
                     {
                         var itemtime = StateDateTimeHelper.GetTime(item);
-                        var spantime = itemtime-StateDateTimeHelper.GetTime(first);
+                        var spantime = itemtime - StateDateTimeHelper.GetTime(first);
                         var loc = new Location
                         {
                             Latitude = item.Lt / 10000.0,
@@ -896,7 +1016,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                                     _routesModel.Parkings[_routesModel.Parkings.Count - 1].SetEndDates(itemtime);
                             }
                             var curdist = dc.Calculate(first, item);
-                            var spd =1000 * curdist/spantime.TotalSeconds;
+                            var spd = 1000 * curdist / spantime.TotalSeconds;
                             if (item.Spd > 0 && Math.Abs(curdist) > .001 && !(foundParking && isParking))
                             {
                                 if (spd > 35)
@@ -962,10 +1082,10 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             var myDocs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\M2B\\Cache\\";
             try
             {
-            if (System.IO.Directory.Exists(myDocs) == false)
-                System.IO.Directory.CreateDirectory(myDocs);
-            if (System.IO.File.Exists(myDocs + name))
-                System.IO.File.Delete(myDocs + name);
+                if (System.IO.Directory.Exists(myDocs) == false)
+                    System.IO.Directory.CreateDirectory(myDocs);
+                if (System.IO.File.Exists(myDocs + name))
+                    System.IO.File.Delete(myDocs + name);
 
                 using (var writer = new StreamWriter(myDocs + name))
                 {
@@ -975,7 +1095,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
             catch (Exception)
             {
-                
+
             }
         }
 
@@ -1035,7 +1155,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             bool replaced = false;
             for (int i = 0; i < HistoryRows.Count(); i++)
             {
-                if(HistoryRows[i].StringDate==r.StringDate)
+                if (HistoryRows[i].StringDate == r.StringDate)
                 {
                     DistanceAll -= HistoryRows[i].Mileage;
                     HistoryRows.RemoveAt(i);
@@ -1070,10 +1190,10 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 loc.FirstPoint = false;
                 AddToRoute(loc, prevroute);
                 //if(spd > 0)
-                    AddToRoute(new Location(prev, true), curroute);
+                AddToRoute(new Location(prev, true), curroute);
             }
             //if(spd > 0)
-                AddToRoute(loc, curroute);
+            AddToRoute(loc, curroute);
             return curroute;
         }
 
@@ -1109,8 +1229,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         /// <returns></returns>
         private RouteSelect GetRouteClass(int spd)
         {
-            if (spd >= SpdWarning * 10) return RouteSelect.Error;
-            return spd <= SpdNormal * 10 ? RouteSelect.Normal : RouteSelect.Warning;
+            if (spd >= SpdWarning) return RouteSelect.Error;
+            return spd <= SpdNormal ? RouteSelect.Normal : RouteSelect.Warning;
         }
 
         private void UpdateCenter()
@@ -1127,7 +1247,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                     Parkings = _routesModel.Parkings;
 
                 if (Route == null || Route.Count <= 0) return;
-
             }
             catch (Exception e)
             {
@@ -1205,7 +1324,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         private RelayCommand _clickDistanceCommand;
 
-        public RelayCommand ClickDistanceCommand { get { return _clickDistanceCommand ?? (_clickDistanceCommand = new RelayCommand(a=>ClickDistance())); } }
+        public RelayCommand ClickDistanceCommand { get { return _clickDistanceCommand ?? (_clickDistanceCommand = new RelayCommand(a => ClickDistance())); } }
 
         /// <summary>
         /// пользователь выбрал инструмент подсчета пробега
@@ -1213,7 +1332,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         private void ClickDistance()
         {
             _distanceCheckActive = !_distanceCheckActive;
-            if(_distanceCheckActive)
+            if (_distanceCheckActive)
             {
                 CDStartDay = "Укажите начало";
                 CDStopDay = "Укажите окончание";
@@ -1250,7 +1369,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         private string _totalDistance = "";
         public string TotalDistance
         {
-            get { return _totalDistance;}
+            get { return _totalDistance; }
             set
             {
                 _totalDistance = value;
@@ -1281,11 +1400,118 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
+        private decimal _leftValue = 10;
+        public decimal LeftValue
+        {
+            get { return _leftValue; }
+            set
+            {
+                _leftValue = value;
+                OnPropertyChanged("LeftValue");
+            }
+        }
+
+        private decimal _rightValue = 80;
+        public decimal RightValue
+        {
+            get { return _rightValue; }
+            set
+            {
+                _rightValue = value;
+                OnPropertyChanged("RightValue");
+            }
+        }
+
+        private decimal _minValue = 0;
+        public decimal MinValue
+        {
+            get { return _minValue; }
+            set
+            {
+                _minValue = value;
+                OnPropertyChanged("MinValue");
+            }
+        }
+
+        private decimal _maxValue = 100;
+        public decimal MaxValue
+        {
+            get { return _maxValue; }
+            set
+            {
+                _maxValue = value;
+                OnPropertyChanged("MaxValue");
+            }
+        }
+
+        private bool _isCheckedSpeed = true;
+        public bool IsCheckedSpeed
+        {
+            get { return _isCheckedSpeed; }
+            set
+            {
+                if (_isCheckedSpeed == value) return;
+                _isCheckedSpeed = value;
+                OnPropertyChanged("IsCheckedSpeed");
+                if (!value) return;
+                UpdateRouteSpeed();
+            }
+        }
+
+        private bool _isCheckedWay;
+        public bool IsCheckedWay
+        {
+            get { return _isCheckedWay; }
+            set
+            {
+                if (_isCheckedWay == value) return;
+                _isCheckedWay = value;
+
+                if (!value) return;
+                _maxValue = AccHistory.Data.Max(o => o.X);
+                _minValue = AccHistory.Data.Min(o => o.X);
+                _leftValue = MinValue + 0.3m * (MaxValue - MinValue);
+                _rightValue = MinValue + 0.6m * (MaxValue - MinValue);
+                OnPropertyChanged("IsCheckedWay");
+                UpdateRouteWay();
+            }
+        }
+
+        private bool _isCheckedAccelerate;
+        public bool IsCheckedAccelerate
+        {
+            get { return _isCheckedAccelerate; }
+            set
+            {
+                if (_isCheckedAccelerate == value) return;
+                _isCheckedAccelerate = value;
+
+                if (!value) return;
+                _maxValue = AccHistory.Data.Max(o => Math.Max(o.Y, o.Z));
+                _minValue = AccHistory.Data.Min(o => Math.Min(o.Y, o.Z));
+                _leftValue = _minValue + 0.3m * (_maxValue - _minValue);
+                _rightValue = _minValue + 0.6m * (_maxValue - _minValue);
+                OnPropertyChanged("IsCheckedAccelerate");
+                UpdateRouteAccelerate();
+            }
+        }
+
+        private bool _isEnabledRadio;
+        public bool IsEnabledRadio
+        {
+            get { return _isEnabledRadio; }
+            set
+            {
+                _isEnabledRadio = value;
+                OnPropertyChanged("IsEnabledRadio");
+            }
+        }
+
         private void DistanceSelectedDayChanged()
         {
-            if(SelectedHistoryRow!=null)
+            if (SelectedHistoryRow != null)
             {
-                if(VisCDStart==Visibility.Visible)
+                if (VisCDStart == Visibility.Visible)
                 {
                     _distanceStart = HistoryRows.IndexOf(SelectedHistoryRow);
                     VisCDStart = Visibility.Collapsed;
@@ -1299,9 +1525,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                     VisCDStop = Visibility.Collapsed;
                     CDStopDay = SelectedHistoryRow.Date.ToString("dd.MM.yy");
                 }
-                if(_distanceStart>-1 && _distanceStop>-1)
+                if (_distanceStart > -1 && _distanceStop > -1)
                 {
-                    if(_distanceStart<HistoryRows.Count() && _distanceStop<HistoryRows.Count())
+                    if (_distanceStart < HistoryRows.Count() && _distanceStop < HistoryRows.Count())
                     {
                         double dist = 0;
                         for (int i = _distanceStart; i <= _distanceStop; i++)
@@ -1314,10 +1540,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
-        private int _distanceStart=-1;
-        private int _distanceStop=-1;
-
-
+        private int _distanceStart = -1;
+        private int _distanceStop = -1;
         #endregion DISTANCE_CHECKER
 
         private enum RouteSelect
@@ -1330,7 +1554,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         public class LoadedHistoryRows
         {
-            public DateTime Date{get;set;}
+            public DateTime Date { get; set; }
 
             public string StringDate { get { return Date.ToString("dd.MM.yyyy"); } }
 
@@ -1345,7 +1569,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 }
             }
 
-            public int MiddleSpeed{get;set;}
+            public int MiddleSpeed { get; set; }
 
             public List<CarStateModel> Data { get; set; }
 
@@ -1353,5 +1577,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
             public string Stop { get; set; }
         }
+
+
     }
 }

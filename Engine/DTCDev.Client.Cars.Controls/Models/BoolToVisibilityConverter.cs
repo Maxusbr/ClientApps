@@ -22,6 +22,19 @@ namespace DTCDev.Client.Cars.Controls.Models
         }
     }
 
+    public sealed class InvertBoolToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return System.Convert.ToBoolean(value) ? Visibility.Hidden: Visibility.Visible ;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return (Visibility)value == Visibility.Visible;
+        }
+    }
+
     public class BoolToColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

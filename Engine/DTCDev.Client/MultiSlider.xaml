@@ -1,19 +1,21 @@
-﻿<UserControl x:Class="DTCDev.Client.MultiSlider"
+﻿<UserControl x:Name="userControl" x:Class="DTCDev.Client.MultiSlider"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             Height="40" d:DesignWidth="300" Loaded="UserControl_Loaded">
+             Height="40" d:DesignWidth="300" Loaded="UserControl_Loaded" LayoutUpdated="userControl_LayoutUpdated">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="4"/>
             <RowDefinition/>
-        </Grid.RowDefinitions>  
+        </Grid.RowDefinitions>
         <Border Background="LightGray" BorderBrush="DarkGray" BorderThickness="1" Grid.Row="1"/>
         <Canvas Grid.RowSpan="3" x:Name="cnvMove" MouseMove="Canvas_MouseMove" MouseLeftButtonUp="cnvMove_MouseLeftButtonUp">
-            <Border x:Name="brdrDecorator" Background="Blue" Height="2" Canvas.Top="16" Width="100"/>
+            <Border x:Name="brdrDecoratorFirst" Height="4" Canvas.Top="18" Width="100" Canvas.Left="0" Background="{Binding FirstDecoration, ElementName=userControl}"/>
+            <Border x:Name="brdrDecorator" Background="{Binding SecondDecoration, ElementName=userControl}" Height="4" Canvas.Top="18" Width="100" Canvas.Left="10"/>
+            <Border x:Name="brdrDecoratorLast" Height="4" Canvas.Top="18" Width="100" Canvas.Left="0" Background="{Binding ThirdDecoration, ElementName=userControl}"/>
             <Border x:Name="brdrLeft" Width="10" Height="20" Canvas.Top="10" Background="LightGray" BorderBrush="DarkGray" BorderThickness="2" Cursor="Hand" MouseLeftButtonDown="brdrLeft_MouseLeftButtonDown"/>
             <Border x:Name="brdrRight" Width="10" Height="20" Canvas.Top="10" Canvas.Right="0" Background="LightGray" BorderBrush="DarkGray" BorderThickness="2" Cursor="Hand" MouseLeftButtonDown="brdrRight_MouseLeftButtonDown"/>
         </Canvas>

@@ -80,6 +80,12 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            MultiValueSlider.ValueChanged += MultiValueSlider_ValueChanged;
+        }
+
+        void MultiValueSlider_ValueChanged(object sender, EventArgs e)
+        {
+            _hvm.UpdateRoutes();
         }
 
         bool _displayHistory=false;
@@ -91,18 +97,29 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
                 CarPoints.Opacity = .5;
                 _hvm.EnableHistory = true;
                 _hvm.LoadData();
+                _hvm.PropertyChanged += _hvm_PropertyChanged;
                 grdHistoryWork.Visibility = Visibility.Visible;
             }
             else
             {
                 CarPoints.Opacity = 1;
                 _hvm.EnableHistory = false;
+                _hvm.PropertyChanged -= _hvm_PropertyChanged;
                 grdHistoryWork.Visibility = Visibility.Collapsed;
             }
             _displayHistory = !_displayHistory;
             CarPin.Visibility = ParkingsPin.Visibility =
             RouteLine.Visibility = WarningLine.Visibility = ErrorLine.Visibility = OfflineLine.Visibility =
             _carZonesError.Visibility = grdHistoryWork.Visibility;
+        }
+
+        private void _hvm_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (!e.PropertyName.Equals("IsCheckedAccelerate") && !e.PropertyName.Equals("IsCheckedWay")) return;
+            if (_hvm.IsCheckedAccelerate || _hvm.IsCheckedWay)
+            {
+                MultiValueSlider.UpdatePos(_hvm.LeftValue, _hvm.RightValue, _hvm.MinValue, _hvm.MaxValue);
+            }
         }
 
         private void grdHistoryWork_MouseEnter(object sender, MouseEventArgs e)

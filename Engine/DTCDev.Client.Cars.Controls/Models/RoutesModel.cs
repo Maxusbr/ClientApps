@@ -48,6 +48,10 @@ namespace DTCDev.Client.Cars.Controls.Models
             }
         }
 
+        public void ClearRoutes()
+        {
+            Route.Clear(); WarningRoute.Clear(); ErrorRoute.Clear();
+        }
 
         public void ClearAll()
         {

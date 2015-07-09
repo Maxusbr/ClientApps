@@ -11,11 +11,13 @@
              xmlns:Car="clr-namespace:DTCDev.Client.Cars.Controls.Controls.Car" 
              xmlns:Models="clr-namespace:DTCDev.Client.Cars.Controls.Models" 
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:Client="clr-namespace:DTCDev.Client;assembly=DTCDev.Client"
              x:Class="DTCDev.Client.Cars.Controls.Controls.History.HistoryControl"
              mc:Ignorable="d" 
              d:DesignHeight="580" d:DesignWidth="900" Loaded="UserControl_Loaded">
 
     <UserControl.Resources>
+        <Models:InvertBoolToVisibilityConverter x:Key="InvertBoolToVisibilityConverter"/>
         <Models:BoolToColorConverter x:Key="BoolToColorConverter"/>
         <Models:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <Storyboard x:Key="stbShowDate" x:Name="stbShowDate">
@@ -24,22 +26,22 @@
         <Storyboard x:Key="stbHideDate" x:Name="stbHideDate">
             <DoubleAnimation Storyboard.TargetName="grdSelectDate" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.5"/>
         </Storyboard>
-        <Storyboard x:Key="stbShowDetails" Storyboard.TargetName="grdService" Storyboard.TargetProperty="(Grid.Width)">
+        <Storyboard x:Key="stbShowDetails" Storyboard.TargetName="grdService" Storyboard.TargetProperty="(FrameworkElement.Width)">
             <DoubleAnimation From="0" To="450" Duration="0:0:0.5"/>
         </Storyboard>
-        <Storyboard x:Key="stbHideDetails" Storyboard.TargetName="grdService" Storyboard.TargetProperty="(Grid.Width)">
+        <Storyboard x:Key="stbHideDetails" Storyboard.TargetName="grdService" Storyboard.TargetProperty="(FrameworkElement.Width)">
             <DoubleAnimation From="450" To="0" Duration="0:0:0.5"/>
         </Storyboard>
-        <Storyboard x:Key="stbOpenToolBar" Storyboard.TargetName="grdToolbar" Storyboard.TargetProperty="(Grid.Width)">
+        <Storyboard x:Key="stbOpenToolBar" Storyboard.TargetName="grdToolbar" Storyboard.TargetProperty="(FrameworkElement.Width)">
             <DoubleAnimation From="40" To="180" Duration="0:0:0.2"/>
         </Storyboard>
-        <Storyboard x:Key="stbCloseToolBar" Storyboard.TargetName="grdToolbar" Storyboard.TargetProperty="(Grid.Width)">
+        <Storyboard x:Key="stbCloseToolBar" Storyboard.TargetName="grdToolbar" Storyboard.TargetProperty="(FrameworkElement.Width)">
             <DoubleAnimation From="180" To="40" Duration="0:0:0.2"/>
         </Storyboard>
-        <Storyboard x:Key="stbDisplayWorkHistory" Storyboard.TargetName="grdHistoryWork" Storyboard.TargetProperty="(Grid.Opacity)">
+        <Storyboard x:Key="stbDisplayWorkHistory" Storyboard.TargetName="grdHistoryWork" Storyboard.TargetProperty="(UIElement.Opacity)">
             <DoubleAnimation From="0.3" To="1" Duration="0:0:0.1"/>
         </Storyboard>
-        <Storyboard x:Key="stbHideWorkHistory" Storyboard.TargetName="grdHistoryWork" Storyboard.TargetProperty="(Grid.Opacity)">
+        <Storyboard x:Key="stbHideWorkHistory" Storyboard.TargetName="grdHistoryWork" Storyboard.TargetProperty="(UIElement.Opacity)">
             <DoubleAnimation From="1" To="0.3" Duration="0:0:0.1"/>
         </Storyboard>
         <Style TargetType="{x:Type Button}" x:Key="feBtnStyle">
@@ -284,11 +286,11 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Map:MapItem}">
                         <Grid Margin="-10,-10,0,0">
-                            <Rectangle Fill="#FF061B40" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="20" RadiusX="4" RadiusY="4"/>
-                            <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="P" VerticalAlignment="Center" Foreground="White" FontSize="21.333" FontWeight="Bold" Margin="0,-5,0,0"/>
                             <Grid.ToolTip>
                                 <local:ParkingToolTipView />
                             </Grid.ToolTip>
+                            <Rectangle Fill="#FF061B40" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="20" RadiusX="4" RadiusY="4"/>
+                            <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="P" VerticalAlignment="Center" Foreground="White" FontSize="21.333" FontWeight="Bold" Margin="0,-5,0,0"/>
                         </Grid>
 
                     </ControlTemplate>
@@ -355,8 +357,8 @@
         <TextBlock FontWeight="Bold" HorizontalAlignment="Right" Text="{Binding MapCenter, Mode=OneWay}" Visibility="Collapsed" Margin="0,0,82,580" Grid.RowSpan="2" Width="0" Grid.Column="1"/>
 
         <!-- MAP -->
-        <Map:Map x:Name="Map" Center="{Binding MapCenter}" ZoomLevel="{Binding Path=ZoomLevel, Mode=TwoWay}"
-                 TargetCenter="{Binding MapCenterUser, Mode=TwoWay}" Grid.RowSpan="2" Grid.ColumnSpan="2">
+        <Map:Map x:Name="Map" Center="{Binding MapCenter}" ZoomLevel="{Binding ZoomLevel, Mode=TwoWay}"
+			TargetCenter="{Binding MapCenterUser, Mode=TwoWay}" Grid.RowSpan="2" Grid.ColumnSpan="2">
             <Map:MapItemsControl ItemsSource="{Binding ZoneSelect}" 
 				ItemTemplate="{StaticResource PolylineItemTemplate}" 
 				ItemContainerStyle="{StaticResource ZonesItemStyle}" Focusable="False" 
@@ -369,7 +371,7 @@
             <Map:MapColorLine x:Name="ErrorLine" Locations="{Binding ErrorRoute}" StrokeThickness="3" Stroke="DarkRed" IsClosed="False" Visibility="Collapsed" />
             <Map:MapColorLine x:Name="OfflineLine" Locations="{Binding OfflineRoute}" StrokeThickness="3" Stroke="Gray" IsClosed="False" Visibility="Collapsed" />
             <Map:MapItemsControl x:Name="ParkingsPin" ItemsSource="{Binding Parkings}"  Focusable="True"  IsSynchronizedWithCurrentItem="False" 
-                                 IsEnabled="True" ItemContainerStyle="{DynamicResource ParkingItemStyle}" Visibility="Collapsed" 
+				IsEnabled="True" ItemContainerStyle="{DynamicResource ParkingItemStyle}" Visibility="Collapsed" 
                                  />
             <Map:Pushpin x:Name="CarPin" Map:MapPanel.Location="{Binding Position.Location}" Background="{x:Null}" Visibility="Collapsed" >
                 <Map1:MapViewElement DataContext="{Binding Position}" Margin="-62,0,0,-77" Visibility="{Binding VisOnMap}"/>
@@ -378,7 +380,7 @@
         </Map:Map>
         <Grid Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left" Width="200" Height="220">
             <Border Width="32" Height="210" Background="White" HorizontalAlignment="Left" Margin="6,10" Opacity="0.8"/>
-            <Slider x:Name="sldrZoom" Grid.Row="1" SmallChange="1" VerticalAlignment="Top" HorizontalAlignment="Left" Width="200" RenderTransformOrigin="0.5,0.5" Margin="-78,100,0,0" Maximum="18" Minimum="1" Value="{Binding Path=ZoomLevel, Mode=TwoWay}">
+            <Slider x:Name="sldrZoom" Grid.Row="1" SmallChange="1" VerticalAlignment="Top" HorizontalAlignment="Left" Width="200" RenderTransformOrigin="0.5,0.5" Margin="-78,100,0,0" Maximum="18" Minimum="1" Value="{Binding ZoomLevel, Mode=TwoWay}">
                 <Slider.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform/>
@@ -393,7 +395,7 @@
 
 
 
-        
+
         <Grid x:Name="grdHistoryWork" Grid.Row="1" Opacity="0.3" Background="White" Grid.Column="1" Visibility="Collapsed">
             <Grid.Triggers>
                 <EventTrigger RoutedEvent="Mouse.MouseEnter">
@@ -413,18 +415,18 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="{Binding Path=LoadedText}" Margin="10,10,10,0" VerticalAlignment="Top"/>
-                <DataGrid Margin="10,7,70,40" ItemsSource="{Binding Path=HistoryRows}" AutoGenerateColumns="False" SelectedItem="{Binding Path=SelectedHistoryRow, Mode=TwoWay}" CanUserAddRows="False" Grid.Row="2">
+                <TextBlock Text="{Binding LoadedText}" Margin="10,10,10,0" VerticalAlignment="Top"/>
+                <DataGrid Margin="10,7,70,40" ItemsSource="{Binding HistoryRows}" AutoGenerateColumns="False" SelectedItem="{Binding SelectedHistoryRow, Mode=TwoWay}" CanUserAddRows="False" Grid.Row="2">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding Path=StringDate}" Header="Дата" Width="*" IsReadOnly="True"/>
-                        <DataGridTextColumn Binding="{Binding Path=Mileage}" Header="Пробег" IsReadOnly="True"/>
-                        <DataGridTextColumn Binding="{Binding Path=MiddleSpeed}" Header="Ср. скорость" IsReadOnly="True"/>
-                        <DataGridTextColumn Binding="{Binding Path=Start}" Header="Начало" IsReadOnly="True"/>
-                        <DataGridTextColumn Binding="{Binding Path=Stop}" Header="Окончание" IsReadOnly="True"/>
+                        <DataGridTextColumn Binding="{Binding StringDate}" Header="Дата" Width="*" IsReadOnly="True"/>
+                        <DataGridTextColumn Binding="{Binding Mileage}" Header="Пробег" IsReadOnly="True"/>
+                        <DataGridTextColumn Binding="{Binding MiddleSpeed}" Header="Ср. скорость" IsReadOnly="True"/>
+                        <DataGridTextColumn Binding="{Binding Start}" Header="Начало" IsReadOnly="True"/>
+                        <DataGridTextColumn Binding="{Binding Stop}" Header="Окончание" IsReadOnly="True"/>
                     </DataGrid.Columns>
                 </DataGrid>
-                <TextBlock Text="{Binding Path=DistanceAll}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,19,20" Grid.Row="2"/>
-                <Button Content="Загрузить еще 10 дней" Command="{Binding Path=LoadNext10Command}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,10" Grid.Row="2"/>
+                <TextBlock Text="{Binding DistanceAll}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,19,20" Grid.Row="2"/>
+                <Button Content="Загрузить еще 10 дней" Command="{Binding LoadNext10Command}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,10" Grid.Row="2"/>
                 <Grid Margin="0,7,10,40" Width="40" HorizontalAlignment="Right" x:Name="grdToolbar" Background="LightGray" Grid.Row="2">
                     <Grid.Triggers>
                         <EventTrigger RoutedEvent="Mouse.MouseEnter">
@@ -442,7 +444,7 @@
                         <ColumnDefinition/>
                         <ColumnDefinition Width="40"/>
                     </Grid.ColumnDefinitions>
-                    <Button Command="{Binding Path=ClickDistanceCommand}" x:Name="btnDistance" Width="34" Height="34" Grid.Column="1" Click="btnDistance_Click" >
+                    <Button Command="{Binding ClickDistanceCommand}" x:Name="btnDistance" Width="34" Height="34" Grid.Column="1" Click="btnDistance_Click" >
                         <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/way.png"/>
                     </Button>
                     <TextBlock TextWrapping="Wrap" FontStyle="Italic" Margin="5" Text="Пробег автомобиля за несколько дней"/>
@@ -459,11 +461,11 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Border Background="LightGray" Margin="2" BorderThickness="1" BorderBrush="Gray" Grid.RowSpan="2" Grid.ColumnSpan="3"/>
-                        <TextBlock Text="{Binding Path=CDStartDay}" Grid.Column="1" Margin="7"/>
-                        <TextBlock Text="{Binding Path=CDStopDay}" Grid.Column="1" Grid.Row="1" Margin="7"/>
-                        <Path Visibility="{Binding Path=VisCDStart}" Fill="Green" Data="M0,0 10,5 0,10" Margin="10"/>
-                        <Path Visibility="{Binding Path=VisCDStop}" Fill="Green" Data="M0,0 10,5 0,10" Margin="10" Grid.Row="1"/>
-                        <TextBlock Text="{Binding Path=TotalDistance, StringFormat='Всего {0} км'}" Grid.Column="2" Grid.RowSpan="2" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding CDStartDay}" Grid.Column="1" Margin="7"/>
+                        <TextBlock Text="{Binding CDStopDay}" Grid.Column="1" Grid.Row="1" Margin="7"/>
+                        <Path Visibility="{Binding VisCDStart}" Fill="Green" Data="M0,0 10,5 0,10" Margin="10"/>
+                        <Path Visibility="{Binding VisCDStop}" Fill="Green" Data="M0,0 10,5 0,10" Margin="10" Grid.Row="1"/>
+                        <TextBlock Text="{Binding TotalDistance, StringFormat=Всего \{0\} км}" Grid.Column="2" Grid.RowSpan="2" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Grid>
                 </Grid>
 
@@ -494,6 +496,19 @@
         </Grid>
 
         <Car:CarZonesError x:Name="_carZonesError" VerticalAlignment="Top" Grid.Row="2" DataContext="{Binding HistoryErrorVm}" Visibility="Collapsed" Height="0" Grid.ColumnSpan="2"/>
+        <Border Grid.RowSpan="2" Margin="50,10,0,0" Padding="10" HorizontalAlignment="Left" VerticalAlignment="Top" Background="White" Visibility="{Binding EnableHistory, Converter={StaticResource BoolToVisibilityConverter}}" >
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal" >
+                    <RadioButton Content="Скорость" Margin="0,0,10,0" IsChecked="{Binding IsCheckedSpeed, Mode=TwoWay}"/>
+                    <RadioButton Content="Дорога" Margin="0,0,10,0" IsChecked="{Binding IsCheckedWay, Mode=TwoWay}" IsEnabled="{Binding IsEnabledRadio}"/>
+                    <RadioButton Content="Ускорение" IsChecked="{Binding IsCheckedAccelerate, Mode=TwoWay}" IsEnabled="{Binding IsEnabledRadio}"/>
+                </StackPanel>
+                <Client:MultiSlider x:Name="MultiValueSlider" Height="40" Left="{Binding LeftValue, Mode=TwoWay}" Right="{Binding RightValue, Mode=TwoWay}" 
+                                    FirstDecoration="Green" SecondDecoration="Gold" ThirdDecoration="Red" Margin="0,10,0,0" 
+                                    Max="{Binding MaxValue, Mode=TwoWay}" Min="{Binding MinValue, Mode=TwoWay}" 
+                                    Visibility="{Binding IsCheckedSpeed, Converter={StaticResource InvertBoolToVisibilityConverter}}" />
+            </StackPanel>
+        </Border>
 
     </Grid>
 </UserControl>

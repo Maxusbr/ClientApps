@@ -24,6 +24,13 @@ namespace DTCDev.Client
             InitializeComponent();
         }
 
+        public event EventHandler ValueChanged;
+
+        protected virtual void OnValueChanged()
+        {
+            if (ValueChanged != null) ValueChanged(this, EventArgs.Empty);
+        }
+
         Point _lastPos;
         private bool _leftMove = false;
         private bool _rightMove = false;
@@ -39,6 +46,7 @@ namespace DTCDev.Client
             set
             {
                 _min = (double)value;
+                SetValue(MinProperty, value);
                 UpdatePos();
             }
         }
@@ -49,6 +57,7 @@ namespace DTCDev.Client
             set
             {
                 _max = (double)value;
+                SetValue(MaxProperty, value);
                 UpdatePos();
             }
         }
@@ -65,28 +74,71 @@ namespace DTCDev.Client
             set { SetValue(RightProperty, value); }
         }
 
-        private static DependencyProperty LeftProperty = DependencyProperty.Register("Left",
+        private static readonly DependencyProperty MinProperty = DependencyProperty.Register("Min",
+             typeof(decimal),
+              typeof(MultiSlider),
+              new PropertyMetadata(0m));
+
+        private static readonly DependencyProperty MaxProperty = DependencyProperty.Register("Max",
+             typeof(decimal),
+              typeof(MultiSlider),
+              new PropertyMetadata(100m));
+
+        private static readonly DependencyProperty LeftProperty = DependencyProperty.Register("Left",
              typeof(decimal),
               typeof(MultiSlider),
               new PropertyMetadata(OnLeftChanged));
 
-        private static DependencyProperty RightProperty = DependencyProperty.Register("Right",
+        private static readonly DependencyProperty RightProperty = DependencyProperty.Register("Right",
             typeof(decimal),
             typeof(MultiSlider),
             new PropertyMetadata(OnRightChanged));
 
+        private static readonly DependencyProperty FirstDecorationProperty = DependencyProperty.Register("FirstDecoration",
+             typeof(Brush),
+              typeof(MultiSlider),
+              new PropertyMetadata(null));
+
+        private static readonly DependencyProperty SecondDecorationProperty = DependencyProperty.Register("SecondDecoration",
+             typeof(Brush),
+              typeof(MultiSlider),
+              new PropertyMetadata(new SolidColorBrush(Colors.Blue)));
+
+        private static readonly DependencyProperty ThirdDecorationProperty = DependencyProperty.Register("ThirdDecoration",
+             typeof(Brush),
+              typeof(MultiSlider),
+              new PropertyMetadata(null));
+
+        public Brush FirstDecoration
+        {
+            get { return (Brush)GetValue(FirstDecorationProperty); }
+            set { SetValue(FirstDecorationProperty, value); }
+        }
+
+        public Brush SecondDecoration
+        {
+            get { return (Brush)GetValue(SecondDecorationProperty); }
+            set { SetValue(SecondDecorationProperty, value); }
+        }
+
+        public Brush ThirdDecoration
+        {
+            get { return (Brush)GetValue(ThirdDecorationProperty); }
+            set { SetValue(ThirdDecorationProperty, value); }
+        }
+
         private static void OnLeftChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            MultiSlider control = (MultiSlider)sender;
-            decimal v = (decimal)e.NewValue;
-            control._left = (double)v;;
+            var control = (MultiSlider)sender;
+            var v = (decimal)e.NewValue;
+            control._left = (double)v; ;
             control.UpdatePos();
         }
 
         private static void OnRightChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            MultiSlider control = (MultiSlider)sender;
-            decimal v = (decimal)e.NewValue;
+            var control = (MultiSlider)sender;
+            var v = (decimal)e.NewValue;
             control._right = (double)v;
             control.UpdatePos();
         }
@@ -94,52 +146,50 @@ namespace DTCDev.Client
 
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
-            if (_leftMove || _rightMove)
+            if (!_leftMove && !_rightMove) return;
+            var step = (cnvMove.ActualWidth - 10) / Math.Abs(_max - _min);
+            if (_leftMove)
             {
-                double step = (cnvMove.ActualWidth - 10) / (_max - _min);
-                if (_leftMove)
+                var p = e.GetPosition(cnvMove);
+                if (p.X < 5)
                 {
-                    Point p = e.GetPosition(cnvMove);
-                    if (p.X < 5)
-                    {
-                        Canvas.SetLeft(brdrLeft, 0);
-                        _left = 0;
-                    }
-                    else if (p.X > cnvMove.ActualWidth - 5)
-                    {
-                        Canvas.SetLeft(brdrLeft, cnvMove.ActualWidth - 5);
-                        _left = _max;
-                    }
-                    else
-                    {
-                        Canvas.SetLeft(brdrLeft, p.X - 5);
-                        _left = _min + p.X / step;
-                    }
-                    Left = (decimal)Math.Round(_left, 1);
+                    Canvas.SetLeft(brdrLeft, 0);
+                    _left = 0;
                 }
-                if (_rightMove)
+                else if (p.X > cnvMove.ActualWidth - 5)
                 {
-                    Point p = e.GetPosition(cnvMove);
-                    if (p.X < 5)
-                    {
-                        Canvas.SetLeft(brdrRight, 0);
-                        _right = 0;
-                    }
-                    else if (p.X > cnvMove.ActualWidth - 5)
-                    {
-                        Canvas.SetLeft(brdrRight, cnvMove.ActualWidth - 5);
-                        _right = _max;
-                    }
-                    else
-                    {
-                        Canvas.SetLeft(brdrRight, p.X - 5);
-                        _right = _min + p.X / step;
-                    }
-                    Right = (decimal)Math.Round(_right, 1);
+                    Canvas.SetLeft(brdrLeft, cnvMove.ActualWidth - 5);
+                    _left = _max;
                 }
-                //UpdateDecorator(step);
-                //DisplayValues();
+                else
+                {
+                    Canvas.SetLeft(brdrLeft, p.X - 5);
+                    _left = _min + p.X / step;
+                }
+                Left = (decimal)Math.Round(_left, 1);
             }
+            if (_rightMove)
+            {
+                var p = e.GetPosition(cnvMove);
+                if (p.X < 5)
+                {
+                    Canvas.SetLeft(brdrRight, 0);
+                    _right = 0;
+                }
+                else if (p.X > cnvMove.ActualWidth - 5)
+                {
+                    Canvas.SetLeft(brdrRight, cnvMove.ActualWidth - 5);
+                    _right = _max;
+                }
+                else
+                {
+                    Canvas.SetLeft(brdrRight, p.X - 5);
+                    _right = _min + p.X / step;
+                }
+                Right = (decimal)Math.Round(_right, 1);
+            }
+            //UpdateDecorator(step);
+            //DisplayValues();
         }
 
 
@@ -166,6 +216,7 @@ namespace DTCDev.Client
             _rightMove = false;
             brdrLeft.BorderBrush = new SolidColorBrush(Colors.DarkGray);
             brdrRight.BorderBrush = new SolidColorBrush(Colors.DarkGray);
+            OnValueChanged();
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -173,13 +224,22 @@ namespace DTCDev.Client
             UpdatePos();
         }
 
-        private void UpdatePos()
+        public void UpdatePos(decimal left, decimal right, decimal min, decimal max)
+        {
+            _max = (double)max;
+            _min = (double)min;
+            _left = (double)left;
+            _right = (double)right;
+            UpdatePos();
+        }
+
+        public void UpdatePos()
         {
             if (cnvMove.ActualWidth < 1)
                 return;
-            double step = (cnvMove.ActualWidth - 10) / (_max - _min);
-            Canvas.SetLeft(brdrLeft, step * (_left - _min));
-            Canvas.SetLeft(brdrRight, (_right - _min) * step);
+            double step = (cnvMove.ActualWidth - 10) / Math.Abs(_max - _min);
+            Canvas.SetLeft(brdrLeft, step * Math.Abs(_left - _min));
+            Canvas.SetLeft(brdrRight, Math.Abs(_right - _min) * step);
 
             UpdateDecorator(step);
 
@@ -189,7 +249,7 @@ namespace DTCDev.Client
                     cnvMove.Children.RemoveAt(i);
             }
 
-            double displayStep = (_max - _min) / 10;
+            double displayStep = Math.Abs(_max - _min) / 10;
             double displayStepRange = (cnvMove.ActualWidth - 25) / 10;
             for (int i = 0; i < 10; i++)
             {
@@ -208,14 +268,17 @@ namespace DTCDev.Client
 
         private void UpdateDecorator(double step)
         {
-
-            brdrDecorator.Width = (_right - _left) * step;
-            Canvas.SetLeft(brdrDecorator, step * (_left - _min));
+            var multy = cnvMove.ActualWidth / Math.Abs(_max - _min);
+            brdrDecoratorLast.Width = Math.Abs(_max - _right) * multy;
+            brdrDecoratorFirst.Width = Math.Abs(_left - _min)* multy;
+            brdrDecorator.Width = Math.Abs(_right - _left) * multy;
+            Canvas.SetLeft(brdrDecorator, multy * Math.Abs(_left - _min));
+            Canvas.SetLeft(brdrDecoratorLast, multy * Math.Abs(_right - _min));
         }
 
         private void DisplayValues()
         {
-            double step = (cnvMove.ActualWidth - 10) / (_max - _min);
+            double step = (cnvMove.ActualWidth - 10) / Math.Abs(_max - _min);
             for (int i = cnvMove.Children.Count - 1; i > -1; i--)
             {
                 if (cnvMove.Children[i].GetType() == typeof(TextBlock))
@@ -233,7 +296,7 @@ namespace DTCDev.Client
                 Tag = "vol"
             };
             cnvMove.Children.Add(txtLeft);
-            Canvas.SetLeft(txtLeft, step * (_left - _min));
+            Canvas.SetLeft(txtLeft, step * Math.Abs(_left - _min));
             Canvas.SetTop(txtLeft, 32);
 
 
@@ -245,8 +308,13 @@ namespace DTCDev.Client
                 Tag = "vol"
             };
             cnvMove.Children.Add(txtRight);
-            Canvas.SetLeft(txtRight, step * (_right - _min));
+            Canvas.SetLeft(txtRight, step * Math.Abs(_right - _min));
             Canvas.SetTop(txtRight, 32);
+        }
+
+        private void userControl_LayoutUpdated(object sender, EventArgs e)
+        {
+            
         }
     }
 }

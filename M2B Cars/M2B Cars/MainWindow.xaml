@@ -152,6 +152,6 @@
             <Image Cursor="Hand" MouseLeftButtonUp="Image_MouseLeftButtonUp_4" Source="Assets/Images/Menu/settings.png" Grid.Column="2" Height="32" Width="32" VerticalAlignment="Center" Margin="3,5,20,5"/>
         </Grid>
         <Border Background="Gray" Opacity="0.5" x:Name="brdrDisconnect" Grid.RowSpan="3" Visibility="Collapsed"/>
-        <ContentControl x:Name="LayoutRoot" Grid.RowSpan="2"/>
+        <ContentControl x:Name="LayoutRoot" Grid.RowSpan="2" d:IsHidden="True"/>
     </Grid>
 </Window>

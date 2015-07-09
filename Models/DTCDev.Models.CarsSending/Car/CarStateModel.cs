@@ -113,5 +113,9 @@ namespace DTCDev.Models.CarsSending.Car
                 return _seconds;
             }
         }
+
+        [JsonIgnore]
+        public DateTime Date { get { return new DateTime(yy, Mnth, dd, hh, mm, ss);} }
+
     }
 }
