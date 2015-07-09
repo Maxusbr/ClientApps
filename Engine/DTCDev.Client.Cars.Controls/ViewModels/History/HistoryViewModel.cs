@@ -157,7 +157,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
                 foreach (var itemLoc in DayStates)
                 {
-                    var item = AccHistory.Data.FirstOrDefault(o => o.Date.ToDateTime().Equals(itemLoc.Date)) ?? first;
+                    var item = AccHistory.Data.LastOrDefault(o => o.Date.ToDateTime() > firstLoc.Date && o.Date.ToDateTime() <= itemLoc.Date) ?? first;
                     var loc = new Location
                     {
                         Latitude = itemLoc.Lt / 10000.0,
@@ -167,6 +167,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                         curroute = SortLocation(prev, loc, curroute, Math.Max(item.Y, item.Z));
                     prev = loc;
                     first = item;
+                    firstLoc = itemLoc;
                 }
             });
             slowTask.ContinueWith(o =>
@@ -202,7 +203,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
                 foreach (var itemLoc in DayStates)
                 {
-                    var item = AccHistory.Data.FirstOrDefault(o => o.Date.ToDateTime().Equals(itemLoc.Date)) ?? first;
+                    var item = AccHistory.Data.LastOrDefault(o => o.Date.ToDateTime() > firstLoc.Date && o.Date.ToDateTime() <= itemLoc.Date) ?? first;
                     var loc = new Location
                     {
                         Latitude = itemLoc.Lt/10000.0,
@@ -212,6 +213,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                         curroute = SortLocation(prev, loc, curroute, item.X);
                     prev = loc;
                     first = item;
+                    firstLoc = itemLoc;
                 }
             });
             slowTask.ContinueWith(o =>
