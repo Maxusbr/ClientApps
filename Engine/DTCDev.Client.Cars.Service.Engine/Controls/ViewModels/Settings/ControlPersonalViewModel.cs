@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using DTCDev.Models.CarBase.CarStatData;
 using DTCDev.Models.Service;
+using DTCDev.Models;
 
 namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
 {
@@ -19,24 +20,15 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
         {
             _handler.EmployeeDataLoadComplete += Instance_PersonsDataLoadComplete;
             _handler.UserAddComplete += Instance_UserAddComplete;
-            _handler.RolesLoadComplete += Instance_RolesLoadComplete;
             _handler.GetRoles();
             _handler.GetPersons();
-            //if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
-            {
-                _listRoles.Add(new KVPBase { id = 1, Name = "Role 1" });
-                _listRoles.Add(new KVPBase { id = 2, Name = "Role 2" });
-                _listRoles.Add(new KVPBase { id = 3, Name = "Role 3" });
-                _listUsers.Add(new EmployeeViewModel(new EmployeeModel { Name = "User 1", Phone = "+7 789 7", Login = "User", Password = "pass", Mail = "w@e" }) { Role = _listRoles[1] });
-                _listUsers.Add(new EmployeeViewModel(new EmployeeModel { Name = "User 2", Phone = "+7 789 789 78 78", Login = "User2", Password = "pass2", Mail = "w2@e" }) { Role = _listRoles[0] });
-                SelectedUser = _listUsers[0];
-            }
+            _handler.EmployeeRolesLoaded += _handler_EmployeeRolesLoaded;
         }
 
-        private void Instance_RolesLoadComplete(List<KVPBase> list)
+        void _handler_EmployeeRolesLoaded(List<DicDataModel> data)
         {
             _listRoles.Clear();
-            foreach (var el in list)
+            foreach (var el in data)
                 _listRoles.Add(el);
         }
 
@@ -49,13 +41,18 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
 
         void Instance_PersonsDataLoadComplete(object sender, EventArgs e)
         {
-
+            _listUsers.Clear();
+            List<EmployeeModel> data = (List<EmployeeModel>)sender;
+            foreach (var item in data)
+            {
+                _listUsers.Add(new EmployeeViewModel(item));
+            }
         }
 
         private readonly ObservableCollection<EmployeeViewModel> _listUsers = new ObservableCollection<EmployeeViewModel>();
         private EmployeeViewModel _selectedUser;
-        private readonly ObservableCollection<KVPBase> _listRoles = new ObservableCollection<KVPBase>();
-        private KVPBase _selectedRole;
+        private readonly ObservableCollection<DicDataModel> _listRoles = new ObservableCollection<DicDataModel>();
+        private DicDataModel _selectedRole;
 
         /// <summary>
         /// Список пользователей
@@ -72,8 +69,13 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
                 if (_selectedUser != null) _selectedUser.PropertyChanged += SelectedUserOnPropertyChanged;
                 OnPropertyChanged("SelectedUser");
                 if (value != null && value.IdRole > 0)
-                    SelectedRole = ListRoles.FirstOrDefault(o => o.id == value.IdRole);
+                    SelectedRole = ListRoles.FirstOrDefault(o => o.ID == value.IdRole);
                 CompleteSaveEnabled = false;
+
+                if (value == null)
+                    VisEdit = Visibility.Collapsed;
+                else
+                    VisEdit = Visibility.Visible;
             }
         }
 
@@ -85,8 +87,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
         /// <summary>
         /// Список должностей
         /// </summary>
-        public ObservableCollection<KVPBase> ListRoles { get { return _listRoles; } }
-        public KVPBase SelectedRole
+        public ObservableCollection<DicDataModel> ListRoles { get { return _listRoles; } }
+        public DicDataModel SelectedRole
         {
             get { return _selectedRole; }
             set
@@ -110,6 +112,17 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             }
         }
 
+        private Visibility _visEdit = Visibility.Collapsed;
+        public Visibility VisEdit
+        {
+            get { return _visEdit; }
+            set
+            {
+                _visEdit = value;
+                this.OnPropertyChanged("VisEdit");
+            }
+        }
+
         private RelayCommand _completeSaveCommand;
         public RelayCommand CompleteSaveCommand
         {
@@ -121,9 +134,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             if (SelectedUser == null) return;
             _handler.EditUser(SelectedUser.Model);
             //Временно пока не работает запрос
-            if (SelectedUser.Model.id != 0) return;
-            SelectedUser.Model.id = ListUsers.Count;
-            ListUsers.Add(SelectedUser);
+            //if (SelectedUser.Model.id != 0) return;
+            //SelectedUser.Model.id = ListUsers.Count;
+            //ListUsers.Add(SelectedUser);
+            VisEdit = Visibility.Collapsed;
         }
 
         private RelayCommand _addUserCommand;
@@ -136,6 +150,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
         {
             SelectedUser = new EmployeeViewModel();
             SelectedRole = null;
+            VisEdit = Visibility.Visible;
         }
 
     }

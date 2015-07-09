@@ -5,13 +5,14 @@ using System.Text;
 using DTCDev.Client.ViewModel;
 using DTCDev.Models.CarBase.CarStatData;
 using DTCDev.Models.Service;
+using DTCDev.Models;
 
 namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
 {
     public class EmployeeViewModel : ViewModelBase
     {
         private readonly EmployeeModel _model;
-        private KVPBase _role;
+        private DicDataModel _role;
 
         public EmployeeViewModel()
         {
@@ -134,13 +135,13 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             }
         }
 
-        public KVPBase Role
+        public DicDataModel Role
         {
             get { return _role; }
             set
             {
                 _role = value;
-                _model.idRole = value != null ? value.id : 0;
+                _model.idRole = value != null ? value.ID : 0;
                 OnPropertyChanged("Role");
             }
         }

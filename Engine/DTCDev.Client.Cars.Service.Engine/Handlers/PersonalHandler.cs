@@ -61,13 +61,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
         public event EventHandler UserDataLoadComplete;
         public event EventHandler EmployeeDataLoadComplete;
 
-        public delegate void DataLoadCompleteHandler(List<KVPBase> list);
-
-        public event DataLoadCompleteHandler RolesLoadComplete;
-        protected virtual void OnRolesLoadComplete(List<KVPBase> list)
-        {
-            if (RolesLoadComplete != null) RolesLoadComplete(list);
-        }
 
         public delegate void UserAddCompleteHandler(EmployeeModel model);
         public event UserAddCompleteHandler UserAddComplete;
@@ -179,7 +172,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
         /// <param name="model"></param>
         internal void EditUser(EmployeeModel model)
         {
-            SendRequest("UE" + JsonConvert.SerializeObject(model));
+            if (SelectedDep == null)
+                return;
+            model.DepartmentsIDs.Add(SelectedDep.id);
+            SendRequest("UO" + JsonConvert.SerializeObject(model));
         }
 
         /// <summary>
@@ -238,7 +234,11 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                     break;
                 case 'n':
                 case 'N':
-
+                    ParseRoles(row);
+                    break;
+                case 'o':
+                case 'O':
+                    GetPersons();
                     break;
             }
         }
@@ -298,7 +298,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             {
                 List<EmployeeModel> data = JsonConvert.DeserializeObject<List<EmployeeModel>>(row);
                 if (EmployeeDataLoadComplete != null)
-                    EmployeeDataLoadComplete(this, new EventArgs());
+                    EmployeeDataLoadComplete(data, new EventArgs());
             }
             catch { }
         }
