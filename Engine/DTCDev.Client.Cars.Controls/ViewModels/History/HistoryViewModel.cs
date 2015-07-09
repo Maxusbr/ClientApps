@@ -86,7 +86,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         {
             AccHistory = model;
             IsEnabledRadio = true;
-            if (!IsCheckedSpeed) UpdateRoutes();
+            if (!IsCheckedSpeed) UpdateRoutes(true);
         }
 
         void Instance_OBDLoaded(OBDHistoryDataModel model)
@@ -102,11 +102,33 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         /// <summary>
         /// Обновление трека
         /// </summary>
-        internal void UpdateRoutes()
+        internal void UpdateRoutes(bool recalcValues)
         {
-            _routesModel.ClearRoutes();
-            if (IsCheckedWay) UpdateRouteWay();
-            if (IsCheckedAccelerate) UpdateRouteAccelerate();
+            _routesModel = new RoutesModel();
+            if (IsCheckedWay)
+            {
+                if (recalcValues)
+                {
+                    _maxValue = AccHistory.Data.Max(o => o.X);
+                    _minValue = AccHistory.Data.Min(o => o.X);
+                    _leftValue = MinValue + 0.3m * (MaxValue - MinValue);
+                    _rightValue = MinValue + 0.6m * (MaxValue - MinValue);
+                    OnPropertyChanged("IsCheckedWay");
+                }
+                UpdateRouteWay();
+            }
+            if (IsCheckedAccelerate)
+            {
+                if (recalcValues)
+                {
+                    _maxValue = AccHistory.Data.Max(o => Math.Max(o.Y, o.Z));
+                    _minValue = AccHistory.Data.Min(o => Math.Min(o.Y, o.Z));
+                    _leftValue = _minValue + 0.3m*(_maxValue - _minValue);
+                    _rightValue = _minValue + 0.6m*(_maxValue - _minValue);
+                    OnPropertyChanged("IsCheckedAccelerate");
+                }
+                UpdateRouteAccelerate();
+            }
         }
 
         /// <summary>
@@ -140,8 +162,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                     {
                         Latitude = itemLoc.Lt / 10000.0,
                         Longitude = itemLoc.Ln / 10000.0
-                    };
-                    curroute = SortLocation(prev, loc, curroute, Math.Max(item.Y, item.Z));
+                    }; 
+                    if (itemLoc.Spd > 0)
+                        curroute = SortLocation(prev, loc, curroute, Math.Max(item.Y, item.Z));
                     prev = loc;
                     first = item;
                 }
@@ -185,7 +208,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                         Latitude = itemLoc.Lt/10000.0,
                         Longitude = itemLoc.Ln/10000.0
                     };
-                    curroute = SortLocation(prev, loc, curroute, item.X);
+                    if (itemLoc.Spd > 0)
+                        curroute = SortLocation(prev, loc, curroute, item.X);
                     prev = loc;
                     first = item;
                 }
@@ -951,11 +975,11 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 DayStates = SelectedHistoryRow.Data;
                 SortDataByDate(true);
             }
-
+            AccHistory = null;
             HistoryHandler.Instance.StartLoadDayLines(Position.Car.Id, SelectedHistoryRow.Date);
             HistoryHandler.Instance.StartLoadOBD(Position.Car.Id, SelectedHistoryRow.Date);
             HistoryHandler.Instance.StartLoadAcc(Position.Car.Id, SelectedHistoryRow.Date);
-            AccHistory = null;
+            
         }
 
         private void SortDataByDate(bool savecache)
@@ -1023,7 +1047,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                                 {
                                     var trrr = 0;
                                 }
-                                curroute = SortLocation(prev, loc, curroute, item.Spd);
+                                if(IsCheckedSpeed)
+                                    curroute = SortLocation(prev, loc, curroute, item.Spd);
                                 dist += curdist;
                                 prev = loc;
                             }

@@ -318,7 +318,8 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
                 if(accHist!=null)
                 {
                     if (AccLoaded != null)
-                        AccLoaded(accHist);
+                        if (Application.Current != null)
+                            Application.Current.Dispatcher.BeginInvoke(new Action(() => AccLoaded(accHist)));
                 }
             }
             catch 

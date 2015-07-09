@@ -85,7 +85,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
 
         void MultiValueSlider_ValueChanged(object sender, EventArgs e)
         {
-            _hvm.UpdateRoutes();
+            _hvm.UpdateRoutes(false);
         }
 
         bool _displayHistory=false;

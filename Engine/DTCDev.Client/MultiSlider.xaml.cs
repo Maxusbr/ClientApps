@@ -163,7 +163,7 @@ namespace DTCDev.Client
                 }
                 else
                 {
-                    Canvas.SetLeft(brdrLeft, p.X - 5);
+                    //Canvas.SetLeft(brdrLeft, p.X - 5);
                     _left = _min + p.X / step;
                 }
                 Left = (decimal)Math.Round(_left, 1);
@@ -183,7 +183,7 @@ namespace DTCDev.Client
                 }
                 else
                 {
-                    Canvas.SetLeft(brdrRight, p.X - 5);
+                    //Canvas.SetLeft(brdrRight, p.X - 5);
                     _right = _min + p.X / step;
                 }
                 Right = (decimal)Math.Round(_right, 1);
