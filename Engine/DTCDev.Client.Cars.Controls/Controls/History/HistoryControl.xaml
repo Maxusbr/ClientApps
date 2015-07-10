@@ -396,7 +396,7 @@
 
 
 
-        <Grid x:Name="grdHistoryWork" Grid.Row="1" Background="White" Grid.Column="1" Opacity="0.3">
+        <Grid x:Name="grdHistoryWork" Grid.Row="1" Background="White" Grid.Column="1" Opacity="0.3" Visibility="Collapsed">
             <Grid.Triggers>
                 <EventTrigger RoutedEvent="Mouse.MouseEnter">
                     <BeginStoryboard Storyboard="{StaticResource stbDisplayWorkHistory}"/>
