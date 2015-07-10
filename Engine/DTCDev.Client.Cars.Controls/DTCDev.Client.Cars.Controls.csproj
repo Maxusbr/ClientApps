@@ -106,6 +106,7 @@
     <Compile Include="Controls\History\History_SatCount.xaml.cs">
       <DependentUpon>History_SatCount.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\History\LablesSlider.cs" />
     <Compile Include="Controls\History\LinesHistoryPresenter.xaml.cs">
       <DependentUpon>LinesHistoryPresenter.xaml</DependentUpon>
     </Compile>
@@ -126,6 +127,9 @@
     </Compile>
     <Compile Include="Controls\History\ParkingToolTipView.xaml.cs">
       <DependentUpon>ParkingToolTipView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\History\PlayerControl.xaml.cs">
+      <DependentUpon>PlayerControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\History\StateDatePresenter.xaml.cs">
       <DependentUpon>StateDatePresenter.xaml</DependentUpon>
@@ -292,6 +296,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\History\ParkingToolTipView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\History\PlayerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

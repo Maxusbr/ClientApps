@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interactivity;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -81,7 +82,10 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             MultiValueSlider.ValueChanged += MultiValueSlider_ValueChanged;
+            
         }
+
+
 
         void MultiValueSlider_ValueChanged(object sender, EventArgs e)
         {

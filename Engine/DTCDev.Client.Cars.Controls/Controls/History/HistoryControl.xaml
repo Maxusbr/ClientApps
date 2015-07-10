@@ -10,7 +10,6 @@
              xmlns:Map1="clr-namespace:DTCDev.Client.Cars.Controls.Controls.Map" 
              xmlns:Car="clr-namespace:DTCDev.Client.Cars.Controls.Controls.Car" 
              xmlns:Models="clr-namespace:DTCDev.Client.Cars.Controls.Models" 
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:Client="clr-namespace:DTCDev.Client;assembly=DTCDev.Client"
              xmlns:busy="clr-namespace:DTCDev.Client.Busy;assembly=DTCDev.Client"
              x:Class="DTCDev.Client.Cars.Controls.Controls.History.HistoryControl"
@@ -397,7 +396,7 @@
 
 
 
-        <Grid x:Name="grdHistoryWork" Grid.Row="1" Opacity="0.3" Background="White" Grid.Column="1" Visibility="Collapsed">
+        <Grid x:Name="grdHistoryWork" Grid.Row="1" Background="White" Grid.Column="1" Opacity="0.3">
             <Grid.Triggers>
                 <EventTrigger RoutedEvent="Mouse.MouseEnter">
                     <BeginStoryboard Storyboard="{StaticResource stbDisplayWorkHistory}"/>
@@ -408,6 +407,7 @@
             </Grid.Triggers>
             <Grid.RowDefinitions>
                 <RowDefinition/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid>
@@ -471,7 +471,8 @@
                 </Grid>
 
             </Grid>
-            <ScrollViewer Grid.Row="1"  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            
+            <ScrollViewer Grid.Row="2"  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="32"/>
@@ -494,6 +495,11 @@
                     <local:AccDataPresenter Grid.Row="4" Data="{Binding AccHistory}"/>
                 </Grid>
             </ScrollViewer>
+            <local:PlayerControl Grid.Row="1" HorizontalAlignment="Center" 
+                                 IsPlayed="{Binding IsPlayerStart, Mode=TwoWay}" 
+                                 StartTime="{Binding PlayerStartTime, Mode=TwoWay}" 
+                                 EndTime="{Binding PlayerEndTime, Mode=TwoWay}" 
+                                 CurentTime="{Binding PlayerCurentTime, Mode=TwoWay}" />
         </Grid>
 
         <Car:CarZonesError x:Name="_carZonesError" VerticalAlignment="Top" Grid.Row="2" DataContext="{Binding HistoryErrorVm}" Visibility="Collapsed" Height="0" Grid.ColumnSpan="2"/>

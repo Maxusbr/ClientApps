@@ -1,0 +1,45 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:history="clr-namespace:DTCDev.Client.Cars.Controls.Controls.History" x:Name="Player"
+             x:Class="DTCDev.Client.Cars.Controls.Controls.History.PlayerControl" 
+             mc:Ignorable="d" d:DesignWidth="445" Loaded="UserControl_Loaded" 
+             >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="ToStart" Width="34" Height="34" Margin="4" Click="ToStart_Click" >
+            <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/player/arrow-left-fast.png"/>
+        </Button>
+        <Button x:Name="ToBack" Width="34" Height="34" Grid.Column="1" Margin="4" Click="ToBack_Click" >
+            <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/player/arrow-left.png"/>
+        </Button>
+        <ToggleButton x:Name="ToStop" Width="34" Height="34" Margin="4" Grid.Column="2" Click="ToStop_Click" IsChecked="True" >
+            <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/player/pause.png"/>
+        </ToggleButton>
+        <ToggleButton x:Name="ToPlay" Width="34" Height="34" Grid.Column="3" Margin="4" Click="ToPlay_Click" >
+            <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/player/play.png"/>
+        </ToggleButton>
+        <Button x:Name="ToForward" Width="34" Height="34" Margin="4" Grid.Column="4" Click="ToForward_Click" >
+            <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/player/arrow-right.png"/>
+        </Button>
+        <Button x:Name="ToEnd" Width="34" Height="34" Grid.Column="5" Margin="4" Click="ToEnd_Click" >
+            <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/player/arrow-right-fast.png"/>
+        </Button>
+        <history:LablesSlider Maximum="50" Minimum="5" SmallChange="5" TickFrequency="5" Grid.Row="1" Grid.ColumnSpan="6"
+                              Value="{Binding SpeedValue, ElementName=Player, Mode=TwoWay}" 
+                              Grid.Column="0" LargeChange="5" TickPlacement="BottomRight" Margin="4,4,4,20" IsSnapToTickEnabled="True"/>
+    </Grid>
+</UserControl>

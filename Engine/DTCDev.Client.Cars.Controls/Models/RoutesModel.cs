@@ -50,12 +50,24 @@ namespace DTCDev.Client.Cars.Controls.Models
 
         public void ClearRoutes()
         {
-            Route.Clear(); WarningRoute.Clear(); ErrorRoute.Clear();
+            Route.Clear(); WarningRoute.Clear(); ErrorRoute.Clear(); TimeRoute.Clear();
         }
 
         public void ClearAll()
         {
-            Route.Clear(); WarningRoute.Clear(); ErrorRoute.Clear(); Parkings.Clear();
+            Route.Clear(); WarningRoute.Clear(); ErrorRoute.Clear(); Parkings.Clear(); TimeRoute.Clear();
         }
+
+        private readonly ObservableCollection<RoutePoint> _timeRoute = new ObservableCollection<RoutePoint>();
+        public ObservableCollection<RoutePoint> TimeRoute
+        {
+            get { return _timeRoute; }
+        }
+    }
+
+    public class RoutePoint
+    {
+        public Location Point { get; set; }
+        public DateTime Date { get; set; }
     }
 }
