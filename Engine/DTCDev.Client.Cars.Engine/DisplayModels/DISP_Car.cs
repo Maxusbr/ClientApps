@@ -22,8 +22,8 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
         public SCarModel Car
         {
             get { return _car; }
-            set 
-            { 
+            set
+            {
                 _car = value;
                 if (value == null)
                     return;
@@ -39,15 +39,15 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
         public SCarData Data
         {
             get { return _data; }
-            set 
-            { 
+            set
+            {
                 _data = value;
                 this.OnPropertyChanged("Data");
                 Update();
                 if (value == null)
                     return;
-                this.Location = new Location((double)(value.Navigation.Latitude / 10000.0d), (double)(value.Navigation.Longitude / 10000.0d));
-                this.Current_Speed = value.Navigation.Speed/10;
+                Location = new Location(value.Navigation.Latitude / 10000.0d, value.Navigation.Longitude / 10000.0d);
+                Current_Speed = value.Navigation.Speed / 10.0;
                 CalculateFuelData();
             }
         }
@@ -85,7 +85,7 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
             }
         }
 
-        private int  _zoneId = -1;
+        private int _zoneId = -1;
         /// <summary>
         /// принадлежность автомобиля к зоне
         /// </summary>
@@ -102,7 +102,7 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
             }
         }
 
-        private string  id;
+        private string id;
         /// <summary>
         /// Идентификатор автомобиля
         /// </summary>
@@ -262,13 +262,21 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
         {
             get
             {
-                return Data != null ? Data.DateUpdate.ToString(): "";
+                return Data != null ? Data.DateUpdate.ToString() : "";
             }
         }
 
         public DateTime DateLastUpdate
         {
-            get { return Data != null ? new DateTime(Data.DateUpdate.Y, Data.DateUpdate.M, Data.DateUpdate.D, Data.DateUpdate.hh, Data.DateUpdate.mm, Data.DateUpdate.ss) : new DateTime(); }
+            get { return Data != null ? Data.DateUpdate.ToDateTime() : new DateTime(); }
+        }
+
+        public string HistroryTime
+        {
+            get
+            {
+                return string.Format("{0:00}:{1:00}:{2:00}", DateLastUpdate.Hour, DateLastUpdate.Minute, DateLastUpdate.Second);
+            }
         }
 
         /// <summary>
@@ -276,7 +284,7 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
         /// </summary>
         public double Angle
         {
-            get { return Data != null ? Data.Navigation.Speed/10 - 30 : -30; }
+            get { return Data != null ? Data.Navigation.Speed / 10 - 30 : -30; }
         }
 
         /// <summary>
@@ -284,7 +292,7 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
         /// </summary>
         public string CountSatelite
         {
-            get { return Data != null ? Data.Navigation.Sattelites.ToString():""; }
+            get { return Data != null ? Data.Navigation.Sattelites.ToString() : ""; }
         }
 
         private string _vin = "";
@@ -296,6 +304,17 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
             {
                 _vin = value;
                 this.OnPropertyChanged("VIN");
+            }
+        }
+
+        private bool _historyDetailView;
+        public bool HistoryDetailView
+        {
+            get { return _historyDetailView; }
+            set
+            {
+                _historyDetailView = value;
+                OnPropertyChanged("HistoryDetailView");
             }
         }
 
@@ -343,12 +362,13 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
 
         public void Update()
         {
-            LevelGsmInd.Update(Data != null ? Data.GSM_Level: 0);
-            SateliteInd.Update(Data != null &&  Data.Navigation != null ? Data.Navigation.Sattelites : 0);
+            LevelGsmInd.Update(Data != null ? Data.GSM_Level : 0);
+            SateliteInd.Update(Data != null && Data.Navigation != null ? Data.Navigation.Sattelites : 0);
             OnPropertyChanged("DateNavigation");
             OnPropertyChanged("CountSatelite");
             OnPropertyChanged("Angle");
             OnPropertyChanged("FuelLevel");
+            OnPropertyChanged("HistroryTime");
         }
 
 
@@ -443,6 +463,5 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
 
             public string Value { get; set; }
         }
-
     }
 }

@@ -22,6 +22,7 @@ using DTCDev.Client.Controls.Map;
 using DTCDev.Client.ViewModel;
 using DTCDev.Models.CarsSending.Car;
 using DTCDev.Models.CarsSending.Navigation;
+using DTCDev.Models.Date;
 using Microsoft.Office.Interop.Excel;
 using RelayCommand = DTCDev.Client.ViewModel.RelayCommand;
 using DTCDev.Models;
@@ -386,11 +387,14 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             {
                 _selectedRow = value;
                 this.OnPropertyChanged("SelectedHistoryRow");
+                OnPropertyChanged("VisablePlayer");
                 SortData();
                 if (_distanceCheckActive)
                     DistanceSelectedDayChanged();
             }
         }
+
+        public bool VisablePlayer { get { return SelectedHistoryRow != null; } }
 
 
         public DISP_Car SelectedMapObject
@@ -1640,7 +1644,22 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         {
             var pos = _routesModel.TimeRoute.OrderBy(o => o.Date).FirstOrDefault(f => f.Date >= time);
             if (!EnableHistory || pos == null || Position == null) return;
-            Position.Location = pos.Point;
+            var detail = DayStates.FirstOrDefault(o => o.Date.Equals(pos.Date));
+            if (detail != null)
+            {
+                Position.Data = new SCarData
+                {
+                    Navigation = new SNaviData
+                        {
+                            Sattelites = detail.St,
+                            Speed = detail.Spd,
+                            Latitude = detail.Lt,
+                            Longitude = detail.Ln
+                        },
+                    DateUpdate = new DateTimeDataModel(pos.Date)
+                };
+                Position.HistoryDetailView = true;
+            }
             MapCenter = MapCenterUser = pos.Point;
         }
 

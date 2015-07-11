@@ -38,7 +38,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         {
             var control = (PlayerControl)sender;
             if (control == null) return;
-            control.IsPlayed = (bool) e.NewValue;
+            control.IsPlayed = (bool)e.NewValue;
         }
 
         private static readonly DependencyProperty StartTimeProperty = DependencyProperty.Register("StartTime",
@@ -96,8 +96,8 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             set
             {
                 _isPlayed = value;
-                ToPlay.IsChecked = value;
-                ToStop.IsChecked = !value;
+                ToPlay.Visibility = value ? Visibility.Collapsed : Visibility.Visible;
+                ToStop.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
                 if (value) PlayLoop();
             }
         }

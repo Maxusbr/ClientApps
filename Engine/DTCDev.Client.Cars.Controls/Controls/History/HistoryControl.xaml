@@ -495,7 +495,7 @@
                     <local:AccDataPresenter Grid.Row="4" Data="{Binding AccHistory}"/>
                 </Grid>
             </ScrollViewer>
-            <local:PlayerControl Grid.Row="1" HorizontalAlignment="Center" 
+            <local:PlayerControl Grid.Row="1" HorizontalAlignment="Center" Visibility="{Binding VisablePlayer, Converter={StaticResource BoolToVisibilityConverter}}"
                                  IsPlayed="{Binding IsPlayerStart, Mode=TwoWay}" 
                                  StartTime="{Binding PlayerStartTime, Mode=TwoWay}" 
                                  EndTime="{Binding PlayerEndTime, Mode=TwoWay}" 
