@@ -3,11 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:Map="clr-namespace:DTCDev.Client.Controls.Map;assembly=DTCDev.Client.Controls.Map"
-             xmlns:Models="clr-namespace:DTCDev.Client.Cars.Controls.Models"
-             xmlns:local="clr-namespace:DTCDev.Client.Cars.Controls.Controls.Map" 
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
-             xmlns:DataPresenter="clr-namespace:DTCDev.Client.DataPresenter;assembly=DTCDev.Client" 
+             xmlns:dataPresenter="clr-namespace:DTCDev.Client.DataPresenter;assembly=DTCDev.Client" 
              x:Class="DTCDev.Client.Cars.Controls.Controls.Car.CarDetailsView" 
              mc:Ignorable="d" 
              Height="230" d:DesignWidth="700" MinWidth="700">
@@ -58,9 +54,9 @@
                     </TransformGroup>
                 </Ellipse.RenderTransform>
             </Ellipse>
-            <DataPresenter:MAnalogPresenter x:Name="speedPresenter" Milest="km/h" Stop="180" Width="200" Height="200" Margin="15,5,5,5" Grid.Row="1" />
-            <DataPresenter:MAnalogPresenter x:Name="engineRPMPresenter" Milest="RPM" Width="200" Height="200" Stop="6000" Grid.Column="2" Margin="5,5,15,5" Grid.Row="1"/>
-            <DataPresenter:MAnalogSmallPresenter x:Name="sattelitePresenter" HorizontalAlignment="Left" Stop="30" Margin="123,112,0,0" VerticalAlignment="Top" Grid.Row="1"/>
+            <dataPresenter:MAnalogPresenter x:Name="speedPresenter" Milest="km/h" Stop="180" Width="200" Height="200" Margin="15,5,5,5" Grid.Row="1" />
+            <dataPresenter:MAnalogPresenter x:Name="engineRPMPresenter" Milest="RPM" Width="200" Height="200" Stop="6000" Grid.Column="2" Margin="5,5,15,5" Grid.Row="1"/>
+            <dataPresenter:MAnalogSmallPresenter x:Name="sattelitePresenter" HorizontalAlignment="Left" Stop="30" Margin="123,112,0,0" VerticalAlignment="Top" Grid.Row="1"/>
             <Border Grid.Column="1" Grid.Row="1" Margin="10" BorderThickness="2,0,2,0" BorderBrush="#FF5B5B5B">
                 <Border.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -76,7 +72,12 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <ScrollViewer Grid.Row="1">
-                            <StackPanel x:Name="stkOBD"/>
+                            <Grid x:Name="stkOBD">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition x:Name="coltest"/>
+                                </Grid.ColumnDefinitions>
+                            </Grid>
                         </ScrollViewer>
                         <Grid Grid.Row="2">
                             <Grid.ColumnDefinitions>

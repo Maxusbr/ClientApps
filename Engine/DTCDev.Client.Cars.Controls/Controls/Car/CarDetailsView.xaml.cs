@@ -23,7 +23,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
     /// </summary>
     public partial class CarDetailsView : UserControl
     {
-        CarDetailsViewModel _vm = new CarDetailsViewModel();
+        readonly CarDetailsViewModel _vm = new CarDetailsViewModel();
         public CarDetailsView()
         {
             InitializeComponent();
@@ -69,25 +69,54 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
             //else
             //    txtFuel.Text = _currentCar.FuelLevel + " л.";
 
-            PIDConverter converter = new PIDConverter();
-            //stkOBD.Children.Clear();
-            foreach (var item in _currentCar.OBD)
+            var converter = new PIDConverter();
+            stkOBD.Children.Clear();stkOBD.RowDefinitions.Clear();
+            for (var i = 0; i< _currentCar.OBD.Count; i++)
             {
-                StackPanel stk = new StackPanel();
-                stk.Orientation = Orientation.Horizontal;
-                TextBlock txtText = new TextBlock();
-                txtText.TextWrapping = TextWrapping.Wrap;
-                txtText.Text = converter.GetPidInfo(item.Key);
-                stk.Children.Add(txtText);
-                txtText.Margin = new Thickness(2, 5, 2, 5);
+                stkOBD.RowDefinitions.Add(new RowDefinition());
+                var item = _currentCar.OBD[i];
+                var txtText = new TextBlock {TextWrapping = TextWrapping.Wrap, VerticalAlignment = VerticalAlignment.Center, Foreground = new SolidColorBrush(Colors.White),
+                    Text = converter.GetPidInfo(item.Key), Margin = new Thickness(2)};
+                txtText.SetValue(Grid.RowProperty, i); txtText.SetValue(Grid.ColumnProperty, 0);
+                stkOBD.Children.Add(txtText);
+                
+                var outBorder = new Border
+                {
+                    Tag = item.Value, Uid = item.Key,
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    BorderThickness = new Thickness(1), Margin = new Thickness(2, 2, 10, 2),
+                    BorderBrush = new SolidColorBrush(Colors.White)
+                };
+                outBorder.SetValue(Grid.RowProperty, i);
+                outBorder.SetValue(Grid.ColumnProperty, 1);
+                outBorder.SizeChanged += outBorder_SizeChanged;
+                stkOBD.Children.Add(outBorder);
 
-                TextBlock txtVol = new TextBlock();
-                txtVol.FontWeight = FontWeights.Bold;
-                txtVol.Text = item.Value;
-                stk.Children.Add(txtVol);
-                stkOBD.Children.Add(stk);
-                txtVol.Margin = new Thickness(2, 5, 2, 5);
+                
             }
+        }
+
+        void outBorder_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var outBorder = sender as Border;
+            if(outBorder == null) return;
+            var value = 0;
+            if(!int.TryParse(outBorder.Tag.ToString(), out value)) return;
+            var txtVol = new TextBlock { FontWeight = FontWeights.Bold, Text = value.ToString(), FontSize = 10,
+                Margin = new Thickness(2), HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center};
+            var converter = new PIDConverter();
+            var maxVal = converter.GetMaxVol(outBorder.Uid);
+            var minVal = converter.GetMinVol(outBorder.Uid);
+            var inBorder = new Border
+            {
+                MinWidth = 20,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                Width = value * outBorder.ActualWidth / (maxVal - minVal),
+                BorderThickness = new Thickness(1),
+                Background = new SolidColorBrush(Colors.White)
+            };
+            outBorder.Child = inBorder;
+            inBorder.Child = txtVol; 
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
