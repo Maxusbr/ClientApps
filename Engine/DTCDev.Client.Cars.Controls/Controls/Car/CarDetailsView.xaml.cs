@@ -82,7 +82,9 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
                 
                 var outBorder = new Border
                 {
-                    Tag = item.Value, Uid = item.Key,
+                    Tag = item.Value,
+                    Uid = item.Key,
+                    Height = 6, 
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     BorderThickness = new Thickness(1), Margin = new Thickness(2, 2, 10, 2),
                     BorderBrush = new SolidColorBrush(Colors.White)
@@ -102,21 +104,21 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
             if(outBorder == null) return;
             var value = 0;
             if(!int.TryParse(outBorder.Tag.ToString(), out value)) return;
-            var txtVol = new TextBlock { FontWeight = FontWeights.Bold, Text = value.ToString(), FontSize = 10,
-                Margin = new Thickness(2), HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center};
+            //var txtVol = new TextBlock { FontWeight = FontWeights.Bold, Text = value.ToString(), FontSize = 10,
+            //    Margin = new Thickness(2), HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center};
             var converter = new PIDConverter();
             var maxVal = converter.GetMaxVol(outBorder.Uid);
             var minVal = converter.GetMinVol(outBorder.Uid);
             var inBorder = new Border
             {
-                MinWidth = 20,
+                MinWidth = 20, Height = 6, 
                 HorizontalAlignment = HorizontalAlignment.Left,
                 Width = value * outBorder.ActualWidth / (maxVal - minVal),
                 BorderThickness = new Thickness(1),
                 Background = new SolidColorBrush(Colors.White)
             };
             outBorder.Child = inBorder;
-            inBorder.Child = txtVol; 
+            //inBorder.Child = txtVol; 
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
