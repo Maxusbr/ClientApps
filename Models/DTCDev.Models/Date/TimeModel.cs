@@ -31,5 +31,7 @@ namespace DTCDev.Models.Date
         {
             return (this.H*360+this.M*60+this.S).GetHashCode();
         }
+
+        public TimeSpan ToTimeSpan() {return new TimeSpan(H, M, S);}
     }
 }

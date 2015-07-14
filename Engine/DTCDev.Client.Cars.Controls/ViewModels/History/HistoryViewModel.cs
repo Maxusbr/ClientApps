@@ -47,7 +47,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             _mapHandler = CarsHandler.Instance;
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
             {
-
+                SelectedHistoryRow = new LoadedHistoryRows();
                 Position.Location =
                 MapCenter = MapCenterUser = new Location(55.75, 37.62);
                 Points.Add(
@@ -94,6 +94,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         void Instance_OBDLoaded(OBDHistoryDataModel model)
         {
             OBDHistory = model;
+            TableHistory.Update(model);
+            OnPropertyChanged("TableHistory");
         }
 
         void Instance_LinesLoaded(DTCDev.Models.LinesDataModel model)
@@ -325,12 +327,19 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         private ObservableCollection<LoadedHistoryRows> _historyRows = new ObservableCollection<LoadedHistoryRows>();
 
         private LoadedHistoryRows _selectedRow;
+
+        private HistoryRowsViewModel _tableHistory = new HistoryRowsViewModel();
         #endregion
 
 
 
 
         #region Properties
+
+        public HistoryRowsViewModel TableHistory
+        {
+            get { return _tableHistory; }
+        }
 
         public string LoadedText
         {
@@ -386,8 +395,10 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             set
             {
                 _selectedRow = value;
+                TableHistory.Update(value);
                 this.OnPropertyChanged("SelectedHistoryRow");
                 OnPropertyChanged("VisablePlayer");
+                OnPropertyChanged("TableHistory");
                 SortData();
                 if (_distanceCheckActive)
                     DistanceSelectedDayChanged();
@@ -1245,7 +1256,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         private RouteSelect SortLocation(Location prev, Location loc, RouteSelect prevroute, int spd, DateTime dt)
         {
-            _routesModel.TimeRoute.Add(new RoutePoint { Point = loc, Date = dt });
+            _routesModel.TimeRoute.Add(new RoutePoint { Point = prev, Date = dt });
             var curroute = GetRouteClass(spd);
             if (prevroute != curroute)
             {
@@ -1707,34 +1718,5 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             Warning,
             Error, None
         };
-
-
-        public class LoadedHistoryRows
-        {
-            public DateTime Date { get; set; }
-
-            public string StringDate { get { return Date.ToString("dd.MM.yyyy"); } }
-
-            private double _mileage;
-
-            public double Mileage
-            {
-                get { return Math.Round(_mileage, 2); }
-                set
-                {
-                    _mileage = value;
-                }
-            }
-
-            public int MiddleSpeed { get; set; }
-
-            public List<CarStateModel> Data { get; set; }
-
-            public string Start { get; set; }
-
-            public string Stop { get; set; }
-        }
-
-
     }
 }

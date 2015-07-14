@@ -200,7 +200,9 @@
     <Compile Include="ViewModels\Car\CarZoneHistoryErrorViewModel.cs" />
     <Compile Include="ViewModels\Car\CarZonesErrorViewModel.cs" />
     <Compile Include="ViewModels\Driver\DriversWinViewModel.cs" />
+    <Compile Include="ViewModels\History\HistoryRowsViewModel.cs" />
     <Compile Include="ViewModels\History\HistoryViewModel.cs" />
+    <Compile Include="ViewModels\History\LoadedHistoryRows.cs" />
     <Compile Include="ViewModels\History\PackageViewModel.cs" />
     <Compile Include="ViewModels\Map\CarZoneMapViewModel.cs" />
     <Compile Include="ViewModels\Map\MapViewModel.cs" />

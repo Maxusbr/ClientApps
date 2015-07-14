@@ -49,4 +49,6 @@ namespace DTCDev.Client.Cars.Controls.Models
             return (Visibility)value == Visibility.Visible ? true : false;
         }
     }
+
+    
 }
