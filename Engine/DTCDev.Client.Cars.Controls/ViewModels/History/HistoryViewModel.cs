@@ -171,14 +171,14 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                     Position.Location = prev;
                 foreach (var itemLoc in DayStates.OrderBy(o => o.Date))
                 {
-                    if (!Iswaiting) break;
+                    if (!Iswaiting || AccHistory == null) break;
                     var item = AccHistory.Data.LastOrDefault(o => o.Date.ToDateTime() > firstLoc.Date && o.Date.ToDateTime() <= itemLoc.Date) ?? first;
                     var loc = new Location
                     {
                         Latitude = itemLoc.Lt / 10000.0,
                         Longitude = itemLoc.Ln / 10000.0
                     };
-                    //if (itemLoc.Spd > 0)
+                    if (itemLoc.Spd > 0)
                     curroute = SortLocation(prev, loc, curroute, Math.Max(item.Y, item.Z), itemLoc.Date);
                     prev = loc;
                     first = item;
@@ -219,14 +219,14 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                     Position.Location = prev;
                 foreach (var itemLoc in DayStates.OrderBy(o => o.Date))
                 {
-                    if (!Iswaiting) break;
+                    if (!Iswaiting || AccHistory == null) break;
                     var item = AccHistory.Data.LastOrDefault(o => o.Date.ToDateTime() > firstLoc.Date && o.Date.ToDateTime() <= itemLoc.Date) ?? first;
                     var loc = new Location
                     {
                         Latitude = itemLoc.Lt / 10000.0,
                         Longitude = itemLoc.Ln / 10000.0
                     };
-                    //if (itemLoc.Spd > 0)
+                    if (itemLoc.Spd > 0)
                     curroute = SortLocation(prev, loc, curroute, item.X, itemLoc.Date);
                     prev = loc;
                     first = item;
@@ -969,7 +969,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             if (CarSelector.SelectedCar != null && CarSelector.SelectedCar.Car.Id != String.Empty)
             {
                 Iswaiting = IsEnabledRadio = false;
-                SelectedHistoryRow = null;
+                //SelectedHistoryRow = null;
                 HistoryRows.Clear();
                 DistanceAll = 0;
                 DayStates.Clear();
@@ -1227,11 +1227,13 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             bool replaced = false;
             for (int i = 0; i < HistoryRows.Count(); i++)
             {
+                var selected = HistoryRows[i].Equals(SelectedHistoryRow);
                 if (HistoryRows[i].StringDate == r.StringDate)
                 {
                     DistanceAll -= HistoryRows[i].Mileage;
                     HistoryRows.RemoveAt(i);
                     HistoryRows.Insert(i, r);
+                    if (selected) SelectedHistoryRow = r;
                     replaced = true;
                     DistanceAll += r.Mileage;
                 }

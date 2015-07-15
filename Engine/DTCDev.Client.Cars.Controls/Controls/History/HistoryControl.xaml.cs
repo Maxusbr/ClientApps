@@ -131,14 +131,19 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         {
             HistoryTable.Columns.Clear();
             HistoryTable.Columns.Add(new DataGridTextColumn { Header = "Время", Binding = new Binding("Time") });
-            HistoryTable.Columns.Add(new DataGridTextColumn { Header = "Скорость", Binding = new Binding("Speed") });
+            HistoryTable.Columns.Add(new DataGridTextColumn
+            {
+                Header = "Скорость",
+                Binding = new Binding("Speed"),
+                CellStyle = Resources["StyleCell"] as Style
+            });
             HistoryTable.Columns.Add(new DataGridTextColumn { Header = "Спутники", Binding = new Binding("Satelite") });
             var converter = new Engine.AppLogic.PIDConverter();
             if (_hvm.OBDHistory == null || _hvm.OBDHistory.Data.Count == 0) return;
             foreach (var item in _hvm.OBDHistory.Data.Select(p => p.Code).Distinct())
             {
-                var bd = new Binding() {Converter = new OBDKeyConverter(), ConverterParameter = item};
-                HistoryTable.Columns.Add(new DataGridTextColumn { Header = converter.GetPidInfo(item), Binding = bd});
+                var bd = new Binding() { Converter = new OBDKeyConverter(), ConverterParameter = item };
+                HistoryTable.Columns.Add(new DataGridTextColumn { Header = converter.GetPidInfo(item), Binding = bd });
             }
         }
 
@@ -200,4 +205,32 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         }
     }
 
+    public class MaxMinValues
+    {
+        public int MaxValue { get; set; }
+        public int MinValue { get; set; }
+    }
+    public class ValuesMultyConverter<T> : IMultiValueConverter
+    {
+        public T FalseValue { get; set; }
+        public T TrueValue { get; set; }
+        public T СonditionValue { get; set; }
+        public T DesibleValue { get; set; }
+
+        public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            var cell = values[0] as DataGridCell;
+            var vm = values[1] as HistoryRow;
+            if (cell == null || vm == null || string.IsNullOrEmpty(vm.Speed)) return DesibleValue;
+            if (vm.CurentSpeed < vm.MinSpeed) return TrueValue;
+            return vm.CurentSpeed > vm.MaxSpeed ? FalseValue : СonditionValue;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class SpeedValueToStyleConverter : ValuesMultyConverter<Brush> { }
 }
