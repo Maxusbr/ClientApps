@@ -50,16 +50,16 @@
             <DoubleAnimation From="180" To="40" Duration="0:0:0.2"/>
         </Storyboard>
         <Storyboard x:Key="stbDisplayWorkHistory" Storyboard.TargetName="grdHistoryWork" Storyboard.TargetProperty="(FrameworkElement.Width)">
-            <ObjectAnimationUsingKeyFrames BeginTime="0" Duration="0" Storyboard.TargetName="btnShowDetail" Storyboard.TargetProperty="Visibility">
+            <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="btnShowDetail" Storyboard.TargetProperty="Visibility">
                 <DiscreteObjectKeyFrame Value="{x:Static Visibility.Collapsed}"/>
             </ObjectAnimationUsingKeyFrames>
             <DoubleAnimation From="40" To="450" Duration="0:0:0.2"/>
         </Storyboard>
         <Storyboard x:Key="stbHideWorkHistory">
-            <ObjectAnimationUsingKeyFrames BeginTime="0" Duration="0" Storyboard.TargetName="btnShowDetail" Storyboard.TargetProperty="Visibility">
+            <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="btnShowDetail" Storyboard.TargetProperty="Visibility">
                 <DiscreteObjectKeyFrame Value="{x:Static Visibility.Visible}"/>
             </ObjectAnimationUsingKeyFrames>
-            <DoubleAnimation From="450" To="40" Duration="0:0:0.2" Storyboard.TargetName="grdHistoryWork" Storyboard.TargetProperty="(FrameworkElement.Width)"/>
+            <DoubleAnimation From="450" To="40" BeginTime="0:0:1" Duration="0:0:0.2" Storyboard.TargetName="grdHistoryWork" Storyboard.TargetProperty="(FrameworkElement.Width)"/>
         </Storyboard>
 
 

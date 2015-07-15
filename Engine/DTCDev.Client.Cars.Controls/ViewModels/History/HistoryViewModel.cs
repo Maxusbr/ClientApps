@@ -114,16 +114,16 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         {
             ClearRoutes(false);
             if (AccHistory.Data.Count == 0) return;
+            var el = AccHistory.Data.FirstOrDefault();
             if (IsCheckedWay)
             {
                 Iswaiting = true;
                 if (recalcValues)
                 {
-                    _maxValue = AccHistory.Data.Max(o => o.X);
-                    _minValue = AccHistory.Data.Min(o => o.X);
-                    var avg = AccHistory.Data.Average(o => o.X);
-                    _leftValue = (decimal)AccHistory.Data.Where(w => w.X < avg).Average(o => o.X);
-                    _rightValue = (decimal)AccHistory.Data.Where(w => w.X > avg).Average(o => o.X);
+                    _maxValue = el != null ? Math.Max(Math.Abs(el.MaxX) / 100.0m, 1) : 1;
+                    _minValue = 0;
+                    _leftValue = .5m;
+                    _rightValue = 1;
                     OnPropertyChanged("IsCheckedWay");
                 }
                 UpdateRouteWay();
@@ -133,11 +133,10 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 Iswaiting = true;
                 if (recalcValues)
                 {
-                    _maxValue = AccHistory.Data.Max(o => Math.Max(o.Y, o.Z));
-                    _minValue = AccHistory.Data.Min(o => Math.Min(o.Y, o.Z));
-                    var avg = AccHistory.Data.Average(o => Math.Max(o.Y, o.Z));
-                    _leftValue = (decimal)AccHistory.Data.Where(w => Math.Max(w.Y, w.Z) < avg).Average(o => Math.Max(o.Y, o.Z));
-                    _rightValue = (decimal)AccHistory.Data.Where(w => Math.Max(w.Y, w.Z) > avg).Average(o => Math.Max(o.Y, o.Z));
+                    _maxValue = el != null ? Math.Max(Math.Max(Math.Abs(el.MaxY), Math.Abs(el.MaxZ)) / 100.0m, 1) : 1;
+                    _minValue = 0;
+                    _leftValue = .5m;
+                    _rightValue = 1; 
                     OnPropertyChanged("IsCheckedAccelerate");
                 }
                 UpdateRouteAccelerate();
@@ -151,8 +150,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         {
             ClearRoutes(false);
             if (AccHistory == null) return;
-            SpdNormal = (int)LeftValue;
-            SpdWarning = (int)RightValue;
+            SpdNormal = (double)LeftValue;
+            SpdWarning = (double)RightValue;
             var slowTask = new Task(delegate
             {
                 if (AccHistory == null) return;
@@ -179,7 +178,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                         Longitude = itemLoc.Ln / 10000.0
                     };
                     if (itemLoc.Spd > 0)
-                    curroute = SortLocation(prev, loc, curroute, Math.Max(item.Y, item.Z), itemLoc.Date);
+                        curroute = SortLocation(prev, loc, curroute, Math.Max(Math.Abs(item.Y), Math.Abs(item.Z)) / 100.0, itemLoc.Date);
                     prev = loc;
                     first = item;
                     firstLoc = itemLoc;
@@ -227,7 +226,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                         Longitude = itemLoc.Ln / 10000.0
                     };
                     if (itemLoc.Spd > 0)
-                    curroute = SortLocation(prev, loc, curroute, item.X, itemLoc.Date);
+                    curroute = SortLocation(prev, loc, curroute, Math.Abs(item.X) / 100.0, itemLoc.Date);
                     prev = loc;
                     first = item;
                     firstLoc = itemLoc;
@@ -308,9 +307,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         private Location _currentLocation;
 
-        private int SpdNormal = 900;
+        private double SpdNormal = 900;
 
-        private int SpdWarning = 1200;
+        private double SpdWarning = 1200;
 
         private bool _periodSet = false;
 
@@ -1256,7 +1255,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
-        private RouteSelect SortLocation(Location prev, Location loc, RouteSelect prevroute, int spd, DateTime dt)
+        private RouteSelect SortLocation(Location prev, Location loc, RouteSelect prevroute, double spd, DateTime dt)
         {
             _routesModel.TimeRoute.Add(new RoutePoint { Point = prev, Date = dt });
             var curroute = GetRouteClass(spd);
@@ -1302,7 +1301,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         /// </summary>
         /// <param name="spd"></param>
         /// <returns></returns>
-        private RouteSelect GetRouteClass(int spd)
+        private RouteSelect GetRouteClass(double spd)
         {
             if (spd >= SpdWarning) return RouteSelect.Error;
             return spd <= SpdNormal ? RouteSelect.Normal : RouteSelect.Warning;
@@ -1549,11 +1548,11 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
                 if (!value || AccHistory == null || AccHistory.Data.Count == 0) return;
                 Iswaiting = true;
-                _maxValue = AccHistory.Data.Max(o => o.X);
-                _minValue = AccHistory.Data.Min(o => o.X);
-                var avg = AccHistory.Data.Average(o => o.X);
-                _leftValue = (decimal)AccHistory.Data.Where(w => w.X < avg).Average(o => o.X);
-                _rightValue = (decimal)AccHistory.Data.Where(w => w.X > avg).Average(o => o.X);
+                var el = AccHistory.Data.FirstOrDefault();
+                _maxValue = el != null ? Math.Max(Math.Abs(el.MaxX) / 100.0m, 1): 1;
+                _minValue = 0;
+                _leftValue = .5m;
+                _rightValue = 1; 
                 OnPropertyChanged("IsCheckedWay");
                 UpdateRouteWay();
             }
@@ -1570,11 +1569,11 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
                 if (!value || AccHistory == null || AccHistory.Data.Count == 0) return;
                 Iswaiting = true;
-                _maxValue = AccHistory.Data.Max(o => Math.Max(o.Y, o.Z));
-                _minValue = AccHistory.Data.Min(o => Math.Min(o.Y, o.Z));
-                var avg = AccHistory.Data.Average(o => Math.Max(o.Y, o.Z));
-                _leftValue = (decimal)AccHistory.Data.Where(w => Math.Max(w.Y, w.Z) < avg).Average(o => Math.Max(o.Y, o.Z));
-                _rightValue = (decimal)AccHistory.Data.Where(w => Math.Max(w.Y, w.Z) > avg).Average(o => Math.Max(o.Y, o.Z));
+                var el = AccHistory.Data.FirstOrDefault();
+                _maxValue = el != null ? Math.Max(Math.Max(Math.Abs(el.MaxY), Math.Abs(el.MaxZ) )/ 100.0m, 1) : 1;
+                _minValue = 0;
+                _leftValue = .5m;
+                _rightValue = 1;
                 OnPropertyChanged("IsCheckedAccelerate");
                 UpdateRouteAccelerate();
             }
