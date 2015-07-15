@@ -46,7 +46,8 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
                 Update();
                 if (value == null)
                     return;
-                Location = new Location(value.Navigation.Latitude / 10000.0d, value.Navigation.Longitude / 10000.0d);
+                if(value.Navigation.Latitude != 0 && value.Navigation.Longitude != 0 )
+                    Location = new Location(value.Navigation.Latitude / 10000.0d, value.Navigation.Longitude / 10000.0d);
                 Current_Speed = value.Navigation.Speed / 10.0;
                 CalculateFuelData();
             }

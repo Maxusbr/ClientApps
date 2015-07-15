@@ -182,7 +182,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
                 while (true)
                 {
                     if (!_isPlayed) break;
-                    var time = _curentTime + new TimeSpan(SpeedValue * 10000000);
+                    var time = _curentTime + new TimeSpan(SpeedValue * 1000000);
                     if (time >= _endTime)
                     {
                         time = _endTime;
@@ -191,7 +191,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
                     if (Application.Current != null)
                         Application.Current.Dispatcher.BeginInvoke(new Action(() => CurentTime = time));
 
-                    Thread.Sleep(100);
+                    Thread.Sleep(10);
                 }
                 if (Application.Current != null)
                     Application.Current.Dispatcher.BeginInvoke(new Action(() => IsPlayed = false));

@@ -85,7 +85,16 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         void Instance_AccLoaded(CarAccHistoryModel model)
         {
-            AccHistory = model;
+            var acc = new CarAccHistoryModel { DevID = model.DevID };
+            for (var i = 0; i < DayStates.Count; i++)
+            {
+                var item = DayStates[i];
+                var next = i + 1 < DayStates.Count ? DayStates[i + 1].Date : DateTime.Now;
+                var list = model.Data.Where(o => o.Date.ToDateTime() >= item.Date && o.Date.ToDateTime() < next);
+                foreach (var el in list)
+                    acc.Data.Add(el);
+            }
+            AccHistory = acc;
             IsEnabledRadio = true;
             IsPlayerStart = false;
             if (!IsCheckedSpeed) UpdateRoutes(true);
@@ -93,8 +102,19 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         void Instance_OBDLoaded(OBDHistoryDataModel model)
         {
-            OBDHistory = model;
-            TableHistory.Update(model);
+            var obd = new OBDHistoryDataModel {DevID = model.DevID, DT = model.DT};
+            for (var i = 0; i < DayStates.Count; i++)
+            {
+                var item = DayStates[i];
+                var next = i + 1 < DayStates.Count ? DayStates[i + 1].Date : DateTime.Now;
+                var dt = new DateTime(item.Date.Year, item.Date.Month, item.Date.Day);
+                var list = model.Data.Where(o => dt + o.Time.ToTimeSpan() >= item.Date && dt + o.Time.ToTimeSpan() < next);
+                foreach (var el in list)
+                    obd.Data.Add(el);
+            }
+
+            OBDHistory = obd;
+            TableHistory.Update(obd);
             OnPropertyChanged("TableHistory");
         }
 
@@ -1652,11 +1672,13 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
+        private DateTime _dt;
         private void UpdateCurentPosition(DateTime time)
         {
-            var pos = _routesModel.TimeRoute.OrderBy(o => o.Date).FirstOrDefault(f => f.Date >= time);
-            if (!EnableHistory || pos == null || Position == null) return;
-            var detail = DayStates.FirstOrDefault(o => o.Date.Equals(pos.Date));
+            var pos = _routesModel.TimeRoute.OrderBy(o => o.Date).LastOrDefault(f => f.Date <= time);
+            if (!EnableHistory || Position == null) return;
+            _dt = pos != null && _dt < pos.Date ? pos.Date : time;
+            var detail =pos != null ? DayStates.FirstOrDefault(o => o.Date.Equals(pos.Date)): new CarStateModel();
             if (detail != null)
             {
                 Position.Data = new SCarData
@@ -1668,11 +1690,12 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                             Latitude = detail.Lt,
                             Longitude = detail.Ln
                         },
-                    DateUpdate = new DateTimeDataModel(pos.Date)
+                    DateUpdate = new DateTimeDataModel(_dt)
                 };
                 Position.HistoryDetailView = true;
             }
-            MapCenter = MapCenterUser = pos.Point;
+            if(pos != null)
+                MapCenter = MapCenterUser = pos.Point;
         }
 
         private void DistanceSelectedDayChanged()

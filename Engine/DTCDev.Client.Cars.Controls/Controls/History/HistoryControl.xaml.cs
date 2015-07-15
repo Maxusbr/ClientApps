@@ -208,7 +208,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             if (row == null) return null;
             var item = row.Data.FirstOrDefault(o => o.Code.Equals(parameter.ToString()));
             if (item == null) return null;
-            return item.Vol;
+            return string.Format("{0} ({1})",item.Vol, item.Time) ;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using DTCDev.Client.ViewModel;
 using DTCDev.Models.CarsSending.Car;
+using DTCDev.Models.Date;
 
 namespace DTCDev.Client.Cars.Controls.ViewModels.History
 {
@@ -62,7 +63,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         public string Satelite { get { return _model.St != 0 ? _model.St.ToString() : ""; } }
         public DateTime Date { get { return _model.Date; } }
-
         internal void Update(OBDHistoryDataModel.OBDParam el)
         {
             Data.Add(el);

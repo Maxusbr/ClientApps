@@ -433,7 +433,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="{Binding LoadedText}" Margin="10,10,10,0" VerticalAlignment="Top"/>
-                <DataGrid Margin="10,7,70,40" ItemsSource="{Binding HistoryRows}" AutoGenerateColumns="False" SelectedItem="{Binding SelectedHistoryRow, Mode=TwoWay}" CanUserAddRows="False" Grid.Row="2">
+                <DataGrid Margin="10,7,70,40" ItemsSource="{Binding HistoryRows}" AutoGenerateColumns="False" SelectedItem="{Binding SelectedHistoryRow, Mode=TwoWay}" CanUserAddRows="False" Grid.Row="2" SelectionMode="Single">
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding StringDate}" Header="Дата" Width="*" IsReadOnly="True"/>
                         <DataGridTextColumn Binding="{Binding Mileage}" Header="Пробег" IsReadOnly="True"/>
