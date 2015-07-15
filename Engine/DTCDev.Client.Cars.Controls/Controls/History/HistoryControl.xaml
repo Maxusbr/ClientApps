@@ -50,16 +50,10 @@
             <DoubleAnimation From="180" To="40" Duration="0:0:0.2"/>
         </Storyboard>
         <Storyboard x:Key="stbDisplayWorkHistory" Storyboard.TargetName="grdHistoryWork" Storyboard.TargetProperty="(FrameworkElement.Width)">
-            <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="btnShowDetail" Storyboard.TargetProperty="Visibility">
-                <DiscreteObjectKeyFrame Value="{x:Static Visibility.Collapsed}"/>
-            </ObjectAnimationUsingKeyFrames>
             <DoubleAnimation From="40" To="450" Duration="0:0:0.2"/>
         </Storyboard>
-        <Storyboard x:Key="stbHideWorkHistory">
-            <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="btnShowDetail" Storyboard.TargetProperty="Visibility">
-                <DiscreteObjectKeyFrame Value="{x:Static Visibility.Visible}"/>
-            </ObjectAnimationUsingKeyFrames>
-            <DoubleAnimation From="450" To="40" BeginTime="0:0:1" Duration="0:0:0.2" Storyboard.TargetName="grdHistoryWork" Storyboard.TargetProperty="(FrameworkElement.Width)"/>
+        <Storyboard x:Key="stbHideWorkHistory" BeginTime="0:0:1" >
+            <DoubleAnimation From="450" To="40" Duration="0:0:0.2" Storyboard.TargetName="grdHistoryWork" Storyboard.TargetProperty="(FrameworkElement.Width)"/>
         </Storyboard>
 
 
@@ -416,7 +410,8 @@
 
 
         <Grid x:Name="grdHistoryWork" Grid.Row="1" Background="White" Grid.Column="1" HorizontalAlignment="Right"
-		Visibility="{Binding EnableHistory, Converter={StaticResource BoolToVisibilityConverter}}" MouseEnter="grdHistoryWork_MouseEnter" MouseLeave="grdHistoryWork_MouseLeave" SizeChanged="grdHistoryWork_SizeChanged">
+		Visibility="{Binding EnableHistory, Converter={StaticResource BoolToVisibilityConverter}}" 
+              MouseLeave="grdHistoryWork_MouseLeave" SizeChanged="grdHistoryWork_SizeChanged">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
@@ -427,7 +422,8 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Grid x:Name="btnShowDetail" Width="40" HorizontalAlignment="Left" Background="LightGray" Grid.RowSpan="3" Visibility="Collapsed">
+            <Grid x:Name="btnShowDetail" Width="40" HorizontalAlignment="Left" Background="LightGray" Grid.RowSpan="3" 
+                  Visibility="Collapsed" MouseEnter="grdHistoryWork_MouseEnter" >
                 <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/way.png" Width="34" Height="34"/>
             </Grid>
             <Grid Grid.Column="1">

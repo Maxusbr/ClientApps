@@ -82,7 +82,16 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             MultiValueSlider.ValueChanged += MultiValueSlider_ValueChanged;
-
+            _stDisplayHistory = Resources["stbDisplayWorkHistory"] as Storyboard;
+            if (_stDisplayHistory != null)
+                _stDisplayHistory.Completed += (o, args) => _isAnimation = false;
+            _stbHideHistory = Resources["stbHideWorkHistory"] as Storyboard;
+            if (_stbHideHistory != null)
+                _stbHideHistory.Completed += (o, args) =>
+                {
+                    btnShowDetail.Visibility = Visibility.Visible;
+                    _isAnimation = false;
+                };
         }
 
 
@@ -149,22 +158,21 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
 
         private void grdHistoryWork_MouseEnter(object sender, MouseEventArgs e)
         {
-            var res = Resources["stbDisplayWorkHistory"] as Storyboard;
-            if (res == null) return;
-            var animation = res.Children[res.Children.Count - 1] as DoubleAnimation;
-            if (animation == null) return;
+            var animation = _stDisplayHistory.Children[0] as DoubleAnimation;
+            if (animation == null || _isAnimation) return;
+            _isAnimation = true;
+            btnShowDetail.Visibility = Visibility.Collapsed;
             animation.To = _gridWhidt;
-            res.Begin();
+            _stDisplayHistory.Begin();
         }
 
         private void grdHistoryWork_MouseLeave(object sender, MouseEventArgs e)
         {
-            var res = Resources["stbHideWorkHistory"] as Storyboard;
-            if (res == null) return;
-            var animation = res.Children[res.Children.Count - 1] as DoubleAnimation;
-            if (animation == null) return;
+            var animation = _stbHideHistory.Children[0] as DoubleAnimation;
+            if (animation == null || _isAnimation) return;
+            _isAnimation = true;
             animation.From = _gridWhidt;
-            res.Begin();
+            _stbHideHistory.Begin();
         }
 
         private bool _displayedDistance = false;
@@ -178,6 +186,10 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         }
 
         private double _gridWhidt;
+        private Storyboard _stDisplayHistory;
+        private Storyboard _stbHideHistory;
+        private bool _isAnimation;
+
         private void grdHistoryWork_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             var control = sender as Grid;
