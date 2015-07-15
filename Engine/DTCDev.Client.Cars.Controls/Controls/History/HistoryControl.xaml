@@ -514,7 +514,8 @@
                     </ScrollViewer>
                 </TabItem>
                 <TabItem Header="Табличное представление">
-                    <DataGrid x:Name="HistoryTable" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" ItemsSource="{Binding TableHistory.RowsList}" CanUserAddRows="False" 
+                    <DataGrid x:Name="HistoryTable" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" 
+                              ItemsSource="{Binding TableHistory.RowsList}" CanUserAddRows="False" SelectedItem="{Binding TableHistory.SelectedRow, Mode=TwoWay}"
                               />
                 </TabItem>
             </TabControl>

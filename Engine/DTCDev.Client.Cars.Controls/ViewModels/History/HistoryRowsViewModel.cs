@@ -12,6 +12,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
     public class HistoryRowsViewModel : ViewModelBase
     {
         private readonly ObservableCollection<HistoryRow> _rowSList = new ObservableCollection<HistoryRow>();
+        private HistoryRow _selectedRow;
+
         public ObservableCollection<HistoryRow> RowsList
         {
             get { return _rowSList; }
@@ -30,6 +32,16 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 {
                     item.Update(el);
                 }
+            }
+        }
+
+        public HistoryRow SelectedRow
+        {
+            get { return _selectedRow; }
+            set
+            {
+                _selectedRow = value;
+                OnPropertyChanged("SelectedRow");
             }
         }
 
