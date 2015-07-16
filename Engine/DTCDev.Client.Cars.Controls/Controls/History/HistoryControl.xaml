@@ -17,6 +17,7 @@
              d:DesignHeight="580" d:DesignWidth="900" Loaded="UserControl_Loaded">
 
     <UserControl.Resources>
+        <Models:InvertBoolConverter x:Key="InvertBoolConverter"/>
         <local:SpeedValueToStyleConverter x:Key="ValueToStyleConverter" СonditionValue="{StaticResource DarkOrange1}" TrueValue="{StaticResource Green1}" FalseValue="{StaticResource DarkRed1}" DesibleValue="Transparent" />
         <Style x:Key="StyleCell" TargetType="{x:Type DataGridCell}">
             <Setter Property="Background" >
@@ -514,8 +515,18 @@
                     </ScrollViewer>
                 </TabItem>
                 <TabItem Header="Табличное представление">
-                    <DataGrid x:Name="HistoryTable" AutoGenerateColumns="False" ItemsSource="{Binding TableHistory.RowsList}" CanUserAddRows="False" 
-                              />
+                    <Grid>
+                        <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,4">
+                            <RadioButton Content="все данные" IsChecked="{Binding TableHistory.IsNotNull, Converter={StaticResource InvertBoolConverter}}"/>
+                            <RadioButton Content="только в движении" IsChecked="{Binding TableHistory.IsNotNull}" Margin="20,0,0,0"/>
+                        </StackPanel>
+                        <DataGrid x:Name="HistoryTable" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single"       
+                			ItemsSource="{Binding TableHistory.ListHistoryRows}" CanUserAddRows="False" SelectedItem="{Binding TableHistory.SelectedRow, Mode=TwoWay}" Grid.Row="1"/>
+                    </Grid>
                 </TabItem>
             </TabControl>
         </Grid>
