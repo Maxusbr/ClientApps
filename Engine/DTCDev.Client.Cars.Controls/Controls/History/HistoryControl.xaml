@@ -17,6 +17,7 @@
              d:DesignHeight="580" d:DesignWidth="900" Loaded="UserControl_Loaded">
 
     <UserControl.Resources>
+        <Models:InvertBoolToVisibilityConverter x:Key="InvertBoolToVisibilityConverter"/>
         <local:SpeedValueToStyleConverter x:Key="ValueToStyleConverter" СonditionValue="{StaticResource DarkOrange1}" TrueValue="{StaticResource Green1}" FalseValue="{StaticResource DarkRed1}" DesibleValue="Transparent" />
         <Style x:Key="StyleCell" TargetType="{x:Type DataGridCell}">
             <Setter Property="Background" >
@@ -28,7 +29,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Models:InvertBoolToVisibilityConverter x:Key="InvertBoolToVisibilityConverter"/>
+        <Models:InvertBoolConverter x:Key="InvertBoolConverter"/>
         <Models:BoolToColorConverter x:Key="BoolToColorConverter"/>
         <Models:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <Storyboard x:Key="stbShowDate" x:Name="stbShowDate">
@@ -514,9 +515,19 @@
                     </ScrollViewer>
                 </TabItem>
                 <TabItem Header="Табличное представление">
-                    <DataGrid x:Name="HistoryTable" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" 
-                              ItemsSource="{Binding TableHistory.RowsList}" CanUserAddRows="False" SelectedItem="{Binding TableHistory.SelectedRow, Mode=TwoWay}"
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,4">
+                            <RadioButton Content="все данные" IsChecked="{Binding TableHistory.IsNotNull, Converter={StaticResource InvertBoolConverter}}"/>
+                            <RadioButton Content="только в движении" IsChecked="{Binding TableHistory.IsNotNull}" Margin="20,0,0,0"/>
+                        </StackPanel>
+                        <DataGrid x:Name="HistoryTable" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" 
+                			ItemsSource="{Binding TableHistory.ListHistoryRows}" CanUserAddRows="False" SelectedItem="{Binding TableHistory.SelectedRow, Mode=TwoWay}" Grid.Row="1"
                               />
+                    </Grid>
                 </TabItem>
             </TabControl>
         </Grid>
@@ -532,8 +543,8 @@
                 </StackPanel>
                 <Client:MultiSlider x:Name="MultiValueSlider" Height="40" Left="{Binding LeftValue, Mode=TwoWay}" Right="{Binding RightValue, Mode=TwoWay}" 
                                     FirstDecoration="{DynamicResource Green1}" SecondDecoration="{DynamicResource DarkOrange1}" ThirdDecoration="{DynamicResource DarkRed1}" Margin="0,10,0,0" 
-                                    Max="{Binding MaxValue, Mode=TwoWay}" Min="{Binding MinValue, Mode=TwoWay}" IsEnabled="{Binding IsEnabledRadio}"
-                                    Visibility="{Binding IsCheckedSpeed, Converter={StaticResource InvertBoolToVisibilityConverter}}" />
+                                    Max="{Binding MaxValue, Mode=TwoWay}" Min="{Binding MinValue, Mode=TwoWay}" IsEnabled="{Binding IsEnabledRadio, Converter={StaticResource InvertBoolToVisibilityConverter}}"
+                                    Visibility="{Binding IsCheckedSpeed}" />
                 <local:PlayerControl HorizontalAlignment="Center" Visibility="{Binding VisablePlayer, Converter={StaticResource BoolToVisibilityConverter}}"
                 	IsPlayed="{Binding IsPlayerStart, Mode=TwoWay}" 
                 	StartTime="{Binding PlayerStartTime, Mode=TwoWay}" 

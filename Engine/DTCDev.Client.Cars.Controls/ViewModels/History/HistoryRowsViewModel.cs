@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Windows.Data;
 using DTCDev.Client.ViewModel;
 using DTCDev.Models.CarsSending.Car;
 using DTCDev.Models.Date;
@@ -19,6 +21,39 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             get { return _rowSList; }
         }
 
+        private CollectionViewSource _listHistoryRows;
+        public ICollectionView ListHistoryRows
+        {
+            get
+            {
+                if (_listHistoryRows != null) return _listHistoryRows.View;
+                _listHistoryRows = new CollectionViewSource { Source = RowsList };
+                _listHistoryRows.Filter += (o, e) =>
+                {
+                    var acc = !IsNotNull;
+                    var item = (HistoryRow) e.Item;
+                    if(item != null && !acc)
+                    {
+                        acc = !string.IsNullOrEmpty(item.Speed) || item.Data.Any(el => el.Vol > 0);
+                    }
+                    e.Accepted = acc;
+                };
+                return _listHistoryRows.View;
+            }
+        }
+
+        private bool _isNotNull = true;
+        public bool IsNotNull
+        {
+            get { return _isNotNull; }
+            set
+            {
+                _isNotNull = value;
+                ListHistoryRows.Refresh();
+                OnPropertyChanged("IsNotNull");
+            }
+        }
+
         internal void Update(OBDHistoryDataModel model)
         {
             for (var i = 0; i < RowsList.Count; i++)
@@ -33,6 +68,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                     item.Update(el);
                 }
             }
+            ListHistoryRows.Refresh();
         }
 
         public HistoryRow SelectedRow
@@ -53,6 +89,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             {
                 RowsList.Add(new HistoryRow(item));
             }
+            ListHistoryRows.Refresh();
         }
     }
 
@@ -61,7 +98,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         private readonly CarStateModel _model;
         private readonly List<OBDHistoryDataModel.OBDParam> _data = new List<OBDHistoryDataModel.OBDParam>();
         public int MaxSpeed = 120;
-        public int MinSpeed = 80;
+        public int MinSpeed = 90;
 
         public HistoryRow(CarStateModel item)
         {
