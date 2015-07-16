@@ -45,6 +45,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             HistoryHandler.Instance.AccLoaded += Instance_AccLoaded;
             _zoneHandler = ZonesHandler.Instance;
             _mapHandler = CarsHandler.Instance;
+            TableHistory.PropertyChanged += TableHistory_PropertyChanged;
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
             {
                 SelectedHistoryRow = new LoadedHistoryRows();
@@ -81,6 +82,16 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
             if (!_zoneHandler.Zones.Any())
                 _zoneHandler.Update();
+        }
+
+        void TableHistory_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (!e.PropertyName.Equals("SelectedRow") || TableHistory.SelectedRow == null) return;
+            IsPlayerStart = false;
+            var item = DayStates.FirstOrDefault(o => o.Date == TableHistory.SelectedRow.Date);
+            if(item == null) return;
+            if (Position != null)
+                Position.Location = new Location(item.Lt / 10000.0, item.Ln / 10000.0);
         }
 
         void Instance_AccLoaded(CarAccHistoryModel model)
@@ -347,7 +358,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         private LoadedHistoryRows _selectedRow;
 
-        private HistoryRowsViewModel _tableHistory = new HistoryRowsViewModel();
+        private readonly HistoryRowsViewModel _tableHistory = new HistoryRowsViewModel();
         #endregion
 
 

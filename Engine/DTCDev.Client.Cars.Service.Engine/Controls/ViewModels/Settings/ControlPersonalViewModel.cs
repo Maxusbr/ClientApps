@@ -28,6 +28,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
         void _handler_EmployeeRolesLoaded(List<DicDataModel> data)
         {
             _listRoles.Clear();
+            if(data == null) return;
             foreach (var el in data)
                 _listRoles.Add(el);
         }

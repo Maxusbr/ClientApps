@@ -35,6 +35,19 @@ namespace DTCDev.Client.Cars.Controls.Models
         }
     }
 
+    public sealed class InvertBoolConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return !System.Convert.ToBoolean(value);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return !System.Convert.ToBoolean(value);
+        }
+    }
+
     public class BoolToColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

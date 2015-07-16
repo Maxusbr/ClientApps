@@ -151,8 +151,14 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             if (_hvm.OBDHistory == null || _hvm.OBDHistory.Data.Count == 0) return;
             foreach (var item in _hvm.OBDHistory.Data.Select(p => p.Code).Distinct())
             {
+                var tb = new TextBlock
+                {
+                    Text = converter.GetPidInfo(item),
+                    TextWrapping = TextWrapping.Wrap,
+                    MaxWidth = 100
+                };
                 var bd = new Binding() { Converter = new OBDKeyConverter(), ConverterParameter = item };
-                HistoryTable.Columns.Add(new DataGridTextColumn { Header = converter.GetPidInfo(item), Binding = bd });
+                HistoryTable.Columns.Add(new DataGridTextColumn { Header = tb, Binding = bd });
             }
         }
 
@@ -234,8 +240,8 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             var cell = values[0] as DataGridCell;
             var vm = values[1] as HistoryRow;
             if (cell == null || vm == null || string.IsNullOrEmpty(vm.Speed)) return DesibleValue;
-            if (vm.CurentSpeed < vm.MinSpeed) return TrueValue;
-            return vm.CurentSpeed > vm.MaxSpeed ? FalseValue : СonditionValue;
+            if (vm.CurentSpeed <= vm.MinSpeed) return TrueValue;
+            return vm.CurentSpeed >= vm.MaxSpeed ? FalseValue : СonditionValue;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
