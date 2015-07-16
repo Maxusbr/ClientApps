@@ -543,8 +543,8 @@
                 </StackPanel>
                 <Client:MultiSlider x:Name="MultiValueSlider" Height="40" Left="{Binding LeftValue, Mode=TwoWay}" Right="{Binding RightValue, Mode=TwoWay}" 
                                     FirstDecoration="{DynamicResource Green1}" SecondDecoration="{DynamicResource DarkOrange1}" ThirdDecoration="{DynamicResource DarkRed1}" Margin="0,10,0,0" 
-                                    Max="{Binding MaxValue, Mode=TwoWay}" Min="{Binding MinValue, Mode=TwoWay}" IsEnabled="{Binding IsEnabledRadio, Converter={StaticResource InvertBoolToVisibilityConverter}}"
-                                    Visibility="{Binding IsCheckedSpeed}" />
+                                    Max="{Binding MaxValue, Mode=TwoWay}" Min="{Binding MinValue, Mode=TwoWay}" IsEnabled="{Binding IsEnabledRadio}"
+                                    Visibility="{Binding IsCheckedSpeed, Converter={StaticResource InvertBoolToVisibilityConverter}}" />
                 <local:PlayerControl HorizontalAlignment="Center" Visibility="{Binding VisablePlayer, Converter={StaticResource BoolToVisibilityConverter}}"
                 	IsPlayed="{Binding IsPlayerStart, Mode=TwoWay}" 
                 	StartTime="{Binding PlayerStartTime, Mode=TwoWay}" 
