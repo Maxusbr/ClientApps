@@ -19,24 +19,22 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="ToStart" Width="34" Height="34" Margin="4" Click="ToStart_Click" >
-            <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/player/arrow-left-fast.png"/>
-        </Button>
-        <Button x:Name="ToBack" Width="34" Height="34" Grid.Column="1" Margin="4" Click="ToBack_Click" >
-            <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/player/arrow-left.png"/>
-        </Button>
-        <Button x:Name="ToStop" Width="34" Height="34" Margin="4" Grid.Column="2" Click="ToStop_Click" Visibility="Collapsed" >
-            <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/player/pause.png"/>
-        </Button>
-        <Button x:Name="ToPlay" Width="34" Height="34" Grid.Column="2" Margin="4" Click="ToPlay_Click" >
-            <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/player/play.png"/>
-        </Button>
-        <Button x:Name="ToForward" Width="34" Height="34" Margin="4" Grid.Column="3" Click="ToForward_Click" >
-            <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/player/arrow-right.png"/>
-        </Button>
-        <Button x:Name="ToEnd" Width="34" Height="34" Grid.Column="4" Margin="4" Click="ToEnd_Click" >
-            <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/player/arrow-right-fast.png"/>
-        </Button>
+        <Image  Width="34" Height="34" Margin="4" x:Name="ToStart" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/player/arrow-right-fast.png" MouseLeftButtonUp="ToStart_MouseLeftButtonUp" RenderTransformOrigin="0.5,0.5">
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="180"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image MouseLeftButtonUp="ToBack_MouseLeftButtonUp" x:Name="ToBack" Width="34" Height="34" Grid.Column="1" Margin="4" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/player/arrow-left.png"/>
+        <Image MouseLeftButtonUp="ToStop_MouseLeftButtonUp" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/player/pause.png" x:Name="ToStop" Width="34" Height="34" Margin="4" Grid.Column="2"  Visibility="Collapsed" />
+        <Image MouseLeftButtonUp="ToPlay_MouseLeftButtonUp"  x:Name="ToPlay" Width="34" Height="34" Grid.Column="2" Margin="4" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/player/play.png"/>
+        <Image MouseLeftButtonUp="ToForward_MouseLeftButtonUp" x:Name="ToForward" Width="34" Height="34" Margin="4" Grid.Column="3"  Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/player/arrow-right.png"/>
+        <Image MouseLeftButtonUp="ToEnd_MouseLeftButtonUp" x:Name="ToEnd" Width="34" Height="34" Grid.Column="4" Margin="4"  Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/player/arrow-right-fast.png"/>
+        
         <history:LablesSlider Maximum="50" Minimum="5" SmallChange="5" TickFrequency="5" Grid.Row="1" Grid.ColumnSpan="6"
                               Value="{Binding SpeedValue, ElementName=Player, Mode=TwoWay}" 
                               Grid.Column="0" LargeChange="5" TickPlacement="BottomRight" Margin="4,4,4,20" IsSnapToTickEnabled="True"/>

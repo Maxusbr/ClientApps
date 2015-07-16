@@ -128,13 +128,13 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
 
         #region Commands
 
-        private void ToStart_Click(object sender, RoutedEventArgs e)
+        private void ToStart_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             IsPlayed = false;
             CurentTime = StartTime;
         }
 
-        private void ToBack_Click(object sender, RoutedEventArgs e)
+        private void ToBack_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             IsPlayed = false;
             var time = CurentTime - new TimeSpan(SpeedValue * 1000000000);
@@ -142,17 +142,17 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             CurentTime = time;
         }
 
-        private void ToStop_Click(object sender, RoutedEventArgs e)
+        private void ToStop_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             IsPlayed = false;
         }
 
-        private void ToPlay_Click(object sender, RoutedEventArgs e)
+        private void ToPlay_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             IsPlayed = true;
         }
 
-        private void ToForward_Click(object sender, RoutedEventArgs e)
+        private void ToForward_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             IsPlayed = false;
             var time = CurentTime + new TimeSpan(SpeedValue * 1000000000);
@@ -160,7 +160,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             CurentTime = time;
         }
 
-        private void ToEnd_Click(object sender, RoutedEventArgs e)
+        private void ToEnd_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             IsPlayed = false;
             CurentTime = EndTime;
@@ -200,6 +200,5 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         }
 
         #endregion
-
     }
 }

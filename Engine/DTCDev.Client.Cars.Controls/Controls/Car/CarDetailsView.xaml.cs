@@ -61,13 +61,6 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
             }
             txtDateUpdate.Text = _currentCar.DateLastUpdate.ToString("dd.MM.yyyy");
             txtTimeUpdate.Text = _currentCar.DateLastUpdate.ToString("HH:mm:ss");
-            //txtDate.Text = "Последняя связь - " + _currentCar.DateNavigation;
-            //txtSpeed.Text = _currentCar.strSpeed;
-            //txtSat.Text = _currentCar.CountSatelite.ToString();
-            //if (_currentCar.OBD.Where(p => p.Key == "2F").FirstOrDefault() != null)
-            //    txtFuel.Text = _currentCar.OBD.Where(p => p.Key == "2F").First().Value + " %";
-            //else
-            //    txtFuel.Text = _currentCar.FuelLevel + " л.";
 
             var converter = new PIDConverter();
             stkOBD.Children.Clear();stkOBD.RowDefinitions.Clear();
