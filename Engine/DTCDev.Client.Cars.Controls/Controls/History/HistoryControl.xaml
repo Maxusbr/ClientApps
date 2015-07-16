@@ -536,7 +536,7 @@
                 
             </StackPanel>
         </Border>
-        <local:PlayerControl HorizontalAlignment="Center" Visibility="{Binding VisablePlayer, Converter={StaticResource BoolToVisibilityConverter}}"
+                <local:PlayerControl HorizontalAlignment="Center" Visibility="{Binding VisablePlayer, Converter={StaticResource BoolToVisibilityConverter}}"
                 	IsPlayed="{Binding IsPlayerStart, Mode=TwoWay}" 
                 	StartTime="{Binding PlayerStartTime, Mode=TwoWay}" 
                 	EndTime="{Binding PlayerEndTime, Mode=TwoWay}" 
