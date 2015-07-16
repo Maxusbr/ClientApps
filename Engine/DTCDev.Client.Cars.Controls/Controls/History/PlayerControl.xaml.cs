@@ -198,13 +198,16 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
                     }
                     if (Application.Current != null)
                         Application.Current.Dispatcher.BeginInvoke(new Action(() => CurentTime = time));
-
                     Thread.Sleep(10);
                 }
+            });
+            slowTask.ContinueWith(o =>
+            {
                 if (Application.Current != null)
                     Application.Current.Dispatcher.BeginInvoke(new Action(() => IsPlayed = false));
             });
             slowTask.Start();
+
         }
 
         #endregion

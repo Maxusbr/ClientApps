@@ -96,37 +96,60 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         void Instance_AccLoaded(CarAccHistoryModel model)
         {
-            var acc = new CarAccHistoryModel { DevID = model.DevID };
-            for (var i = 0; i < DayStates.Count; i++)
-            {
-                var item = DayStates[i];
-                var next = i + 1 < DayStates.Count ? DayStates[i + 1].Date : DateTime.Now;
-                var list = model.Data.Where(o => o.Date.ToDateTime() >= item.Date && o.Date.ToDateTime() < next);
-                foreach (var el in list)
-                    acc.Data.Add(el);
-            }
-            AccHistory = acc;
-            IsEnabledRadio = true;
             IsPlayerStart = false;
-            if (!IsCheckedSpeed) UpdateRoutes(true);
+            var acc = new CarAccHistoryModel { DevID = model.DevID };
+            var slowTask = new Task(delegate
+            {
+                for (var i = 0; i < DayStates.Count; i++)
+                {
+                    var item = DayStates[i];
+                    var next = i + 1 < DayStates.Count ? DayStates[i + 1].Date : DateTime.Now;
+                    var list = model.Data.Where(o => o.Date.ToDateTime() >= item.Date && o.Date.ToDateTime() < next);
+                    foreach (var el in list)
+                        acc.Data.Add(el);
+                }
+            });
+            slowTask.ContinueWith(obj =>
+            {
+                if (Application.Current != null)
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        AccHistory = acc;
+                        IsEnabledRadio = true;
+                        if (!IsCheckedSpeed) UpdateRoutes(true);
+                    }));
+            });
+            slowTask.Start();
         }
 
         void Instance_OBDLoaded(OBDHistoryDataModel model)
         {
+            IsPlayerStart = false;
             var obd = new OBDHistoryDataModel {DevID = model.DevID, DT = model.DT};
-            for (var i = 0; i < DayStates.Count; i++)
+            var slowTask = new Task(delegate
             {
-                var item = DayStates[i];
-                var next = i + 1 < DayStates.Count ? DayStates[i + 1].Date : DateTime.Now;
-                var dt = new DateTime(item.Date.Year, item.Date.Month, item.Date.Day);
-                var list = model.Data.Where(o => dt + o.Time.ToTimeSpan() >= item.Date && dt + o.Time.ToTimeSpan() < next);
-                foreach (var el in list)
-                    obd.Data.Add(el);
-            }
-
-            OBDHistory = obd;
-            TableHistory.Update(obd);
-            OnPropertyChanged("TableHistory");
+                for (var i = 0; i < DayStates.Count; i++)
+                {
+                    var item = DayStates[i];
+                    var next = i + 1 < DayStates.Count ? DayStates[i + 1].Date : DateTime.Now;
+                    var dt = new DateTime(item.Date.Year, item.Date.Month, item.Date.Day);
+                    var list =
+                        model.Data.Where(o => dt + o.Time.ToTimeSpan() >= item.Date && dt + o.Time.ToTimeSpan() < next);
+                    foreach (var el in list)
+                        obd.Data.Add(el);
+                }
+            });
+            slowTask.ContinueWith(obj =>
+            {
+                if (Application.Current != null)
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        OBDHistory = obd;
+                        TableHistory.Update(obd);
+                        OnPropertyChanged("TableHistory");
+                    }));
+            });
+            slowTask.Start();
         }
 
         void Instance_LinesLoaded(DTCDev.Models.LinesDataModel model)
@@ -402,7 +425,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                             }
                     };
                 }
-                this.OnPropertyChanged("EnableHistory");
+                OnPropertyChanged("EnableHistory");
             }
         }
 
@@ -426,7 +449,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             {
                 _selectedRow = value;
                 TableHistory.Update(value);
-                this.OnPropertyChanged("SelectedHistoryRow");
+                IsPlayerStart = false;
+                OnPropertyChanged("SelectedHistoryRow");
                 OnPropertyChanged("VisablePlayer");
                 OnPropertyChanged("TableHistory");
                 SortData();
