@@ -62,7 +62,14 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         }
 
         private static readonly DependencyProperty CurentTimeProperty = DependencyProperty.Register("CurentTime",
-            typeof(DateTime), typeof(PlayerControl), new PropertyMetadata(null));
+            typeof(DateTime), typeof(PlayerControl), new PropertyMetadata(OnChangeCurentTime));
+
+        private static void OnChangeCurentTime(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            var control = (PlayerControl)sender;
+            if (control == null) return;
+            control.CurentTime = (DateTime)e.NewValue;
+        }
 
         #endregion
 
@@ -92,9 +99,10 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
 
         public bool IsPlayed
         {
-            get { return _isPlayed; }
+            get { return (bool)GetValue(IsPlayedProperty); }
             set
             {
+                SetValue(IsPlayedProperty, value);
                 _isPlayed = value;
                 ToPlay.Visibility = value ? Visibility.Collapsed : Visibility.Visible;
                 ToStop.Visibility = value ? Visibility.Visible : Visibility.Collapsed;

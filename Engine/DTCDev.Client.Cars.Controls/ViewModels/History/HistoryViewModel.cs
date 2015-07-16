@@ -88,10 +88,10 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         {
             if (!e.PropertyName.Equals("SelectedRow") || TableHistory.SelectedRow == null) return;
             IsPlayerStart = false;
+            Thread.Sleep(10);
             var item = DayStates.FirstOrDefault(o => o.Date == TableHistory.SelectedRow.Date);
             if(item == null) return;
-            if (Position != null)
-                Position.Location = new Location(item.Lt / 10000.0, item.Ln / 10000.0);
+            PlayerCurentTime = item.Date;
         }
 
         void Instance_AccLoaded(CarAccHistoryModel model)
