@@ -751,9 +751,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                     _position.PropertyChanged -= PositionOnPropertyChanged;
                 }
                 _position = value;
-                _position.IsSelected = true;
                 this.OnPropertyChanged("Position");
                 if (value == null) return;
+                _position.IsSelected = true;
                 if (value.Location != null)
                     MapCenter = MapCenterUser = value.Location;
                 _position.PropertyChanged += PositionOnPropertyChanged;
@@ -982,7 +982,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
 
 
-        void CarSelector_OnCarChanged(Engine.DisplayModels.DISP_Car car)
+        void CarSelector_OnCarChanged(DISP_Car car)
         {
             IsPlayerStart = false;
             ZoneSelect.Clear();
@@ -1037,7 +1037,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 {
                     GetCache(DateTime.Now - TimeSpan.FromDays(i));
                 }
-
+                SortDataByDate(false);
                 //Загружаем историю за последние 30 дней
                 HistoryHandler.Instance.StartLoadHistory(CarSelector.SelectedCar.Car.Id, DateTime.Now - TimeSpan.FromDays(days), DateTime.Now, UseAccelleration);
             }
@@ -1077,6 +1077,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 SortDataByDate(true);
             }
             AccHistory = null;
+            OBDHistory = null;
             HistoryHandler.Instance.StartLoadDayLines(Position.Car.Id, SelectedHistoryRow.Date);
             HistoryHandler.Instance.StartLoadOBD(Position.Car.Id, SelectedHistoryRow.Date);
             HistoryHandler.Instance.StartLoadAcc(Position.Car.Id, SelectedHistoryRow.Date);
@@ -1231,15 +1232,13 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             {
                 var myDocs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\M2B\\Cache\\";
                 var name = string.Format("[{0}]-{1}-{2}-{3}", CarSelector.SelectedCar.ID, date.Day, date.Month, date.Year);
-                if (!System.IO.File.Exists(myDocs + name)) return;
-                using (var reader = new System.IO.StreamReader(myDocs + name))
+                if (!File.Exists(myDocs + name)) return;
+                using (var reader = new StreamReader(myDocs + name))
                 {
-                    var xs = new System.Xml.Serialization.XmlSerializer(typeof(List<CarStateModel>));
                     var cr = JsonConvert.DeserializeObject<List<CarStateModel>>(reader.ReadToEnd());
                     if (cr == null) return;
                     BuildHistoryRow(cr, date);
-                    SortDataByDate(false);
-
+                    
                 }
             }
             catch { }
@@ -1247,67 +1246,96 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         private void BuildHistoryRow(List<CarStateModel> data, DateTime date)
         {
-            LoadedHistoryRows r = new LoadedHistoryRows();
-            r.Date = date;
-            r.Data = data;
-            try
-            {
-                DistanceCalculator dc = new DistanceCalculator();
-                for (int i = 0; i < data.Count() - 1; i++)
-                {
-                    r.Mileage += dc.Calculate(data[i], data[i + 1]);
-                }
-            }
-            catch { }
-            if (data.Count() > 0)
+            var r = new LoadedHistoryRows {Date = date, Data = data};
+            var slowTask = new Task(delegate
             {
                 try
                 {
-                    r.MiddleSpeed = data.Sum(p => p.Spd) / 10 / data.Count();
-                    List<CarStateModel> moving = data.Where(p => p.Spd > 10).ToList();
-                    int hStart = moving.Min(p => p.hh);
-                    int minStart = moving.Where(p => p.hh == hStart).Min(p => p.mm);
-                    int hStop = moving.Max(p => p.hh);
-                    int mStop = moving.Where(p => p.hh == hStop).Max(p => p.mm);
+                    var dc = new DistanceCalculator();
+                    for (var i = 0; i < data.Count() - 1; i++)
+                    {
+                        r.Mileage += dc.Calculate(data[i], data[i + 1]);
+                    }
+                }
+                catch
+                {
+                }
+                if (!data.Any()) return;
+                try
+                {
+                    r.MiddleSpeed = data.Sum(p => p.Spd)/10/data.Count();
+                    var moving = data.Where(p => p.Spd > 10).ToList();
+                    var hStart = moving.Min(p => p.hh);
+                    var minStart = moving.Where(p => p.hh == hStart).Min(p => p.mm);
+                    var hStop = moving.Max(p => p.hh);
+                    var mStop = moving.Where(p => p.hh == hStop).Max(p => p.mm);
 
                     r.Start = hStart.ToString() + ":" + minStart.ToString();
                     r.Stop = hStop.ToString() + ":" + mStop.ToString();
 
 
                 }
-                catch { }
-            }
-
-            bool replaced = false;
-            for (int i = 0; i < HistoryRows.Count(); i++)
-            {
-                var selected = HistoryRows[i].Equals(SelectedHistoryRow);
-                if (HistoryRows[i].StringDate == r.StringDate)
+                catch
                 {
-                    DistanceAll -= HistoryRows[i].Mileage;
-                    HistoryRows.RemoveAt(i);
-                    HistoryRows.Insert(i, r);
-                    if (selected) SelectedHistoryRow = r;
-                    replaced = true;
-                    DistanceAll += r.Mileage;
                 }
-            }
-            if (replaced == false)
+            });
+            slowTask.ContinueWith(delegate
             {
-                bool inserted = false;
-                for (int i = 0; i < HistoryRows.Count(); i++)
-                {
-                    if (HistoryRows[i].Date < r.Date)
+                if (Application.Current != null)
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                     {
-                        HistoryRows.Insert(i, r);
-                        inserted = true;
-                        break;
-                    }
-                }
-                if (inserted == false)
-                    HistoryRows.Add(r);
-                DistanceAll += r.Mileage;
-            }
+                        var item =
+                            HistoryRows.OrderBy(s => s.Date)
+                                .LastOrDefault(o => o.StringDate.Equals(r.StringDate) || o.Date < r.Date);
+                        if (item != null)
+                        {
+                            var indx = HistoryRows.IndexOf(item);
+                            var selected = HistoryRows[indx].Equals(SelectedHistoryRow);
+                            DistanceAll -= HistoryRows[indx].Mileage;
+                            HistoryRows[indx] = r;
+                            if (selected) SelectedHistoryRow = r;
+                            DistanceAll += r.Mileage;
+                        }
+                        else
+                        {
+                            HistoryRows.Add(r);
+                            DistanceAll += r.Mileage;
+                        }
+                    }));
+            });
+            slowTask.Start();
+            //bool replaced = false;
+            //for (int i = 0; i < HistoryRows.Count(); i++)
+            //{
+            //    var selected = HistoryRows[i].Equals(SelectedHistoryRow);
+            //    if (HistoryRows[i].StringDate == r.StringDate)
+            //    {
+            //        DistanceAll -= HistoryRows[i].Mileage;
+            //        //HistoryRows.RemoveAt(i);
+            //        //HistoryRows.Insert(i, r);
+            //        HistoryRows[i] = r;
+            //        if (selected) SelectedHistoryRow = r;
+            //        replaced = true;
+            //        DistanceAll += r.Mileage;
+            //        break;
+            //    }
+            //}
+            //if (replaced == false)
+            //{
+            //    bool inserted = false;
+            //    for (int i = 0; i < HistoryRows.Count(); i++)
+            //    {
+            //        if (HistoryRows[i].Date < r.Date)
+            //        {
+            //            HistoryRows.Insert(i, r);
+            //            inserted = true;
+            //            break;
+            //        }
+            //    }
+            //    if (inserted == false)
+            //        HistoryRows.Add(r);
+            //    DistanceAll += r.Mileage;
+            //}
         }
 
         private RouteSelect SortLocation(Location prev, Location loc, RouteSelect prevroute, double spd, DateTime dt)

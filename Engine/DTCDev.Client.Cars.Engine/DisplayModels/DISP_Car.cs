@@ -223,11 +223,9 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
             get { return _isSelected; }
             set
             {
-                if (this._isSelected != value)
-                {
-                    this._isSelected = value;
-                    OnPropertyChanged("IsSelected");
-                }
+                if (_isSelected == value) return;
+                _isSelected = value;
+                OnPropertyChanged("IsSelected");
             }
         }
 

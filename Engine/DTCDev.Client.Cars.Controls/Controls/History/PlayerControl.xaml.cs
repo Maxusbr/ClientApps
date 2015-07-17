@@ -38,7 +38,8 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         {
             var control = (PlayerControl)sender;
             if (control == null) return;
-            control.IsPlayed = (bool)e.NewValue;
+            control._isPlayed = (bool)e.NewValue;
+            if (control._isPlayed) control.PlayLoop();
         }
 
         private static readonly DependencyProperty StartTimeProperty = DependencyProperty.Register("StartTime",
@@ -68,7 +69,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         {
             var control = (PlayerControl)sender;
             if (control == null) return;
-            control.CurentTime = (DateTime)e.NewValue;
+            control._curentTime = (DateTime)e.NewValue;
         }
 
         #endregion
@@ -81,11 +82,11 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
 
         #region Fields
 
-        private int _speedValue = 5;
-        private bool _isPlayed;
-        private DateTime _startTime;
-        private DateTime _endTime;
-        private DateTime _curentTime;
+        int _speedValue = 5;
+        bool _isPlayed;
+        DateTime _startTime;
+        DateTime _endTime;
+        DateTime _curentTime;
         #endregion
 
         #region Properties
@@ -103,10 +104,8 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             set
             {
                 SetValue(IsPlayedProperty, value);
-                _isPlayed = value;
                 ToPlay.Visibility = value ? Visibility.Collapsed : Visibility.Visible;
                 ToStop.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
-                if (value) PlayLoop();
             }
         }
 
@@ -125,11 +124,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         public DateTime CurentTime
         {
             get { return (DateTime)GetValue(CurentTimeProperty); }
-            set
-            {
-                SetValue(CurentTimeProperty, value);
-                _curentTime = value;
-            }
+            set{SetValue(CurentTimeProperty, value);}
         }
 
         #endregion

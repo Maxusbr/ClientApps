@@ -61,9 +61,12 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         {
             stkData.Children.Clear();
             if (_data == null)
-                return;
+            {
+                grdLoad.Visibility = Visibility.Visible;
+            }
             else
             {
+                grdLoad.Visibility = Visibility.Collapsed;
                 List<string> prms = _data.Data.Select(p => p.Code).Distinct().ToList();
                 foreach (var item in prms)
                 {
@@ -71,7 +74,6 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
                     OBDHistoryRow row = new OBDHistoryRow(item, temp);
                     row.Margin = new Thickness(0, 2, 0, 2);
                     stkData.Children.Add(row);
-
                 }
             }
         }
