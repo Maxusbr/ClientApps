@@ -203,6 +203,39 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             if (control.Visibility == Visibility.Visible) _gridWhidt = Math.Max(_gridWhidt, control.ActualWidth);
         }
 
+        private void CheckedSpeed_Checked(object sender, RoutedEventArgs e)
+        {
+            if(_hvm == null) return;
+            _hvm.IsCheckedSpeed = _hvm.IsCheckedWay = _hvm.IsCheckedAccelerate = false;
+            if (CheckedSpeed.IsChecked ?? false)
+            {
+                CheckedAccelerate.IsChecked = CheckedWay.IsChecked = false;
+                _hvm.IsCheckedSpeed = true;
+            }
+        }
+
+        private void CheckedWay_Checked(object sender, RoutedEventArgs e)
+        {
+            if (_hvm == null) return;
+            _hvm.IsCheckedSpeed = _hvm.IsCheckedWay = _hvm.IsCheckedAccelerate = false;
+            if (CheckedWay.IsChecked ?? false)
+            {
+                CheckedAccelerate.IsChecked = CheckedSpeed.IsChecked = false;
+                _hvm.IsCheckedWay = true;
+            }
+        }
+
+        private void CheckedAccelerate_Checked(object sender, RoutedEventArgs e)
+        {
+            if (_hvm == null) return;
+            _hvm.IsCheckedSpeed = _hvm.IsCheckedWay = _hvm.IsCheckedAccelerate = false;
+            if (CheckedAccelerate.IsChecked ?? false)
+            {
+                CheckedWay.IsChecked = CheckedSpeed.IsChecked = false;
+                _hvm.IsCheckedAccelerate = true;
+            }
+        }
+
 
     }
 

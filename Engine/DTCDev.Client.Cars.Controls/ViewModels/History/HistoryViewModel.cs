@@ -174,7 +174,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 Iswaiting = true;
                 if (recalcValues)
                 {
-                    _maxValue = el != null ? Math.Max(Math.Abs(el.MaxX) / 100.0m, 1) : 1;
+                    _maxValue = el != null ? Math.Max(Math.Abs(el.MaxX) / 100.0m, 2) : 2;
                     _minValue = 0;
                     _leftValue = .5m;
                     _rightValue = 1;
@@ -187,7 +187,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 Iswaiting = true;
                 if (recalcValues)
                 {
-                    _maxValue = el != null ? Math.Max(Math.Max(Math.Abs(el.MaxY), Math.Abs(el.MaxZ)) / 100.0m, 1) : 1;
+                    _maxValue = el != null ? Math.Max(Math.Max(Math.Abs(el.MaxY), Math.Abs(el.MaxZ)) / 100.0m, 2) : 2;
                     _minValue = 0;
                     _leftValue = .5m;
                     _rightValue = 1; 
@@ -1632,10 +1632,10 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 if (!value || AccHistory == null || AccHistory.Data.Count == 0) return;
                 Iswaiting = true;
                 var el = AccHistory.Data.FirstOrDefault();
-                _maxValue = el != null ? Math.Max(Math.Abs(el.MaxX) / 100.0m, 1): 1;
+                _maxValue = el != null ? Math.Max(Math.Abs(el.MaxX)/100.0m, 2) : 2;
                 _minValue = 0;
                 _leftValue = .5m;
-                _rightValue = 1; 
+                _rightValue = 1;
                 OnPropertyChanged("IsCheckedWay");
                 UpdateRouteWay();
             }
@@ -1653,7 +1653,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 if (!value || AccHistory == null || AccHistory.Data.Count == 0) return;
                 Iswaiting = true;
                 var el = AccHistory.Data.FirstOrDefault();
-                _maxValue = el != null ? Math.Max(Math.Max(Math.Abs(el.MaxY), Math.Abs(el.MaxZ) )/ 100.0m, 1) : 1;
+                _maxValue = el != null ? Math.Max(Math.Max(Math.Abs(el.MaxY), Math.Abs(el.MaxZ))/100.0m, 2) : 2;
                 _minValue = 0;
                 _leftValue = .5m;
                 _rightValue = 1;

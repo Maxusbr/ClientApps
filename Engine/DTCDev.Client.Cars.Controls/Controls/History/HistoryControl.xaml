@@ -517,12 +517,12 @@
                 <TabItem Header="Табличное представление">
                     <Grid>
                         <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
                         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,4">
-                            <RadioButton Content="все данные" IsChecked="{Binding TableHistory.IsNotNull, Converter={StaticResource InvertBoolConverter}}"/>
-                            <RadioButton Content="только в движении" IsChecked="{Binding TableHistory.IsNotNull}" Margin="20,0,0,0"/>
+                            <ToggleButton Content="все данные" IsChecked="{Binding TableHistory.IsNotNull, Converter={StaticResource InvertBoolConverter}}" Padding="4,1"/>
+                            <ToggleButton Content="только в движении" IsChecked="{Binding TableHistory.IsNotNull}" Margin="20,0,0,0" Padding="4,1"/>
                         </StackPanel>
                         <DataGrid x:Name="HistoryTable" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single"       
                 			ItemsSource="{Binding TableHistory.ListHistoryRows}" CanUserAddRows="False" SelectedItem="{Binding TableHistory.SelectedRow, Mode=TwoWay}" Grid.Row="1"/>
@@ -534,20 +534,20 @@
         <Car:CarZonesError x:Name="_carZonesError" VerticalAlignment="Top" Grid.Row="2" DataContext="{Binding HistoryErrorVm}" Visibility="Collapsed" Height="0" Grid.ColumnSpan="2"/>
         <Border Grid.RowSpan="2" Margin="50,10,0,0" Padding="10" HorizontalAlignment="Left" VerticalAlignment="Top" 
                 Background="White" Visibility="{Binding EnableHistory, Converter={StaticResource BoolToVisibilityConverter}}" >
-            <StackPanel Orientation="Vertical">
-                <StackPanel Orientation="Horizontal" >
-                    <RadioButton Content="Скорость" Margin="0,0,10,0" IsChecked="{Binding IsCheckedSpeed, Mode=TwoWay}"/>
-                    <RadioButton Content="Дорога" Margin="0,0,10,0" IsChecked="{Binding IsCheckedWay, Mode=TwoWay}" IsEnabled="{Binding IsEnabledRadio}"/>
-                    <RadioButton Content="Ускорение" IsChecked="{Binding IsCheckedAccelerate, Mode=TwoWay}" IsEnabled="{Binding IsEnabledRadio}"/>
+            <StackPanel Orientation="Vertical" Width="230">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                    <ToggleButton x:Name="CheckedSpeed" Content="Скорость" Margin="0,0,10,0" IsChecked="True" Checked="CheckedSpeed_Checked" Padding="4,1"/>
+                    <ToggleButton x:Name="CheckedWay" Content="Дорога" Margin="0,0,10,0" IsEnabled="{Binding IsEnabledRadio}" Checked="CheckedWay_Checked" Padding="4,1"/>
+                    <ToggleButton x:Name="CheckedAccelerate" Content="Ускорение" IsEnabled="{Binding IsEnabledRadio}" Checked="CheckedAccelerate_Checked" Padding="4,1"/>
                 </StackPanel>
                 <Client:MultiSlider x:Name="MultiValueSlider" Height="40" Left="{Binding LeftValue, Mode=TwoWay}" Right="{Binding RightValue, Mode=TwoWay}" 
                                     FirstDecoration="{DynamicResource Green1}" SecondDecoration="{DynamicResource DarkOrange1}" ThirdDecoration="{DynamicResource DarkRed1}" Margin="0,10,0,0" 
                                     Max="{Binding MaxValue, Mode=TwoWay}" Min="{Binding MinValue, Mode=TwoWay}" IsEnabled="{Binding IsEnabledRadio}"
                                     Visibility="{Binding IsCheckedSpeed, Converter={StaticResource InvertBoolToVisibilityConverter}}" />
-                
+
             </StackPanel>
         </Border>
-                <local:PlayerControl HorizontalAlignment="Center" Visibility="{Binding VisablePlayer, Converter={StaticResource BoolToVisibilityConverter}}"
+        <local:PlayerControl HorizontalAlignment="Center" Visibility="{Binding VisablePlayer, Converter={StaticResource BoolToVisibilityConverter}}"
                 	IsPlayed="{Binding IsPlayerStart, Mode=TwoWay}" 
                 	StartTime="{Binding PlayerStartTime, Mode=TwoWay}" 
                 	EndTime="{Binding PlayerEndTime, Mode=TwoWay}" 

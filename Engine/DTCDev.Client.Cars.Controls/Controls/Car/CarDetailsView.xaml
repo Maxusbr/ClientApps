@@ -7,6 +7,76 @@
              x:Class="DTCDev.Client.Cars.Controls.Controls.Car.CarDetailsView" 
              mc:Ignorable="d" 
              Height="230" d:DesignWidth="700" MinWidth="700">
+    <UserControl.Resources>
+        <Style x:Key="ToggleButtonStyle" TargetType="{x:Type ToggleButton}">
+            <Setter Property="FocusVisualStyle">
+                <Setter.Value>
+                    <Style>
+                        <Setter Property="Control.Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <Rectangle Margin="2" SnapsToDevicePixels="True" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background" Value="#FFDDDDDD"/>
+            <Setter Property="BorderBrush" Value="#FF707070"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Grid ClipToBounds="True">
+                            <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                            <Ellipse Fill="Black" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="50" Margin="0,-21,0,0" Visibility="Collapsed"/>
+                            <Ellipse Fill="Black" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="50" Margin="0,-18,0,-21" Visibility="Collapsed"/>
+                            <Path Data="M5.1666667,-0.88273054 C5.2496713,-0.79971467 5.5830237,4.8333333 9.4165766,4.8333333 11.916577,4.8333333 36.584787,4.8333333 39.418295,4.8333333 43.418524,4.8333333 43.861494,-0.98841159 43.861494,-0.98841159 z" Fill="Black" HorizontalAlignment="Stretch" Height="6.895" Margin="3,-0.479,2.875,0" Stretch="Fill" Stroke="{x:Null}" VerticalAlignment="Top" Width="Auto"/>
+                            <Path Data="M5.1666667,-0.88273054 C5.2496713,-0.79971467 5.5830237,4.8333333 9.4165766,4.8333333 11.916577,4.8333333 36.584787,4.8333333 39.418295,4.8333333 43.418524,4.8333333 43.751877,-0.88287126 43.751877,-0.88287126 z" Fill="Black" HorizontalAlignment="Stretch" Height="6.77" Stretch="Fill" Stroke="{x:Null}" VerticalAlignment="Bottom" Width="Auto" RenderTransformOrigin="0.5,0.5" Margin="3,0,3,-0.708">
+                            	<Path.RenderTransform>
+                            		<TransformGroup>
+                            			<ScaleTransform ScaleY="-1" ScaleX="1"/>
+                            			<SkewTransform AngleY="0" AngleX="0"/>
+                            			<RotateTransform Angle="0"/>
+                            			<TranslateTransform Y="-0.3539999999999992"/>
+                            		</TransformGroup>
+                            	</Path.RenderTransform>
+                            </Path>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Button.IsDefaulted" Value="True">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" TargetName="border" Value="#FFBEE6FD"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="#FF3C7FB1"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" TargetName="border" Value="#FFC4E5F6"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="#FF2C628B"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Background" TargetName="border" Value="#FFBCDDEE"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="#FF245A83"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" TargetName="border" Value="#FFF4F4F4"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="#FFADB2B5"/>
+                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="#FF838383"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
     <Grid >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50"/>
@@ -183,5 +253,18 @@
                 </Border>
             </Grid>
         </Button>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <ToggleButton Style="{DynamicResource ToggleButtonStyle}" Background="#FF707070" BorderBrush="#FFA2A2A2" Margin="0,1">
+                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/SettingsMenu/car-icon.png"/>
+            </ToggleButton>
+            <ToggleButton Style="{DynamicResource ToggleButtonStyle}" Background="#FF707070" Grid.Row="1" BorderBrush="#FFA2A2A2" Margin="0,1">
+                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/connect.png" Stretch="None"/>
+            </ToggleButton>
+        </Grid>
     </Grid>
 </UserControl>
