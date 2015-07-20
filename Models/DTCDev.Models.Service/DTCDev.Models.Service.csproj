@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CreateClientModel.cs" />
     <Compile Include="EmployeeModel.cs" />
     <Compile Include="FunctionEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

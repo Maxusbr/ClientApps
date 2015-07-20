@@ -37,6 +37,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
         private bool _visableUserList = false;
         private bool _canDeleted = true;
         private DateTime _dateProduce = DateTime.Now;
+        private string _filterText = "";
 
         public OrderViewModel(OrderViewModel model)
         {
@@ -68,7 +69,36 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
 
             _storage.Update();
             _storage.UpdateWorkTypes();
+            PostsHandler.Instance.ClientsLoaded += Instance_ClientsLoaded;
             
+        }
+
+        void Instance_ClientsLoaded(object sender, EventArgs e)
+        {
+            //обновление списка пользователей. 
+            //вызываем фильтрацию списка
+            FilterClients();
+        }
+
+        /// <summary>
+        /// Сортировка списка клиентов в соответствии с введенной пользователем частью имени
+        /// </summary>
+        private void FilterClients()
+        {
+            _listUsers.Clear();
+            if (_filterText.Length >= 3)
+            {
+                foreach (var item in PostsHandler.Instance.Users)
+                {
+                    if (item.Nm.ToLower().Contains(_filterText.ToLower()))
+                        _listUsers.Add(item);
+                }
+            }
+            //если есть подходящие под фильтр пользователи - показываем листбокс с списком пользователей
+            if (_listUsers.Count() > 0)
+                VisableUserList = true;
+            else
+                VisableUserList = false;
         }
 
         void _storage_LoadBodiesComplete(object sender, EventArgs e)
@@ -185,7 +215,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             IsCanMoveToUse = model.IsCanMoveToUse;
             _user = model.User ?? new UserLightModel();
             VisableUserList = model.User == null;
-            _foundString = model.User != null ? _user.Nm : "";
+            _filterText = model.User != null ? _user.Nm : "";
 
             _selectedWorks.Clear();
             CanDeleted = model.CanDeleted;
@@ -201,7 +231,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
                 Car = new DISP_Car { CarModel = { CarNumber = "Demo2", Mark = "Audio", Model = "A5" } };
                 DateWork = DateTime.Now;
                 IsChanged = false;
-                _foundString = "User";
+                _filterText = "User";
             }
         }
 
@@ -485,8 +515,9 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
         private bool _visableAddUser = false;
         public bool VisableAddUser
         {
-            get { return !string.IsNullOrEmpty(_foundString) && 
-                !_handler.Users.Any(o => o.Nm.ToLower().Contains(_foundString.ToLower())); }
+            get { return !string.IsNullOrEmpty(_filterText) &&
+                !_handler.Users.Any(o => o.Nm.ToLower().Contains(_filterText.ToLower()));
+            }
             set
             {
                 _visableAddUser = value;
@@ -503,22 +534,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             }
         }
 
-        private string _foundString = string.Empty;
-        private CollectionViewSource _listUsers;
-        public ICollectionView ListUsers
-        {
-            get
-            {
-                if (_listUsers != null) return _listUsers.View;
-                _listUsers = new CollectionViewSource { Source = _handler.Users };
-                _listUsers.Filter += (o, e) =>
-                {
-                    e.Accepted = string.IsNullOrEmpty(_foundString) ||
-                        ((UserLightModel)e.Item).Nm.ToLower().Contains(_foundString.ToLower());
-                };
-                return _listUsers.View;
-            }
-        }
+        private ObservableCollection<UserLightModel> _listUsers = new ObservableCollection<UserLightModel>();
+        public ObservableCollection<UserLightModel> ListUsers { get { return _listUsers; } }
 
         public WorksInfoDataModel SelectedWork
         {
@@ -585,13 +602,18 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
 
         private void TextChanged(object obj)
         {
+            //текст запроса
+            _filterText = obj.ToString();
             SelectedUser = null;
-            VisableUserList = !UserName.Equals(_foundString = obj.ToString()) || string.IsNullOrEmpty(_foundString);
+            VisableUserList = !UserName.Equals(_filterText) || string.IsNullOrEmpty(_filterText);
             if (VisableUserList)
-                ListUsers.Refresh();
+            {
+                if (_filterText.Length == 3)
+                    PostsHandler.Instance.UpdateClients(_filterText);
+                FilterClients();
+            }
             else
                 OnPropertyChanged("UserName");
-            VisableUserList = VisableUserList && _listUsers.View.Cast<object>().Any();
         }
 
         private RelayCommand _cancelCommand;
@@ -625,6 +647,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             get { return _addWorkCommand ?? (_addWorkCommand = new RelayCommand(AddWork)); }
         }
 
+        /// <summary>
+        /// Добавить работу в список заявляемых
+        /// </summary>
+        /// <param name="obj"></param>
         private void AddWork(object obj)
         {
             //if (_selectedWork == null) return;
@@ -684,6 +710,19 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             _handler.InUse(this);
             CompleteSave(this);
         }
+
+        private RelayCommand _createClientCommand;
+
+        public RelayCommand CreateClientCommand
+        {
+            get { return _createClientCommand ?? (_createClientCommand = new RelayCommand(CreateClient)); }
+        }
+
+        public void CreateClient(object sender)
+        {
+
+        }
+
         #endregion
 
     }

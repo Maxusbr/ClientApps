@@ -46,6 +46,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             if (ListPostCollectionChanged != null) ListPostCollectionChanged(sender, e);
         }
 
+        public event EventHandler ClientsLoaded;
+
 
 
         private readonly ObservableCollection<PostViewModel> _listPost = new ObservableCollection<PostViewModel>();
@@ -57,7 +59,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
         private readonly List<string> _listTypePost = new List<string>();
         public List<string> ListTypePost { get { return _listTypePost; } }
 
-        private readonly List<UserLightModel> _users = new List<UserLightModel>();
+        private List<UserLightModel> _users = new List<UserLightModel>();
+        /// <summary>
+        /// Список всех клиентов компании
+        /// </summary>
         public List<UserLightModel> Users { get { return _users; } }
 
         public DateTime Date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
@@ -77,39 +82,35 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                     });
                 }
 
-            Users.Add(new UserLightModel { Nm = "Иванов Петр Иванович" });
-            // Записан через сайт
-            Users.Add(new UserLightModel { Nm = "Петров Иван Сидорович", Tp = 1});
-            Users.Add(new UserLightModel { Nm = "Сидоров Сидор Петрович" });
-            Orders.Add(new OrderViewModel
-            {
-                ID = Orders.Count,
-                PostID = 2,
-                User = Users[0],
-                Car = new DISP_Car { CarModel = new CarListBaseDataModel { CarNumber = "Demo1", Mark = "Audio", Model = "A3" } },
-                DateWork = Date + new TimeSpan(12, 0, 0),
-                IsChanged = false,
-                IsCanMoveToUse = true
-            });
-            Orders.Add(new OrderViewModel
-            {
-                ID = Orders.Count,
-                PostID = 3,
-                User = Users[1],
-                Car = new DISP_Car { CarModel = new CarListBaseDataModel { CarNumber = "Demo2", Mark = "Audio", Model = "A4" } },
-                DateWork = Date + new TimeSpan(13, 0, 0),
-                IsChanged = false,
-                IsCanMoveToUse = true
-            });
-            Orders.Add(new OrderViewModel
-            {
-                ID = Orders.Count,
-                PostID = 1,
-                User = Users[2],
-                Car = new DISP_Car { CarModel = new CarListBaseDataModel { CarNumber = "Demo3", Mark = "Audio", Model = "A5" } },
-                DateWork = Date + new TimeSpan(14, 30, 0),
-                IsChanged = false, InUse = true
-            });
+            //Orders.Add(new OrderViewModel
+            //{
+            //    ID = Orders.Count,
+            //    PostID = 2,
+            //    User = Users[0],
+            //    Car = new DISP_Car { CarModel = new CarListBaseDataModel { CarNumber = "Demo1", Mark = "Audio", Model = "A3" } },
+            //    DateWork = Date + new TimeSpan(12, 0, 0),
+            //    IsChanged = false,
+            //    IsCanMoveToUse = true
+            //});
+            //Orders.Add(new OrderViewModel
+            //{
+            //    ID = Orders.Count,
+            //    PostID = 3,
+            //    User = Users[1],
+            //    Car = new DISP_Car { CarModel = new CarListBaseDataModel { CarNumber = "Demo2", Mark = "Audio", Model = "A4" } },
+            //    DateWork = Date + new TimeSpan(13, 0, 0),
+            //    IsChanged = false,
+            //    IsCanMoveToUse = true
+            //});
+            //Orders.Add(new OrderViewModel
+            //{
+            //    ID = Orders.Count,
+            //    PostID = 1,
+            //    User = Users[2],
+            //    Car = new DISP_Car { CarModel = new CarListBaseDataModel { CarNumber = "Demo3", Mark = "Audio", Model = "A5" } },
+            //    DateWork = Date + new TimeSpan(14, 30, 0),
+            //    IsChanged = false, InUse = true
+            //});
 
         }
 
@@ -156,7 +157,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             try
             {
                 //TODO исправить префикс
-                TCPConnection.Instance.SendData("DA");
+                TCPConnection.Instance.SendData("EA");
             }
             catch { }
         }
@@ -171,7 +172,34 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             try
             {
                 //TODO исправить префикс
-                TCPConnection.Instance.SendData("DB" + JsonConvert.SerializeObject(model));
+                TCPConnection.Instance.SendData("EB" + JsonConvert.SerializeObject(model));
+            }
+            catch { }
+        }
+
+        /// <summary>
+        /// Запросить список клиентов, начинающихся на определенную фразу, не менее 3 символов
+        /// </summary>
+        /// <param name="req">поисковая фараза</param>
+        public void UpdateClients(string req)
+        {
+            SendRequest("ED" + req);
+        }
+
+        public void CreateClient(CreateClientModel model)
+        {
+            SendRequest("EF" + JsonConvert.SerializeObject(model));
+        }
+
+        /// <summary>
+        /// Метод безопасной отправки запроса серверу
+        /// </summary>
+        /// <param name="req"></param>
+        private void SendRequest(string req)
+        {
+            try
+            {
+                TCPConnection.Instance.SendData(req);
             }
             catch { }
         }
@@ -188,6 +216,15 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                 case 'c':
                 case 'C':
                     UpdateOrders();
+                    break;
+                case 'd':
+                case 'D':
+                    FillUsers(row);
+                    break;
+                case 'f':
+                case 'F':
+                    //в ответ на добавление пользователя возвращается список пользователей, в котором только этот пользователь
+                    FillUsers(row);
                     break;
             }
         }
@@ -216,6 +253,26 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                 };
                 Orders.Add(order);
             }
+        }
+
+        /// <summary>
+        /// Заполнение списка клиентов компании
+        /// </summary>
+        /// <param name="row"></param>
+        private void FillUsers(string row)
+        {
+            try
+            {
+                List<UserLightModel> ulm = JsonConvert.DeserializeObject<List<UserLightModel>>(row);
+                if (Application.Current != null)
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            _users = ulm;
+                            if (ClientsLoaded != null)
+                                ClientsLoaded(this, new EventArgs());
+                        }));
+            }
+            catch { }
         }
     }
 }

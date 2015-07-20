@@ -159,6 +159,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Network
                     ClientsHandler.Instance.Split(fx, row);
                 if (px == 'd' || px == 'D')
                     OrdersHandler.Instance.Split(fx, row);
+                if (px == 'e' || px == 'E')
+                    PostsHandler.Instance.Split(fx, row);
                 if (px == 'r' || px == 'R')
                     ReportsHandler.Instance.Split(fx, row);
                 if (px == 'u' || px == 'U')
