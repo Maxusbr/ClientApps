@@ -296,9 +296,9 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
         {
             try
             {
-                List<EmployeeModel> data = JsonConvert.DeserializeObject<List<EmployeeModel>>(row);
-                if (EmployeeDataLoadComplete != null)
-                    EmployeeDataLoadComplete(data, new EventArgs());
+                var data = JsonConvert.DeserializeObject<List<EmployeeModel>>(row);
+                if (EmployeeDataLoadComplete != null && Application.Current != null)
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() => EmployeeDataLoadComplete(data, new EventArgs())));
             }
             catch { }
         }
@@ -307,12 +307,9 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
         {
             try
             {
-                List<DicDataModel> roles = JsonConvert.DeserializeObject<List<DicDataModel>>(row);
+                var roles = JsonConvert.DeserializeObject<List<DicDataModel>>(row);
                 if (Application.Current != null && EmployeeRolesLoaded!=null)
-                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                        {
-                            EmployeeRolesLoaded(roles);
-                        }));
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() => EmployeeRolesLoaded(roles)));
             }
             catch
             {
