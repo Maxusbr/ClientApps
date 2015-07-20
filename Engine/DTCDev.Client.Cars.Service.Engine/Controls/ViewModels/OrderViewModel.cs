@@ -796,7 +796,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
                 Date = new DateDataModel(DateProduce),
                 Mileage = Distance
             };
-            //_handler.CreateClient(model);
+            _handler.CreateClient(model);
             _selectedUser = User;
             OnPropertyChanged("EnableAddWork");
         }
