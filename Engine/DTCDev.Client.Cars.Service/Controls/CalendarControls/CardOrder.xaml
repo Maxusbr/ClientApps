@@ -40,7 +40,7 @@
                 <TextBlock Text="Дата:" Margin="8" FontWeight="Bold"/>
                 <local:DateTimePicker SelectedDate="{Binding DateWork, Mode=TwoWay}" VerticalAlignment="Top"
     				Grid.Column="1" Margin="8,4"/>
-                <TextBlock Text="Клиент:" Grid.Row="1" Margin="8" FontWeight="Bold"/>
+                <TextBlock Text="Клиент*:" Grid.Row="1" Margin="8" FontWeight="Bold"/>
                 <StackPanel Grid.Column="1" Margin="8,4" Orientation="Vertical" Grid.Row="1">
                     <TextBox x:Name="tbUser" Text="{Binding UserName, Mode=OneWay}">
                         <i:Interaction.Triggers>
@@ -62,12 +62,12 @@
                         <ColumnDefinition Width="150"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Телефон:" FontWeight="Bold" Margin="8"/>
+                    <TextBlock Text="Телефон*:" FontWeight="Bold" Margin="8"/>
                     <TextBox Text="{Binding Phone, Mode=TwoWay}" Grid.Column="1" AcceptsTab="True" AcceptsReturn="True" Margin="8,4"/>
                     <TextBlock Text="Email:" FontWeight="Bold" Margin="8" Grid.Row="1"/>
                     <TextBox Text="{Binding Email, Mode=TwoWay}" Grid.Column="1" AcceptsTab="True" AcceptsReturn="True" Grid.Row="1" Margin="8,4"/>
                 </Grid>
-                <Grid Grid.Row="3" Grid.ColumnSpan="2">
+                <Grid Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Top">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="41*"/>
                         <RowDefinition Height="0*"/>
@@ -100,29 +100,29 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="VIN:" FontWeight="Bold" Margin="8"/>
                         <TextBox Text="{Binding VIN, Mode=TwoWay}" Margin="8,4" Grid.Row="0" Grid.Column="1"/>
-                        <TextBlock Text="Гос. номер:" FontWeight="Bold" Grid.Row="1"
+                        <TextBlock Text="Гос. номер*:" FontWeight="Bold" Grid.Row="1"
     						Grid.Column="0" Margin="8" />
                         <TextBox Text="{Binding CarNumber, Mode=TwoWay}" Grid.Column="1" Grid.Row="1" Margin="8,4"/>
-                        <TextBlock Text="Марка:" FontWeight="Bold" Grid.Row="2"
+                        <TextBlock Text="Марка*:" FontWeight="Bold" Grid.Row="2"
     						Grid.Column="0" Margin="8"/>
                         <ComboBox Grid.Column="1" Grid.Row="2" ItemsSource="{Binding Marks}" Margin="8,4" SelectedItem="{Binding Mark, Mode=TwoWay}"/>
-                        <TextBlock Text="Модель:" FontWeight="Bold" Grid.Row="3"
+                        <TextBlock Text="Модель*:" FontWeight="Bold" Grid.Row="3"
     						Grid.Column="0" Margin="8"/>
                         <ComboBox Grid.Column="1" Grid.Row="3" ItemsSource="{Binding Models}" Margin="8,4"
     						SelectedItem="{Binding Model, Mode=TwoWay}"/>
-                        <TextBlock Text="Тип кузова:" FontWeight="Bold" Grid.Row="4"
+                        <TextBlock Text="Тип кузова*:" FontWeight="Bold" Grid.Row="4"
     						Grid.Column="0" Margin="8"/>
                         <ComboBox Grid.Column="1" Grid.Row="4" ItemsSource="{Binding Bodies}" Margin="8,4"
     						SelectedItem="{Binding Body, Mode=TwoWay}"/>
-                        <TextBlock Text="Тип двигателя:" FontWeight="Bold" Grid.Row="5"
+                        <TextBlock Text="Тип двигателя*:" FontWeight="Bold" Grid.Row="5"
     						Grid.Column="0" Margin="8"/>
                         <ComboBox Grid.Column="1" Grid.Row="5" ItemsSource="{Binding EngineTypes}" Margin="8,4"
     						SelectedItem="{Binding EngineType, Mode=TwoWay}"/>
-                        <TextBlock Text="Объем двигателя:" FontWeight="Bold" Grid.Row="6"
+                        <TextBlock Text="Объем двигателя*:" FontWeight="Bold" Grid.Row="6"
     						Grid.Column="0" Margin="8"/>
                         <ComboBox Grid.Column="1" Grid.Row="6" ItemsSource="{Binding EngineVolumes}" Margin="8,4"
     						SelectedItem="{Binding EngineVolume, Mode=TwoWay}"/>
-                        <TextBlock Text="Тип КПП:" FontWeight="Bold" Grid.Row="7"
+                        <TextBlock Text="Тип КПП*:" FontWeight="Bold" Grid.Row="7"
     						Grid.Column="0" Margin="8"/>
                         <ComboBox Grid.Column="1" Grid.Row="7" Margin="8,4"
     						ItemsSource="{Binding TransmissionTypes}" SelectedItem="{Binding TransmissionType, Mode=TwoWay}"/>
@@ -134,7 +134,8 @@
                         <TextBlock Text="Дата выпуска:" FontWeight="Bold" Grid.Row="9"
     						Grid.Column="0" Margin="8"/>
                         <DatePicker Grid.Row="9" Grid.Column="1" SelectedDate="{Binding DateProduce, Mode=TwoWay}" Style="{DynamicResource DatePickerStyle}" BorderBrush="{x:Null}" Margin="8,4"/>
-                        <Button Content="Сохранить нового клиента" Grid.Row="10" Grid.ColumnSpan="2" Margin="8"/>
+                        <Button Content="Сохранить нового клиента" Grid.Row="10" Grid.ColumnSpan="2" Margin="8" 
+                                IsEnabled="{Binding EnableCreateClient}" Command="{Binding CreateClientCommand}"/>
                     </Grid>
                 </Grid>
             </Grid>
@@ -146,7 +147,7 @@
                 <RowDefinition Height="48"/>
             </Grid.RowDefinitions>
             <TextBlock HorizontalAlignment="Center" Text="Укажите работы:" FontWeight="Bold" Margin="8"/>
-            <TreeView Margin="8" ItemsSource="{Binding WorksTree}" SelectedItemChanged="TreeView_SelectedItemChanged" MinWidth="260" Grid.Row="1" BorderThickness="1" BorderBrush="Gray">
+            <TreeView Margin="8" ItemsSource="{Binding WorksTree}" IsEnabled="{Binding EnableAddWork}" SelectedItemChanged="TreeView_SelectedItemChanged" MinWidth="260" Grid.Row="1" BorderThickness="1" BorderBrush="Gray">
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Items}">
                         <TextBlock Text="{Binding Name}"/>

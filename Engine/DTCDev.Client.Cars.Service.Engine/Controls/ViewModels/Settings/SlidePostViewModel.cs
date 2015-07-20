@@ -59,10 +59,12 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             get { return _selectedPost; }
             set
             {
+                if (_selectedPost != null) _selectedPost.PropertyChanged -= post_PropertyChanged;
                 _selectedPost = value;
                 OnPropertyChanged("SelectedPost");
                 OnPropertyChanged("EnableEditPost");
                 if(value == null) return;
+                _selectedPost.PropertyChanged += post_PropertyChanged;
                 OnPropertyChanged("StartWorkTime");
                 OnPropertyChanged("EndWorkTime");
             }

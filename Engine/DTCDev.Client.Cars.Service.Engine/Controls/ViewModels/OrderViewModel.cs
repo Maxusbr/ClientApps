@@ -16,6 +16,7 @@ using DTCDev.Models.CarBase.CarList;
 using DTCDev.Models.CarBase.CarStatData;
 using DTCDev.Models.CarsSending.Order;
 using DTCDev.Models.Date;
+using DTCDev.Models.Service;
 using DTCDev.Models.User;
 
 namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
@@ -52,7 +53,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
                 Name = "Остальные",
                 id = -2
             });
-            
+
             UpdateOrder(model);
             model.WorksList.ToList().ForEach(o => WorksList.Add(o));
             SelectedWorks.CollectionChanged += SelectedWorks_CollectionChanged;
@@ -66,11 +67,25 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             _storage.LoadEngineTypesComplete += _storage_LoadEngineTypesComplete;
             _storage.LoadEnginsComplete += _storage_LoadEnginsComplete;
             _storage.LoadTransmissionsComplete += _storage_LoadTransmissionsComplete;
+            _storage.LoadWorkPartsListComplete += _storage_LoadWorkPartsListComplete;
+
 
             _storage.Update();
             _storage.UpdateWorkTypes();
             PostsHandler.Instance.ClientsLoaded += Instance_ClientsLoaded;
-            
+
+        }
+
+        void _storage_LoadWorkPartsListComplete(List<WorksInfoDataModel> data)
+        {
+            foreach (var item in data)
+            {
+                var work = SelectedWorks.FirstOrDefault(o => o.id == item.idWork);
+                if (work == null) continue;
+                work.NH += item.NH;
+            }
+            var sum = data.Sum(model => model.NH) / 10.0;
+            NH += sum;
         }
 
         void Instance_ClientsLoaded(object sender, EventArgs e)
@@ -95,10 +110,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
                 }
             }
             //если есть подходящие под фильтр пользователи - показываем листбокс с списком пользователей
-            if (_listUsers.Count() > 0)
-                VisableUserList = true;
-            else
-                VisableUserList = false;
+            VisableUserList = _listUsers.Any();
         }
 
         void _storage_LoadBodiesComplete(object sender, EventArgs e)
@@ -233,6 +245,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
                 IsChanged = false;
                 _filterText = "User";
             }
+            _storage.Update();
         }
 
         #region CarDetail
@@ -259,6 +272,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
                 if (_carNumber == value) return;
                 _carNumber = value;
                 OnPropertyChanged("CarNumber");
+                OnPropertyChanged("EnableCreateClient");
                 IsValidateCarNumber();
             }
         }
@@ -270,7 +284,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             set
             {
                 _vin = value;
-                this.OnPropertyChanged("VIN");
+                OnPropertyChanged("VIN");
+                OnPropertyChanged("EnableCreateClient");
             }
         }
 
@@ -293,6 +308,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             {
                 _storage.SelectedMark = value;
                 OnPropertyChanged("Mark");
+                OnPropertyChanged("EnableCreateClient");
             }
         }
 
@@ -303,6 +319,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             {
                 _storage.SelectedModel = value;
                 OnPropertyChanged("Model");
+                OnPropertyChanged("EnableCreateClient");
             }
         }
 
@@ -313,6 +330,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             {
                 _storage.SelectedBody = value;
                 OnPropertyChanged("Body");
+                OnPropertyChanged("EnableCreateClient");
             }
         }
 
@@ -323,6 +341,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             {
                 _storage.SelectedEngineType = value;
                 OnPropertyChanged("EngineType");
+                OnPropertyChanged("EnableCreateClient");
             }
         }
 
@@ -333,6 +352,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             {
                 _storage.SelectedEngineVolume = value;
                 OnPropertyChanged("EngineVolume");
+                OnPropertyChanged("EnableCreateClient");
             }
         }
 
@@ -355,6 +375,18 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
                 if (_storage.SelectedTransmission == value) return;
                 _storage.SelectedTransmission = value;
                 OnPropertyChanged("TransmissionType");
+                OnPropertyChanged("EnableCreateClient");
+            }
+        }
+
+        private int _distance;
+        public int Distance
+        {
+            get { return _distance; }
+            set
+            {
+                _distance = value;
+                OnPropertyChanged("Distance");
             }
         }
 
@@ -427,6 +459,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             set
             {
                 _selectedUser = value;
+                OnPropertyChanged("EnableAddWork");
+                IsChanged = _isChanged || value != null;
                 if (value == null) return;
                 User = value;
                 TextChanged(value.Nm);
@@ -463,9 +497,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             get { return _car; }
             set
             {
-                IsChanged = _car != value;
+                IsChanged = _isChanged || _car != value;
                 _car = value;
                 OnPropertyChanged("Car");
+                OnPropertyChanged("EnableAddWork");
             }
         }
 
@@ -474,7 +509,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             get { return _comment; }
             set
             {
-                IsChanged = _comment != value;
+                IsChanged = _isChanged || _comment != value;
                 _comment = value;
                 OnPropertyChanged("Comment");
             }
@@ -485,7 +520,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             get { return _nh; }
             set
             {
-                IsChanged = _nh != value;
+                IsChanged = _isChanged || _nh != value;
                 _nh = value;
                 OnPropertyChanged("NH");
             }
@@ -515,8 +550,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
         private bool _visableAddUser = false;
         public bool VisableAddUser
         {
-            get { return !string.IsNullOrEmpty(_filterText) &&
-                !_handler.Users.Any(o => o.Nm.ToLower().Contains(_filterText.ToLower()));
+            get
+            {
+                return !string.IsNullOrEmpty(_filterText) &&
+                    !_handler.Users.Any(o => o.Nm.ToLower().Contains(_filterText.ToLower()));
             }
             set
             {
@@ -534,7 +571,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             }
         }
 
-        private ObservableCollection<UserLightModel> _listUsers = new ObservableCollection<UserLightModel>();
+        private readonly ObservableCollection<UserLightModel> _listUsers = new ObservableCollection<UserLightModel>();
         public ObservableCollection<UserLightModel> ListUsers { get { return _listUsers; } }
 
         public WorksInfoDataModel SelectedWork
@@ -570,8 +607,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             if (Car == null || Car.CarModel == null) return null;
             var model = new CarOrderPostModel
                 {
-                    CarNumber =  Car.CarModel.CarNumber,
-                    DateWork = new DateDataModel(DateWork), 
+                    CarNumber = Car.CarModel.CarNumber,
+                    DateWork = new DateDataModel(DateWork),
                     UserComment = Comment
                 };
             foreach (var item in SelectedWorks)
@@ -592,6 +629,28 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             }
         }
 
+        public bool EnableAddWork
+        {
+            get { return SelectedUser != null || Car != null; }
+        }
+
+        public bool EnableCreateClient
+        {
+            get
+            {
+                return
+                    _filterText.Length >= 3 &&
+                    !string.IsNullOrEmpty(Phone) &&
+                    !string.IsNullOrEmpty(CarNumber) &&
+                    Mark != null &&
+                    Model != null &&
+                    Body != null &&
+                    EngineType != null &&
+                    EngineVolume != null &&
+                    TransmissionType != null;
+            }
+        }
+
         #region RelayCommands
 
         private RelayCommand _textChangedCommand;
@@ -605,6 +664,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             //текст запроса
             _filterText = obj.ToString();
             SelectedUser = null;
+            Car = null;
             VisableUserList = !UserName.Equals(_filterText) || string.IsNullOrEmpty(_filterText);
             if (VisableUserList)
             {
@@ -657,10 +717,11 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             //SelectedWorks.Add(_selectedWork);
 
             if (SelectedWorkTree == null) return;
-            var work = WorksList.FirstOrDefault(o => o.Name.Equals(SelectedWorkTree.Name) && o.id_Class == SelectedWorkTree.id_Class) 
+            var work = WorksList.FirstOrDefault(o => o.Name.Equals(SelectedWorkTree.Name) && o.id_Class == SelectedWorkTree.id_Class)
                 ?? OtherWorksList.FirstOrDefault(o => o.Name.Equals(SelectedWorkTree.Name) && o.id_Class == SelectedWorkTree.id_Class);
-            if(work == null || SelectedWorks.IndexOf(work) >= 0) return;
+            if (work == null || SelectedWorks.IndexOf(work) >= 0) return;
             SelectedWorks.Add(work);
+            _storage.GetWorkParts(work.id);
         }
 
         private RelayCommand _deleteCommand;
@@ -693,7 +754,8 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
             var item = obj as System.Windows.Controls.ListBoxItem;
             if (item == null) return;
             var work = item.Content as WorksInfoDataModel;
-            if(work == null) return;
+            if (work == null) return;
+            NH -= work.NH / 10.0;
             SelectedWorks.Remove(work);
         }
 
@@ -712,7 +774,6 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
         }
 
         private RelayCommand _createClientCommand;
-
         public RelayCommand CreateClientCommand
         {
             get { return _createClientCommand ?? (_createClientCommand = new RelayCommand(CreateClient)); }
@@ -720,7 +781,24 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels
 
         public void CreateClient(object sender)
         {
-
+            User.Nm = _filterText;
+            var model = new CreateClientModel
+            {
+                User = User,
+                IDBody = Body.id,
+                IDEngineType = EngineType.id,
+                IDEngine = EngineVolume.id,
+                IDMark = Mark.id,
+                IDModel = Model.id,
+                IDTransmission = TransmissionType.id,
+                Number = CarNumber,
+                VIN = VIN,
+                Date = new DateDataModel(DateProduce),
+                Mileage = Distance
+            };
+            //_handler.CreateClient(model);
+            _selectedUser = User;
+            OnPropertyChanged("EnableAddWork");
         }
 
         #endregion

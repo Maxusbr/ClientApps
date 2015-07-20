@@ -178,7 +178,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
 
         public void Update()
         {
-            if (_marks.Count() < 1)
+            if (!_marks.Any())
                 CallLoadMarks();
         }
 
