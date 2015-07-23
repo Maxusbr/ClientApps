@@ -1,5 +1,105 @@
-﻿@{
-    ViewBag.Title = "Index";
+﻿@using System.Web.UI.WebControls
+@model  CSVOrder.Models.Service.ListPostsViewModel
+@{
+    ViewBag.Title = "Состояние постов";
 }
 
-<h2>Index</h2>
+
+<h2>@ViewBag.Title</h2>
+@section scripts{
+    <script src="~/Scripts/jquery-1.11.3.min.js"></script>
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/DataTables/dataTables.keyTable.min.js"></script>
+
+    <script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        var table = $('#example').dataTable({
+            "paging": false,
+            "ordering": false,
+            "info": false,
+            "searching": false,
+            "scrollX": true,
+            "scrollCollapse": true,
+        });
+        var keys = new $.fn.dataTable.KeyTable(table);
+        keys.event.focus(null, null, function (node, x, y) {
+            if (!node.classList.contains("active")) return;
+            if (node.classList.contains("success"))
+                $.ajax({
+                    url: "/ModuleOrder/OrderSelect",
+                    data: {
+                        indx: node.attributes["data-orderid"].value,
+                        returnUrl: "@Request.Url.PathAndQuery"
+                        },
+                        success: function (returndata) {
+                            //document.innerHTML = returndata;
+                        }
+
+                    });
+                else
+                    $.ajax({
+                        url: "/ModuleOrder/OrderSelect",
+                        data: {
+                            indx: node.attributes["data-postid"].value,
+                            time: node.attributes["data-time"].value,
+                            returnUrl: "@Request.Url.PathAndQuery"
+                        },
+                        success: function (returndata) {
+                            //document.innerHTML = returndata;
+                        }
+
+                    });
+            });
+        });
+    </script>
+}
+<link href="~/Content/themes/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/DataTables/css/dataTables.bootstrap.css" rel="stylesheet" />
+<table id="example" class="table table-bordered" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            @*<th>Название поста</th>*@
+            @foreach (var el in Model.Columns)
+            {
+                <th>@el</th>
+            }
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model.ListPosts)
+        {
+            var id = item.Id;
+            <tr>
+                @foreach (var el in Model.Columns)
+                {
+                    var stile = "active";
+
+                    var ts = new TimeSpan();
+                    if (TimeSpan.TryParse(el, out ts))
+                    {
+                        if (item.TimeFrom > ts || item.TimeTo < ts)
+                        {
+                            stile = "";
+                        }
+                        var orderid = 0;
+                        var order = Model.ListOrders.Where(o => o.PostId == id &&
+                            o.DateWork >= Model.Date + ts &&
+                            o.DateWork <= Model.Date + ts.Add(new TimeSpan(0, 30, 0)));
+                        if (order.Any())
+                        {
+                            orderid = order.FirstOrDefault().OrderNumer;
+                            stile = "active success";
+                        }
+                        <td data-postid="@item.Id" data-time="@el" class="@stile" data-orderid="@orderid"></td>
+                    }
+                    else
+                    {
+                        <th>@item.Name</th>
+                    }
+                }
+            </tr>
+        }
+
+    </tbody>
+</table>
