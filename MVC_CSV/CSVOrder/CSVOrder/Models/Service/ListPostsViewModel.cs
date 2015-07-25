@@ -2,23 +2,33 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using CSVOrder.DAL.Abstract;
+using CSVOrder.Models.User;
 
 namespace CSVOrder.Models.Service
 {
     public class ListPostsViewModel
     {
-        private List<PostModel> _listPosts = new List<PostModel>();
-        private List<string> _columns = new List<string>();
+        private readonly List<PostModel> _listPosts = new List<PostModel>();
+        private List<DateTime> _columns = new List<DateTime>();
         private List<CarOrderPostModel> _listOrders = new List<CarOrderPostModel>();
+        private DateTime _date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+        private readonly IServiseRepository _storage;
 
-        public ListPostsViewModel()
+        public ListPostsViewModel(IServiseRepository storage)
         {
-            Date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-            DemoData();
+            _storage = storage;
             Update();
         }
 
-        public List<string> Columns
+        public ListPostsViewModel(IServiseRepository storage, DateTime dt)
+        {
+            _storage = storage;
+            Date = dt;
+            Update();
+        }
+
+        public List<DateTime> Columns
         {
             get { return _columns; }
             set { _columns = value; }
@@ -26,12 +36,7 @@ namespace CSVOrder.Models.Service
 
         public List<PostModel> ListPosts
         {
-            get { return _listPosts; }
-            set
-            {
-                _listPosts = value;
-                Update();
-            }
+            get { return _storage.Posts.ToList(); }
         }
 
         public List<CarOrderPostModel> ListOrders
@@ -46,44 +51,31 @@ namespace CSVOrder.Models.Service
 
         public void Update()
         {
+            ListOrders.Clear();
+            foreach (var item in _storage.Orders)
+            {
+                ListOrders.Add(_storage.GetOrder(item.OrderNumer));
+            }
+
             MinTime = !ListPosts.Any() ? 8 : ListPosts.Min(o => o.TimeFrom).Hours;
             MaxTime = !ListPosts.Any() ? 18 : (int)Math.Ceiling(ListPosts.Max(o => o.TimeTo).TotalHours);
             Columns.Clear();
-            Columns.Add("Название поста");
             for (var i = MinTime; i < MaxTime; i++)
             {
-                Columns.Add(string.Format("{0}:00", i));
-                Columns.Add(string.Format("{0}:30", i));
+                Columns.Add(Date + new TimeSpan(i, 0, 0));
+                Columns.Add(Date + new TimeSpan(i, 30, 0));
             }
-            Columns.Add(string.Format("{0}:00", MaxTime));
+            Columns.Add(Date + new TimeSpan(MaxTime, 0, 0));
         }
 
-        public DateTime Date { get; set; }
-
-        private void DemoData()
+        public DateTime Date
         {
-            for (var i = 1; i <= 5; i++)
-                ListPosts.Add(new PostModel
-                {
-                    Id = i,
-                    Name = string.Format("Пост № {0:00}", i),
-                    TimeFrom = new TimeSpan(i % 2 == 0 ? 8 : 9, 0, 0),
-                    TimeTo = new TimeSpan(i % 2 == 0 ? 19 : 18, 0, 0)
-                });
-            ListOrders.Add(new CarOrderPostModel
+            get { return _date; }
+            set
             {
-                OrderNumer = 0,
-                CarNumber = "Demo 1",
-                DateWork = Date.AddHours(10).AddMinutes(25),
-                PostId = 4
-            });
-            ListOrders.Add(new CarOrderPostModel
-            {
-                OrderNumer = 1,
-                CarNumber = "Demo 2",
-                DateWork = Date.AddHours(15).AddMinutes(32),
-                PostId = 1
-            });
+                _date = value;
+                Update();
+            }
         }
     }
 }

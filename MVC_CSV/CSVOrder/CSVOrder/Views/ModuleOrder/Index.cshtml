@@ -7,12 +7,12 @@
 
 <h2>@ViewBag.Title</h2>
 @section scripts{
-    <script src="~/Scripts/jquery-1.11.3.min.js"></script>
+    
     <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
     <script src="~/Scripts/DataTables/dataTables.keyTable.min.js"></script>
 
     <script language="javascript" type="text/javascript">
-    $(document).ready(function () {
+        $(document).ready(function () {
         var table = $('#example').dataTable({
             "paging": false,
             "ordering": false,
@@ -53,15 +53,26 @@
         });
     </script>
 }
-<link href="~/Content/themes/bootstrap.min.css" rel="stylesheet" />
-<link href="~/Content/DataTables/css/dataTables.bootstrap.css" rel="stylesheet" />
+@*<link href="~/Content/themes/bootstrap.min.css" rel="stylesheet" />*@
+<link href="~/Content/DataTables/css/dataTables.bootstrap.css" rel="stylesheet"/>
+
+<div class="center-block text-center">
+    <a href='@Url.Action("LeftDate", Model)'>
+        <img src="~/Content/Service/images/left.png" class="img-circle" style="width: 24px" />
+    </a>
+
+    <strong>@Model.Date.ToShortDateString()</strong>
+    <a href='@Url.Action("RightDate", Model)'>
+        <img src="~/Content/Service/images/right.png" class="img-circle" style="width: 24px" />
+    </a>
+</div>
 <table id="example" class="table table-bordered" cellspacing="0" width="100%">
     <thead>
         <tr>
-            @*<th>Название поста</th>*@
+            <th>Название поста</th>
             @foreach (var el in Model.Columns)
             {
-                <th>@el</th>
+                <th>@el.ToShortTimeString()</th>
             }
         </tr>
     </thead>
@@ -71,31 +82,27 @@
         {
             var id = item.Id;
             <tr>
+                <th>@item.Name</th>
                 @foreach (var el in Model.Columns)
                 {
                     var stile = "active";
+                    var tool = "";
 
-                    var ts = new TimeSpan();
-                    if (TimeSpan.TryParse(el, out ts))
                     {
-                        if (item.TimeFrom > ts || item.TimeTo < ts)
+                        if (Model.Date + item.TimeFrom > el || Model.Date + item.TimeTo < el)
                         {
                             stile = "";
                         }
                         var orderid = 0;
                         var order = Model.ListOrders.Where(o => o.PostId == id &&
-                            o.DateWork >= Model.Date + ts &&
-                            o.DateWork <= Model.Date + ts.Add(new TimeSpan(0, 30, 0)));
+                                                                o.DateWork >= el && o.DateWork < el.Add(new TimeSpan(0, 30, 0)));
                         if (order.Any())
                         {
                             orderid = order.FirstOrDefault().OrderNumer;
+                            tool = order.FirstOrDefault().User.Nm;
                             stile = "active success";
                         }
-                        <td data-postid="@item.Id" data-time="@el" class="@stile" data-orderid="@orderid"></td>
-                    }
-                    else
-                    {
-                        <th>@item.Name</th>
+                        <td data-postid="@item.Id" data-time="@el" class="@stile" data-orderid="@orderid" title="@tool"></td>
                     }
                 }
             </tr>

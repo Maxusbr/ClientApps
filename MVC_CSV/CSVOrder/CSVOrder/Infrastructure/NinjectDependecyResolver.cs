@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using CSVOrder.DAL.Abstract;
+using CSVOrder.DAL.Concrete;
 using Ninject;
 
 namespace CSVOrder.Infrastructure
@@ -29,6 +31,7 @@ namespace CSVOrder.Infrastructure
 
         private void AddBindings()
         {
+            _kernel.Bind<IServiseRepository>().To<ServiseRepository>();
 
         }
     }

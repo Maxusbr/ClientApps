@@ -215,6 +215,9 @@
     <Compile Include="Controllers\ModuleOrderController.cs" />
     <Compile Include="Controllers\ModuleStoreController.cs" />
     <Compile Include="Controllers\ModuleTestDriveController.cs" />
+    <Compile Include="DAL\Abstract\IServiseRepository.cs" />
+    <Compile Include="DAL\Concrete\EFDbContext.cs" />
+    <Compile Include="DAL\Concrete\ServiseRepository.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -231,6 +234,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap.css" />
     <Content Include="Content\DataTables\css\dataTables.autoFill.css" />
     <Content Include="Content\DataTables\css\dataTables.autoFill.min.css" />
     <Content Include="Content\DataTables\css\dataTables.bootstrap.css" />
@@ -286,6 +290,34 @@
     <Content Include="Content\DataTables\images\xls_hover.png" />
     <Content Include="Content\DataTables\swf\copy_csv_xls.swf" />
     <Content Include="Content\DataTables\swf\copy_csv_xls_pdf.swf" />
+    <Content Include="Content\DatePicker\css\bootstrap-datepicker.css" />
+    <Content Include="Content\DatePicker\css\bootstrap-datepicker.min.css" />
+    <Content Include="Content\DatePicker\css\bootstrap-datepicker.standalone.css" />
+    <Content Include="Content\DatePicker\css\bootstrap-datepicker.standalone.min.css" />
+    <Content Include="Content\DatePicker\css\bootstrap-datepicker3.css" />
+    <Content Include="Content\DatePicker\css\bootstrap-datepicker3.min.css" />
+    <Content Include="Content\DatePicker\css\bootstrap-datepicker3.standalone.css" />
+    <Content Include="Content\DatePicker\css\bootstrap-datepicker3.standalone.min.css" />
+    <Content Include="Content\Service\images\add.png" />
+    <Content Include="Content\Service\images\aed\add_list.png" />
+    <Content Include="Content\Service\images\aed\apply.png" />
+    <Content Include="Content\Service\images\aed\trash.png" />
+    <Content Include="Content\Service\images\binders.png" />
+    <Content Include="Content\Service\images\car.png" />
+    <Content Include="Content\Service\images\checkEngineImage.jpg" />
+    <Content Include="Content\Service\images\engine.png" />
+    <Content Include="Content\Service\images\engineSM.png" />
+    <Content Include="Content\Service\images\instapaper.png" />
+    <Content Include="Content\Service\images\left.png" />
+    <Content Include="Content\Service\images\money.jpg" />
+    <Content Include="Content\Service\images\pencil.png" />
+    <Content Include="Content\Service\images\pids.png" />
+    <Content Include="Content\Service\images\right.png" />
+    <Content Include="Content\Service\images\save.png" />
+    <Content Include="Content\Service\images\services.png" />
+    <Content Include="Content\Service\images\speedometer.png" />
+    <Content Include="Content\Service\images\thumbs_up.png" />
+    <Content Include="Content\Service\images\user.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -340,11 +372,13 @@
     <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
-    <Content Include="Content\themes\bootstrap.min.css" />
+    <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\DataTables\css\dataTables.responsive.scss" />
     <Content Include="Content\DataTables\css\dataTables.jqueryui.scss" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\DataTables\dataTables.autoFill.js" />
     <Content Include="Scripts\DataTables\dataTables.autoFill.min.js" />
     <Content Include="Scripts\DataTables\dataTables.bootstrap.js" />
@@ -369,10 +403,14 @@
     <Content Include="Scripts\DataTables\jquery.dataTables.js" />
     <Content Include="Scripts\DataTables\jquery.dataTables.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\DatePicker\bootstrap-datepicker.js" />
+    <Content Include="Scripts\DatePicker\bootstrap-datepicker.min.js" />
+    <Content Include="Scripts\DatePicker\bootstrap-datepicker.ru.min.js" />
+    <Content Include="Scripts\DatePicker\locales\bootstrap-datepicker.en-GB.min.js" />
     <Content Include="Scripts\jquery-1.11.3.js" />
     <Content Include="Scripts\jquery-1.11.3.min.js" />
-    <Content Include="Scripts\jquery-ui-1.8.24.js" />
-    <Content Include="Scripts\jquery-ui-1.8.24.min.js" />
+    <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />

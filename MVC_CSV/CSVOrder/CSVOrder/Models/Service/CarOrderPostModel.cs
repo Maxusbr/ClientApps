@@ -10,28 +10,30 @@ namespace CSVOrder.Models.Service
     {
         public CarOrderPostModel()
         {
-            Works = new List<WorksInfoDataModel>();
+            SelectedWorks = new List<WorksInfoDataModel>();
         }
 
+        public CarOrderPostModel(OrderModel model)
+        {
+            OrderNumer = model.OrderNumer;
+            PostId = model.PostId;
+            UserId = model.UserId;
+            CarNumber = model.CarNumber;
+            DtCreate = model.DtCreate;
+            UserComment = model.UserComment;
+            Cost = model.Cost;
+            DateWork = model.DateWork;
+        }
         /// <summary>
         /// перемещение в заказ-наряды
         /// </summary>
-        
-        public int InUse { get; set; }
+        [Display(Name = "В работе?")]
+        public bool InUse { get; set; }
 
-        [HiddenInput(DisplayValue = false)]
-        public int PostId { get; set; }
-
-        
+        [Required(ErrorMessage = "Укажите пользователя")]
         public UserLightModel User { get; set; }
 
-        /// <summary>
-        /// планируемая дата начала работ
-        /// </summary>
-        [Display(Name = "Планируемая дата начала работ")]
-        public DateTime DateWork { get; set; }
-
         [Display(Name = "Список работ")]
-        public List<WorksInfoDataModel> Works { get; set; }
+        public List<WorksInfoDataModel> SelectedWorks { get; set; }
     }
 }

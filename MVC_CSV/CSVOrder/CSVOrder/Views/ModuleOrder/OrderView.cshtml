@@ -1,5 +1,64 @@
-﻿@model CSVOrder.Models.Service.OrderModel
-@*@{
-    ViewBag.Title = "Состояние постов";
-}*@
+﻿@model CSVOrder.Models.Service.CarOrderPostModel
+@section head
+{
+    @Styles.Render("~/Content/datepicker")
+
+
+
+}
 <h2>@ViewBag.Title</h2>
+@section scripts{
+    @Scripts.Render("~/bundles/datepicker")
+    <script language="javascript" type="text/javascript">
+
+        $('.datepicker').datepicker({
+            format: "dd.mm.yyyy",
+            language: "ru",
+            orientation: "top left",
+            todayHighlight: true
+        });
+    </script>
+
+}
+@using (Html.BeginForm("EditOrder", "ModuleOrder",
+    FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="panel-body">
+
+        @foreach (var property in ViewData.ModelMetadata.Properties)
+        {
+            switch (property.PropertyName)
+            {
+                case "CarNumber":
+                case "Cost":
+                    <div class="form-group">
+                        <strong>@property.DisplayName:</strong> @Html.TextBox(property.PropertyName, property.Model, new { @class = "form-control" })
+                        @Html.ValidationMessage(property.PropertyName)
+                    </div>
+                    break;
+                case "UserComment":
+                    <div class="form-group">
+                        <strong>@property.DisplayName:</strong> @Html.TextArea(property.PropertyName, (property.Model ?? "").ToString(), new { @class = "form-control", rows = 5 })
+                    </div>
+                    break;
+                case "DtCreate":
+                case "DateWork":
+                    <div class="form-group">
+                        @property.DisplayName: <strong>@(((DateTime)property.Model).ToString("dd.mm.yyyy HH:mm"))</strong>
+                    </div>
+                    break;
+                    <div class="form-group">
+                        @property.DisplayName: @Html.TextBox(property.PropertyName, property.Model, new { @class = "datepicker " })
+                        @Html.ValidationMessage(property.PropertyName)
+                    </div>
+                    break;
+                default:
+                    @Html.Hidden(property.PropertyName, property.Model)
+                    break;
+            }
+        }
+
+        @*<input type="text" class="form-control" id="datepicker" value="@Model.DateWork.ToString("dd.mm.yyyy")">*@
+    </div>
+}
+

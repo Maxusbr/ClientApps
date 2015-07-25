@@ -3,8 +3,11 @@ th {
   white-space: nowrap;
 }
 
-td.active.selected {
-    background-color: cadetBlue;
+td.active.success {
+    /*background-color: cadetBlue;*/
+      border-color: white;
+      border-bottom-width: 1px;
+      border-left-width: 1px;
 }
 
 td.disabled {

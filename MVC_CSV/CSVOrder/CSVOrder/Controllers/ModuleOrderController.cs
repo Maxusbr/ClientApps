@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using CSVOrder.DAL.Abstract;
 using CSVOrder.Models.Service;
 
 namespace CSVOrder.Controllers
@@ -13,9 +14,17 @@ namespace CSVOrder.Controllers
         //
         // GET: /ModuleOrder/
         private string _returnUrl = string.Empty;
-        private readonly ListPostsViewModel _model = new ListPostsViewModel();
+        private ListPostsViewModel _model;
+        private readonly IServiseRepository _storage;
+
+        public ModuleOrderController(IServiseRepository storage)
+        {
+            _storage = storage;
+        }
+
         public ActionResult Index()
         {
+            _model = new ListPostsViewModel(_storage);
             return View(_model);
         }
 
@@ -28,22 +37,52 @@ namespace CSVOrder.Controllers
                 new { indx = indx, time = time}) + "'"); ;
         }
 
-        public ViewResult OrderView(int indx)
+        public ViewResult OrderView(int indx=-1)
         {
-            var curentorder = _model.ListOrders.FirstOrDefault(o => o.OrderNumer == indx);
+            if (indx < 0) return View("Index", new ListPostsViewModel(_storage));
+            var curentorder = GetOrder(indx); 
             if (curentorder != null)
-                ViewBag.Title = string.Format("Заявка: {0}", curentorder.OrderNumer);
+                ViewBag.Title = string.Format("Заявка №{0}:", curentorder.OrderNumer);
             return View(curentorder);
         }
 
         public ViewResult OrderCreate(int indx, string time)
         {
-            var ts = new TimeSpan();
-            TimeSpan.TryParse(time, out ts);
-            var order = new CarOrderPostModel { DateWork = _model.Date + ts, DtCreate = DateTime.Now };
+            var dt = DateTime.Now;
+            DateTime.TryParse(time, out dt);
+            var order = new CarOrderPostModel { DateWork = dt, DtCreate = DateTime.Now };
             ViewBag.Title = "Новая заявка";
             return View("OrderView", order);
         }
 
+        public ActionResult LeftDate(ListPostsViewModel model)
+        {
+            _model = new ListPostsViewModel(_storage, model.Date.AddDays(-1));
+            return View("Index", _model);
+        }
+
+        public ActionResult RightDate(ListPostsViewModel model)
+        {
+            _model = new ListPostsViewModel(_storage, model.Date.AddDays(1));
+            return View("Index", _model);
+        }
+
+        private CarOrderPostModel GetOrder(int indx)
+        {
+            //TODO Get Order from db
+            return _storage.GetOrder(indx);
+        }
+
+        [HttpPost]
+        public ActionResult EditOrder(CarOrderPostModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                _storage.SaveOrder(model);
+                return View("Index", new ListPostsViewModel(_storage));
+            }
+            else
+                return View("OrderView", model);
+        }
     }
 }

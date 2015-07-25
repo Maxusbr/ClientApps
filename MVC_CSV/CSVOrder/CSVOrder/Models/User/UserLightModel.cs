@@ -9,7 +9,13 @@ namespace CSVOrder.Models.User
 {
     public class UserLightModel
     {
+        public UserLightModel()
+        {
+            Id = 0;
+        }
+
         [HiddenInput(DisplayValue = false)]
+        [Required]
         public int Id { get; set; }
 
         [Display(Name = "Название")]
@@ -17,6 +23,7 @@ namespace CSVOrder.Models.User
         public string Nm { get; set; }
 
         [Display(Name = "Телефон")]
+        [Required(ErrorMessage = "Укажите телефон")]
         public string Ph { get; set; }
 
         [Display(Name = "Email")]
