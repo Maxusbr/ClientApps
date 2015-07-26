@@ -10,7 +10,8 @@ namespace CSVOrder.Models.Service
     {
         public CarOrderPostModel()
         {
-            SelectedWorks = new List<WorksInfoDataModel>();
+            SelectedWorks = new List<WorksInfoDataModel>(); 
+            User = new UserLightModel();
         }
 
         public CarOrderPostModel(OrderModel model)
@@ -23,17 +24,20 @@ namespace CSVOrder.Models.Service
             UserComment = model.UserComment;
             Cost = model.Cost;
             DateWork = model.DateWork;
+            User = new UserLightModel();
+            SelectedWorks = new List<WorksInfoDataModel>();
         }
         /// <summary>
         /// перемещение в заказ-наряды
         /// </summary>
-        [Display(Name = "В работе?")]
+        [Display(Name = "В работе?", Order = 12)]
         public bool InUse { get; set; }
 
         [Required(ErrorMessage = "Укажите пользователя")]
+        [Display(Order = 4)]
         public UserLightModel User { get; set; }
 
-        [Display(Name = "Список работ")]
+        [Display(Name = "Список работ", Order = 11)]
         public List<WorksInfoDataModel> SelectedWorks { get; set; }
     }
 }

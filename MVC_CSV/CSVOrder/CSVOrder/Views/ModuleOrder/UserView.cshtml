@@ -1,0 +1,21 @@
+﻿@model CSVOrder.Models.User.UserLightModel
+
+<div class="form-group">
+    @foreach (var property in ViewData.ModelMetadata.Properties)
+    {
+        switch (property.PropertyName)
+        {
+            case "Nm":
+            case "Ph":
+            case "Em":
+                <div class="form-group">
+                    <strong>@property.DisplayName:</strong> @Html.TextBox(property.PropertyName, property.Model, new { @class = "form-control" })
+                    @Html.ValidationMessage(property.PropertyName)
+                </div>
+                break;
+            default:
+            @Html.Hidden(property.PropertyName, property.Model)
+                break;
+        }
+    }
+</div>

@@ -21,25 +21,25 @@ namespace CSVOrder.Models.Service
         [Required]
         public int PostId { get; set; }
 
-        [Display(Name = "Время создания заявки")]
+        [Display(Name = "Время создания заявки", Order = 1)]
         [Required]
         public DateTime DtCreate { get; set; }
 
         /// <summary>
         /// планируемая дата начала работ
         /// </summary>
-        [Display(Name = "Планируемая дата начала работ")]
+        [Display(Name = "Планируемая дата начала работ", Order = 2)]
         public DateTime DateWork { get; set; }
 
-        [Display(Name = "Номер автомобиля")]
+        [Display(Name = "Номер автомобиля", Order = 3)]
         [Required(ErrorMessage = "Введите номер автомобиля")]
         public string CarNumber { get; set; }
 
-        [Display(Name = "Стоимость (руб)")]
+        [Display(Name = "Стоимость (руб)", Order = 5)]
         public int Cost { get; set; }
 
         [DataType(DataType.MultilineText)]
-        [Display(Name = "Комментарий пользователя")]
+        [Display(Name = "Комментарий пользователя", Order = 6)]
         public string UserComment { get; set; }
     }
 }

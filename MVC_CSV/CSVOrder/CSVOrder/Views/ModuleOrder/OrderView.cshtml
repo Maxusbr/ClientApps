@@ -25,7 +25,7 @@
 {
     <div class="panel-body">
 
-        @foreach (var property in ViewData.ModelMetadata.Properties)
+        @foreach (var property in ViewData.ModelMetadata.Properties.OrderBy(p => p.Order))
         {
             switch (property.PropertyName)
             {
@@ -51,6 +51,12 @@
                         @property.DisplayName: @Html.TextBox(property.PropertyName, property.Model, new { @class = "datepicker " })
                         @Html.ValidationMessage(property.PropertyName)
                     </div>
+                    break;
+                case "User": 
+                    @Html.Partial("UserView", property.Model)
+                    break;
+                case "SelectedWorks":
+                    @Html.Partial("WorksView", property.Model)
                     break;
                 default:
                     @Html.Hidden(property.PropertyName, property.Model)

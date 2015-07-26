@@ -12,13 +12,14 @@ namespace CSVOrder.Models.User
         public UserLightModel()
         {
             Id = 0;
+            Tp = 2;
         }
 
         [HiddenInput(DisplayValue = false)]
         [Required]
         public int Id { get; set; }
 
-        [Display(Name = "Название")]
+        [Display(Name = "Имя пользователя")]
         [Required(ErrorMessage = "Введите имя пользователя")]
         public string Nm { get; set; }
 

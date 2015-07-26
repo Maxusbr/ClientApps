@@ -466,6 +466,8 @@
     <Content Include="Views\ModuleTestDrive\Index.cshtml" />
     <Content Include="Views\ModuleOrder\OrderView.cshtml" />
     <Content Include="Views\ModuleOrder\OrderCreate.cshtml" />
+    <Content Include="Views\ModuleOrder\UserView.cshtml" />
+    <Content Include="Views\ModuleOrder\WorksView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

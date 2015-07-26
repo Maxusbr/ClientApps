@@ -2,7 +2,9 @@ th {
   font-size: 1em;
   white-space: nowrap;
 }
-
+td.active {
+    cursor:pointer;
+}
 td.active.success {
     /*background-color: cadetBlue;*/
       border-color: white;
