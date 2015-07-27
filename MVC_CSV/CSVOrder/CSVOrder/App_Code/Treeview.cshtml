@@ -1,0 +1,29 @@
+﻿@using CSVOrder.Models.Abstract
+
+@helper GetTreeView(IEnumerable<ITreeViewModel> list, int parentId)
+{
+    var treeViewModels = list as IList<ITreeViewModel> ?? list.ToList();
+    foreach (var item in treeViewModels.Where(o => o.IdParent == parentId))
+    {
+        <li>
+            @{var submenu = treeViewModels.Count(o => o.IdParent == item.Id);}
+            @if (submenu > 0)
+            {
+                <span class="collapse collapsible">&nbsp;</span>
+            }
+            else
+            {
+                <span style="width:15px; display:inline-block">&nbsp;</span>
+            }
+            <span>
+                @item.Name
+            </span>
+            @if (submenu > 0)
+            {
+                <ul>
+                    @Treeview.GetTreeView(treeViewModels, item.Id)
+                </ul>
+            }
+        </li>
+    }
+}

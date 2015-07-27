@@ -4,16 +4,17 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using CSVOrder.Models.Abstract;
 
 namespace CSVOrder.Models.Service
 {
-    public class WorksInfoDataModel
+    public class WorksInfoDataModel : ITreeViewModel
     {
         [HiddenInput(DisplayValue = false)]
         public int Id { get; set; }
 
         [HiddenInput(DisplayValue = false)]
-        public int IdWork { get; set; }
+        public int IdParent { get; set; }
 
         [Display(Name = "Название")]
         [Required(ErrorMessage = "Введите название работы")]

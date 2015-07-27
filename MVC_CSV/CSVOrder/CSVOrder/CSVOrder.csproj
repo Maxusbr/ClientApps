@@ -223,8 +223,12 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\NinjectDependecyResolver.cs" />
+    <Compile Include="Models\Abstract\ITreeViewModel.cs" />
+    <Compile Include="Models\Abstract\KVPBase.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\Service\CarModel.cs" />
     <Compile Include="Models\Service\CarOrderPostModel.cs" />
+    <Compile Include="Models\Service\CarViewModel.cs" />
     <Compile Include="Models\Service\DepartmentModel.cs" />
     <Compile Include="Models\Service\ListPostsViewModel.cs" />
     <Compile Include="Models\Service\OrderModel.cs" />
@@ -402,6 +406,7 @@
     <Content Include="Scripts\DataTables\dataTables.tableTools.min.js" />
     <Content Include="Scripts\DataTables\jquery.dataTables.js" />
     <Content Include="Scripts\DataTables\jquery.dataTables.min.js" />
+    <Content Include="App_Code\Treeview.cshtml" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\DatePicker\bootstrap-datepicker.js" />
     <Content Include="Scripts\DatePicker\bootstrap-datepicker.min.js" />
@@ -468,10 +473,10 @@
     <Content Include="Views\ModuleOrder\OrderCreate.cshtml" />
     <Content Include="Views\ModuleOrder\UserView.cshtml" />
     <Content Include="Views\ModuleOrder\WorksView.cshtml" />
+    <Content Include="Views\ModuleStore\AddCarView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\Abstract\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

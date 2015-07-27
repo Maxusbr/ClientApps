@@ -143,5 +143,11 @@ namespace CSVOrder.DAL.Concrete
             _users.Add(new UserLightModel { Id = 1, Nm = "Иванов Иван Иванович" });
             _users.Add(new UserLightModel { Id = 2, Nm = "Петров Петр Петрович" });
         }
+
+
+        public CarViewModel GetCar(string carNumber)
+        {
+            return new CarViewModel(carNumber);
+        }
     }
 }

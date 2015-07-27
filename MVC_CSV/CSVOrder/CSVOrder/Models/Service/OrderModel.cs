@@ -31,7 +31,7 @@ namespace CSVOrder.Models.Service
         [Display(Name = "Планируемая дата начала работ", Order = 2)]
         public DateTime DateWork { get; set; }
 
-        [Display(Name = "Номер автомобиля", Order = 3)]
+        [Display(Name = "Номер автомобиля", Order = 4)]
         [Required(ErrorMessage = "Введите номер автомобиля")]
         public string CarNumber { get; set; }
 

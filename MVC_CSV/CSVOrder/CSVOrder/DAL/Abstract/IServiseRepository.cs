@@ -22,5 +22,7 @@ namespace CSVOrder.DAL.Abstract
         void SaveDepartament(DepartmentModel departament);
         DepartmentModel DeleteDepartament(int departamentId);
         DepartmentModel GetDepartament(int departamentId);
+
+        CarViewModel GetCar(string carNumber);
     }
 }

@@ -1,0 +1,38 @@
+﻿@using CSVOrder.Models.Abstract
+@model CSVOrder.Models.Service.CarViewModel
+@{
+    Layout = null;
+}
+@foreach (var property in ViewData.ModelMetadata.Properties.OrderBy(p => p.Order))
+{
+    switch (property.PropertyName)
+    {
+        case "Marks":
+        case "Models":
+        case "BodyTypes":
+        case "EngineTypes":
+        case "EngineVolumes":
+        case "TransTypes":
+            var list = property.Model as List<KVPBase>;
+            if (list == null) { break; }
+            <div class="form-group">
+                <strong>@property.DisplayName: </strong>
+                @Html.DropDownList(property.PropertyName, list.Select(o => new SelectListItem { Text = o.Name, Value = o.id.ToString() }), new { @class = "form-control" })
+            </div>
+            break;
+        case "VIN":
+        case "Number":
+            <div class="form-group">
+                <strong>@property.DisplayName: </strong>
+                @Html.TextBox(property.PropertyName, property.Model, new { @class = "form-control" })
+            </div>
+            break;
+        default:
+            @Html.Hidden(property.PropertyName, property.Model)
+            break;
+    }
+}
+@*<div class="form-group">
+        <strong>Номер автомобиля:</strong> @Html.TextBox("CarNumber", Model.Number, new { @class = "form-control" })
+
+    </div>*@

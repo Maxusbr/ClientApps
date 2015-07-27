@@ -34,7 +34,7 @@ namespace CSVOrder.Models.Service
         public bool InUse { get; set; }
 
         [Required(ErrorMessage = "Укажите пользователя")]
-        [Display(Order = 4)]
+        [Display(Order = 3)]
         public UserLightModel User { get; set; }
 
         [Display(Name = "Список работ", Order = 11)]
