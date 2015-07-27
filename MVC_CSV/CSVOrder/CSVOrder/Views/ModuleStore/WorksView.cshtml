@@ -1,0 +1,11 @@
+﻿@model IEnumerable<CSVOrder.Models.Service.WorksInfoDataModel>
+@{
+    Layout = null;
+}
+
+@if (Model != null && Model.Any())
+{
+    <ul>
+        @Treeview.GetTreeView(Model, Model.FirstOrDefault().IdParent)
+    </ul>
+}

@@ -57,7 +57,7 @@
                 }
             </div>
             <div class="col-md-8">
-                @Html.Partial("WorksView", Model.SelectedWorks)
+                @Html.Partial("SelectedWorksView", Model.SelectedWorks)
                 @{
                 var prop = ViewData.ModelMetadata.Properties.FirstOrDefault(o => o.PropertyName.Equals("Cost"));
                 if (prop != null)

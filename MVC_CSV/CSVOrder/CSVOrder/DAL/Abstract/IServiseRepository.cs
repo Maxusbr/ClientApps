@@ -10,6 +10,7 @@ namespace CSVOrder.DAL.Abstract
         IEnumerable<PostModel> Posts { get; }
         IEnumerable<DepartmentModel> Departaments { get; }
         IEnumerable<UserLightModel> Users { get; }
+        IEnumerable<WorksInfoDataModel> Works { get; }
 
         void SaveOrder(CarOrderPostModel order);
         OrderModel DeleteOrder(int orderId);
@@ -24,5 +25,7 @@ namespace CSVOrder.DAL.Abstract
         DepartmentModel GetDepartament(int departamentId);
 
         CarViewModel GetCar(string carNumber);
+
+        
     }
 }

@@ -31,5 +31,10 @@ namespace CSVOrder.Controllers
             var car = _storage.GetCar(carNumber)?? new CarViewModel(carNumber);
             return View("AddCarView", car);
         }
+
+        public ViewResult GetWorksView()
+        {
+            return View("WorksView", _storage.Works);
+        }
     }
 }

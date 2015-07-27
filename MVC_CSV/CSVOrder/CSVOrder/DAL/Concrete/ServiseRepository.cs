@@ -15,6 +15,7 @@ namespace CSVOrder.DAL.Concrete
         private readonly List<OrderModel> _orders = new List<OrderModel>();
         private readonly List<PostModel> _posts = new List<PostModel>();
         private readonly List<DepartmentModel> _departaments = new List<DepartmentModel>();
+        private readonly List<WorksInfoDataModel> _works = new List<WorksInfoDataModel>();
 
         public ServiseRepository()
         {
@@ -54,6 +55,13 @@ namespace CSVOrder.DAL.Concrete
             get { return _users; }
         }
 
+        /// <summary>
+        /// Db context Works
+        /// </summary>
+        public IEnumerable<WorksInfoDataModel> Works
+        {
+            get { return _works; }
+        }
 
         public void SaveOrder(CarOrderPostModel order)
         {
@@ -142,6 +150,11 @@ namespace CSVOrder.DAL.Concrete
             });
             _users.Add(new UserLightModel { Id = 1, Nm = "Иванов Иван Иванович" });
             _users.Add(new UserLightModel { Id = 2, Nm = "Петров Петр Петрович" });
+
+            _works.Add(new WorksInfoDataModel { Name = "Периодические", Id = 1, IdParent = 0});
+            _works.Add(new WorksInfoDataModel { Name = "Остальные", Id = 2, IdParent = 0 });
+            _works.Add(new WorksInfoDataModel { Name = "Двигатель", Id = 3, IdParent = 1 });
+            _works.Add(new WorksInfoDataModel { Name = "Двигатель", Id = 3, IdParent = 2 });
         }
 
 
@@ -149,5 +162,7 @@ namespace CSVOrder.DAL.Concrete
         {
             return new CarViewModel(carNumber);
         }
+
+
     }
 }
