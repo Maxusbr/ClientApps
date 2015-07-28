@@ -5,7 +5,7 @@
 
 @if (Model != null && Model.Any())
 {
-    <ul>
+    <ul style="background: white; border: 1px solid rgb(169, 169, 169); padding: 10px;">
         @Treeview.GetTreeView(Model, Model.FirstOrDefault().IdParent)
     </ul>
 }

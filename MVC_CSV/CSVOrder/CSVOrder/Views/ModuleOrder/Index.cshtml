@@ -57,12 +57,12 @@
 <link href="~/Content/DataTables/css/dataTables.bootstrap.css" rel="stylesheet"/>
 
 <div class="center-block text-center">
-    <a href='@Url.Action("LeftDate", Model)'>
+    <a href='@Url.Action("LeftDate", "ModuleOrder", new { dt = Model.Date.ToShortDateString() })'>
         <img src="~/Content/Service/images/left.png" class="img-circle" style="width: 24px" />
     </a>
 
     <strong>@Model.Date.ToShortDateString()</strong>
-    <a href='@Url.Action("RightDate", Model)'>
+    <a href='@Url.Action("RightDate", "ModuleOrder", new { dt = Model.Date.ToShortDateString() })'>
         <img src="~/Content/Service/images/right.png" class="img-circle" style="width: 24px" />
     </a>
 </div>

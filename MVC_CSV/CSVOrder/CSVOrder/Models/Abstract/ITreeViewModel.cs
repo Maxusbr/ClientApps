@@ -10,5 +10,6 @@ namespace CSVOrder.Models.Abstract
         int Id { get; set; }
         int IdParent{ get; set; }
         string Name { get; set; }
+        string NavUrl { get; set; }
     }
 }

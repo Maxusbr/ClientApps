@@ -31,10 +31,11 @@
                     switch (property.PropertyName)
                     {
                         case "CarNumber":
-                            @Html.Action("GetCarModel", "ModuleStore", new {property.Model});
+                            @Html.Action("GetCarModel", "ModuleStore", new { carNumber = property.Model });
                             break;
                         case "Cost":
                         case "UserComment":
+                        case "SelectedWorks":
                             break;
                         case "DtCreate":
                         case "DateWork":

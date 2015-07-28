@@ -153,8 +153,8 @@ namespace CSVOrder.DAL.Concrete
 
             _works.Add(new WorksInfoDataModel { Name = "Периодические", Id = 1, IdParent = 0});
             _works.Add(new WorksInfoDataModel { Name = "Остальные", Id = 2, IdParent = 0 });
-            _works.Add(new WorksInfoDataModel { Name = "Двигатель", Id = 3, IdParent = 1 });
-            _works.Add(new WorksInfoDataModel { Name = "Двигатель", Id = 3, IdParent = 2 });
+            _works.Add(new WorksInfoDataModel { Name = "Двигатель", Id = 3, IdParent = 1, NavUrl = "3"});
+            _works.Add(new WorksInfoDataModel { Name = "Двигатель", Id = 3, IdParent = 2, NavUrl = "3" });
         }
 
 

@@ -37,5 +37,10 @@ namespace CSVOrder.Models.Service
 
 
         public int IsPeriodic { get; set; }
+
+        /// <summary>
+        /// Значение = Id для работы и пустое для подгруппы
+        /// </summary>
+        public string NavUrl { get; set; }
     }
 }

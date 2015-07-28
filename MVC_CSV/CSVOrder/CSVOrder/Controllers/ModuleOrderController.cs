@@ -55,15 +55,19 @@ namespace CSVOrder.Controllers
             return View("OrderView", order);
         }
 
-        public ActionResult LeftDate(ListPostsViewModel model)
+        public ActionResult LeftDate(string dt)
         {
-            _model = new ListPostsViewModel(_storage, model.Date.AddDays(-1));
+            DateTime date;
+            if (!DateTime.TryParse(dt, out date)) return View("Index");
+            _model = new ListPostsViewModel(_storage, date.AddDays(-1));
             return View("Index", _model);
         }
 
-        public ActionResult RightDate(ListPostsViewModel model)
+        public ActionResult RightDate(string dt)
         {
-            _model = new ListPostsViewModel(_storage, model.Date.AddDays(1));
+            DateTime date;
+            if (!DateTime.TryParse(dt, out date)) return View("Index");
+            _model = new ListPostsViewModel(_storage, date.AddDays(1));
             return View("Index", _model);
         }
 
