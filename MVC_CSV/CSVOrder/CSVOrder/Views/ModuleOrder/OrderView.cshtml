@@ -42,7 +42,6 @@
                             <div class="form-group">
                                 @Html.Partial("AddCarView", Model.Car, new ViewDataDictionary { TemplateInfo = new TemplateInfo { HtmlFieldPrefix = "Car" } })
                             </div>
-                            @*@Html.Action("GetCarModel", "ModuleStore", new { carNumber = property.Model })*@
                             break;
                         case "Cost":
                         case "UserComment":
@@ -50,16 +49,14 @@
                             break;
                         case "DtCreate":
                         <div class="form-group">
-                            @*<span>@(property.DisplayName ?? property.PropertyName):</span>*@
                             @Html.LabelFor(x => x.DtCreate):
-                            @Html.TextBox("DtCreate", Model.DtCreate.ToString("G"), new { @readonly = "true", @class = "form-control" })
+                            @Html.TextBox("DtCreate", Model.DtCreate.ToString(), new { @readonly = "true", @class = "form-control" })
                         </div>
                             break;
                         case "DateWork":
                         <div class="form-group">
                             @Html.LabelFor(x => x.DateWork):
-                            @*@Html.TextBoxFor(x => x.DateWork, new { @readonly = "true", @class = "form-control" })*@
-                            @Html.TextBox("DateWork", Model.DateWork.ToString("G"), new { @readonly = "true", @class = "form-control" })
+                            @Html.TextBox("DateWork", Model.DateWork.ToString(), new { @readonly = "true", @class = "form-control" })
                         </div>
                             break;
 
