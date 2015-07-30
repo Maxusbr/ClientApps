@@ -129,9 +129,10 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         private void _hvm_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName.Equals("TableHistory")) UpdateTable();
-            if (!e.PropertyName.Equals("IsCheckedAccelerate") && !e.PropertyName.Equals("IsCheckedWay")) return;
-            if (_hvm.IsCheckedAccelerate || _hvm.IsCheckedWay)
+            if (!e.PropertyName.Equals("IsCheckedAccelerate") && !e.PropertyName.Equals("IsCheckedWay") && !e.PropertyName.Equals("IsCheckedSpeed")) return;
+            if (_hvm.IsCheckedAccelerate || _hvm.IsCheckedWay || _hvm.IsCheckedSpeed)
             {
+                MultiValueSlider.Visibility = Visibility.Visible;
                 MultiValueSlider.UpdatePos(_hvm.LeftValue, _hvm.RightValue, _hvm.MinValue, _hvm.MaxValue);
             }
         }

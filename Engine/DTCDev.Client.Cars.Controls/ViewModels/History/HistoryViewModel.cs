@@ -169,6 +169,19 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             ClearRoutes(false);
             if (AccHistory.Data.Count == 0) return;
             var el = AccHistory.Data.FirstOrDefault();
+            if (IsCheckedSpeed)
+            {
+                Iswaiting = true;
+                if (recalcValues)
+                {
+                    _maxValue = DayStates != null ? Math.Max(DayStates.Max(o => o.Spd) / 10.0m, 150) : 150;
+                    _minValue = 0;
+                    _leftValue = 90;
+                    _rightValue = 120;
+                    OnPropertyChanged("IsCheckedSpeed");
+                }
+                UpdateRouteSpeed();
+            }
             if (IsCheckedWay)
             {
                 Iswaiting = true;
@@ -299,8 +312,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         /// </summary>
         private void UpdateRouteSpeed()
         {
-            SpdNormal = 900;
-            SpdWarning = 1200;
+            SpdNormal = (int)LeftValue;
+            SpdWarning = (int)RightValue;
             SortDataByDate(false);
         }
 
@@ -361,9 +374,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         private Location _currentLocation;
 
-        private double SpdNormal = 900;
+        private double SpdNormal = 90;
 
-        private double SpdWarning = 1200;
+        private double SpdWarning = 120;
 
         private bool _periodSet = false;
 
@@ -453,6 +466,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 OnPropertyChanged("SelectedHistoryRow");
                 OnPropertyChanged("VisablePlayer");
                 OnPropertyChanged("TableHistory");
+                OnPropertyChanged("IsCheckedSpeed");
                 SortData();
                 if (_distanceCheckActive)
                     DistanceSelectedDayChanged();
@@ -1150,7 +1164,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                                     var trrr = 0;
                                 }
                                 if (IsCheckedSpeed)
-                                    curroute = SortLocation(prev, loc, curroute, item.Spd, item.Date);
+                                    curroute = SortLocation(prev, loc, curroute, item.Spd / 10.0, item.Date);
                                 dist += curdist;
                                 prev = loc;
                             }
@@ -1562,7 +1576,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
-        private decimal _leftValue = 10;
+        private decimal _leftValue = 80;
         public decimal LeftValue
         {
             get { return _leftValue; }
@@ -1573,7 +1587,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
-        private decimal _rightValue = 80;
+        private decimal _rightValue = 120;
         public decimal RightValue
         {
             get { return _rightValue; }
@@ -1595,7 +1609,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
-        private decimal _maxValue = 100;
+        private decimal _maxValue = 150;
         public decimal MaxValue
         {
             get { return _maxValue; }
@@ -1614,8 +1628,12 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             {
                 if (_isCheckedSpeed == value) return;
                 _isCheckedSpeed = value;
-                OnPropertyChanged("IsCheckedSpeed");
                 if (!value) return;
+                _maxValue = DayStates != null ? Math.Max(DayStates.Max(o => o.Spd) / 10.0m, 150) : 150;
+                _minValue = 0;
+                _leftValue = 90;
+                _rightValue = 120;
+                OnPropertyChanged("IsCheckedSpeed");
                 UpdateRouteSpeed();
             }
         }
