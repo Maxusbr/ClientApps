@@ -25,9 +25,11 @@ namespace CSVOrder.Models.User
 
         [Display(Name = "Телефон")]
         [Required(ErrorMessage = "Укажите телефон")]
+        [DataType(DataType.PhoneNumber, ErrorMessage = "Неверный формат номера телефона")]
         public string Ph { get; set; }
 
         [Display(Name = "Email")]
+        [DataType(DataType.EmailAddress)]
         public string Em { get; set; }
 
         /// <summary>

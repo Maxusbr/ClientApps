@@ -9,7 +9,6 @@ namespace CSVOrder.Models.Service
 {
     public class CarModel
     {
-        [Required]
         [Display(Name = "VIN", Order = 1)]
         public string VIN { get; set; }
         [Required]

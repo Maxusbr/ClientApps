@@ -1,21 +1,30 @@
 ﻿@model CSVOrder.Models.User.UserLightModel
 
-<div class="form-group">
-    @foreach (var property in ViewData.ModelMetadata.Properties)
+@foreach (var property in ViewData.ModelMetadata.Properties)
+{
+    switch (property.PropertyName)
     {
-        switch (property.PropertyName)
-        {
-            case "Nm":
-            case "Ph":
-            case "Em":
-                <div class="form-group">
-                    <strong>@property.DisplayName:</strong> @Html.TextBox(property.PropertyName, property.Model, new { @class = "form-control" })
-                    @Html.ValidationMessage(property.PropertyName)
-                </div>
-                break;
-            default:
-            @Html.Hidden(property.PropertyName, property.Model)
-                break;
-        }
+        case "Nm":
+            <div class="form-group">
+                @Html.LabelFor(x => x.Nm):@Html.TextBoxFor(x => x.Nm, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Nm)
+            </div>
+            break;
+        case "Ph":
+        <div class="form-group">
+            @Html.LabelFor(x => x.Ph):@Html.TextBoxFor(x => x.Ph, new { @class = "form-control",@type="phone" })
+            @Html.ValidationMessageFor(x => x.Ph)
+        </div>
+            break;
+        case "Em":
+        <div class="form-group">
+            @Html.LabelFor(x => x.Em):@Html.TextBoxFor(x => x.Em, new { @class = "form-control" })
+            @*<strong>@property.DisplayName:</strong> @Html.TextBox(property.PropertyName, property.Model, new {@class = "form-control"})*@
+            @Html.ValidationMessageFor(x => x.Em)
+        </div>
+            break;
+        default:
+        @Html.Hidden(property.PropertyName, property.Model)
+            break;
     }
-</div>
+}

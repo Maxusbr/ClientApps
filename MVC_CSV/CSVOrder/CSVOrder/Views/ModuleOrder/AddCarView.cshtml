@@ -3,8 +3,10 @@
 @{
     Layout = null;
 }
-<strong>Автомобиль:</strong>
-@{if (string.IsNullOrEmpty(Model.Number))
+@Html.Label("Автомобиль")
+
+
+@if (string.IsNullOrEmpty(Model.Number))
 {
     foreach (var property in ViewData.ModelMetadata.Properties.OrderBy(p => p.Order))
     {
@@ -24,11 +26,16 @@
                 </div>
                 break;
             case "VIN":
-            case "Number":
             <div class="form-group">
                 <strong>@property.DisplayName: </strong>
                 @Html.TextBox(property.PropertyName, property.Model, new { @class = "form-control" })
             </div>
+                break;
+            case "Number":
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Number):
+                    @Html.TextBoxFor(x => x.Number, new { @class = "form-control" })
+                </div>
                 break;
             default:
             @Html.Hidden(property.PropertyName, property.Model)
@@ -38,12 +45,9 @@
 }
 else
 {
-    var prop = ViewData.ModelMetadata.Properties.FirstOrDefault(o => o.PropertyName.Equals("Number"));
-    if (prop != null)
-    {
-        <div class="form-group">
-            @prop.DisplayName: <strong>@prop.Model</strong>
-        </div>
-    }
+    <div class="form-group">
+        @Html.LabelFor(x => x.Number):
+        @Html.TextBoxFor(x => x.Number, new { @readonly = "readonly", @class = "form-control" })
+    </div>
 }
-}
+

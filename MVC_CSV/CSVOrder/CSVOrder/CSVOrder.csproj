@@ -383,6 +383,10 @@
     <Content Include="Content\DataTables\css\dataTables.jqueryui.scss" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\globalize\cldr.js" />
+    <Content Include="Scripts\cldr\event.js" />
+    <Content Include="Scripts\cldr\supplemental.js" />
+    <Content Include="Scripts\cldr\unresolved.js" />
     <Content Include="Scripts\DataTables\dataTables.autoFill.js" />
     <Content Include="Scripts\DataTables\dataTables.autoFill.min.js" />
     <Content Include="Scripts\DataTables\dataTables.bootstrap.js" />
@@ -412,12 +416,22 @@
     <Content Include="Scripts\DatePicker\bootstrap-datepicker.min.js" />
     <Content Include="Scripts\DatePicker\bootstrap-datepicker.ru.min.js" />
     <Content Include="Scripts\DatePicker\locales\bootstrap-datepicker.en-GB.min.js" />
+    <Content Include="Scripts\globalize\globalize.culture.ru-RU.js" />
+    <Content Include="Scripts\globalize\globalize.js" />
+    <Content Include="Scripts\globalize\currency.js" />
+    <Content Include="Scripts\globalize\date.js" />
+    <Content Include="Scripts\globalize\message.js" />
+    <Content Include="Scripts\globalize\number.js" />
+    <Content Include="Scripts\globalize\plural.js" />
+    <Content Include="Scripts\globalize\relative-time.js" />
     <Content Include="Scripts\jquery-1.11.3.js" />
     <Content Include="Scripts\jquery-1.11.3.min.js" />
     <Content Include="Scripts\jquery-ui.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\globalize\jquery.validate.globalize.js" />
+    <Content Include="Scripts\globalize\jquery.validate.globalize.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -425,7 +439,9 @@
     <Content Include="Scripts\knockout-2.2.0.debug.js" />
     <Content Include="Scripts\knockout-2.2.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -473,8 +489,9 @@
     <Content Include="Views\ModuleOrder\OrderCreate.cshtml" />
     <Content Include="Views\ModuleOrder\UserView.cshtml" />
     <Content Include="Views\ModuleStore\WorksView.cshtml" />
-    <Content Include="Views\ModuleStore\AddCarView.cshtml" />
+    <Content Include="Views\ModuleOrder\AddCarView.cshtml" />
     <Content Include="Views\ModuleOrder\SelectedWorksView.cshtml" />
+    <Content Include="Scripts\globalize\jquery.validate.globalize.min.js.map" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

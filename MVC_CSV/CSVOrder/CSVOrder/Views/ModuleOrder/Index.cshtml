@@ -94,12 +94,13 @@
                             stile = "";
                         }
                         var orderid = 0;
-                        var order = Model.ListOrders.Where(o => o.PostId == id &&
+                        var order = Model.ListOrders.FirstOrDefault(o => o.PostId == id &&
                                                                 o.DateWork >= el && o.DateWork < el.Add(new TimeSpan(0, 30, 0)));
-                        if (order.Any())
+                        if (order != null)
                         {
-                            orderid = order.FirstOrDefault().OrderNumer;
-                            tool = order.FirstOrDefault().User.Nm;
+                            
+                            orderid = order.OrderNumer;
+                            tool = string.Format("{0} ({1})", order.User.Nm, order.Car.Number);
                             stile = "active success";
                         }
                         <td data-postid="@item.Id" data-time="@el" class="@stile" data-orderid="@orderid" title="@tool"></td>

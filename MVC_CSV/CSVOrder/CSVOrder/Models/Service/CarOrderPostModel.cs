@@ -12,6 +12,7 @@ namespace CSVOrder.Models.Service
         {
             SelectedWorks = new List<WorksInfoDataModel>(); 
             User = new UserLightModel();
+            Car = new CarViewModel(null);
         }
 
         public CarOrderPostModel(OrderModel model)
@@ -19,9 +20,9 @@ namespace CSVOrder.Models.Service
             OrderNumer = model.OrderNumer;
             PostId = model.PostId;
             UserId = model.UserId;
-            CarNumber = model.CarNumber;
             DtCreate = model.DtCreate;
             UserComment = model.UserComment;
+            Car = model.Car;
             Cost = model.Cost;
             DateWork = model.DateWork;
             User = new UserLightModel();
@@ -39,5 +40,6 @@ namespace CSVOrder.Models.Service
 
         [Display(Name = "Список работ", Order = 11)]
         public List<WorksInfoDataModel> SelectedWorks { get; set; }
+
     }
 }

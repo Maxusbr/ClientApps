@@ -11,13 +11,27 @@
             $(this).toggleClass("collapse expand");
             $(this).closest('li').children('ul').slideToggle();
         });
-        $(".selectable").click(function(e) {
+        $(".selectable").click(function (e) {
             var newOption = document.createElement("option");
-            newOption.value = this.attributes["Data-value"].value;
+            var indx = this.attributes["Data-value"].value;
+            newOption.value = indx;
             newOption.text = this.innerText;
             var list = document.getElementById("selectedWorks");
             if (!$("#selectedWorks > option[value=" + newOption.value + "]").length)
+            {
                 list.add(newOption);
+                $.ajax({
+                    url: "/ModuleStore/GetDetailWork",
+                    data: {
+                        id: indx,
+                        nh: $('#NH')[0].innerText
+                    },
+                    success: function (data) {
+                        $('#NH').html(data);
+                    }
+
+                });
+            }
         });
     });
 </script>
@@ -25,14 +39,16 @@
     .selectable {
         cursor: pointer;
     }
-     .collapse {
-         width: 15px;
-         background-image: url('../../Content/themes/base/images/ui-icons_454545_256x240.png');
-         background-repeat: no-repeat;
-         background-position: -36px -17px;
-         display: inline-block;
-         cursor: pointer;
-     }
+
+    .collapse {
+        width: 15px;
+        background-image: url('../../Content/themes/base/images/ui-icons_454545_256x240.png');
+        background-repeat: no-repeat;
+        background-position: -36px -17px;
+        display: inline-block;
+        cursor: pointer;
+    }
+
     .expand {
         width: 15px;
         background-image: url('../../Content/themes/base/images/ui-icons_454545_256x240.png');
@@ -56,39 +72,69 @@
     .treeview li {
     }
 
-    .treeview li a {
-        padding: 4px;
-        font-size: 12px;
-        display: inline-block;
-        text-decoration: none;
-        width: auto;
+        .treeview li a {
+            padding: 4px;
+            font-size: 12px;
+            display: inline-block;
+            text-decoration: none;
+            width: auto;
+        }
+
+    .no-scroll::-webkit-scrollbar {
+        display: none;
     }
 
-    .no-scroll::-webkit-scrollbar {display:none;}
-    .no-scroll::-moz-scrollbar {display:none;}
-    .no-scroll::-o-scrollbar {display:none;}
-    .no-scroll::-google-ms-scrollbar {display:none;}
-    .no-scroll::-khtml-scrollbar {display:none;}
-    .scroll::-webkit-scrollbar {display:inline;}
-    .scroll::-moz-scrollbar {display:inline;}
-    .scroll::-o-scrollbar {display:inline;}
-    .scroll::-google-ms-scrollbar {display:inline;}
-    .scroll::-khtml-scrollbar {display:inline;}
-</style>
-<div class="form-group">
-    <div class="row">
-        <div class="treeview col-md-6">
-            @Html.Label("Укажите работы:")
-            @Html.Action("GetWorksView", "ModuleStore")
-        </div>
-        <div class="treeview col-md-6">
-            @Html.Label("Заявляемые работы:")
-            @if (Model != null && Model.Any())
-            {
+    .no-scroll::-moz-scrollbar {
+        display: none;
+    }
 
-            }
-            @Html.ListBox("selectedWorks", Model.Select(o => new SelectListItem {Text = o.Name, Value = o.Id.ToString()}), new {style = "width: 98%"})
+    .no-scroll::-o-scrollbar {
+        display: none;
+    }
+
+    .no-scroll::-google-ms-scrollbar {
+        display: none;
+    }
+
+    .no-scroll::-khtml-scrollbar {
+        display: none;
+    }
+
+    .scroll::-webkit-scrollbar {
+        display: inline;
+    }
+
+    .scroll::-moz-scrollbar {
+        display: inline;
+    }
+
+    .scroll::-o-scrollbar {
+        display: inline;
+    }
+
+    .scroll::-google-ms-scrollbar {
+        display: inline;
+    }
+
+    .scroll::-khtml-scrollbar {
+        display: inline;
+    }
+</style>
+<div class="row">
+    <div class="treeview col-md-6">
+        @Html.Label("Укажите работы:")
+        @Html.Action("GetWorksView", "ModuleStore")
+    </div>
+    <div class="treeview col-md-6">
+        @Html.Label("Заявляемые работы:")
+        @if (Model != null && Model.Any())
+        {
+
+        }
+        @Html.ListBox("selectedWorks", Model.Select(o => new SelectListItem { Text = o.Name, Value = o.Id.ToString() }), new { style = "width: 98%" })
+        <div class="form-group">
+            @{ var nh = Model != null && Model.ToList().Count > 0 ? Model.Sum(o => o.Nh / 10.0) : 0;}
+            Время выполнения, ч: @Html.Label("NH", nh.ToString(), new { id = "NH" })
         </div>
     </div>
-
 </div>

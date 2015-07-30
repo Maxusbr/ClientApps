@@ -25,16 +25,19 @@ namespace CSVOrder.Controllers
             return View();
         }
 
-
-        public ViewResult GetCarModel(string carNumber)
-        {
-            var car = _storage.GetCar(carNumber)?? new CarViewModel(carNumber);
-            return View("AddCarView", car);
-        }
-
         public ViewResult GetWorksView()
         {
             return View("WorksView", _storage.Works);
+        }
+
+        public double GetDetailWork(int id, string nh)
+        {
+            var sum = 0.0;
+            double.TryParse(nh.Replace(".", ","), out sum);
+            //TODO Get part works
+            var work = _storage.Works.FirstOrDefault(o => o.Id == id);
+            if (work != null) sum += work.Nh / 10.0;
+            return sum;
         }
     }
 }

@@ -23,17 +23,20 @@ namespace CSVOrder.Models.Service
 
         [Display(Name = "Время создания заявки", Order = 1)]
         [Required]
+
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}", ApplyFormatInEditMode = true)]
         public DateTime DtCreate { get; set; }
 
         /// <summary>
         /// планируемая дата начала работ
         /// </summary>
         [Display(Name = "Планируемая дата начала работ", Order = 2)]
+
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}", ApplyFormatInEditMode = true)]
         public DateTime DateWork { get; set; }
 
-        [Display(Name = "Номер автомобиля", Order = 4)]
-        [Required(ErrorMessage = "Введите номер автомобиля")]
-        public string CarNumber { get; set; }
+        [Display(Name = "Автомобиль", Order = 4)]
+        public CarViewModel Car { get; set; }
 
         [Display(Name = "Стоимость (руб)", Order = 5)]
         public int Cost { get; set; }

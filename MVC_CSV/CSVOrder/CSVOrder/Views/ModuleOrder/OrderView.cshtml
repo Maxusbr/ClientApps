@@ -1,4 +1,5 @@
-﻿@model CSVOrder.Models.Service.CarOrderPostModel
+﻿@using CSVOrder.Models.Service
+@model CSVOrder.Models.Service.CarOrderPostModel
 @section head
 {
     @Styles.Render("~/Content/datepicker")
@@ -9,8 +10,14 @@
 <h2>@ViewBag.Title</h2>
 @section scripts{
     @Scripts.Render("~/bundles/datepicker")
+    @Scripts.Render("~/bundles/jqueryval")
+    @*@Scripts.Render("~/bundles/globalize")
+    <script>
+        $(document).ready(function () {
+            Globalize.culture("ru-RU");
+        });
+    </script>*@
     <script language="javascript" type="text/javascript">
-
         $('.datepicker').datepicker({
             format: "dd.mm.yyyy",
             language: "ru",
@@ -20,36 +27,46 @@
     </script>
 
 }
-@using (Html.BeginForm("EditOrder", "ModuleOrder",
-    FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("EditOrder", "ModuleOrder", FormMethod.Post))
 {
+    @Html.ValidationSummary();
     <div class="panel-body">
         <div class="row">
             <div class="col-md-4">
                 @foreach (var property in ViewData.ModelMetadata.Properties.OrderBy(p => p.Order))
                 {
+
                     switch (property.PropertyName)
                     {
-                        case "CarNumber":
-                            @Html.Action("GetCarModel", "ModuleStore", new { carNumber = property.Model });
+                        case "Car":
+                            <div class="form-group">
+                                @Html.Partial("AddCarView", Model.Car, new ViewDataDictionary { TemplateInfo = new TemplateInfo { HtmlFieldPrefix = "Car" } })
+                            </div>
+                            @*@Html.Action("GetCarModel", "ModuleStore", new { carNumber = property.Model })*@
                             break;
                         case "Cost":
                         case "UserComment":
                         case "SelectedWorks":
                             break;
                         case "DtCreate":
+                        <div class="form-group">
+                            @*<span>@(property.DisplayName ?? property.PropertyName):</span>*@
+                            @Html.LabelFor(x => x.DtCreate):
+                            @Html.TextBox("DtCreate", Model.DtCreate.ToString("G"), new { @readonly = "true", @class = "form-control" })
+                        </div>
+                            break;
                         case "DateWork":
-                            <div class="form-group">
-                                @property.DisplayName: <strong>@(((DateTime)property.Model).ToString("dd.mm.yyyy HH:mm"))</strong>
-                            </div>
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.DateWork):
+                            @*@Html.TextBoxFor(x => x.DateWork, new { @readonly = "true", @class = "form-control" })*@
+                            @Html.TextBox("DateWork", Model.DateWork.ToString("G"), new { @readonly = "true", @class = "form-control" })
+                        </div>
                             break;
-                            <div class="form-group">
-                                @property.DisplayName: @Html.TextBox(property.PropertyName, property.Model, new { @class = "datepicker " })
-                                @Html.ValidationMessage(property.PropertyName)
-                            </div>
-                            break;
+
                         case "User":
-                        @Html.Partial("UserView", property.Model)
+                        <div class="form-group">
+                            @Html.Partial("UserView", Model.User, new ViewDataDictionary { TemplateInfo = new TemplateInfo { HtmlFieldPrefix = "User" } })
+                        </div>
                             break;
                         default:
                         @Html.Hidden(property.PropertyName, property.Model)
@@ -70,16 +87,19 @@
                 prop = ViewData.ModelMetadata.Properties.FirstOrDefault(o => o.PropertyName.Equals("UserComment"));
                 if (prop != null)
                 {
-                        <div class="form-group">
-                            <strong>@prop.DisplayName: </strong>@Html.TextArea(prop.PropertyName, (prop.Model ?? "").ToString(), new { @class = "form-control", rows = 5 })
-                        </div>
-                    }
+                    <strong>@prop.DisplayName: </strong>
+                    <div class="form-group">
+                        @Html.TextArea(prop.PropertyName, (prop.Model ?? "").ToString(), new { @class = "form-control", rows = 5 })
+                    </div>
+                }
                 }
             </div>
         </div>
-        
-
         @*<input type="text" class="form-control" id="datepicker" value="@Model.DateWork.ToString("dd.mm.yyyy")">*@
+
+    </div>
+    <div class="panel-footer">
+        <input class="btn btn-block" type="submit" value="Отправить" />
     </div>
 }
 

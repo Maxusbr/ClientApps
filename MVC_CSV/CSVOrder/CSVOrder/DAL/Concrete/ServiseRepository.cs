@@ -133,8 +133,8 @@ namespace CSVOrder.DAL.Concrete
             _orders.Add(new OrderModel
             {
                 OrderNumer = 1,
-                CarNumber = "Demo 1",
-                DateWork = DateTime.Now.AddHours(-1).AddMinutes(25),
+                Car = new CarViewModel("Demo 1"),
+                DateWork = DateTime.Now.AddHours(-5).AddMinutes(25),
                 DtCreate = DateTime.Now,
                 PostId = 4,
                 UserId = 1
@@ -142,8 +142,8 @@ namespace CSVOrder.DAL.Concrete
             _orders.Add(new OrderModel
             {
                 OrderNumer = 2,
-                CarNumber = "Demo 2",
-                DateWork = DateTime.Now.AddHours(2).AddMinutes(32),
+                Car = new CarViewModel("Demo 2"),
+                DateWork = DateTime.Now.AddHours(-6).AddMinutes(32),
                 DtCreate = DateTime.Now,
                 PostId = 2,
                 UserId = 2
@@ -153,8 +153,9 @@ namespace CSVOrder.DAL.Concrete
 
             _works.Add(new WorksInfoDataModel { Name = "Периодические", Id = 1, IdParent = 0});
             _works.Add(new WorksInfoDataModel { Name = "Остальные", Id = 2, IdParent = 0 });
-            _works.Add(new WorksInfoDataModel { Name = "Двигатель", Id = 3, IdParent = 1, NavUrl = "3"});
-            _works.Add(new WorksInfoDataModel { Name = "Двигатель", Id = 3, IdParent = 2, NavUrl = "3" });
+            // Значение NavUrl = Id для работы и пустое для подгруппы
+            _works.Add(new WorksInfoDataModel { Name = "Двигатель", Id = 3, IdParent = 1, NavUrl = "3", Nh = 15});
+            _works.Add(new WorksInfoDataModel { Name = "КПП", Id = 4, IdParent = 2, NavUrl = "4", Nh = 5 });
         }
 
 
