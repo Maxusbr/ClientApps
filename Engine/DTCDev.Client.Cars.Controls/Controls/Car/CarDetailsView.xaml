@@ -141,6 +141,9 @@
                             <RowDefinition Height="3*"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
+                        <Grid>
+                            <TextBlock x:Name="txtCar" Foreground="White" Text="Chevrolet" FontSize="14" Margin="4" FontWeight="Bold"/>
+                        </Grid>
                         <ScrollViewer Grid.Row="1">
                             <Grid x:Name="stkOBD">
                                 <Grid.ColumnDefinitions>

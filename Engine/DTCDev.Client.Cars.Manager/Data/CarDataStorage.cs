@@ -78,6 +78,7 @@ namespace DTCDev.Client.Cars.Manager.Data
             foreach (var item in data)
             {
                 CarsList.Add(item);
+                
             }
         }
 

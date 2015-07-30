@@ -407,5 +407,15 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
             catch { }
         }
 
+        public void SetCarMarkModel(string carNumber, string mark, string model)
+        {
+            DISP_Car car = _cars.Where(p => p.Car.CarNumber == carNumber).FirstOrDefault();
+            if(car!=null)
+            {
+                car.Mark = mark;
+                car.Model = model;
+            }
+        }
+
     }
 }

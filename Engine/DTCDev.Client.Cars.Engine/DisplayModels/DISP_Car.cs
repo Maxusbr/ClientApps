@@ -306,6 +306,28 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
             }
         }
 
+        private string _mark = "";
+        public string Mark
+        {
+            get { return _mark; }
+            set
+            {
+                _mark = value;
+                this.OnPropertyChanged("Mark");
+            }
+        }
+
+        private string _model = "";
+        public string Model
+        {
+            get { return _model; }
+            set
+            {
+                _model = value;
+                this.OnPropertyChanged("Model");
+            }
+        }
+
         private bool _historyDetailView;
         public bool HistoryDetailView
         {

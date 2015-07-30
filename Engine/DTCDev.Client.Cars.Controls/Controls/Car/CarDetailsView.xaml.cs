@@ -63,7 +63,9 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
             txtTimeUpdate.Text = _currentCar.DateLastUpdate.ToString("HH:mm:ss");
 
             var converter = new PIDConverter();
-            stkOBD.Children.Clear();stkOBD.RowDefinitions.Clear();
+            stkOBD.Children.Clear();
+            stkOBD.RowDefinitions.Clear();
+            txtCar.Text = _currentCar.Mark + " " + _currentCar.Model;
             for (var i = 0; i< _currentCar.OBD.Count; i++)
             {
                 stkOBD.RowDefinitions.Add(new RowDefinition());

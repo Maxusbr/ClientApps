@@ -294,6 +294,10 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
                         Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                             {
                                 CarDataStorage.Instance.SetCars(cars);
+                                foreach (var item in cars)
+                                {
+                                    CarsHandler.Instance.SetCarMarkModel(item.CarNumber, item.Mark, item.Model);
+                                }
                             }));
             }
             catch { }
