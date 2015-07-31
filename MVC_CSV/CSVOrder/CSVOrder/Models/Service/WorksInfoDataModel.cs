@@ -10,6 +10,12 @@ namespace CSVOrder.Models.Service
 {
     public class WorksInfoDataModel : ITreeViewModel
     {
+        public WorksInfoDataModel()
+        {
+            Id = 0;
+            Name = "";
+        }
+
         [HiddenInput(DisplayValue = false)]
         public int Id { get; set; }
 

@@ -1,15 +1,16 @@
-﻿<UserControl x:Class="DTCDev.Client.Cars.Controls.Controls.Car.CarViewElement"
+﻿<UserControl
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:DTCDev.Client.Cars.Controls.Controls.Car"
+             xmlns:Models="clr-namespace:DTCDev.Client.Cars.Controls.Models" x:Class="DTCDev.Client.Cars.Controls.Controls.Car.CarViewElement"
              mc:Ignorable="d" 
              Height="Auto" d:DesignWidth="500" x:Name="control" Foreground="Black">
     <!--<UserControl.ToolTip>
         <local:CarToolTipView />
     </UserControl.ToolTip>-->
     <UserControl.Resources>
+        <Models:InvertBoolToVisibilityConverter x:Key="InvertBoolToVisibilityConverter"/>
         <Storyboard x:Key="stbShowDetails">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="image1">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
@@ -46,8 +47,9 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Border Grid.ColumnSpan="7" Background="White" Opacity="0.5"/>
+
         <Image x:Name="image1" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/more.png" Opacity="0" Height="28" Width="28" MouseLeftButtonUp="image1_MouseLeftButtonUp"/>
-        <TextBlock FontSize="14" FontWeight="Bold" Text="{Binding ElementName=control, Path=CarExemplar.Car.CarNumber}" Margin="4,7" Grid.Column="1"/>
+        <TextBlock FontSize="14" FontWeight="Bold" Text="{Binding CarExemplar.Car.CarNumber, ElementName=control}" Margin="4,7" Grid.Column="1"/>
         <Image x:Name="imgSatOk" Grid.Column="2" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/gps.png" />
         <Image x:Name="imgSatErr" Grid.Column="2" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/gpsor.png" />
         <Grid Grid.Column="4" x:Name="grdOnLine" >
@@ -90,12 +92,9 @@
                 <TextBlock x:Name="txtFuel" Text="000 л" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
             </Grid>
             <!-- OBD data-->
-            <StackPanel x:Name="stkOBDSensors" Grid.Column="2" Orientation="Horizontal" Grid.ColumnSpan="3" Margin="0,0,222,0">
-
-            </StackPanel>
-            <StackPanel x:Name="stkSensors" Orientation="Horizontal" Grid.Column="3" Grid.ColumnSpan="2">
-
-            </StackPanel>
+            <StackPanel x:Name="stkOBDSensors" Grid.Column="2" Orientation="Horizontal" Grid.ColumnSpan="3" Margin="0,0,222,0"/>
+            <StackPanel x:Name="stkSensors" Orientation="Horizontal" Grid.Column="3" Grid.ColumnSpan="2"/>
         </Grid>
+        <Border Grid.ColumnSpan="7" BorderBrush="DarkRed" Visibility="{Binding CarExemplar.InZone, Converter={StaticResource InvertBoolToVisibilityConverter}, ElementName=control}" BorderThickness="1"/>
     </Grid>
 </UserControl>

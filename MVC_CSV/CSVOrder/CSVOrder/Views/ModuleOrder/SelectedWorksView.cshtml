@@ -1,4 +1,5 @@
-﻿@model IEnumerable<CSVOrder.Models.Service.WorksInfoDataModel>
+﻿@using System.Web.Mvc.Html
+@model CSVOrder.Models.Service.CarOrderPostModel
 @{
     Layout = null;
 }
@@ -12,14 +13,13 @@
             $(this).closest('li').children('ul').slideToggle();
         });
         $(".selectable").click(function (e) {
-            var newOption = document.createElement("option");
             var indx = this.attributes["Data-value"].value;
-            newOption.value = indx;
-            newOption.text = this.innerText;
-            var list = document.getElementById("selectedWorks");
-            if (!$("#selectedWorks > option[value=" + newOption.value + "]").length)
-            {
-                list.add(newOption);
+            if (!$("#SelectedItems > option[value=" + indx + "]").length) {
+                $('#SelectedItems').append(
+                        $('<option></option>')
+                            .val(indx)
+                            .html(this.innerText)
+                    );
                 $.ajax({
                     url: "/ModuleStore/GetDetailWork",
                     data: {
@@ -126,14 +126,21 @@
         @Html.Action("GetWorksView", "ModuleStore")
     </div>
     <div class="treeview col-md-6">
-        @Html.Label("Заявляемые работы:")
-        @if (Model != null && Model.Any())
+        
+        @if (Model != null && Model.SelectedWorks.Any())
         {
 
         }
-        @Html.ListBox("selectedWorks", Model.Select(o => new SelectListItem { Text = o.Name, Value = o.Id.ToString() }), new { style = "width: 98%" })
+        @if (Model != null)
+        {
+
+            <div class="form-group">
+                @Html.Label("Заявляемые работы:", new { @for = "SelectedWorks" })                
+                @Html.ListBoxFor(model => model.SelectedItems, Model.WorkItems, new { style = "width: 98%" })
+            </div>
+        }
         <div class="form-group">
-            @{ var nh = Model != null && Model.ToList().Count > 0 ? Model.Sum(o => o.Nh / 10.0) : 0;}
+            @{ var nh = Model != null && Model.SelectedWorks.ToList().Count > 0 ? Model.SelectedWorks.Sum(o => o.Nh / 10.0) : 0;}
             Время выполнения, ч: @Html.Label("NH", nh.ToString(), new { id = "NH" })
         </div>
     </div>
