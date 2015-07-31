@@ -13,7 +13,7 @@ namespace CSVOrder.Controllers
         
         //
         // GET: /ModuleStore/
-        private IServiseRepository _storage;
+        private readonly IServiseRepository _storage;
 
         public ModuleStoreController(IServiseRepository storage)
         {
@@ -36,7 +36,10 @@ namespace CSVOrder.Controllers
             double.TryParse(nh.Replace(".", ","), out sum);
             //TODO Get part works
             var work = _storage.Works.FirstOrDefault(o => o.Id == id);
-            if (work != null) sum += work.Nh / 10.0;
+            if (work != null)
+            {
+                sum += work.Nh / 10.0;
+            }
             return sum;
         }
     }

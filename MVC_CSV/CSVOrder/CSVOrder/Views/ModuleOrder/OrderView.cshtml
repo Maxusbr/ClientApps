@@ -1,5 +1,4 @@
-﻿@using CSVOrder.Models.Service
-@model CSVOrder.Models.Service.CarOrderPostModel
+﻿@model CSVOrder.Models.Service.CarOrderPostModel
 @section head
 {
     @Styles.Render("~/Content/datepicker")
@@ -10,7 +9,7 @@
 <h2>@ViewBag.Title</h2>
 @section scripts{
     @Scripts.Render("~/bundles/datepicker")
-    @Scripts.Render("~/bundles/jqueryval")
+    @*@Scripts.Render("~/bundles/jqueryval")*@
     @*@Scripts.Render("~/bundles/globalize")
     <script>
         $(document).ready(function () {
@@ -24,6 +23,9 @@
             orientation: "top left",
             todayHighlight: true
         });
+        $(function() {
+            $("form").submit(function (e) { $('#SelectedItems option').prop('selected', true); });
+        });
     </script>
 
 }
@@ -33,63 +35,51 @@
     <div class="panel-body">
         <div class="row">
             <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.DtCreate):
+                    @Html.TextBox("DtCreate", Model.DtCreate.ToString(), new {@readonly = "true", @class = "form-control"})
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.DateWork):
+                    @Html.TextBox("DateWork", Model.DateWork.ToString(), new {@readonly = "true", @class = "form-control"})
+                </div>
+                <div class="form-group">
+                    @Html.Partial("UserView", Model.User, new ViewDataDictionary {TemplateInfo = new TemplateInfo {HtmlFieldPrefix = "User"}})
+                </div>
+                <div class="form-group">
+                    @Html.Partial("AddCarView", Model.Car, new ViewDataDictionary { TemplateInfo = new TemplateInfo { HtmlFieldPrefix = "Car" } })
+                </div>
                 @foreach (var property in ViewData.ModelMetadata.Properties.OrderBy(p => p.Order))
                 {
 
                     switch (property.PropertyName)
                     {
                         case "Car":
-                            <div class="form-group">
-                                @Html.Partial("AddCarView", Model.Car, new ViewDataDictionary { TemplateInfo = new TemplateInfo { HtmlFieldPrefix = "Car" } })
-                            </div>
-                            break;
                         case "Cost":
                         case "UserComment":
                         case "SelectedWorks":
-                            break;
                         case "DtCreate":
-                        <div class="form-group">
-                            @Html.LabelFor(x => x.DtCreate):
-                            @Html.TextBox("DtCreate", Model.DtCreate.ToString(), new { @readonly = "true", @class = "form-control" })
-                        </div>
-                            break;
                         case "DateWork":
-                        <div class="form-group">
-                            @Html.LabelFor(x => x.DateWork):
-                            @Html.TextBox("DateWork", Model.DateWork.ToString(), new { @readonly = "true", @class = "form-control" })
-                        </div>
-                            break;
-
                         case "User":
-                        <div class="form-group">
-                            @Html.Partial("UserView", Model.User, new ViewDataDictionary { TemplateInfo = new TemplateInfo { HtmlFieldPrefix = "User" } })
-                        </div>
+                        case "WorkItems":
+                        case "SelectedItems":                                      
                             break;
                         default:
-                        @Html.Hidden(property.PropertyName, property.Model)
+                            @Html.Hidden(property.PropertyName, property.Model)
                             break;
                     }
                 }
             </div>
             <div class="col-md-8">
-                @Html.Partial("SelectedWorksView", Model.SelectedWorks)
-                @{
-                var prop = ViewData.ModelMetadata.Properties.FirstOrDefault(o => o.PropertyName.Equals("Cost"));
-                if (prop != null)
-                {
-                    <div class="form-group">
-                        @prop.DisplayName: <strong id="costSum">@prop.Model</strong>
-                    </div>
-                }
-                prop = ViewData.ModelMetadata.Properties.FirstOrDefault(o => o.PropertyName.Equals("UserComment"));
-                if (prop != null)
-                {
-                    <strong>@prop.DisplayName: </strong>
-                    <div class="form-group">
-                        @Html.TextArea(prop.PropertyName, (prop.Model ?? "").ToString(), new { @class = "form-control", rows = 5 })
-                    </div>
-                }
-                }
+                @Html.Partial("SelectedWorksView", Model)
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Cost):
+                    @Html.TextBoxFor(x => x.Cost, new { @readonly = "true", @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.UserComment):
+                    @Html.TextAreaFor(x => x.UserComment, new { @class = "form-control", rows = 5 })
+                </div>
             </div>
         </div>
         @*<input type="text" class="form-control" id="datepicker" value="@Model.DateWork.ToString("dd.mm.yyyy")">*@

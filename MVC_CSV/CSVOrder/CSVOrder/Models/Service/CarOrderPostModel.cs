@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Web.Mvc;
 using CSVOrder.Models.User;
 
@@ -39,7 +40,19 @@ namespace CSVOrder.Models.Service
         public UserLightModel User { get; set; }
 
         [Display(Name = "Список работ", Order = 11)]
-        public List<WorksInfoDataModel> SelectedWorks { get; set; }
+        public IList<WorksInfoDataModel> SelectedWorks { get; set; }
 
+        public IEnumerable<SelectListItem> WorkItems
+        {
+            get
+            {
+                return SelectedWorks.Select(x => new SelectListItem
+                {
+                    Value = x.Id.ToString(),
+                    Text = x.Name
+                });
+            }
+        }
+        public string[] SelectedItems { get; set; }
     }
 }

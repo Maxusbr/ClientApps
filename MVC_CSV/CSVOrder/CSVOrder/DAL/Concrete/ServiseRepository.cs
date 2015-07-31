@@ -106,7 +106,6 @@ namespace CSVOrder.DAL.Concrete
             if (order == null)
                 return new CarOrderPostModel();
             var fullorder = new CarOrderPostModel(order) { User = _users.FirstOrDefault(o => o.Id == order.UserId) };
-
             return fullorder;
         }
 
@@ -134,7 +133,7 @@ namespace CSVOrder.DAL.Concrete
             {
                 OrderNumer = 1,
                 Car = new CarViewModel("Demo 1"),
-                DateWork = DateTime.Now.AddHours(-5).AddMinutes(25),
+                DateWork = DateTime.Now.AddHours(1).AddMinutes(25),
                 DtCreate = DateTime.Now,
                 PostId = 4,
                 UserId = 1
@@ -143,7 +142,7 @@ namespace CSVOrder.DAL.Concrete
             {
                 OrderNumer = 2,
                 Car = new CarViewModel("Demo 2"),
-                DateWork = DateTime.Now.AddHours(-6).AddMinutes(32),
+                DateWork = DateTime.Now.AddHours(3).AddMinutes(32),
                 DtCreate = DateTime.Now,
                 PostId = 2,
                 UserId = 2

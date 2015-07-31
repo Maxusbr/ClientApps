@@ -43,6 +43,7 @@ namespace CSVOrder.Controllers
             var curentorder = GetOrder(indx); 
             if (curentorder != null)
                 ViewBag.Title = string.Format("Заявка №{0}:", curentorder.OrderNumer);
+
             return View(curentorder);
         }
 
@@ -80,6 +81,13 @@ namespace CSVOrder.Controllers
         [HttpPost]
         public ActionResult EditOrder(CarOrderPostModel model)
         {
+            if (model.SelectedItems != null)
+                foreach (var id in model.SelectedItems.Where(x => int.Parse(x) > 0).Select(int.Parse))
+                {
+                    var work = _storage.Works.FirstOrDefault(o => o.Id == id);
+                    if(work != null)
+                        model.SelectedWorks.Add(work);
+            }
             if (ModelState.IsValid)
             {
                 _storage.SaveOrder(model);
