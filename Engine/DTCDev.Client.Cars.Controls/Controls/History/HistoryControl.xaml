@@ -376,7 +376,7 @@
             <Map:MapItemsControl ItemsSource="{Binding ZoneSelect}" 
 				ItemTemplate="{StaticResource PolylineItemTemplate}" 
 				ItemContainerStyle="{StaticResource ZonesItemStyle}" Focusable="False" 
-				IsSynchronizedWithCurrentItem="False" IsEnabled="False"/>
+				IsSynchronizedWithCurrentItem="False" IsEnabled="{Binding EnableHistory}"/>
             <Map:MapItemsControl x:Name="CarPoints" ItemsSource="{Binding Points}" 
 				ItemContainerStyle="{StaticResource PointItemStyle}" 
 				SelectedItem="{Binding Position, Mode=TwoWay}"/>

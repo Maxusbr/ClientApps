@@ -90,7 +90,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             IsPlayerStart = false;
             Thread.Sleep(10);
             var item = DayStates.FirstOrDefault(o => o.Date == TableHistory.SelectedRow.Date);
-            if(item == null) return;
+            if (item == null) return;
             PlayerCurentTime = item.Date;
         }
 
@@ -125,7 +125,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         void Instance_OBDLoaded(OBDHistoryDataModel model)
         {
             IsPlayerStart = false;
-            var obd = new OBDHistoryDataModel {DevID = model.DevID, DT = model.DT};
+            var obd = new OBDHistoryDataModel { DevID = model.DevID, DT = model.DT };
             var slowTask = new Task(delegate
             {
                 for (var i = 0; i < DayStates.Count; i++)
@@ -203,7 +203,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                     _maxValue = el != null ? Math.Max(Math.Max(Math.Abs(el.MaxY), Math.Abs(el.MaxZ)) / 100.0m, 2) : 2;
                     _minValue = 0;
                     _leftValue = .5m;
-                    _rightValue = 1; 
+                    _rightValue = 1;
                     OnPropertyChanged("IsCheckedAccelerate");
                 }
                 UpdateRouteAccelerate();
@@ -293,7 +293,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                         Longitude = itemLoc.Ln / 10000.0
                     };
                     if (itemLoc.Spd > 0)
-                    curroute = SortLocation(prev, loc, curroute, Math.Abs(item.X) / 100.0, itemLoc.Date);
+                        curroute = SortLocation(prev, loc, curroute, Math.Abs(item.X) / 100.0, itemLoc.Date);
                     prev = loc;
                     first = item;
                     firstLoc = itemLoc;
@@ -430,12 +430,13 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 {
                     Position = new DISP_Car
                     {
+                        ZoneId = Position.ZoneId,
                         Location = Position.Location,
                         Car = new SCarModel()
-                            {
-                                CarNumber = Position.Car.CarNumber,
-                                Id = Position.Car.Id
-                            }
+                        {
+                            CarNumber = Position.Car.CarNumber,
+                            Id = Position.Car.Id
+                        }
                     };
                 }
                 OnPropertyChanged("EnableHistory");
@@ -638,6 +639,58 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
+        private VmPolyline _selectedZone;
+        public VmPolyline SelectedZone
+        {
+            get { return this._selectedZone; }
+            set
+            {
+                //if (this._selectedZone != value)
+                {
+                    this._selectedZone = value;
+                    OnPropertyChanged("SelectedZone");
+                    ChangeZoneSelected();
+                }
+            }
+        }
+
+        private void ChangeCarSelected()
+        {
+            if (Position == null || !EnableHistory) return;
+            ClearSelect();
+            var zone = _zoneHandler.Zones.FirstOrDefault(o => o.ID == Position.ZoneId);
+            if (zone == null) return;
+            if (!ZoneSelect.Contains(zone))
+                ZoneSelect.Add(zone);
+            SelectedZone = zone;
+            zone.IsSelected = true;
+            //GetMoreInfo(Position);
+        }
+
+        private void ChangeZoneSelected()
+        {
+            if (!EnableHistory) return;
+            ClearSelect();
+            if (_selectedZone == null) return;
+            Points.Where(o => o.ZoneId == _selectedZone.ID).ToList().ForEach(GetMoreInfo);
+            //MapCenterUser = _selectedZone.MovedLocations.GetCenter();
+        }
+
+        void GetMoreInfo(DISP_Car obj)
+        {
+            if (SelectedZone == null || obj == null) return;
+            obj.InZone = CalcLeavingZone.Instance.FillContains(obj.Location, SelectedZone.MovedLocations);
+            //obj.Adress = GeoAdress.Instance.GetAdress(obj.Location);
+        }
+
+        private void ClearSelect()
+        {
+            ZoneSelect.ToList().ForEach(x => x.IsSelected = false);
+            Points.ToList().ForEach(x => x.InZone = true);
+            //OnPropertyChanged("IsCarZoneCanLink");
+            //OnPropertyChanged("IsCarZoneCanUnLink");
+        }
+
         public DateTime StartDate
         {
             get { return _startDate; }
@@ -771,6 +824,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 if (value.Location != null)
                     MapCenter = MapCenterUser = value.Location;
                 _position.PropertyChanged += PositionOnPropertyChanged;
+                ChangeCarSelected();
             }
         }
 
@@ -1002,7 +1056,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             ZoneSelect.Clear();
             if (car != null)
             {
-                Position = EnableHistory ? new DISP_Car() : CarSelector.SelectedCar;
+                Position = EnableHistory ? new DISP_Car {ZoneId = CarSelector.SelectedCar.ZoneId} : CarSelector.SelectedCar;
                 Position.Car = new SCarModel()
                 {
                     CarNumber = car.Car.CarNumber,
@@ -1012,9 +1066,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                     SelectedDevice = car.Car.CarNumber;
                 //TODO Раскоментировать и заменить после привязки машин к зонам 
                 //var zone = _zoneHandler.Zones.FirstOrDefault(o => o.ID == car.ZoneId);
-                var zone = _zoneHandler.Zones.FirstOrDefault(o => o.ID == 1);//car.ZoneId);
-                if (zone == null) return;
-                ZoneSelect.Add(zone);
             }
             else
                 SelectedDevice = "";
@@ -1074,8 +1125,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         void Instance_DayRefreshed(DateTime day, List<CarStateModel> data)
         {
             BuildHistoryRow(data, day);
-
-            CacheRoute(string.Format("[{0}]-{1}-{2}-{3}", CarSelector.SelectedCar.ID, day.Day, day.Month, day.Year), data);
+            if (CarSelector.SelectedCar != null)
+                CacheRoute(string.Format("[{0}]-{1}-{2}-{3}", CarSelector.SelectedCar.ID, day.Day, day.Month, day.Year), data);
             _lastLoadedDate = day;
             LoadedText = "Обновляю " + day.ToString("dd.MM.yy");
         }
@@ -1171,9 +1222,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                             first = item;
                         }
                         RouteOpacited.Add(new MovedLocation(loc)
-                            {
-                                Dates = new DateTime(item.yy, item.Mnth, item.dd, item.hh, item.mm, item.ss)
-                            });
+                        {
+                            Dates = new DateTime(item.yy, item.Mnth, item.dd, item.hh, item.mm, item.ss)
+                        });
 
                     }
                     var last = DayStates.LastOrDefault();
@@ -1252,7 +1303,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                     var cr = JsonConvert.DeserializeObject<List<CarStateModel>>(reader.ReadToEnd());
                     if (cr == null) return;
                     BuildHistoryRow(cr, date);
-                    
+
                 }
             }
             catch { }
@@ -1260,7 +1311,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         private void BuildHistoryRow(List<CarStateModel> data, DateTime date)
         {
-            var r = new LoadedHistoryRows {Date = date, Data = data};
+            var r = new LoadedHistoryRows { Date = date, Data = data };
             var slowTask = new Task(delegate
             {
                 try
@@ -1277,7 +1328,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 if (!data.Any()) return;
                 try
                 {
-                    r.MiddleSpeed = data.Sum(p => p.Spd)/10/data.Count();
+                    r.MiddleSpeed = data.Sum(p => p.Spd) / 10 / data.Count();
                     var moving = data.Where(p => p.Spd > 10).ToList();
                     var hStart = moving.Min(p => p.hh);
                     var minStart = moving.Where(p => p.hh == hStart).Min(p => p.mm);
@@ -1650,7 +1701,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 if (!value || AccHistory == null || AccHistory.Data.Count == 0) return;
                 Iswaiting = true;
                 var el = AccHistory.Data.FirstOrDefault();
-                _maxValue = el != null ? Math.Max(Math.Abs(el.MaxX)/100.0m, 2) : 2;
+                _maxValue = el != null ? Math.Max(Math.Abs(el.MaxX) / 100.0m, 2) : 2;
                 _minValue = 0;
                 _leftValue = .5m;
                 _rightValue = 1;
@@ -1671,7 +1722,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 if (!value || AccHistory == null || AccHistory.Data.Count == 0) return;
                 Iswaiting = true;
                 var el = AccHistory.Data.FirstOrDefault();
-                _maxValue = el != null ? Math.Max(Math.Max(Math.Abs(el.MaxY), Math.Abs(el.MaxZ))/100.0m, 2) : 2;
+                _maxValue = el != null ? Math.Max(Math.Max(Math.Abs(el.MaxY), Math.Abs(el.MaxZ)) / 100.0m, 2) : 2;
                 _minValue = 0;
                 _leftValue = .5m;
                 _rightValue = 1;
@@ -1759,23 +1810,23 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             var pos = _routesModel.TimeRoute.OrderBy(o => o.Date).LastOrDefault(f => f.Date <= time);
             if (!EnableHistory || Position == null) return;
             _dt = pos != null && _dt < pos.Date ? pos.Date : time;
-            var detail =pos != null ? DayStates.FirstOrDefault(o => o.Date.Equals(pos.Date)): new CarStateModel();
+            var detail = pos != null ? DayStates.FirstOrDefault(o => o.Date.Equals(pos.Date)) : new CarStateModel();
             if (detail != null)
             {
                 Position.Data = new SCarData
                 {
                     Navigation = new SNaviData
-                        {
-                            Sattelites = detail.St,
-                            Speed = detail.Spd,
-                            Latitude = detail.Lt,
-                            Longitude = detail.Ln
-                        },
+                    {
+                        Sattelites = detail.St,
+                        Speed = detail.Spd,
+                        Latitude = detail.Lt,
+                        Longitude = detail.Ln
+                    },
                     DateUpdate = new DateTimeDataModel(_dt)
                 };
                 Position.HistoryDetailView = true;
             }
-            if(pos != null)
+            if (pos != null)
                 MapCenter = MapCenterUser = pos.Point;
         }
 
