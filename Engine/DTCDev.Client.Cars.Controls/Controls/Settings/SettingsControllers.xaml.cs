@@ -100,11 +100,18 @@ namespace DTCDev.Client.Cars.Controls.Controls.Settings
                 }
                 else
                 {
-                    txtLine.Text = "Линия " + (_selectedCar.FuelDataPosition + 1).ToString();
-                    int currValue = _selectedCar.Data.Sensors[_selectedCar.FuelDataPosition];
-                    txtValue.Text = currValue.ToString();
-                    imgChange.Opacity = 1;
-                    txtCalculated.Text = ((int)((decimal)(currValue - _selectedCar.StartFuelValue) / (_selectedCar.StepPerLiter))).ToString() + " л.";
+                    try
+                    {
+                        txtLine.Text = "Линия " + (_selectedCar.FuelDataPosition + 1).ToString();
+                        int currValue = _selectedCar.Data.Sensors[_selectedCar.FuelDataPosition];
+                        txtValue.Text = currValue.ToString();
+                        imgChange.Opacity = 1;
+                        txtCalculated.Text = ((int)((decimal)(currValue - _selectedCar.StartFuelValue) / (_selectedCar.StepPerLiter))).ToString() + " л.";
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Обнаружена ошибка - нет данных по линии. Обратитесь к разработчикам.");
+                    }
                 }
             }
         }

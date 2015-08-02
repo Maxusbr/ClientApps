@@ -53,6 +53,7 @@ namespace M2B_Cars
             LoginHandler.Instance.LoginComplete += Instance_LoginComplete;
             CarSelector.OnCarChanged += CarSelector_OnCarChanged;
             CarSelector.ViewCarDetails += CarSelector_ViewCarDetails;
+            DTCDev.Client.Cars.Manager.Data.CarDataStorage.Instance.Update();
             FolderPrecreate();
 
             if (DTCDev.Client.Cars.Engine.Handlers.LoginHandler.Instance.IsParamsAdded == false)
