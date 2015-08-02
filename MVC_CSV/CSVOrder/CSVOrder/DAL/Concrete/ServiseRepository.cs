@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using CSVOrder.DAL.Abstract;
+using CSVOrder.Models.Abstract;
 using CSVOrder.Models.Service;
 using CSVOrder.Models.User;
 
@@ -16,6 +17,13 @@ namespace CSVOrder.DAL.Concrete
         private readonly List<PostModel> _posts = new List<PostModel>();
         private readonly List<DepartmentModel> _departaments = new List<DepartmentModel>();
         private readonly List<WorksInfoDataModel> _works = new List<WorksInfoDataModel>();
+
+        private readonly List<KVPBase> _marks = new List<KVPBase>();
+        private readonly List<KVPBase> _models = new List<KVPBase>();
+        private readonly List<KVPBase> _engineTypes = new List<KVPBase>();
+        private readonly List<KVPBase> _engineVolumes = new List<KVPBase>();
+        private readonly List<KVPBase> _bodyTypes = new List<KVPBase>();
+        private readonly List<KVPBase> _transTypes = new List<KVPBase>();
 
         public ServiseRepository()
         {
@@ -63,9 +71,50 @@ namespace CSVOrder.DAL.Concrete
             get { return _works; }
         }
 
+
+        public List<KVPBase> Marks
+        {
+            get { return _marks; }
+        }
+
+        public List<KVPBase> Models
+        {
+            get { return _models; }
+        }
+
+        public List<KVPBase> BodyTypes
+        {
+            get { return _bodyTypes; }
+        }
+
+        public List<KVPBase> EngineTypes
+        {
+            get { return _engineTypes; }
+        }
+
+        public List<KVPBase> EngineVolumes
+        {
+            get { return _engineVolumes; }
+        }
+
+        public List<KVPBase> TransTypes
+        {
+            get { return _transTypes; }
+        }
+
         public void SaveOrder(CarOrderPostModel order)
         {
             //TODO Save full model to db
+            var curentorder = _orders.FirstOrDefault(o => o.OrderNumer == order.OrderNumer);
+            if (curentorder != null) return;
+            if (!_users.Contains(order.User))
+            {
+                order.User.Id = _users.Max(o => o.Id) + 1;
+                _users.Add(order.User);
+                order.UserId = order.User.Id;
+            }
+            order.OrderNumer = _orders.Max(o => o.OrderNumer) + 1;
+            _orders.Add(order);
         }
 
         public OrderModel DeleteOrder(int orderId)
@@ -102,10 +151,8 @@ namespace CSVOrder.DAL.Concrete
         {
             var order = _orders.FirstOrDefault(o => o.OrderNumer == orderId);
             //TODO get post and user info
-
-            if (order == null)
-                return new CarOrderPostModel();
-            var fullorder = new CarOrderPostModel(order) { User = _users.FirstOrDefault(o => o.Id == order.UserId) };
+            var fullorder = order == null ? new CarOrderPostModel() : 
+                new CarOrderPostModel(order) { User = _users.FirstOrDefault(o => o.Id == order.UserId) };
             return fullorder;
         }
 
@@ -155,6 +202,17 @@ namespace CSVOrder.DAL.Concrete
             // Значение NavUrl = Id для работы и пустое для подгруппы
             _works.Add(new WorksInfoDataModel { Name = "Двигатель", Id = 3, IdParent = 1, NavUrl = "3", Nh = 15});
             _works.Add(new WorksInfoDataModel { Name = "КПП", Id = 4, IdParent = 2, NavUrl = "4", Nh = 5 });
+
+            for (var i = 1; i < 5; i++)
+            {
+                Marks.Add(new KVPBase{id = i, Name = "Марка " + i});
+                Models.Add(new KVPBase { id = i, Name = "Модель " + i });
+                BodyTypes.Add(new KVPBase { id = i, Name = "Тип кузова " + i });
+                EngineTypes.Add(new KVPBase { id = i, Name = "Тип двигателя " + i });
+                EngineVolumes.Add(new KVPBase { id = i, Name = string.Format("{0} л", i/2.0) });
+            }
+            TransTypes.Add(new KVPBase { id = 1, Name = "автомат"});            
+            TransTypes.Add(new KVPBase { id = 2, Name = "механика"});        
         }
 
 
@@ -163,6 +221,40 @@ namespace CSVOrder.DAL.Concrete
             return new CarViewModel(carNumber);
         }
 
+        public IEnumerable<KVPBase> GetMarks()
+        {
+            //TODO Get Models
+            return Marks;
+        }
 
+        public IEnumerable<KVPBase> GetModels(int indx = 0)
+        {
+            //TODO Get Models
+            return Models;
+        }
+
+        public IEnumerable<KVPBase> GetBodyTypes(int indx = 0)
+        {
+            //TODO Get BodyTypes
+            return BodyTypes;
+        }
+
+        public IEnumerable<KVPBase> GetEngineTypes(int indx = 0)
+        {
+            //TODO Get EngineTypes
+            return EngineTypes;
+        }
+
+        public IEnumerable<KVPBase> GetEngineVolumes(int indx = 0)
+        {
+            //TODO Get EngineVolumes
+            return EngineVolumes;
+        }
+
+        public IEnumerable<KVPBase> GetTransTypes(int indx = 0)
+        {
+            //TODO Get TransTypes
+            return TransTypes;
+        }
     }
 }

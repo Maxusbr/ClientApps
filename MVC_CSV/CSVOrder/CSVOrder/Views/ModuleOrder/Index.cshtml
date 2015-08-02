@@ -102,6 +102,7 @@
                             orderid = order.OrderNumer;
                             tool = string.Format("{0} ({1})", order.User.Nm, order.Car.Number);
                             stile = "active success";
+                            stile += order.InUse ? " inuse" : "";
                         }
                         <td data-postid="@item.Id" data-time="@el" class="@stile" data-orderid="@orderid" title="@tool"></td>
                     }

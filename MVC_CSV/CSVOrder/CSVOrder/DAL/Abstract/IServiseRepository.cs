@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using CSVOrder.Models.Abstract;
 using CSVOrder.Models.Service;
 using CSVOrder.Models.User;
 
@@ -26,6 +28,18 @@ namespace CSVOrder.DAL.Abstract
 
         CarViewModel GetCar(string carNumber);
 
-        
+        List<KVPBase> Marks { get; }
+        List<KVPBase> Models { get; }
+        List<KVPBase> BodyTypes { get; }
+        List<KVPBase> EngineTypes { get; }
+        List<KVPBase> EngineVolumes { get; }
+        List<KVPBase> TransTypes { get; }
+
+        IEnumerable<KVPBase> GetMarks();
+        IEnumerable<KVPBase> GetModels(int indx);
+        IEnumerable<KVPBase> GetBodyTypes(int indx);
+        IEnumerable<KVPBase> GetEngineTypes(int indx);
+        IEnumerable<KVPBase> GetEngineVolumes(int indx);
+        IEnumerable<KVPBase> GetTransTypes(int indx);
     }
 }

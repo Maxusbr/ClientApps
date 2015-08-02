@@ -51,7 +51,7 @@ namespace CSVOrder.Controllers
         {
             var dt = DateTime.Now;
             DateTime.TryParse(time, out dt);
-            var order = new CarOrderPostModel { DateWork = dt, DtCreate = DateTime.Now };
+            var order = new CarOrderPostModel { DateWork = dt, DtCreate = DateTime.Now, PostId = indx};
             ViewBag.Title = "Новая заявка";
             return View("OrderView", order);
         }
@@ -88,6 +88,7 @@ namespace CSVOrder.Controllers
                     if(work != null)
                         model.SelectedWorks.Add(work);
             }
+            ModelUpdate(model);
             if (ModelState.IsValid)
             {
                 _storage.SaveOrder(model);
@@ -95,6 +96,11 @@ namespace CSVOrder.Controllers
             }
             else
                 return View("OrderView", model);
+        }
+
+        private void ModelUpdate(CarOrderPostModel model)
+        {
+            model.Car.Update(_storage);
         }
     }
 }
