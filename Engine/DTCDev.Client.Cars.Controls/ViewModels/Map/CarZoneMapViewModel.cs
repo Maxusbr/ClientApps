@@ -114,7 +114,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Map
         {
             ClearSelect();
             if (_selectedCar == null) return;
-            var zone = Zones.FirstOrDefault(o => o.ID == _selectedCar.ZoneId);
+            var zone = Zones.FirstOrDefault(o => o.ID == _selectedCar.ZoneData.ZoneId);
             if (zone != null)
                 zone.IsSelected = true;
         }
@@ -123,7 +123,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Map
         {
             ClearSelect();
             if (_selectedZone == null) return;
-            Cars.Where(o => o.ZoneId == _selectedZone.ID).ToList().ForEach(x => x.IsSelected = true);
+            Cars.Where(o => o.ZoneData.ZoneId == _selectedZone.ID).ToList().ForEach(x => x.IsSelected = true);
             MapCenterUser = _selectedZone.MovedLocations.GetCenter();
         }
 
@@ -163,7 +163,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Map
 
         public bool IsCarZoneCanUnLink
         {
-            get { return SelectedCar != null && SelectedCar.ZoneId != -1; }
+            get { return SelectedCar != null && SelectedCar.ZoneData.ZoneId != -1; }
         }
 
         public bool IsEnabledSaveBtn
@@ -182,7 +182,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Map
             if(SelectedZone == null || SelectedCar == null) return;
             SelectedCar.IsSelected = true;
             var indx = Cars.IndexOf(SelectedCar);
-            Cars[indx].ZoneId = SelectedCar.ZoneId = SelectedZone.ID;
+            Cars[indx].ZoneData.ZoneId = SelectedCar.ZoneData.ZoneId = SelectedZone.ID;
             Cars[indx].IsChanged = true;
             OnPropertyChanged("IsEnabledSaveBtn");
         }
@@ -198,7 +198,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Map
             if(SelectedCar == null) return;
             SelectedCar.IsSelected = false;
             var indx = Cars.IndexOf(SelectedCar);
-            Cars[indx].ZoneId = SelectedCar.ZoneId = -1;
+            Cars[indx].ZoneData.ZoneId = SelectedCar.ZoneData.ZoneId = -1;
             Cars[indx].IsChanged = true;
             OnPropertyChanged("IsEnabledSaveBtn");
         }

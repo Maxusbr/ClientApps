@@ -35,24 +35,22 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Map
             if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(new System.Windows.DependencyObject()))
             {
                 this.SelectedZone = Zones[0];
-                Points.Add(
-                new DISP_Car
-                {
-                    Name = "Obj-1",
-                    Location = new Location(55.758, 37.76)
-                });
-                Points.Add(
-                    new DISP_Car
-                    {
-                        Name = "Obj-2",
-                        Location = new Location(55.75, 37.5)
-                    });
-                Points.Add(
-                    new DISP_Car
-                    {
-                        Name = "Obj-3",
-                        Location = new Location(55.8, 37.625)
-                    });
+
+                DISP_Car car = new DISP_Car();
+                car.Navigation.LocationPoint = new Location(55.758, 37.76);
+                car.Name = "obj-1";
+                Points.Add(car);
+
+                DISP_Car car1 = new DISP_Car();
+                car1.Navigation.LocationPoint = new Location(55.75, 37.5);
+                car1.Name = "obj-2";
+                Points.Add(car1);
+
+                DISP_Car car2 = new DISP_Car();
+                car2.Navigation.LocationPoint = new Location(55.8, 37.625);
+                car2.Name = "obj-3";
+                Points.Add(car2);
+
                 Zones[0].AddLocation(new Location(55.758, 37.76), false);
                 Zones[0].AddLocation(new Location(55.75, 37.5), false);
                 Zones[0].AddLocation(new Location(55.8, 37.625), false);
@@ -126,13 +124,13 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Map
                     if (this.selectedMapObject != null)
                     {
                         this.selectedMapObject.PropertyChanged -= selectedMapObject_PropertyChanged;
-                        this.selectedMapObject.InZone = true;
+                        this.selectedMapObject.ZoneData.InZone = true;
                     }
 
                     this.selectedMapObject = value;
                     if (value != null)
                     {
-                        MapCenter = MapCenterUser = this.selectedMapObject.Location;
+                        MapCenter = MapCenterUser = this.selectedMapObject.Navigation.LocationPoint;
                         this.selectedMapObject.PropertyChanged += selectedMapObject_PropertyChanged;
                         if (SelectedZone != null)
                             GetMoreInfo(this.selectedMapObject);
@@ -145,8 +143,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Map
 
         void GetMoreInfo(DISP_Car obj)
         {
-            obj.InZone = CalcLeavingZone.Instance.FillContains(this.selectedMapObject.Location, SelectedZone.MovedLocations);
-            obj.Adress = GeoAdress.Instance.GetAdress(obj.Location);
+            obj.ZoneData.InZone = CalcLeavingZone.Instance.FillContains(this.selectedMapObject.Navigation.LocationPoint, SelectedZone.MovedLocations);
+            obj.Adress = GeoAdress.Instance.GetAdress(obj.Navigation.LocationPoint);
         }
 
         void selectedMapObject_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -156,7 +154,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Map
                 DISP_Car obj = sender as DISP_Car;
                 if (obj != null)
                 {
-                    MapCenter = MapCenterUser = obj.Location;
+                    MapCenter = MapCenterUser = obj.Navigation.LocationPoint;
                     if (SelectedZone != null)
                         GetMoreInfo(this.selectedMapObject);
                 }

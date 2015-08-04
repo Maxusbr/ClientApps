@@ -65,6 +65,8 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
                 = brd6.Width
                 = days * 1440;
             stkDates.Children.Clear();
+            stkFuelTakesTime.Children.Clear();
+            stkFuelTime.Children.Clear();
             DateTime dt = vm.DateStart;
             while (dt <= vm.DateStop)
             {
@@ -78,7 +80,16 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
                     TextBlock txt1 = new TextBlock();
                     txt1.Text = i.ToString() + ":00";
                     txt1.Width = 60;
+                    txt1.FontSize = 11;
                     stkDates.Children.Add(txt1);
+                    Border brdr1 = new Border();
+                    Border brdr2 = new Border();
+                    brdr1.Width = brdr2.Width = 1;
+                    brdr1.Height = brdr2.Height = 128;
+                    brdr1.Background = brdr2.Background = new SolidColorBrush(Colors.Orange);
+                    brdr1.Margin = brdr2.Margin = new Thickness(0, 0, 59, 0);
+                    stkFuelTakesTime.Children.Add(brdr1);
+                    stkFuelTime.Children.Add(brdr2);
                 }
                 dt += TimeSpan.FromDays(1);
             }

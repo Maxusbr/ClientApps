@@ -98,7 +98,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Car
             if (!e.PropertyName.Equals("Location")) return;
             var car = sender as DISP_Car;
             if (car == null) return;
-            var zone = _zoneHandler.Zones.FirstOrDefault(o => o.ID == car.ZoneId);
+            var zone = _zoneHandler.Zones.FirstOrDefault(o => o.ID == car.ZoneData.ZoneId);
             if (zone == null) return;
             MonitorCarInZone(car, zone);
 
@@ -107,7 +107,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Car
         private readonly List<DISP_Car> _inErrorCars = new List<DISP_Car>();
         private void MonitorCarInZone(DISP_Car car, VmPolyline zone)
         {
-            var error = CalcLeavingZone.Instance.FillContains(car.Location, zone.MovedLocations);
+            var error = CalcLeavingZone.Instance.FillContains(car.Navigation.LocationPoint, zone.MovedLocations);
             var indx = _inErrorCars.IndexOf(car);
             if (indx < 0)
             {

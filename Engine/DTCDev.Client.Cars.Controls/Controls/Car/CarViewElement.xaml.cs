@@ -146,17 +146,17 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
 
         private void DisplayFuel(DISP_Car car)
         {
-            if (car.FuelDataPosition < 0)
+            if (car.FuelData.FuelDataPosition < 0)
             {
                 grdFuel.Visibility = Visibility.Collapsed;
             }
             else
             {
                 grdFuel.Visibility = Visibility.Visible;
-                if (car.FuelLevelValue < 1000)
-                    txtFuel.Text = car.FuelLevelValue.ToString() + " л";
+                if (car.FuelData.FuelLevelValue < 1000)
+                    txtFuel.Text = car.FuelData.FuelLevelValue.ToString() + " л";
                 else
-                    txtFuel.Text = car.FuelLevelValue.ToString();
+                    txtFuel.Text = car.FuelData.FuelLevelValue.ToString();
             }
         }
 

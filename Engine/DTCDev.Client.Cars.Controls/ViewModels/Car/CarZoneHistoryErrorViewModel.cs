@@ -81,7 +81,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Car
         void CarZoneChanged()
         {
             if (_selectedCar != null)
-                _zone = _zoneHandler.Zones.FirstOrDefault(o => o.ID == _selectedCar.ZoneId);
+                _zone = _zoneHandler.Zones.FirstOrDefault(o => o.ID == _selectedCar.ZoneData.ZoneId);
         }
        
 

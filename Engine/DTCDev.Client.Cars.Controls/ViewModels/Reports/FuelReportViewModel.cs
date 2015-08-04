@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 
 namespace DTCDev.Client.Cars.Controls.ViewModels.Reports
 {
@@ -21,6 +22,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Reports
 
         void Instance_FuelReportLoaded(object sender, EventArgs e)
         {
+            Vaiting = false;
             Result = ReportsHandler.Instance.Fuel;
             if (FuelLoaded != null)
                 FuelLoaded(this, new EventArgs());
@@ -41,6 +43,18 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Reports
             {
                 _dateStart = value;
                 this.OnPropertyChanged("DateStart");
+            }
+        }
+
+        private bool _vaiting = false;
+
+        public bool Vaiting
+        {
+            get { return _vaiting; }
+            set
+            {
+                _vaiting = value;
+                this.OnPropertyChanged("Vaiting");
             }
         }
 
@@ -93,6 +107,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Reports
 
         private void StartLoadData()
         {
+            Vaiting = true;
             if (CarSelector.SelectedCar == null)
                 return;
             CarNumber = CarSelector.SelectedCar.Car.CarNumber;
@@ -110,11 +125,18 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Reports
 
         private void ExportData()
         {
-            var s = new ExportToExcel<ReportFuelModel.ItemModel>
+            try
             {
-                DataToPrint = Result.Report
-            };
-            s.GenerateReport(GetHeader());
+                var s = new ExportToExcel<ReportFuelModel.ItemModel>
+                {
+                    DataToPrint = Result.Report
+                };
+                s.GenerateReport(GetHeader());
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка сохранения данных, попробуйте повторить позднее");
+            }
         }
 
         private object[] GetHeader()

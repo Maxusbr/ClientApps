@@ -46,15 +46,34 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
                 Update();
                 if (value == null)
                     return;
-                if(value.Navigation.Latitude != 0 && value.Navigation.Longitude != 0 )
-                    Location = new Location(value.Navigation.Latitude / 10000.0d, value.Navigation.Longitude / 10000.0d);
-                Current_Speed = value.Navigation.Speed / 10.0;
-                CalculateFuelData();
+                if (value.Navigation.Latitude != 0 && value.Navigation.Longitude != 0)
+                {
+                    Navigation.LocationPoint = new Location(value.Navigation.Latitude / 10000.0d, value.Navigation.Longitude / 10000.0d);
+                    Navigation.DateNavigation = Data.DateUpdate.ToString();
+                    Navigation.DateLastUpdate = Data.DateUpdate.ToDateTime();
+                    Navigation.Angle = Data.Navigation.Speed / 10 - 30;
+                    Navigation.CountSatelite = Data.Navigation.Sattelites.ToString();
+                }
+                Navigation.Current_Speed = value.Navigation.Speed / 10.0;
+                FuelData.CalculateFuelData(value);
             }
+        }
+
+        private NavigationData _navigation = new NavigationData();
+        
+        /// <summary>
+        /// Данные о навигации автомобиля
+        /// </summary>
+        public NavigationData Navigation
+        {
+            get { return _navigation; }
         }
 
         private DevicePresenter _device = new DevicePresenter();
 
+        /// <summary>
+        /// Класс обработки данных о линиях устройства
+        /// </summary>
         public DevicePresenter Device
         {
             get { return _device; }
@@ -66,10 +85,24 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
         }
 
         private DriverModel _driver;
+
+        /// <summary>
+        /// Водитель автомобиля
+        /// </summary>
         public DriverModel Driver
         {
             get { return _driver; }
             set { _driver = value; }
+        }
+
+        private ZoneModel _zoneData = new ZoneModel();
+
+        /// <summary>
+        /// Данные для работы с зонами автомобиля
+        /// </summary>
+        public ZoneModel ZoneData
+        {
+            get { return _zoneData; }
         }
 
         bool _isChanged = false;
@@ -86,22 +119,6 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
             }
         }
 
-        private int _zoneId = -1;
-        /// <summary>
-        /// принадлежность автомобиля к зоне
-        /// </summary>
-        public int ZoneId
-        {
-            get { return _zoneId; }
-            set
-            {
-                if (_zoneId != value)
-                {
-                    _zoneId = value;
-                    OnPropertyChanged("ZoneId");
-                }
-            }
-        }
 
         private string id;
         /// <summary>
@@ -137,65 +154,10 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
             }
         }
 
-        private Location location;
-        /// <summary>
-        /// Текущее местоположение автомобиля
-        /// </summary>
-        public Location Location
-        {
-            get { return location; }
-            set
-            {
-                if (location == value) return;
-                location = value;
-                OnPropertyChanged("Location");
-                if (location.Latitude > 0 && location.Longitude > 0 && VisOnMap == Visibility.Collapsed)
-                    VisOnMap = Visibility.Visible;
-            }
-        }
 
-        /// <summary>
-        /// Строка с координатами автомобиля
-        /// </summary>
-        public string strLocation
-        {
-            get
-            {
-                return Location != null ? string.Format("{0}:{1}", Math.Ceiling(Location.Latitude), Math.Ceiling(Location.Longitude)) : "0:0";
-            }
-        }
 
-        private double current_speed;
-        /// <summary>
-        /// Текущая скорость автомобиля
-        /// </summary>
-        public double Current_Speed
-        {
-            get { return current_speed; }
-            set
-            {
-                if (current_speed != value)
-                {
-                    current_speed = value;
-                    OnPropertyChanged("Current_Speed");
-                    OnPropertyChanged("strSpeed");
-                }
-            }
-        }
 
-        private bool inzone = true;
-        /// <summary>
-        /// Находится ли автомобиль в зоне
-        /// </summary>
-        public bool InZone
-        {
-            get { return inzone; }
-            set
-            {
-                inzone = value;
-                OnPropertyChanged("InZone");
-            }
-        }
+
 
         private string adress = string.Empty;
         /// <summary>
@@ -229,70 +191,11 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
             }
         }
 
-        /// <summary>
-        /// Строка скорости автомобиля
-        /// </summary>
-        public string strSpeed
-        {
-            get
-            {
-                return string.Format("{0} km/h", Current_Speed);
-            }
-        }
 
-        private Visibility _visOnMap = Visibility.Collapsed;
-        /// <summary>
-        /// Отображается ли автомобиль на карте
-        /// </summary>
-        public Visibility VisOnMap
-        {
-            get { return _visOnMap; }
-            set
-            {
-                _visOnMap = value;
-                this.OnPropertyChanged("VisOnMap");
-            }
-        }
 
-        /// <summary>
-        /// Дата последнего обновления навигационных данных автомобиля
-        /// </summary>
-        public string DateNavigation
-        {
-            get
-            {
-                return Data != null ? Data.DateUpdate.ToString() : "";
-            }
-        }
 
-        public DateTime DateLastUpdate
-        {
-            get { return Data != null ? Data.DateUpdate.ToDateTime() : new DateTime(); }
-        }
 
-        public string HistroryTime
-        {
-            get
-            {
-                return string.Format("{0:00}:{1:00}:{2:00}", DateLastUpdate.Hour, DateLastUpdate.Minute, DateLastUpdate.Second);
-            }
-        }
 
-        /// <summary>
-        /// Текущий угол поворота автомобиля
-        /// </summary>
-        public double Angle
-        {
-            get { return Data != null ? Data.Navigation.Speed / 10 - 30 : -30; }
-        }
-
-        /// <summary>
-        /// Количество спутников
-        /// </summary>
-        public string CountSatelite
-        {
-            get { return Data != null ? Data.Navigation.Sattelites.ToString() : ""; }
-        }
 
         private string _vin = "";
 
@@ -394,86 +297,19 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
 
 
 
-        #region FuelData
-
-        private void CalculateFuelData()
-        {
-            if (_fuelDataPosition < 0)
-                return;
-            if (this.Data.Sensors.Count() - 1 < _fuelDataPosition)
-                return;
-            if (_stepPerLiter < 0.0001m)
-                return;
-            int vol = this.Data.Sensors[_fuelDataPosition];
-            vol = vol - _startValue;
-            decimal fuel = ((decimal)vol) / _stepPerLiter;
-            FuelLevelValue = (int)fuel;
-        }
+        private FuelDataModel _fuelData = new FuelDataModel();
 
         /// <summary>
-        /// уровень топлива в автомобиле
+        /// Данные о топливе в автомобиле
         /// </summary>
-        public string FuelLevel
+        public FuelDataModel FuelData
         {
-            get { return Data != null ? Data.FuelLevel.ToString("D") : ""; }
-        }
-
-        private int _fuelLevelValue = 0;
-        public int FuelLevelValue
-        {
-            get { return _fuelLevelValue; }
+            get { return _fuelData; }
             set
             {
-                _fuelLevelValue = value;
-                this.OnPropertyChanged("FuelLevelValue");
+                _fuelData = value;
             }
         }
-
-        private int _fuelLevelPercents = 0;
-        public int FuelLevelPercents
-        {
-            get { return _fuelLevelPercents; }
-            set
-            {
-                _fuelLevelPercents = value;
-                this.OnPropertyChanged("FuelLevelPercents");
-            }
-        }
-
-        private int _fuelDataPosition = -1;
-        public int FuelDataPosition
-        {
-            get { return _fuelDataPosition; }
-            set
-            {
-                _fuelDataPosition = value;
-                this.OnPropertyChanged("FuelDataPosition");
-            }
-        }
-
-        private int _startValue = 0;
-        public int StartFuelValue
-        {
-            get { return _startValue; }
-            set
-            {
-                _startValue = value;
-                this.OnPropertyChanged("StartFuelValue");
-            }
-        }
-
-        private decimal _stepPerLiter = 0;
-        public decimal StepPerLiter
-        {
-            get { return _stepPerLiter; }
-            set
-            {
-                _stepPerLiter = value;
-                this.OnPropertyChanged("StepPerLiter");
-            }
-        }
-
-        #endregion
 
 
 

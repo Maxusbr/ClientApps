@@ -54,8 +54,11 @@
     <Compile Include="AppLogic\DistanceCalculator.cs" />
     <Compile Include="AppLogic\GeoAdress.cs" />
     <Compile Include="AppLogic\PIDConverter.cs" />
+    <Compile Include="DisplayModels\CarModelHelper\FuelDataModel.cs" />
+    <Compile Include="DisplayModels\CarModelHelper\ZoneModel.cs" />
     <Compile Include="DisplayModels\DISP_Car.cs" />
     <Compile Include="DisplayModels\IndicatorPercentModel.cs" />
+    <Compile Include="DisplayModels\CarModelHelper\NavigationData.cs" />
     <Compile Include="DisplayModels\VmPolyline.cs" />
     <Compile Include="Handlers\Cars\CarBaseHandler.cs" />
     <Compile Include="Handlers\Cars\CarsHandler.cs" />

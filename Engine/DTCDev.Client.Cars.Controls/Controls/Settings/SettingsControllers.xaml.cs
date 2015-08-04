@@ -91,7 +91,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Settings
                 return;
             else
             {
-                if (_selectedCar.FuelDataPosition == -1)
+                if (_selectedCar.FuelData.FuelDataPosition == -1)
                 {
                     txtLine.Text = "Не указано";
                     txtValue.Text = "0000";
@@ -102,11 +102,11 @@ namespace DTCDev.Client.Cars.Controls.Controls.Settings
                 {
                     try
                     {
-                        txtLine.Text = "Линия " + (_selectedCar.FuelDataPosition + 1).ToString();
-                        int currValue = _selectedCar.Data.Sensors[_selectedCar.FuelDataPosition];
+                        txtLine.Text = "Линия " + (_selectedCar.FuelData.FuelDataPosition + 1).ToString();
+                        int currValue = _selectedCar.Data.Sensors[_selectedCar.FuelData.FuelDataPosition];
                         txtValue.Text = currValue.ToString();
                         imgChange.Opacity = 1;
-                        txtCalculated.Text = ((int)((decimal)(currValue - _selectedCar.StartFuelValue) / (_selectedCar.StepPerLiter))).ToString() + " л.";
+                        txtCalculated.Text = ((int)((decimal)(currValue - _selectedCar.FuelData.StartFuelValue) / (_selectedCar.FuelData.StepPerLiter))).ToString() + " л.";
                     }
                     catch
                     {
@@ -196,9 +196,9 @@ namespace DTCDev.Client.Cars.Controls.Controls.Settings
             if (imgChange.Opacity == 1)
             {
                 grdFuelSettings.Visibility = Visibility.Visible;
-                minValue = _selectedCar.StartFuelValue;
-                int currValue = _selectedCar.Data.Sensors[_selectedCar.FuelDataPosition];
-                currentFuel = (int)((decimal)(currValue - _selectedCar.StartFuelValue) / (_selectedCar.StepPerLiter));
+                minValue = _selectedCar.FuelData.StartFuelValue;
+                int currValue = _selectedCar.Data.Sensors[_selectedCar.FuelData.FuelDataPosition];
+                currentFuel = (int)((decimal)(currValue - _selectedCar.FuelData.StartFuelValue) / (_selectedCar.FuelData.StepPerLiter));
 
                 UpdateFuelSettings();
             }

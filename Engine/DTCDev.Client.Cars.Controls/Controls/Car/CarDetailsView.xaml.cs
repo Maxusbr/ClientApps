@@ -51,7 +51,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
 
         private void UpdateData()
         {
-            speedPresenter.SetData((int)_currentCar.Current_Speed);
+            speedPresenter.SetData((int)_currentCar.Navigation.Current_Speed);
             sattelitePresenter.SetData(_currentCar.Data.Navigation.Sattelites);
             if(_currentCar.OBD.Where(p=>p.Key=="0C").FirstOrDefault()!=null)
             {
@@ -59,8 +59,8 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
                 Int32.TryParse(_currentCar.OBD.Where(p => p.Key == "0C").First().Value, out vol);
                 engineRPMPresenter.SetData(vol);
             }
-            txtDateUpdate.Text = _currentCar.DateLastUpdate.ToString("dd.MM.yyyy");
-            txtTimeUpdate.Text = _currentCar.DateLastUpdate.ToString("HH:mm:ss");
+            txtDateUpdate.Text = _currentCar.Navigation.DateLastUpdate.ToString("dd.MM.yyyy");
+            txtTimeUpdate.Text = _currentCar.Navigation.DateLastUpdate.ToString("HH:mm:ss");
 
             var converter = new PIDConverter();
             stkOBD.Children.Clear();

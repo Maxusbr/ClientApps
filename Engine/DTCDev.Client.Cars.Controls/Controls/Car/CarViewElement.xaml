@@ -95,6 +95,6 @@
             <StackPanel x:Name="stkOBDSensors" Grid.Column="2" Orientation="Horizontal" Grid.ColumnSpan="3" Margin="0,0,222,0"/>
             <StackPanel x:Name="stkSensors" Orientation="Horizontal" Grid.Column="3" Grid.ColumnSpan="2"/>
         </Grid>
-        <Border Grid.ColumnSpan="7" BorderBrush="DarkRed" Visibility="{Binding CarExemplar.InZone, Converter={StaticResource InvertBoolToVisibilityConverter}, ElementName=control}" BorderThickness="1"/>
+        <Border Grid.ColumnSpan="7" BorderBrush="DarkRed" Visibility="{Binding CarExemplar.ZoneData.InZone, Converter={StaticResource InvertBoolToVisibilityConverter}, ElementName=control}" BorderThickness="1"/>
     </Grid>
 </UserControl>

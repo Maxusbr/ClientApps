@@ -172,9 +172,12 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
                         _cars.Add(new DISP_Car
                             {
                                 Car = item,
-                                FuelDataPosition = item.FuelPosition,
-                                StartFuelValue = item.StartValue,
-                                StepPerLiter = ((decimal)item.StepsPerLiter) / 100.0m
+                                FuelData = new FuelDataModel
+                                {
+                                    FuelDataPosition = item.FuelPosition,
+                                    StartFuelValue = item.StartValue,
+                                    StepPerLiter = ((decimal)item.StepsPerLiter) / 100.0m
+                                }
                             });
                     }
                     else

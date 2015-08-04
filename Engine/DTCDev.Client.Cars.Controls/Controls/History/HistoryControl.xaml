@@ -312,13 +312,13 @@
             </Setter>
         </Style>
         <Style x:Key="PointItemStyle" TargetType="{x:Type Map:MapItem}">
-            <Setter Property="Map:MapPanel.Location" Value="{Binding Location}"/>
+            <Setter Property="Map:MapPanel.Location" Value="{Binding Navigation.LocationPoint}"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="VerticalAlignment" Value="Bottom"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Map:MapItem}">
-                        <Canvas  Visibility="{Binding VisOnMap}">
+                        <Canvas  Visibility="{Binding Navigation.VisOnMap}">
                             <VisualStateManager.VisualStateGroups>
                                 <VisualStateGroup x:Name="CommonStates">
                                     <VisualState x:Name="Normal"/>

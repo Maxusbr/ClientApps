@@ -49,26 +49,24 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
             {
                 SelectedHistoryRow = new LoadedHistoryRows();
-                Position.Location =
+                Position.Navigation.LocationPoint =
                 MapCenter = MapCenterUser = new Location(55.75, 37.62);
-                Points.Add(
-                new DISP_Car
-                {
-                    Name = "Obj-1",
-                    Location = new Location(55.758, 37.76)
-                });
-                Points.Add(
-                    new DISP_Car
-                    {
-                        Name = "Obj-2",
-                        Location = new Location(55.75, 37.5)
-                    });
-                Points.Add(
-                    new DISP_Car
-                    {
-                        Name = "Obj-3",
-                        Location = new Location(55.8, 37.625)
-                    });
+
+                DISP_Car car = new DISP_Car();
+                car.Navigation.LocationPoint = new Location(55.758, 37.76);
+                car.Name = "obj-1";
+                Points.Add(car);
+
+                DISP_Car car1 = new DISP_Car();
+                car1.Navigation.LocationPoint = new Location(55.75, 37.5);
+                car1.Name = "obj-2";
+                Points.Add(car1);
+
+                DISP_Car car2 = new DISP_Car();
+                car2.Navigation.LocationPoint = new Location(55.8, 37.625);
+                car2.Name = "obj-3";
+                Points.Add(car2);
+
                 Position = Points[0];
                 Route.Add(new Location(55.75, 37.62, true));
                 Route.Add(new Location(55.73, 37.63));
@@ -234,7 +232,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                     FirstPoint = true
                 };
                 if (Position != null)
-                    Position.Location = prev;
+                    Position.Navigation.LocationPoint = prev;
                 foreach (var itemLoc in DayStates.OrderBy(o => o.Date))
                 {
                     if (!Iswaiting || AccHistory == null) break;
@@ -282,7 +280,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                     FirstPoint = true
                 };
                 if (Position != null)
-                    Position.Location = prev;
+                    Position.Navigation.LocationPoint = prev;
                 foreach (var itemLoc in DayStates.OrderBy(o => o.Date))
                 {
                     if (!Iswaiting || AccHistory == null) break;
@@ -428,16 +426,19 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 _enableHistory = value;
                 if (value && Position != null)
                 {
-                    Position = new DISP_Car
-                    {
-                        ZoneId = Position.ZoneId,
-                        Location = Position.Location,
-                        Car = new SCarModel()
-                        {
-                            CarNumber = Position.Car.CarNumber,
-                            Id = Position.Car.Id
-                        }
-                    };
+                    
+                    //TODO: чего здесь вообще происходит? )))))
+
+                    //Position = new DISP_Car
+                    //{
+                    //    ZoneId = Position.ZoneId,
+                    //    Location = Position.Navigation.Location,
+                    //    Car = new SCarModel()
+                    //    {
+                    //        CarNumber = Position.Car.CarNumber,
+                    //        Id = Position.Car.Id
+                    //    }
+                    //};
                 }
                 OnPropertyChanged("EnableHistory");
             }
@@ -490,13 +491,13 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                     if (_selectedMapObject != null)
                     {
                         _selectedMapObject.PropertyChanged -= selectedMapObject_PropertyChanged;
-                        _selectedMapObject.InZone = true;
+                        _selectedMapObject.ZoneData.InZone = true;
                     }
 
                     _selectedMapObject = value;
                     if (value != null)
                     {
-                        MapCenter = MapCenterUser = this._selectedMapObject.Location;
+                        MapCenter = MapCenterUser = this._selectedMapObject.Navigation.LocationPoint;
                         _selectedMapObject.PropertyChanged += selectedMapObject_PropertyChanged;
                         //if (SelectedZone != null)
                         //    GetMoreInfo(this._selectedMapObject);
@@ -513,7 +514,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             var obj = sender as DISP_Car;
             if (obj != null)
             {
-                MapCenter = MapCenterUser = obj.Location;
+                MapCenter = MapCenterUser = obj.Navigation.LocationPoint;
                 //if (SelectedZone != null)
                 //    GetMoreInfo(this.selectedMapObject);
             }
@@ -658,7 +659,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         {
             if (Position == null || !EnableHistory) return;
             ClearSelect();
-            var zone = _zoneHandler.Zones.FirstOrDefault(o => o.ID == Position.ZoneId);
+            var zone = _zoneHandler.Zones.FirstOrDefault(o => o.ID == Position.ZoneData.ZoneId);
             if (zone == null) return;
             if (!ZoneSelect.Contains(zone))
                 ZoneSelect.Add(zone);
@@ -672,21 +673,21 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             if (!EnableHistory) return;
             ClearSelect();
             if (_selectedZone == null) return;
-            Points.Where(o => o.ZoneId == _selectedZone.ID).ToList().ForEach(GetMoreInfo);
+            Points.Where(o => o.ZoneData.ZoneId == _selectedZone.ID).ToList().ForEach(GetMoreInfo);
             //MapCenterUser = _selectedZone.MovedLocations.GetCenter();
         }
 
         void GetMoreInfo(DISP_Car obj)
         {
             if (SelectedZone == null || obj == null) return;
-            obj.InZone = CalcLeavingZone.Instance.FillContains(obj.Location, SelectedZone.MovedLocations);
+            obj.ZoneData.InZone = CalcLeavingZone.Instance.FillContains(obj.Navigation.LocationPoint, SelectedZone.MovedLocations);
             //obj.Adress = GeoAdress.Instance.GetAdress(obj.Location);
         }
 
         private void ClearSelect()
         {
             ZoneSelect.ToList().ForEach(x => x.IsSelected = false);
-            Points.ToList().ForEach(x => x.InZone = true);
+            Points.ToList().ForEach(x => x.ZoneData.InZone = true);
             //OnPropertyChanged("IsCarZoneCanLink");
             //OnPropertyChanged("IsCarZoneCanUnLink");
         }
@@ -821,8 +822,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 this.OnPropertyChanged("Position");
                 if (value == null) return;
                 _position.IsSelected = true;
-                if (value.Location != null)
-                    MapCenter = MapCenterUser = value.Location;
+                if (value.Navigation.LocationPoint != null)
+                    MapCenter = MapCenterUser = value.Navigation.LocationPoint;
                 _position.PropertyChanged += PositionOnPropertyChanged;
                 ChangeCarSelected();
             }
@@ -831,7 +832,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         private void PositionOnPropertyChanged(object sender, PropertyChangedEventArgs arg)
         {
             if (arg.PropertyName.Equals("Location") && !EnableHistory)
-                MapCenter = MapCenterUser = Position.Location;
+                MapCenter = MapCenterUser = Position.Navigation.LocationPoint;
         }
 
         public bool UseAccelleration
@@ -1056,7 +1057,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             ZoneSelect.Clear();
             if (car != null)
             {
-                Position = EnableHistory ? new DISP_Car {ZoneId = CarSelector.SelectedCar.ZoneId} : CarSelector.SelectedCar;
+                //TODO: переписать. не билдится
+                //Position = EnableHistory ? new DISP_Car { ZoneData.ZoneId = CarSelector.SelectedCar.ZoneData.ZoneId } : CarSelector.SelectedCar;
                 Position.Car = new SCarModel()
                 {
                     CarNumber = car.Car.CarNumber,
@@ -1165,7 +1167,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 };
 
                 if (Position != null)
-                    Position.Location = prev;
+                    Position.Navigation.LocationPoint = prev;
 
                 double dist = 0;
                 var dc = new DistanceCalculator();
@@ -1510,7 +1512,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             {
                 CarNumber = _selectedDevice
             };
-            tempCar.Location = new Location(point.Ln / 10000.0, point.Lt / 10000.0);
+            tempCar.Navigation.LocationPoint = new Location(point.Ln / 10000.0, point.Lt / 10000.0);
             //tempCar. = DayStates[position];
             //Position = tempCar;
         }
@@ -1535,7 +1537,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             if (SelectedState == null)
                 return;
             MapCenterUser =
-            Position.Location = new Location(SelectedState.Lt / 10000.0, SelectedState.Ln / 10000.0);
+            Position.Navigation.LocationPoint = new Location(SelectedState.Lt / 10000.0, SelectedState.Ln / 10000.0);
         }
 
         #endregion
