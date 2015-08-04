@@ -15,137 +15,34 @@
         <Model:BoolToColorConverter x:Key="BoolToColorConverter"/>
 
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-
         <Style x:Key="PointItemStyle" TargetType="{x:Type Map:MapItem}">
-        	<Setter Property="Map:MapPanel.Location" Value="{Binding Navigation.CurrentLocation}"/>
-        	<Setter Property="HorizontalAlignment" Value="Left"/>
-        	<Setter Property="VerticalAlignment" Value="Bottom"/>
-        	<Setter Property="Template">
-        		<Setter.Value>
-        			<ControlTemplate TargetType="{x:Type Map:MapItem}">
+            <Setter Property="Map:MapPanel.Location" Value="{Binding Navigation.LocationPoint}"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Map:MapItem}">
                         <Canvas  Visibility="{Binding Navigation.VisOnMap}">
-        					<VisualStateManager.VisualStateGroups>
-        						<VisualStateGroup x:Name="CommonStates">
-        							<VisualState x:Name="Normal"/>
-        							<VisualState x:Name="Disabled"/>
-        							<VisualState x:Name="MouseOver"/>
-        						</VisualStateGroup>
-        						<VisualStateGroup x:Name="SelectionStates">
-        							<VisualState x:Name="Unselected"/>
-        							<VisualState x:Name="Selected">
-        								<Storyboard>
-        									<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Color)" Storyboard.TargetName="path">
-        										<EasingColorKeyFrame KeyTime="0" Value="White"/>
-        									</ColorAnimationUsingKeyFrames>
-        									<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path">
-        										<EasingColorKeyFrame KeyTime="0" Value="#FFCDCDCD"/>
-        									</ColorAnimationUsingKeyFrames>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="selectiongroup">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="canvas">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="textBlock">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        								</Storyboard>
-        							</VisualState>
-        							<VisualState x:Name="SelectedUnfocused">
-        								<Storyboard>
-        									<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Color)" Storyboard.TargetName="path">
-        										<EasingColorKeyFrame KeyTime="0" Value="White"/>
-        									</ColorAnimationUsingKeyFrames>
-        									<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path">
-        										<EasingColorKeyFrame KeyTime="0" Value="#FFD8D8D8"/>
-        									</ColorAnimationUsingKeyFrames>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="selectiongroup">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="canvas">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="textBlock">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        								</Storyboard>
-        							</VisualState>
-        						</VisualStateGroup>
-        					</VisualStateManager.VisualStateGroups>
-        					<Canvas x:Name="selectiongroup" Canvas.Left="-43" Canvas.Top="-41" Opacity="0" Height="86" Width="88" Visibility="Hidden">
-        						<Path Fill="#7F272727" Opacity="1" Margin="0" Height="Auto" Canvas.Left="43" Canvas.Top="41">
-        							<Path.Data>
-        								<EllipseGeometry RadiusX="55" RadiusY="55"/>
-        							</Path.Data>
-        						</Path>
-        						<Grid Opacity="0.2" Width="80" Margin="0" Height="1" Canvas.Left="3" Canvas.Top="40">
-        							<Path Data="M10,0L37,0" Fill="{x:Null}" Height="Auto" Stretch="Fill" Stroke="White" Margin="52,0,0,0"/>
-        							<Path Data="M10,0L37,0" Fill="{x:Null}" Height="Auto" Stretch="Fill" Stroke="White" Margin="0,0,52,0"/>
-        						</Grid>
-        						<Grid RenderTransformOrigin="0.5,0.5" Opacity="0.2" Width="80" Margin="0" Height="1" Canvas.Left="3" Canvas.Top="40">
-        							<Grid.RenderTransform>
-        								<TransformGroup>
-        									<ScaleTransform/>
-        									<SkewTransform/>
-        									<RotateTransform Angle="-60"/>
-        									<TranslateTransform/>
-        								</TransformGroup>
-        							</Grid.RenderTransform>
-        							<Path Data="M10,0L37,0" Fill="{x:Null}" Height="Auto" Stretch="Fill" Stroke="White" Margin="52,0,0,0"/>
-        							<Path Data="M10,0L37,0" Fill="{x:Null}" Height="Auto" Stretch="Fill" Stroke="White" Margin="0,0,52,0"/>
-        						</Grid>
-        						<Grid RenderTransformOrigin="0.5,0.5" Opacity="0.2" Width="80" Margin="0" Height="1" Canvas.Left="3" Canvas.Top="40">
-        							<Grid.RenderTransform>
-        								<TransformGroup>
-        									<ScaleTransform/>
-        									<SkewTransform/>
-        									<RotateTransform Angle="60"/>
-        									<TranslateTransform/>
-        								</TransformGroup>
-        							</Grid.RenderTransform>
-        							<Path Data="M10,0L37,0" Fill="{x:Null}" Height="Auto" Stretch="Fill" Stroke="White" Margin="52,0,0,0"/>
-        							<Path Data="M10,0L37,0" Fill="{x:Null}" Height="Auto" Stretch="Fill" Stroke="White" Margin="0,0,52,0"/>
-        						</Grid>
-        					</Canvas>
-        					<Path x:Name="path" StrokeThickness="2" Fill="Transparent" Stroke="{Binding InZone, Converter={StaticResource BoolToColorConverter}}" Visibility="Collapsed">
-        						<Path.Data>
-        							<EllipseGeometry RadiusX="8" RadiusY="8"/>
-        						</Path.Data>
-        					</Path>
-        					<Canvas x:Name="canvas" Height="101" Canvas.Left="-50" Canvas.Top="-50" Width="100" Opacity="0" Visibility="Hidden">
-        						<Grid Opacity="1" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Stretch" Margin="0" Height="Auto" Canvas.Left="28">
-        							<Rectangle x:Name="labelBackground" Fill="{x:Null}" Opacity="0.7"/>
-        							<TextBlock Margin="2,0,2,0" Text="{Binding Name}" FontSize="10.667" TextTrimming="CharacterEllipsis" Width="40" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
-        						</Grid>
-        						<Grid Opacity="1" RenderTransformOrigin="0.5,0.5" Height="Auto" Canvas.Top="30" HorizontalAlignment="Left">
-        							<Rectangle x:Name="labelBackground1" Fill="{x:Null}" Opacity="0.7"/>
-        							<TextBlock Margin="2,0,2,0" Text="{Binding strSpeed}" FontSize="10.667" TextTrimming="CharacterEllipsis" Width="40" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
-        						</Grid>
-        						<Grid Opacity="1" RenderTransformOrigin="0.5,0.5" Height="Auto" Canvas.Left="57" Canvas.Top="30">
-        							<Rectangle x:Name="labelBackground2" Fill="{x:Null}" Opacity="0.7"/>
-        							<TextBlock Margin="2,0,2,0" Text="{Binding strLocation}" FontSize="10.667" TextTrimming="CharacterEllipsis" Width="40" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
-        						</Grid>
-        						<Grid Opacity="1" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Stretch" Margin="0" Height="Auto" Canvas.Left="28" Canvas.Top="82">
-        							<Rectangle x:Name="labelBackground3" Fill="{x:Null}" Opacity="0.7"/>
-        							<TextBlock Margin="2,0,2,0" Text="{Binding InZone}" FontSize="10.667" TextTrimming="CharacterEllipsis" Width="40" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
-        						</Grid>
-        						<Grid Opacity="1" RenderTransformOrigin="0.5,0.5" Height="Auto" Canvas.Top="53">
-        							<Rectangle x:Name="labelBackground4" Fill="{x:Null}" Opacity="0.7"/>
-        							<TextBlock Margin="2,0,2,0" Text="{Binding Name}" FontSize="10.667" TextTrimming="CharacterEllipsis" Width="40" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
-        						</Grid>
-        						<Grid Opacity="1" RenderTransformOrigin="0.5,0.5" Height="Auto" Canvas.Left="57" Canvas.Top="53" Width="Auto">
-        							<Rectangle x:Name="labelBackground5" Fill="{x:Null}" Opacity="0.7"/>
-        							<TextBlock Margin="2,0,2,0" Text="{Binding Name}" FontSize="10.667" TextTrimming="CharacterEllipsis" Width="40" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
-        						</Grid>
-        					</Canvas>
-        					<TextBlock x:Name="textBlock" TextWrapping="Wrap" Text="{Binding Adress}" Canvas.Left="-50" VerticalAlignment="Center" Canvas.Top="50" Width="100" TextAlignment="Center" Visibility="Hidden"/>
-                            <local:MapViewElement Canvas.Left="-60" Canvas.Top="-60" Visibility="{Binding VisOnMap}"/>
-        				</Canvas>
-        			</ControlTemplate>
-        		</Setter.Value>
-        	</Setter>
-        	<EventSetter Event="UIElement.TouchDown" Handler="MapItemTouchDown"/>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="Disabled"/>
+                                    <VisualState x:Name="MouseOver"/>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="SelectionStates">
+                                    <VisualState x:Name="Unselected"/>
+                                    <VisualState x:Name="Selected"/>
+                                    <VisualState x:Name="SelectedUnfocused"/>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <local:MapViewElement Canvas.Left="-60" Canvas.Top="-60" Visibility="{Binding VisOnMap}" IsSelected="{Binding IsSelected}"/>
+                        </Canvas>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <!--<EventSetter Event="UIElement.TouchDown" Handler="MapItemTouchDown"/>-->
         </Style>
+        
         <Style x:Key="TextListObjectStyle" TargetType="{x:Type ListViewItem}">
         	<Setter Property="Template">
         		<Setter.Value>
@@ -402,15 +299,15 @@
 				ItemTemplate="{StaticResource PolylineItemTemplate}" 
 				
 				ItemContainerStyle="{StaticResource ZonesItemStyle}" Focusable="False" 
-				IsSynchronizedWithCurrentItem="False" IsEnabled="False"/>
+				IsSynchronizedWithCurrentItem="False" IsEnabled="False" Visibility="Collapsed"/>
 			<Map:MapItemsControl ItemsSource="{Binding Points}" 
 				ItemContainerStyle="{StaticResource PointItemStyle}" 
-				SelectedItem="{Binding SelectedMapObject}"/>
+				SelectedItem="{Binding SelectedCar}"/>
 			<TextBlock TextWrapping="Wrap" Text="{Binding CurrentLocation}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Visibility="Collapsed"/>
 			<TextBlock TextWrapping="Wrap" Text="&#xE1D9;" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,10,0,0" FontFamily="Segoe UI Symbol" Visibility="Collapsed"/>
 			<TextBlock TextWrapping="Wrap" Text="{Binding EnableEditZone, Mode=TwoWay}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="35,0,-25.757,0" FontFamily="Segoe UI Symbol" Visibility="Collapsed"/>
 		</Map:Map>
-		<Button Content="{Binding NameShowButton}" HorizontalAlignment="Right" VerticalAlignment="Top" Width="150" Margin="0,36,10,0">
+		<Button Content="{Binding NameShowButton}" HorizontalAlignment="Right" VerticalAlignment="Top" Width="150" Margin="0,36,10,0" Visibility="Collapsed">
 			<i:Interaction.Behaviors>
 				<Model:EventToCommandBehavior Command="{Binding ShowListZoneCommand}" Event="Click" PassArguments="True"/>
 			</i:Interaction.Behaviors>
@@ -430,7 +327,7 @@
 				</ListBox>
 			</Canvas>
 		</Viewbox>
-        <Button Content="{Binding NameLogButton}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="150" Margin="0,10,10,10">
+        <Button Content="{Binding NameLogButton}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="150" Margin="0,10,10,10" Visibility="Collapsed">
             <i:Interaction.Behaviors>
                 <Model:EventToCommandBehavior Command="{Binding ShowLogCommand}" Event="Click" PassArguments="True"/>
             </i:Interaction.Behaviors>

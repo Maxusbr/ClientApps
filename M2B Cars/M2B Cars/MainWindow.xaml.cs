@@ -235,6 +235,8 @@ namespace M2B_Cars
 
         private void Image_MouseLeftButtonUp_5(object sender, MouseButtonEventArgs e)
         {
+            MapView.Visibility = MapView.Visibility == Visibility.Visible ?  Visibility.Collapsed: Visibility.Visible;
+            HistoryControl.Visibility = HistoryControl.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
             HistoryControl.HistoryButton_Click();
         }
     }

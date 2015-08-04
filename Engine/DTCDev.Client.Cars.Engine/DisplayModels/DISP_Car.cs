@@ -288,11 +288,11 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
         {
             LevelGsmInd.Update(Data != null ? Data.GSM_Level : 0);
             SateliteInd.Update(Data != null && Data.Navigation != null ? Data.Navigation.Sattelites : 0);
-            OnPropertyChanged("DateNavigation");
-            OnPropertyChanged("CountSatelite");
-            OnPropertyChanged("Angle");
-            OnPropertyChanged("FuelLevel");
-            OnPropertyChanged("HistroryTime");
+            //OnPropertyChanged("DateNavigation");
+            //OnPropertyChanged("CountSatelite");
+            //OnPropertyChanged("Angle");
+            //OnPropertyChanged("FuelLevel");
+            //OnPropertyChanged("HistroryTime");
         }
 
 

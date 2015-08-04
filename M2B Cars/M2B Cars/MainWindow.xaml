@@ -5,7 +5,9 @@
         xmlns:Car="clr-namespace:DTCDev.Client.Cars.Controls.Controls.Car;assembly=DTCDev.Client.Cars.Controls"
         xmlns:History="clr-namespace:DTCDev.Client.Cars.Controls.Controls.History;assembly=DTCDev.Client.Cars.Controls"
         xmlns:Properties="clr-namespace:M2B_Cars.Properties"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:map="clr-namespace:DTCDev.Client.Cars.Controls.Controls.Map;assembly=DTCDev.Client.Cars.Controls"
+    mc:Ignorable="d"
         x:Class="M2B_Cars.MainWindow"
         Title="M2B Cars" Height="700" Width="1025" WindowState="Maximized" Loaded="Window_Loaded" Closed="Window_Closed">
     <Window.Resources>
@@ -96,7 +98,8 @@
                     <RowDefinition/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <History:HistoryControl x:Name="HistoryControl"/>
+                <map:MapView x:Name="MapView"/>
+                <History:HistoryControl x:Name="HistoryControl" Visibility="Collapsed"/>
                 <Grid x:Name="grdDetails" Grid.Row="1">
 
                 </Grid>

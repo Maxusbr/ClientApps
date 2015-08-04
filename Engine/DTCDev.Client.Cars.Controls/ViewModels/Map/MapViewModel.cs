@@ -15,24 +15,16 @@ using DTCDev.Client.ViewModel;
 
 namespace DTCDev.Client.Cars.Controls.ViewModels.Map
 {
-    public class MapViewModel : System.ComponentModel.INotifyPropertyChanged
+    public class MapViewModel : ViewModelBase
     {
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            if (this.PropertyChanged != null)
-            {
-                this.PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-
         public MapViewModel()
         {
+            _zoneHandler = ZonesHandler.Instance;
+            _mapHandler = CarsHandler.Instance;
             MapCenter = MapCenterUser = new Location(55.75, 37.62);
-
             Zones.Add(new VmPolyline(Zones.Count));
             
-            if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(new System.Windows.DependencyObject()))
+            if (DesignerProperties.GetIsInDesignMode(new System.Windows.DependencyObject()))
             {
                 this.SelectedZone = Zones[0];
 
@@ -60,135 +52,127 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Map
             //else
             //{
                 //mapHandler.LoadCompleted += mapHandler_LoadCompleted;
-                zoneHandler = ZonesHandler.Instance;
-                mapHandler = CarsHandler.Instance;
+                
                 EnableTracking = true;
-                zoneHandler.LoadCompleted += zoneHandler_LoadCompleted;
-                zoneHandler.Update();
+                _zoneHandler.LoadCompleted += zoneHandler_LoadCompleted;
+                _zoneHandler.Update();
                 CarSelector.OnCarChanged += CarSelector_OnCarChanged;
             //}
         }
 
+
         void CarSelector_OnCarChanged(DISP_Car car)
         {
-            if (car != SelectedMapObject)
+            if (SelectedCar != car)
             {
-                SelectedMapObject = car;
+                SelectedCar = car;
             }
         }
 
-        private Location mapCenter;
+        private Location _mapCenter;
         public Location MapCenter
         {
-            get { return mapCenter; }
+            get { return _mapCenter; }
             set
             {
-                if (mapCenter != value)
-                {
-                    mapCenter = value;
-                    OnPropertyChanged("MapCenter");
-                }
+                if (_mapCenter == value) return;
+                _mapCenter = value;
+                OnPropertyChanged("MapCenter");
             }
         }
 
-        private Location mapCenterUser;
+        private Location _mapCenterUser;
         public Location MapCenterUser
         {
-            get { return mapCenterUser; }
+            get { return _mapCenterUser; }
             set
             {
-                if (mapCenterUser != value)
-                {
-                    mapCenterUser = value;
-                    OnPropertyChanged("MapCenterUser");
-                }
+                if (_mapCenterUser == value) return;
+                _mapCenterUser = value;
+                OnPropertyChanged("MapCenterUser");
             }
         }
 
         public ObservableCollection<DISP_Car> Points
         {
-            get { return mapHandler.Cars; }
+            get { return _mapHandler.Cars; }
         }
         
-        DISP_Car selectedMapObject;
-        public DISP_Car SelectedMapObject
+        DISP_Car _selectedCar;
+        public DISP_Car SelectedCar
         {
             get
             {
-                return selectedMapObject;
+                return _selectedCar;
             }
             set
             {
-                if (this.selectedMapObject != value)
+                if (_selectedCar == value) return;
+                if (_selectedCar != null)
                 {
-                    if (this.selectedMapObject != null)
-                    {
-                        this.selectedMapObject.PropertyChanged -= selectedMapObject_PropertyChanged;
-                        this.selectedMapObject.ZoneData.InZone = true;
-                    }
-
-                    this.selectedMapObject = value;
-                    if (value != null)
-                    {
-                        MapCenter = MapCenterUser = this.selectedMapObject.Navigation.LocationPoint;
-                        this.selectedMapObject.PropertyChanged += selectedMapObject_PropertyChanged;
-                        if (SelectedZone != null)
-                            GetMoreInfo(this.selectedMapObject);
-                    }
-                    OnPropertyChanged("SelectedMapObject");
+                    _selectedCar.PropertyChanged -= selectedMapObject_PropertyChanged;
+                    _selectedCar.ZoneData.InZone = true;
+                    _selectedCar.IsSelected = false;
                 }
-                CarSelector.SelectedCar = value;
+
+                _selectedCar = value;
+                if (value != null)
+                {
+                    MapCenter = MapCenterUser = _selectedCar.Navigation.LocationPoint;
+                    _selectedCar.IsSelected = true;
+                    _selectedCar.PropertyChanged += selectedMapObject_PropertyChanged;
+                    if (SelectedZone != null)
+                        GetMoreInfo(_selectedCar);
+                }
+                OnPropertyChanged("SelectedCar");
+                //CarSelector.SelectedCar = value;
             }
         }
 
         void GetMoreInfo(DISP_Car obj)
         {
-            obj.ZoneData.InZone = CalcLeavingZone.Instance.FillContains(this.selectedMapObject.Navigation.LocationPoint, SelectedZone.MovedLocations);
+            obj.ZoneData.InZone = CalcLeavingZone.Instance.FillContains(this._selectedCar.Navigation.LocationPoint, SelectedZone.MovedLocations);
             obj.Adress = GeoAdress.Instance.GetAdress(obj.Navigation.LocationPoint);
         }
 
         void selectedMapObject_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName.Equals("Location"))
-            {
-                DISP_Car obj = sender as DISP_Car;
-                if (obj != null)
-                {
-                    MapCenter = MapCenterUser = obj.Navigation.LocationPoint;
-                    if (SelectedZone != null)
-                        GetMoreInfo(this.selectedMapObject);
-                }
-            }
+            if (!e.PropertyName.Equals("Location")) return;
+            var obj = sender as DISP_Car;
+            if (obj == null || obj.Navigation == null) return;
+            MapCenter = MapCenterUser = obj.Navigation.LocationPoint;
+            if (SelectedZone != null)
+                GetMoreInfo(_selectedCar);
         }
 
-        private bool enableTracking = true;
+        private bool _enableTracking = true;
         public bool EnableTracking
         {
             get
             {
-                return this.enableTracking;
+                return _enableTracking;
             }
             set
             {
-                if (value != this.enableTracking)
+                if (value != _enableTracking)
                 {
-                    this.enableTracking = value;
+                    _enableTracking = value;
                     OnPropertyChanged("EnableTracking");
                 }
-                if (!this.enableTracking)
+                if (!_enableTracking)
                 {
-                    SelectedMapObject = null;
+                    SelectedCar = null;
                 }
 
             }
         }
 
-        ZonesHandler zoneHandler = ZonesHandler.Instance;
-        CarsHandler mapHandler = CarsHandler.Instance;
+        readonly ZonesHandler _zoneHandler;
+        readonly CarsHandler _mapHandler;
 
-        void zoneHandler_LoadCompleted(string ResultOperation)
+        void zoneHandler_LoadCompleted(string resultOperation)
         {
-            switch (ResultOperation)
+            switch (resultOperation)
             {
                 case "AddComplete":
                     break;
@@ -208,7 +192,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Map
         {
             get 
             { 
-                return zoneHandler.Zones; 
+                return _zoneHandler.Zones; 
             }
         }
 
@@ -224,15 +208,13 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Map
         private VmPolyline _selectedZone;
         public VmPolyline SelectedZone
         {
-            get { return this._selectedZone; }
+            get { return _selectedZone; }
             set
             {
-                if (this._selectedZone != value)
-                {
-                    this._selectedZone = value;
-                    ChangeSelectedZone();
-                    OnPropertyChanged("SelectedZone");
-                }
+                if (_selectedZone == value) return;
+                _selectedZone = value;
+                ChangeSelectedZone();
+                OnPropertyChanged("SelectedZone");
             }
         }
 
@@ -241,12 +223,10 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Map
             ZoneSelect.Clear();
             if (_selectedZone == null) return;
             ZoneSelect.Add(_selectedZone);
-            if (_selectedZone.MovedLocations != null && _selectedZone.MovedLocations.Count >= 0)
-            {
-                var centerLocation = _selectedZone.MovedLocations.GetCenter();
-                if (centerLocation.Latitude != 0 && centerLocation.Longitude != 0)
-                    MapCenterUser = centerLocation;
-            }
+            if (_selectedZone.MovedLocations == null || _selectedZone.MovedLocations.Count < 0) return;
+            var centerLocation = _selectedZone.MovedLocations.GetCenter();
+            if (centerLocation.Latitude != 0 && centerLocation.Longitude != 0)
+                MapCenterUser = centerLocation;
         }
 
         private double _intervalRefresh = 5;
@@ -254,36 +234,29 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Map
         {
             get
             {
-                return this._intervalRefresh;
+                return _intervalRefresh;
             }
             set
             {
                 double val = Math.Max(value - value % 5, 5);
-                if (val != this._intervalRefresh)
+                if (val != _intervalRefresh)
                 {
-                    this._intervalRefresh = val;
-                    mapHandler.SetInterval(val * 1000);
+                    _intervalRefresh = val;
+                    _mapHandler.SetInterval(val * 1000);
                     OnPropertyChanged("IntervalRefresh");
                 }
             }
         }
 
-        private void mapHandler_LoadCompleted(DISP_Car[] ListMapObjects)
-        {
-
-        }
-
-        private Location currentLocation;
+        private Location _currentLocation;
         public Location CurrentLocation
         {
-            get { return currentLocation; }
+            get { return _currentLocation; }
             set
             {
-                if (currentLocation != value)
-                {
-                    currentLocation = value;
-                    OnPropertyChanged("CurrentLocation");
-                }
+                if (_currentLocation == value) return;
+                _currentLocation = value;
+                OnPropertyChanged("CurrentLocation");
             }
         }
 
@@ -301,14 +274,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Map
         private ICommand _showListZoneCommand;
         public ICommand ShowListZoneCommand
         {
-            get
-            {
-                if (_showListZoneCommand == null)
-                {
-                    _showListZoneCommand = new RelayCommand(ShowListZone);
-                }
-                return _showListZoneCommand;
-            }
+            get { return _showListZoneCommand ?? (_showListZoneCommand = new RelayCommand(ShowListZone)); }
         }
 
         private void ShowListZone(object obj)
@@ -343,14 +309,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Map
         private ICommand _showLogCommand;
         public ICommand ShowLogCommand
         {
-            get
-            {
-                if (_showLogCommand == null)
-                {
-                    _showLogCommand = new RelayCommand(ShowLog);
-                }
-                return _showLogCommand;
-            }
+            get { return _showLogCommand ?? (_showLogCommand = new RelayCommand(ShowLog)); }
         }
 
         private void ShowLog(object obj)
@@ -528,98 +487,79 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Map
 
         #region Helpers Seach Geo Coordinates
 
-        private string house = string.Empty;
+        private string _house = string.Empty;
         public string House
         {
-            get { return house; }
+            get { return _house; }
             set
             {
-                if (house != value)
-                {
-                    house = value;
-                    OnPropertyChanged("House");
-                }
+                if (_house == value) return;
+                _house = value;
+                OnPropertyChanged("House");
             }
         }
 
-        private string street = string.Empty;
+        private string _street = string.Empty;
         public string Street
         {
-            get { return street; }
+            get { return _street; }
             set
             {
-                if (street != value)
-                {
-                    street = value;
-                    OnPropertyChanged("Street");
-                }
+                if (_street == value) return;
+                _street = value;
+                OnPropertyChanged("Street");
             }
         }
 
-        private string city = string.Empty;
+        private string _city = string.Empty;
         public string City
         {
-            get { return city; }
+            get { return _city; }
             set
             {
-                if (city != value)
-                {
-                    city = value;
-                    OnPropertyChanged("City");
-                }
+                if (_city == value) return;
+                _city = value;
+                OnPropertyChanged("City");
             }
         }
 
-        private Location coordinate;
+        private Location _coordinate;
         public Location Coordinate
         {
-            get { return coordinate; }
+            get { return _coordinate; }
             set
             {
-                if (coordinate != value)
-                {
-                    coordinate = value;
-                    if (!this.EnableTracking)
-                        this.MapCenter = MapCenterUser = value;
-                    OnPropertyChanged("Coordinate");
-                }
+                if (_coordinate == value) return;
+                _coordinate = value;
+                if (!EnableTracking)
+                    MapCenter = MapCenterUser = value;
+                OnPropertyChanged("Coordinate");
             }
         }
 
-        private ObservableCollection<Location> coordinates = new ObservableCollection<Location>();
+        private readonly ObservableCollection<Location> _coordinates = new ObservableCollection<Location>();
         public ObservableCollection<Location> Coordinates
         {
-            get { return coordinates; }
+            get { return _coordinates; }
         }
-        private ICommand _SearchGeoCommand;
-        
 
+        private ICommand _searchGeoCommand;
         public ICommand SearchGeoCommand
         {
-            get
-            {
-                if (_SearchGeoCommand == null)
-                {
-                    _SearchGeoCommand = new RelayCommand(this.SearchGeo);
-                }
-                return _SearchGeoCommand;
-            }
+            get { return _searchGeoCommand ?? (_searchGeoCommand = new RelayCommand(this.SearchGeo)); }
         }
 
         private void SearchGeo(object obj)
         {
-            System.Collections.Generic.List<Location> res = new System.Collections.Generic.List<Location>();
+            var res = new List<Location>();
             if (!string.IsNullOrEmpty(this.House) && !string.IsNullOrEmpty(this.Street) && !string.IsNullOrEmpty(this.City))
                 res = GeoAdress.Instance.GetCoordinat(this.House, this.Street, this.City);
-            if (res != null)
-            {
-                Coordinates.Clear();
-                foreach (Location el in res)
-                    Coordinates.Add(el);
-                if (Coordinates.Count > 0)
-                    Coordinate = Coordinates[0];
-
-            }
+            if (res == null) return;
+            Coordinates.Clear();
+            foreach (var el in res)
+                Coordinates.Add(el);
+            if (Coordinates.Count > 0)
+                Coordinate = Coordinates[0];
         }
 
 
