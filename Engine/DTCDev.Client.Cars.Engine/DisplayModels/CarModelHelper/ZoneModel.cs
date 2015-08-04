@@ -39,5 +39,11 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
                 OnPropertyChanged("InZone");
             }
         }
+
+        internal void Update(ZoneModel model)
+        {
+            ZoneId = model.ZoneId;
+            InZone = model.InZone;
+        }
     }
 }

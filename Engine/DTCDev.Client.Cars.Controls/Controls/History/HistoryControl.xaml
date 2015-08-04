@@ -387,8 +387,8 @@
             <Map:MapItemsControl x:Name="ParkingsPin" ItemsSource="{Binding Parkings}"  Focusable="True"  IsSynchronizedWithCurrentItem="False" 
 				IsEnabled="True" ItemContainerStyle="{DynamicResource ParkingItemStyle}" Visibility="Collapsed" 
                                  />
-            <Map:Pushpin x:Name="CarPin" Map:MapPanel.Location="{Binding Position.Location}" Background="{x:Null}" Visibility="Collapsed" >
-                <Map1:MapViewElement DataContext="{Binding Position}" Margin="-62,0,0,-77" Visibility="{Binding VisOnMap}"/>
+            <Map:Pushpin x:Name="CarPin" Map:MapPanel.Location="{Binding Position.Navigation.LocationPoint}" Background="{x:Null}" Visibility="Collapsed" >
+                <Map1:MapViewElement DataContext="{Binding Position}" Margin="-62,0,0,-77" Visibility="{Binding Navigation.VisOnMap}"/>
             </Map:Pushpin>
             <Map:MapScale/>
         </Map:Map>

@@ -22,6 +22,7 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
                 if (_location == value) return;
                 _location = value;
                 OnPropertyChanged("LocationPoint");
+                OnPropertyChanged("strLocation");
                 if (_location.Latitude > 0 && _location.Longitude > 0 && VisOnMap == Visibility.Collapsed)
                     VisOnMap = Visibility.Visible;
             }
@@ -47,6 +48,7 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
             get { return _visOnMap; }
             set
             {
+                if(_visOnMap == value) return;
                 _visOnMap = value;
                 this.OnPropertyChanged("VisOnMap");
             }
@@ -144,6 +146,16 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
                 _countSattelites = value;
                 this.OnPropertyChanged("CountSatelite");
             }
+        }
+
+        internal void Update(NavigationData model)
+        {
+            Current_Speed = model.Current_Speed;
+            LocationPoint = model.LocationPoint;
+            DateNavigation = model.DateNavigation;
+            DateLastUpdate = model.DateLastUpdate;
+            Angle = model.Angle;
+            CountSatelite = model.CountSatelite;
         }
     }
 }

@@ -36,6 +36,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
     {
         public HistoryViewModel()
         {
+            _zoneHandler = ZonesHandler.Instance;
+            _mapHandler = CarsHandler.Instance;
             MapCenter = MapCenterUser = new Location(55.75, 37.62);
             CarSelector.OnCarChanged += CarSelector_OnCarChanged;
             HistoryHandler.Instance.LoadCompleted += Instance_LoadCompleted;
@@ -43,8 +45,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             HistoryHandler.Instance.LinesLoaded += Instance_LinesLoaded;
             HistoryHandler.Instance.OBDLoaded += Instance_OBDLoaded;
             HistoryHandler.Instance.AccLoaded += Instance_AccLoaded;
-            _zoneHandler = ZonesHandler.Instance;
-            _mapHandler = CarsHandler.Instance;
+            
             TableHistory.PropertyChanged += TableHistory_PropertyChanged;
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
             {
@@ -382,8 +383,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         private bool _tablePackageView = false;
 
-        private DISP_Car _selectedMapObject;
-
         private int _spanMap = 3;
 
         private bool _enableHistory = false;
@@ -424,21 +423,20 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             set
             {
                 _enableHistory = value;
-                if (value && Position != null)
+                if (value)
                 {
                     
                     //TODO: чего здесь вообще происходит? )))))
-
-                    //Position = new DISP_Car
-                    //{
-                    //    ZoneId = Position.ZoneId,
-                    //    Location = Position.Navigation.Location,
-                    //    Car = new SCarModel()
-                    //    {
-                    //        CarNumber = Position.Car.CarNumber,
-                    //        Id = Position.Car.Id
-                    //    }
-                    //};
+                    Position = new DISP_Car
+                    {
+                        Car = new SCarModel()
+                        {
+                            CarNumber = CarSelector.SelectedCar.Car.CarNumber,
+                            Id = CarSelector.SelectedCar.Car.Id
+                        }
+                    };
+                    Position.UpdateNavigation(CarSelector.SelectedCar.Navigation);
+                    Position.UpdateZone(CarSelector.SelectedCar.ZoneData);
                 }
                 OnPropertyChanged("EnableHistory");
             }
@@ -476,49 +474,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         }
 
         public bool VisablePlayer { get { return SelectedHistoryRow != null; } }
-
-
-        public DISP_Car SelectedMapObject
-        {
-            get
-            {
-                return _selectedMapObject;
-            }
-            set
-            {
-                if (_selectedMapObject != value)
-                {
-                    if (_selectedMapObject != null)
-                    {
-                        _selectedMapObject.PropertyChanged -= selectedMapObject_PropertyChanged;
-                        _selectedMapObject.ZoneData.InZone = true;
-                    }
-
-                    _selectedMapObject = value;
-                    if (value != null)
-                    {
-                        MapCenter = MapCenterUser = this._selectedMapObject.Navigation.LocationPoint;
-                        _selectedMapObject.PropertyChanged += selectedMapObject_PropertyChanged;
-                        //if (SelectedZone != null)
-                        //    GetMoreInfo(this._selectedMapObject);
-                    }
-                    OnPropertyChanged("SelectedMapObject");
-                }
-                CarSelector.SelectedCar = value;
-            }
-        }
-
-        void selectedMapObject_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (!e.PropertyName.Equals("Location")) return;
-            var obj = sender as DISP_Car;
-            if (obj != null)
-            {
-                MapCenter = MapCenterUser = obj.Navigation.LocationPoint;
-                //if (SelectedZone != null)
-                //    GetMoreInfo(this.selectedMapObject);
-            }
-        }
 
         private MovedLocationCollection _roteOpacited = new MovedLocationCollection();
         public MovedLocationCollection RouteOpacited
@@ -815,24 +770,28 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             {
                 if (_position != null)
                 {
+                    _position.UpdateVisableMap(false);
                     _position.IsSelected = false;
                     _position.PropertyChanged -= PositionOnPropertyChanged;
                 }
                 _position = value;
-                this.OnPropertyChanged("Position");
+                OnPropertyChanged("Position");
                 if (value == null) return;
+                _position.UpdateVisableMap(true);
                 _position.IsSelected = true;
-                if (value.Navigation.LocationPoint != null)
-                    MapCenter = MapCenterUser = value.Navigation.LocationPoint;
+                //if (value.Navigation.LocationPoint != null)
+                //    MapCenter = MapCenterUser = value.Navigation.LocationPoint;
                 _position.PropertyChanged += PositionOnPropertyChanged;
-                ChangeCarSelected();
+                
             }
         }
 
         private void PositionOnPropertyChanged(object sender, PropertyChangedEventArgs arg)
         {
-            if (arg.PropertyName.Equals("Location") && !EnableHistory)
+            if (arg.PropertyName.Equals("Navigation"))
                 MapCenter = MapCenterUser = Position.Navigation.LocationPoint;
+            if (arg.PropertyName.Equals("ZoneData"))
+                ChangeCarSelected();
         }
 
         public bool UseAccelleration
@@ -1053,21 +1012,25 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         void CarSelector_OnCarChanged(DISP_Car car)
         {
+            if(!EnableHistory) return;
             IsPlayerStart = false;
             ZoneSelect.Clear();
             if (car != null)
             {
-                //TODO: переписать. не билдится
-                //Position = EnableHistory ? new DISP_Car { ZoneData.ZoneId = CarSelector.SelectedCar.ZoneData.ZoneId } : CarSelector.SelectedCar;
-                Position.Car = new SCarModel()
+                Position = new DISP_Car
                 {
-                    CarNumber = car.Car.CarNumber,
-                    Id = car.Car.Id
+                    Car = new SCarModel()
+                    {
+                        CarNumber = car.Car.CarNumber,
+                        Id = car.Car.Id
+                    }
                 };
+                Position.UpdateNavigation(car.Navigation);
+                Position.UpdateZone(car.ZoneData);
                 if (car.Car != null)
                     SelectedDevice = car.Car.CarNumber;
                 //TODO Раскоментировать и заменить после привязки машин к зонам 
-                //var zone = _zoneHandler.Zones.FirstOrDefault(o => o.ID == car.ZoneId);
+                //var zone = _zoneHandler.Zones.FirstOrDefault(o => o.ID == car.ZoneData.ZoneId);
             }
             else
                 SelectedDevice = "";

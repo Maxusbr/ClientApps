@@ -42,10 +42,10 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
             set
             {
                 _data = value;
-                this.OnPropertyChanged("Data");
+                OnPropertyChanged("Data");
                 Update();
-                if (value == null)
-                    return;
+                if (value == null) return;
+
                 if (value.Navigation.Latitude != 0 && value.Navigation.Longitude != 0)
                 {
                     Navigation.LocationPoint = new Location(value.Navigation.Latitude / 10000.0d, value.Navigation.Longitude / 10000.0d);
@@ -54,7 +54,7 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
                     Navigation.Angle = Data.Navigation.Speed / 10 - 30;
                     Navigation.CountSatelite = Data.Navigation.Sattelites.ToString();
                 }
-                Navigation.Current_Speed = value.Navigation.Speed / 10.0;
+                Navigation.Current_Speed = value.Navigation.Speed/10.0;
                 FuelData.CalculateFuelData(value);
             }
         }
@@ -67,6 +67,26 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
         public NavigationData Navigation
         {
             get { return _navigation; }
+        }
+        /// <summary>
+        /// Обновить данные навигации для модели
+        /// </summary>
+        /// <param name="navigationData"></param>
+        /// <param name="updateLocation"></param>
+        public void UpdateNavigation(NavigationData navigationData)
+        {
+            Navigation.Update(navigationData);
+            OnPropertyChanged("Navigation");
+        }
+
+        /// <summary>
+        /// Показать Модель на карте
+        /// </summary>
+        /// <param name="visable"></param>
+        public void UpdateVisableMap(bool visable)
+        {
+            HistoryDetailView = visable;
+            Navigation.VisOnMap = visable ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private DevicePresenter _device = new DevicePresenter();
@@ -119,6 +139,11 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
             }
         }
 
+        public void UpdateZone(ZoneModel model)
+        {
+            ZoneData.Update(model);
+            OnPropertyChanged("ZoneData");
+        }
 
         private string id;
         /// <summary>
@@ -320,5 +345,7 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
 
             public string Value { get; set; }
         }
+
+        
     }
 }
