@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web.Mvc;
+using CSVOrder.DAL.Abstract;
 using CSVOrder.Models.User;
 
 namespace CSVOrder.Models.Service
@@ -29,6 +30,7 @@ namespace CSVOrder.Models.Service
             User = new UserLightModel();
             SelectedWorks = new List<WorksInfoDataModel>();
         }
+
         /// <summary>
         /// перемещение в заказ-наряды
         /// </summary>
@@ -54,5 +56,6 @@ namespace CSVOrder.Models.Service
             }
         }
         public string[] SelectedItems { get; set; }
+
     }
 }

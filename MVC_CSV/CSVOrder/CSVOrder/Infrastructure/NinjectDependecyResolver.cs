@@ -31,7 +31,7 @@ namespace CSVOrder.Infrastructure
 
         private void AddBindings()
         {
-            _kernel.Bind<IServiseRepository>().To<ServiseRepository>();
+            _kernel.Bind<IServiseRepository>().To<ServiseRepository>().InSingletonScope();
 
         }
     }

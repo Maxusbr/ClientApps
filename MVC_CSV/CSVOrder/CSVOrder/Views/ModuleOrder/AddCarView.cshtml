@@ -1,29 +1,90 @@
-﻿@using CSVOrder.Models.Abstract
+﻿@using CSVOrder.Controllers
+@using CSVOrder.Models.Abstract
 @model CSVOrder.Models.Service.CarViewModel
 @{
     Layout = null;
 }
 @Html.Label("Автомобиль")
+<script>
+    $(document).ready(function () {
+        if ($('#Car_Mark')[0].length === 1) {
+            $.ajax({
+                type: 'POST',
+                url: '/ModuleStore/ChangeSelectList',
+                data: {
+                    name: 'GetMark',
+                    data: '5'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var drpdn = $("#" + data.Name);
+                    drpdn.find('option').remove();
 
+                    $.each(data.List, function (index, val) {
+                        drpdn.append(
+                            $('<option></option>')
+                            .val(data.List[index].id)
+                            .html(data.List[index].Name));
+
+                    });
+                }
+            });
+        }
+        
+        $(".dropdown").change(function () {
+            $.ajax({
+                type: 'POST',
+                url: '/ModuleStore/ChangeSelectList',
+                data: {
+                    name: this.name,
+                    data: this.value
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var drpdn = $("#" + data.Name);
+                    drpdn.find('option').remove();
+
+                    $.each(data.List, function (index, val) {
+                        drpdn.append(
+                            $('<option></option>')
+                            .val(data.List[index].id)
+                            .html(data.List[index].Name));
+
+                    });
+                }
+            });
+        });
+    });
+</script>
 
 @if (string.IsNullOrEmpty(Model.Number))
 {
+    //using (Ajax.BeginForm("Get"))
+    // {
+
+    // }
+
     foreach (var property in ViewData.ModelMetadata.Properties.OrderBy(p => p.Order))
     {
         switch (property.PropertyName)
         {
             case "Marks":
+                @*<div class="form-group">
+                    @Html.LabelFor(x => x.Marks):
+                    <select class="dropdown form-control" id="Marks" name="Car.Mark"></select>
+                </div>
+                break;*@
             case "Models":
             case "BodyTypes":
             case "EngineTypes":
             case "EngineVolumes":
             case "TransTypes":
-                var list = property.Model as List<KVPBase>;
-                if (list == null) { break; }
-                <div class="form-group">
-                    <strong>@property.DisplayName: </strong>
-                    @Html.DropDownList(property.PropertyName, list.Select(o => new SelectListItem { Text = o.Name, Value = o.id.ToString() }), new { @class = "form-control" })
-                </div>
+            <div class="form-group">
+                @{var res = ModuleStoreController.GetList(property.PropertyName, property.DisplayName, Model);}
+                @Html.Label(@property.DisplayName):
+                @Html.DropDownList(property.PropertyName.Substring(0, property.PropertyName.Length - 1),
+                        new SelectList(res.List, "id", "Name", res.Name), new { @class = "dropdown form-control" })
+            </div>
                 break;
             case "VIN":
             <div class="form-group">
@@ -32,10 +93,10 @@
             </div>
                 break;
             case "Number":
-                <div class="form-group">
-                    @Html.LabelFor(x => x.Number):
-                    @Html.TextBoxFor(x => x.Number, new { @class = "form-control" })
-                </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.Number):
+                @Html.TextBoxFor(x => x.Number, new { @class = "form-control" })
+            </div>
                 break;
             default:
             @Html.Hidden(property.PropertyName, property.Model)

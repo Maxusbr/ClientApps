@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using CSVOrder.DAL.Abstract;
 using CSVOrder.Models.Abstract;
 
 namespace CSVOrder.Models.Service
@@ -21,35 +22,51 @@ namespace CSVOrder.Models.Service
             Number = carNumber ?? string.Empty;
         }
 
-        [Required]
         [Display(Name = "Марка", Order = 3)]
         public List<KVPBase> Marks { get { return _marks; } }
-        [Required]
+
         [Display(Name = "Модель", Order = 4)]
         public List<KVPBase> Models { get { return _models; } }
-        [Required]
+
         [Display(Name = "Тип кузова", Order = 5)]
         public List<KVPBase> BodyTypes { get { return _bodyTypes; } }
-        [Required]
+
         [Display(Name = "Тип двигателя", Order = 6)]
         public List<KVPBase> EngineTypes { get { return _engineTypes; } }
-        [Required]
+
         [Display(Name = "Объем двигателя", Order = 7)]
         public List<KVPBase> EngineVolumes { get { return _engineVolumes; } }
-        [Required]
+
         [Display(Name = "Тип КПП", Order = 8)]
         public List<KVPBase> TransTypes { get { return _transTypes; } }
 
-        public KVPBase Mark { get; set; }
+        public string Mark { get; set; }
 
-        public KVPBase Model { get; set; }
+        public string Model { get; set; }
 
-        public KVPBase EngineType { get; set; }
+        public string EngineType { get; set; }
 
-        public KVPBase EngineVolume { get; set; }
+        public string EngineVolume { get; set; }
 
-        public KVPBase BodyType { get; set; }
+        public string BodyType { get; set; }
 
-        public KVPBase TransType { get; set; }
+        public string TransType { get; set; }
+
+        private void ClearLists()
+        {
+            Marks.Clear(); Models.Clear();
+            EngineTypes.Clear(); EngineVolumes.Clear(); BodyTypes.Clear(); TransTypes.Clear();
+        }
+
+        internal void Update(IServiseRepository storage)
+        {
+            ClearLists();
+            Marks.AddRange(storage.Marks);
+            Models.AddRange(storage.Models);
+            BodyTypes.AddRange(storage.BodyTypes);
+            EngineTypes.AddRange(storage.EngineTypes);
+            EngineVolumes.AddRange(storage.EngineVolumes);
+            TransTypes.AddRange(storage.TransTypes);
+        }
     }
 }
