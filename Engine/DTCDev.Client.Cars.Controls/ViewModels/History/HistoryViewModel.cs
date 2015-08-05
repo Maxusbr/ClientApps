@@ -423,7 +423,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             set
             {
                 _enableHistory = value;
-                if (value)
+                if (value && CarSelector.SelectedCar != null)
                 {
                     
                     //TODO: чего здесь вообще происходит? )))))
@@ -1437,6 +1437,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 {
                     PlayerEndTime = _routesModel.TimeRoute.Max(o => o.Date);
                     PlayerStartTime = _routesModel.TimeRoute.Min(o => o.Date);
+                    UpdateCurentPosition(PlayerStartTime, true);
                 }
                 if (Route == null || Route.Count <= 0) return;
             }
@@ -1770,7 +1771,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         }
 
         private DateTime _dt;
-        private void UpdateCurentPosition(DateTime time)
+        private void UpdateCurentPosition(DateTime time, bool updateCenter = false)
         {
             var pos = _routesModel.TimeRoute.OrderBy(o => o.Date).LastOrDefault(f => f.Date <= time);
             if (!EnableHistory || Position == null) return;
@@ -1789,9 +1790,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                     },
                     DateUpdate = new DateTimeDataModel(_dt)
                 };
-                Position.HistoryDetailView = true;
             }
-            if (pos != null)
+            if (pos != null && updateCenter)
                 MapCenter = MapCenterUser = pos.Point;
         }
 

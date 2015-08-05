@@ -72,12 +72,12 @@
         </Grid>
         <Grid x:Name="detailHistory" Visibility="{Binding HistoryDetailView, Converter={StaticResource BoolToVisibilityConverter}}">
             <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/circle.png" Stretch="None"/>
-            <TextBlock VerticalAlignment="Top" Text="{Binding HistroryTime}" Foreground="White" HorizontalAlignment="Center" Margin="0,5,0,0"/>
-            <TextBlock VerticalAlignment="Center" Text="{Binding CountSatelite}" Foreground="White" Margin="0,0,7,14" HorizontalAlignment="Right"/>
+            <TextBlock VerticalAlignment="Top" Text="{Binding Navigation.HistroryTime}" Foreground="White" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+            <TextBlock VerticalAlignment="Center" Text="{Binding Navigation.CountSatelite}" Foreground="White" Margin="0,0,7,14" HorizontalAlignment="Right"/>
             <Border Background="Red" Width="22" Height="2" Margin="18,52,80,66" BorderBrush="#FF4477FF" BorderThickness="0" CornerRadius="1" RenderTransformOrigin="1.783,1.364">
                 <Border.RenderTransform>
                     <TransformGroup>
-                        <RotateTransform Angle="{Binding Angle}"/>
+                        <RotateTransform Angle="{Binding Navigation.Angle}"/>
                         <TranslateTransform X="2.937" Y="4.046"/>
                     </TransformGroup>
                 </Border.RenderTransform>

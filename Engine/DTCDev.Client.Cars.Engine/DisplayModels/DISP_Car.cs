@@ -86,7 +86,6 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
         public void UpdateVisableMap(bool visable)
         {
             HistoryDetailView = visable;
-            Navigation.VisOnMap = visable ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private DevicePresenter _device = new DevicePresenter();

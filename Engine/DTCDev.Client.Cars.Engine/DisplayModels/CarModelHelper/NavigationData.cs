@@ -50,7 +50,7 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
             {
                 if(_visOnMap == value) return;
                 _visOnMap = value;
-                this.OnPropertyChanged("VisOnMap");
+                OnPropertyChanged("VisOnMap");
             }
         }
 
@@ -95,7 +95,7 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
             set
             {
                 _dateNavigation = value;
-                this.OnPropertyChanged("DateNavigation");
+                OnPropertyChanged("DateNavigation");
             }
         }
 
@@ -106,7 +106,8 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
             set
             {
                 _dateLastUpdate = value;
-                this.OnPropertyChanged("DateLastUpdate");
+                OnPropertyChanged("DateLastUpdate");
+                OnPropertyChanged("HistroryTime");
             }
         }
 
@@ -129,7 +130,7 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
             set
             {
                 _angle = value;
-                this.OnPropertyChanged("Angle");
+                OnPropertyChanged("Angle");
             }
         }
 
@@ -144,7 +145,7 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
             set
             {
                 _countSattelites = value;
-                this.OnPropertyChanged("CountSatelite");
+                OnPropertyChanged("CountSatelite");
             }
         }
 
