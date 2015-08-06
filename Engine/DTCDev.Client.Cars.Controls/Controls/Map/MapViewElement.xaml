@@ -56,7 +56,7 @@
             <Border Background="Red" Width="22" Height="2" Margin="11,31,74,46" BorderBrush="#FF4477FF" BorderThickness="0" CornerRadius="1" RenderTransformOrigin="1.783,1.364">
                 <Border.RenderTransform>
                     <TransformGroup>
-                        <RotateTransform Angle="{Binding Angle}"/>
+                        <RotateTransform Angle="{Binding Navigation.Angle}"/>
                         <TranslateTransform X="2.937" Y="4.046"/>
                     </TransformGroup>
                 </Border.RenderTransform>
@@ -64,7 +64,7 @@
             <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" 
 				VerticalAlignment="Bottom" Margin="0,0,0,23" Foreground="White" Text="{Binding Name}"/>
             <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" 
-				VerticalAlignment="Bottom" Foreground="White" Text="{Binding FuelLevel}" Margin="0,0,0,6"/>
+				VerticalAlignment="Bottom" Foreground="White" Text="{Binding FuelData.FuelLevel}" Margin="0,0,0,6"/>
 
             <Car:LeftIndicatorView DataContext="{Binding LevelGsmInd}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,44,0,0"/>
             <Car:RightIndicatorView DataContext="{Binding SateliteInd}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,44,0,0"/>

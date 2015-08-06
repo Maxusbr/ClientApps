@@ -32,7 +32,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
 
             if (DesignerProperties.GetIsInDesignMode(this))
                 return;
-            _hvm = this.DataContext as HistoryViewModel;
+            DataContext  = _hvm = new HistoryViewModel(Dispatcher);
         }
 
         public HistoryControl(DateTime date)
@@ -123,7 +123,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             _displayHistory = !_displayHistory;
             CarPin.Visibility = ParkingsPin.Visibility =
             RouteLine.Visibility = WarningLine.Visibility = ErrorLine.Visibility = OfflineLine.Visibility =
-            _carZonesError.Visibility = grdHistoryWork.Visibility;
+            _carZonesError.Visibility = grdHistoryWork.Visibility = _displayHistory ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void _hvm_PropertyChanged(object sender, PropertyChangedEventArgs e)

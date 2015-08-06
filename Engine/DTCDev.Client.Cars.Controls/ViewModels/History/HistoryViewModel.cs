@@ -34,8 +34,58 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 {
     public class HistoryViewModel : ViewModelBase
     {
-        public HistoryViewModel()
+        //public HistoryViewModel()
+        //{
+        //    _zoneHandler = ZonesHandler.Instance;
+        //    _mapHandler = CarsHandler.Instance;
+        //    MapCenter = MapCenterUser = new Location(55.75, 37.62);
+        //    CarSelector.OnCarChanged += CarSelector_OnCarChanged;
+        //    HistoryHandler.Instance.LoadCompleted += Instance_LoadCompleted;
+        //    HistoryHandler.Instance.DayRefreshed += Instance_DayRefreshed;
+        //    HistoryHandler.Instance.LinesLoaded += Instance_LinesLoaded;
+        //    HistoryHandler.Instance.OBDLoaded += Instance_OBDLoaded;
+        //    HistoryHandler.Instance.AccLoaded += Instance_AccLoaded;
+            
+        //    TableHistory.PropertyChanged += TableHistory_PropertyChanged;
+        //    if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+        //    {
+        //        SelectedHistoryRow = new LoadedHistoryRows();
+        //        Position.Navigation.LocationPoint =
+        //        MapCenter = MapCenterUser = new Location(55.75, 37.62);
+
+        //        DISP_Car car = new DISP_Car(Dispatcher.CurrentDispatcher);
+        //        car.Navigation.LocationPoint = new Location(55.758, 37.76);
+        //        car.Name = "obj-1";
+        //        Points.Add(car);
+
+        //        DISP_Car car1 = new DISP_Car(Dispatcher.CurrentDispatcher);
+        //        car1.Navigation.LocationPoint = new Location(55.75, 37.5);
+        //        car1.Name = "obj-2";
+        //        Points.Add(car1);
+
+        //        DISP_Car car2 = new DISP_Car(Dispatcher.CurrentDispatcher);
+        //        car2.Navigation.LocationPoint = new Location(55.8, 37.625);
+        //        car2.Name = "obj-3";
+        //        Points.Add(car2);
+
+        //        Position = Points[0];
+        //        Route.Add(new Location(55.75, 37.62, true));
+        //        Route.Add(new Location(55.73, 37.63));
+        //        Route.Add(new Location(55.73, 37.60));
+        //        WarningRoute.Add(new Location(55.76, 37.63, true));
+        //        WarningRoute.Add(new Location(55.75, 37.63));
+        //        ErrorRoute.Add(new Location(55.75, 37.62, true));
+        //        ErrorRoute.Add(new Location(55.76, 37.63));
+        //        Parkings.Add(new ParkingModel(DateTime.Today, new Location(55.76, 37.63)));
+        //    }
+
+        //    if (!_zoneHandler.Zones.Any())
+        //        _zoneHandler.Update();
+        //}
+
+        public HistoryViewModel(Dispatcher dispatcher)
         {
+            _dispatcher = dispatcher;
             _zoneHandler = ZonesHandler.Instance;
             _mapHandler = CarsHandler.Instance;
             MapCenter = MapCenterUser = new Location(55.75, 37.62);
@@ -45,42 +95,11 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             HistoryHandler.Instance.LinesLoaded += Instance_LinesLoaded;
             HistoryHandler.Instance.OBDLoaded += Instance_OBDLoaded;
             HistoryHandler.Instance.AccLoaded += Instance_AccLoaded;
-            
+
             TableHistory.PropertyChanged += TableHistory_PropertyChanged;
-            if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
-            {
-                SelectedHistoryRow = new LoadedHistoryRows();
-                Position.Navigation.LocationPoint =
-                MapCenter = MapCenterUser = new Location(55.75, 37.62);
-
-                DISP_Car car = new DISP_Car();
-                car.Navigation.LocationPoint = new Location(55.758, 37.76);
-                car.Name = "obj-1";
-                Points.Add(car);
-
-                DISP_Car car1 = new DISP_Car();
-                car1.Navigation.LocationPoint = new Location(55.75, 37.5);
-                car1.Name = "obj-2";
-                Points.Add(car1);
-
-                DISP_Car car2 = new DISP_Car();
-                car2.Navigation.LocationPoint = new Location(55.8, 37.625);
-                car2.Name = "obj-3";
-                Points.Add(car2);
-
-                Position = Points[0];
-                Route.Add(new Location(55.75, 37.62, true));
-                Route.Add(new Location(55.73, 37.63));
-                Route.Add(new Location(55.73, 37.60));
-                WarningRoute.Add(new Location(55.76, 37.63, true));
-                WarningRoute.Add(new Location(55.75, 37.63));
-                ErrorRoute.Add(new Location(55.75, 37.62, true));
-                ErrorRoute.Add(new Location(55.76, 37.63));
-                Parkings.Add(new ParkingModel(DateTime.Today, new Location(55.76, 37.63)));
-            }
-
             if (!_zoneHandler.Zones.Any())
                 _zoneHandler.Update();
+            
         }
 
         void TableHistory_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -110,8 +129,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             });
             slowTask.ContinueWith(obj =>
             {
-                if (Application.Current != null)
-                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                if (_dispatcher != null)
+                    _dispatcher.BeginInvoke(new Action(() =>
                     {
                         AccHistory = acc;
                         IsEnabledRadio = true;
@@ -140,8 +159,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             });
             slowTask.ContinueWith(obj =>
             {
-                if (Application.Current != null)
-                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                if (_dispatcher != null)
+                    _dispatcher.BeginInvoke(new Action(() =>
                     {
                         OBDHistory = obd;
                         TableHistory.Update(obd);
@@ -252,8 +271,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             });
             slowTask.ContinueWith(o =>
             {
-                if (Application.Current != null)
-                    Application.Current.Dispatcher.BeginInvoke(new Action(UpdateCenter));
+                if (_dispatcher != null)
+                    _dispatcher.BeginInvoke(new Action(UpdateCenter));
             });
             slowTask.Start();
         }
@@ -300,8 +319,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             });
             slowTask.ContinueWith(o =>
             {
-                if (Application.Current != null)
-                    Application.Current.Dispatcher.BeginInvoke(new Action(UpdateCenter));
+                if (_dispatcher != null)
+                    _dispatcher.BeginInvoke(new Action(UpdateCenter));
             });
             slowTask.Start();
         }
@@ -347,7 +366,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         private List<CarStateModel> _dayStates = new List<CarStateModel>();
 
-        private DISP_Car _position = new DISP_Car();
+        private DISP_Car _position;
 
         private bool _useAccelleration = true;
 
@@ -427,13 +446,13 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 {
                     
                     //TODO: чего здесь вообще происходит? )))))
-                    Position = new DISP_Car
+                    Position = new DISP_Car()
                     {
                         Car = new SCarModel()
                         {
                             CarNumber = CarSelector.SelectedCar.Car.CarNumber,
                             Id = CarSelector.SelectedCar.Car.Id
-                        }
+                        }, HistoryDetailView = true
                     };
                     Position.UpdateNavigation(CarSelector.SelectedCar.Navigation);
                     Position.UpdateZone(CarSelector.SelectedCar.ZoneData);
@@ -505,7 +524,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             set
             {
                 _lines = value;
-                this.OnPropertyChanged("Lines");
+                OnPropertyChanged("Lines");
             }
         }
 
@@ -517,7 +536,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             set
             {
                 _obdHistory = value;
-                this.OnPropertyChanged("OBDHistory");
+                OnPropertyChanged("OBDHistory");
             }
         }
 
@@ -528,7 +547,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             set
             {
                 _accHistory = value;
-                this.OnPropertyChanged("AccHistory");
+                OnPropertyChanged("AccHistory");
             }
         }
 
@@ -765,7 +784,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         public DISP_Car Position
         {
 
-            get { return _position; }
+            get { return _position ?? (_position = new DISP_Car()); }
             set
             {
                 if (_position != null)
@@ -777,7 +796,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 _position = value;
                 OnPropertyChanged("Position");
                 if (value == null) return;
-                _position.UpdateVisableMap(true);
+                //_position.UpdateVisableMap(true);
                 _position.IsSelected = true;
                 //if (value.Navigation.LocationPoint != null)
                 //    MapCenter = MapCenterUser = value.Navigation.LocationPoint;
@@ -1017,13 +1036,14 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             ZoneSelect.Clear();
             if (car != null)
             {
-                Position = new DISP_Car
+                Position = new DISP_Car()
                 {
                     Car = new SCarModel()
                     {
                         CarNumber = car.Car.CarNumber,
                         Id = car.Car.Id
-                    }
+                    },
+                    HistoryDetailView = true
                 };
                 Position.UpdateNavigation(car.Navigation);
                 Position.UpdateZone(car.ZoneData);
@@ -1295,6 +1315,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 {
                     r.MiddleSpeed = data.Sum(p => p.Spd) / 10 / data.Count();
                     var moving = data.Where(p => p.Spd > 10).ToList();
+                    if (!moving.Any()) return;
                     var hStart = moving.Min(p => p.hh);
                     var minStart = moving.Where(p => p.hh == hStart).Min(p => p.mm);
                     var hStop = moving.Max(p => p.hh);
@@ -1311,8 +1332,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             });
             slowTask.ContinueWith(delegate
             {
-                if (Application.Current != null)
-                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                if (_dispatcher != null)
+                    _dispatcher.BeginInvoke(new Action(() =>
                     {
                         var item =
                             HistoryRows.OrderBy(s => s.Date)
@@ -1471,10 +1492,12 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
             //AddRoute();
             //Route = lc;
-            DISP_Car tempCar = new DISP_Car();
-            tempCar.Car = new SCarModel
+            var tempCar = new DISP_Car
             {
-                CarNumber = _selectedDevice
+                Car = new SCarModel
+                {
+                    CarNumber = _selectedDevice
+                }
             };
             tempCar.Navigation.LocationPoint = new Location(point.Ln / 10000.0, point.Lt / 10000.0);
             //tempCar. = DayStates[position];
@@ -1775,6 +1798,11 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         {
             var pos = _routesModel.TimeRoute.OrderBy(o => o.Date).LastOrDefault(f => f.Date <= time);
             if (!EnableHistory || Position == null) return;
+            if (pos != null && updateCenter)
+            {
+                MapCenter = MapCenterUser = pos.Point;
+                return;
+            }
             _dt = pos != null && _dt < pos.Date ? pos.Date : time;
             var detail = pos != null ? DayStates.FirstOrDefault(o => o.Date.Equals(pos.Date)) : new CarStateModel();
             if (detail != null)
@@ -1791,8 +1819,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                     DateUpdate = new DateTimeDataModel(_dt)
                 };
             }
-            if (pos != null && updateCenter)
-                MapCenter = MapCenterUser = pos.Point;
         }
 
         private void DistanceSelectedDayChanged()
@@ -1839,5 +1865,15 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             Warning,
             Error, None
         };
+
+        private readonly Dispatcher _dispatcher;
+        public override void OnPropertyChanged(string propertyName)
+        {
+            if (_dispatcher != null)
+                _dispatcher.BeginInvoke(new Action(() =>
+                {
+                    base.OnPropertyChanged(propertyName);
+                }));
+        }
     }
 }

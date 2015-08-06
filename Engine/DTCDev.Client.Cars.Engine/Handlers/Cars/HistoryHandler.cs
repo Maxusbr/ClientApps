@@ -158,16 +158,16 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
                 }
                 historyMessages.AddRange(data);
                 DateTime dateDisplayed = currentAsked + TimeSpan.FromDays(1);
-                if (Application.Current != null)
-                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                        {
+                //if (Application.Current != null)
+                //    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                //        {
                             
                             if (DayRefreshed != null)
                                 //добавляем сюда один день, так как прошло вычитание на этапе завершения запроса
                                 //к серверу
                                 //TODO: Костыль, подумать как лучше
                                 DayRefreshed(dateDisplayed, data);
-                        }));
+                        //}));
 
                 ThreadGetter();
                 //tr.Start();
@@ -280,12 +280,12 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
             {
                 LinesDataModel model = JsonConvert.DeserializeObject<LinesDataModel>(row);
                 if (model != null)
-                    if (Application.Current != null)
-                        Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                            {
+                    //if (Application.Current != null)
+                    //    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    //        {
                                 if (LinesLoaded != null)
                                     LinesLoaded(model);
-                            }));
+                            //}));
             }
             catch { }
         }
@@ -296,12 +296,12 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
             {
                 OBDHistoryDataModel model = JsonConvert.DeserializeObject<OBDHistoryDataModel>(row);
                 if (model != null)
-                    if (Application.Current != null)
-                        Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                        {
+                    //if (Application.Current != null)
+                    //    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    //    {
                             if (OBDLoaded != null)
                                 OBDLoaded(model);
-                        }));
+                        //}));
             }
             catch 
             {
@@ -318,8 +318,11 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
                 if(accHist!=null)
                 {
                     if (AccLoaded != null)
-                        if (Application.Current != null)
-                            Application.Current.Dispatcher.BeginInvoke(new Action(() => AccLoaded(accHist)));
+                        //if (Application.Current != null)
+                        //    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                        //    {
+                                AccLoaded(accHist);
+                            //}));
                 }
             }
             catch 
@@ -356,12 +359,12 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
                 if (currentAsked < startDate)
                 {
                     historyMessages.ForEach(o => o.DevID = currentDeviceID);
-                    if (Application.Current != null)
-                        Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                        {
+                    //if (Application.Current != null)
+                    //    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    //    {
                             if (LoadCompleted != null)
                                 LoadCompleted(this, new EventArgs());
-                        }));
+                        //}));
                     return;
                 }
                 string request = currentDeviceID + ";" + currentAsked.Year.ToString() + ";" + currentAsked.Month.ToString() + ";" + currentAsked.Day.ToString() + ";";

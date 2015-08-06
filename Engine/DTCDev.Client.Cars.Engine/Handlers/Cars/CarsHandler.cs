@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows;
+using System.Windows.Threading;
 using DTCDev.Client.Cars.Engine.DisplayModels;
 using DTCDev.Models.CarsSending;
 using DTCDev.Models.CarsSending.Car;

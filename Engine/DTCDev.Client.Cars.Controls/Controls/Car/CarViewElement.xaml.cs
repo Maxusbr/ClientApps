@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using DTCDev.Client.Cars.Engine.DisplayModels;
 using DTCDev.Client.Cars.Engine.Handlers;
 using DTCDev.Client.Sensors;
@@ -93,7 +94,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
                 return;
             try
             {
-                DateTime dt = new DateTime(CarExemplar.Data.DateUpdate.Y, CarExemplar.Data.DateUpdate.M, CarExemplar.Data.DateUpdate.D, CarExemplar.Data.DateUpdate.hh, CarExemplar.Data.DateUpdate.mm, CarExemplar.Data.DateUpdate.ss);
+                DateTime dt =CarExemplar.Data.DateUpdate.ToDateTime();//new DateTime(CarExemplar.Data.DateUpdate.Y, CarExemplar.Data.DateUpdate.M, CarExemplar.Data.DateUpdate.D, CarExemplar.Data.DateUpdate.hh, CarExemplar.Data.DateUpdate.mm, CarExemplar.Data.DateUpdate.ss);
                 // TODO исправить серверное время
                 TimeSpan ts = DateTime.UtcNow - dt;
                 TimeSpan tsUtc = DateTime.Now - DateTime.UtcNow;

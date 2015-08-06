@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
+using System.Windows.Threading;
 using DTCDev.Client.Cars.Controls.Helpers;
 using DTCDev.Client.Cars.Controls.Models;
 using DTCDev.Client.Cars.Engine.AppLogic;

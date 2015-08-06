@@ -331,7 +331,7 @@
                                     <VisualState x:Name="SelectedUnfocused"/>
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>
-                            <Map1:MapViewElement Canvas.Left="-60" Canvas.Top="-60" Visibility="{Binding VisOnMap}" IsSelected="{Binding IsSelected}"/>
+                            <Map1:MapViewElement Canvas.Left="-60" Canvas.Top="-60" Visibility="{Binding Navigation.VisOnMap}" IsSelected="{Binding IsSelected}"/>
                         </Canvas>
                     </ControlTemplate>
                 </Setter.Value>
@@ -340,9 +340,9 @@
         </Style>
     </UserControl.Resources>
 
-    <UserControl.DataContext>
+    <!--<UserControl.DataContext>
         <History:HistoryViewModel/>
-    </UserControl.DataContext>
+    </UserControl.DataContext>-->
 
     <Grid x:Name="LayoutRoot" Background="White">
         <Grid.ColumnDefinitions>
@@ -388,7 +388,7 @@
 				IsEnabled="True" ItemContainerStyle="{DynamicResource ParkingItemStyle}" Visibility="Collapsed" 
                                  />
             <Map:Pushpin x:Name="CarPin" Map:MapPanel.Location="{Binding Position.Navigation.LocationPoint}" Background="{x:Null}" Visibility="Collapsed" >
-                <Map1:MapViewElement DataContext="{Binding Position}" Margin="-62,0,0,-77" Visibility="{Binding Navigation.VisOnMap}"/>
+                <Map1:MapViewElement DataContext="{Binding Position}" Margin="-62,0,0,-77" />
             </Map:Pushpin>
             <Map:MapScale/>
         </Map:Map>

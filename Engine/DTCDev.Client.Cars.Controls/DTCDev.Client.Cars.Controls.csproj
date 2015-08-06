@@ -100,6 +100,9 @@
     <Compile Include="Controls\History\HistoryControl.xaml.cs">
       <DependentUpon>HistoryControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\History\HistoryWorkControl.xaml.cs">
+      <DependentUpon>HistoryWorkControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\History\History_OnWay.xaml.cs">
       <DependentUpon>History_OnWay.xaml</DependentUpon>
     </Compile>
@@ -202,6 +205,7 @@
     <Compile Include="ViewModels\Driver\DriversWinViewModel.cs" />
     <Compile Include="ViewModels\History\HistoryRowsViewModel.cs" />
     <Compile Include="ViewModels\History\HistoryViewModel.cs" />
+    <Compile Include="ViewModels\History\HistoryWorkViewModel.cs" />
     <Compile Include="ViewModels\History\LoadedHistoryRows.cs" />
     <Compile Include="ViewModels\History\PackageViewModel.cs" />
     <Compile Include="ViewModels\Map\CarZoneMapViewModel.cs" />
@@ -262,6 +266,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\History\HistoryControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\History\HistoryWorkControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

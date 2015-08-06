@@ -35,7 +35,7 @@
                                     <VisualState x:Name="SelectedUnfocused"/>
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>
-                            <local:MapViewElement Canvas.Left="-60" Canvas.Top="-60" Visibility="{Binding VisOnMap}" IsSelected="{Binding IsSelected}"/>
+                            <local:MapViewElement Canvas.Left="-60" Canvas.Top="-60" Visibility="{Binding Navigation.VisOnMap}" IsSelected="{Binding IsSelected}"/>
                         </Canvas>
                     </ControlTemplate>
                 </Setter.Value>
