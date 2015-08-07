@@ -59,7 +59,7 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
             }
         }
 
-        private NavigationData _navigation = new NavigationData();
+        private readonly NavigationData _navigation = new NavigationData();
         
         /// <summary>
         /// Данные о навигации автомобиля
@@ -114,7 +114,7 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
             set { _driver = value; }
         }
 
-        private ZoneModel _zoneData = new ZoneModel();
+        private readonly ZoneModel _zoneData = new ZoneModel();
 
         /// <summary>
         /// Данные для работы с зонами автомобиля
