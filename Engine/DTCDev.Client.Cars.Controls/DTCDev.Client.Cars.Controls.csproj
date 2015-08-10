@@ -146,6 +146,9 @@
     <Compile Include="Controls\Map\MapViewElement.xaml.cs">
       <DependentUpon>MapViewElement.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Reports\CompilateReport.xaml.cs">
+      <DependentUpon>CompilateReport.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Reports\DistanceReport.xaml.cs">
       <DependentUpon>DistanceReport.xaml</DependentUpon>
     </Compile>
@@ -326,6 +329,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Map\MapViewElement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Reports\CompilateReport.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
