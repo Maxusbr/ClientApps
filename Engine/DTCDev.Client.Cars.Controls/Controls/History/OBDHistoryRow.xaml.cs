@@ -69,10 +69,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
                 else if(updated==false)
                 {
                     _currentWidth = _lastWidth;
-                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                    {
-                        RefreshView();
-                    }));
+                    Application.Current.Dispatcher.BeginInvoke(new Action(RefreshView));
                     updated = true;
                 }
                 Thread.Sleep(200);
@@ -91,7 +88,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
 
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            RefreshView();
+            //RefreshView();
         }
 
         private void RefreshView()
@@ -146,8 +143,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             decimal presVol = vol / scale;
             double height = (double)presVol *30;
             height = Math.Round(height) + 1;
-            Border b = new Border();
-            b.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
+            Border b = new Border {VerticalAlignment = System.Windows.VerticalAlignment.Bottom};
             if (presVol < _min || presVol > _max)
                 b.Background = new SolidColorBrush(Colors.Red);
             else

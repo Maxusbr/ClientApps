@@ -12,11 +12,14 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Car
 {
     class CarsViewModel:ViewModelBase
     {
-        public CarsViewModel()
+        private System.Windows.Threading.Dispatcher _dispatcher;
+
+        public CarsViewModel(System.Windows.Threading.Dispatcher dispatcher)
         {
+            _dispatcher = dispatcher;
             if (CarsList == null)
                 CarsList = new ObservableCollection<DISP_Car>();
-            FillCarsList();
+            //FillCarsList();
             CarsHandler.Instance.CarsRefreshed -= Instance_CarsRefreshed;
             CarsHandler.Instance.CarsRefreshed += Instance_CarsRefreshed;
             CarSelector.OnCarChanged -= CarSelector_OnCarChanged;
@@ -50,17 +53,17 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Car
 
 
 
-        void Instance_CarsRefreshed(object sender, EventArgs e)
+        void Instance_CarsRefreshed(IEnumerable<DISP_Car> data )
         {
-            FillCarsList();
+            FillCarsList(data);
         }
 
 
 
-        private void FillCarsList()
+        private void FillCarsList(IEnumerable<DISP_Car> data )
         {
             CarsList.Clear();
-            foreach (var item in CarsHandler.Instance.Cars)
+            foreach (var item in data)
             {
                 CarsList.Add(item);
             }

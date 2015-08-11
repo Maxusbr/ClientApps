@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -53,25 +54,37 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
 
         private void DisplayData(CarAccHistoryModel model)
         {
-            CreateData(model);
-            stkX.Children.Clear();
-            stkY.Children.Clear();
-            stkZ.Children.Clear();
-            foreach (var item in NData)
+            var slowTask = new Task(delegate
             {
-                stkX.Children.Add(GetBorder(item.MaxX));
-                stkY.Children.Add(GetBorder(item.MaxY));
-                stkZ.Children.Add(GetBorder(item.MaxZ));
-            }
+                CreateData(model);
+            });
+            slowTask.ContinueWith(obj =>
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    stkX.Children.Clear();
+                    stkY.Children.Clear();
+                    stkZ.Children.Clear();
+                    foreach (var item in NData)
+                    {
+                        stkX.Children.Add(GetBorder(item.MaxX));
+                        stkY.Children.Add(GetBorder(item.MaxY));
+                        stkZ.Children.Add(GetBorder(item.MaxZ));
+                    }
+                }));
+            });
+            slowTask.Start();
         }
 
         private Border GetBorder(double acc)
         {
-            Border bx = new Border();
-            bx.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
-            bx.Width = 1;
-            bx.Height = Math.Abs(Math.Round(acc * 20.0f));
-            bx.Background = new SolidColorBrush(Colors.Green);
+            var bx = new Border
+            {
+                VerticalAlignment = System.Windows.VerticalAlignment.Bottom,
+                Width = 1,
+                Height = Math.Abs(Math.Round(acc*20.0f)),
+                Background = new SolidColorBrush(Colors.Green)
+            };
             if (acc > 1.5f)
                 bx.Background = new SolidColorBrush(Colors.Red);
             else if (acc > 1)
@@ -82,31 +95,23 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         private void CreateData(CarAccHistoryModel model)
         {
             NData.Clear();
-            if(model.Data.Count()<1)
-                return;
-            double width = stkX.ActualWidth;
-            double step = width / 24 / 60;
-            double minutesInStep = 1 / step;
-            int w = (int)width;
-            double graphHeight = 160;
-            List<NormalizedData> nd = new List<NormalizedData>();
-            foreach (var item in model.Data)
+            if(!model.Data.Any()) return;
+            var width = stkX.ActualWidth;
+            var step = width / 24 / 60;
+            var minutesInStep = 1 / step;
+            var w = (int)width;
+            var graphHeight = 160;
+            var nd = model.Data.Select(item => new NormalizedData
             {
-                nd.Add(new NormalizedData
-                    {
-                        MaxZ = Math.Abs(item.MaxZ),
-                        MaxX = Math.Abs(item.MaxX),
-                        MaxY = Math.Abs(item.MaxY),
-                        DT = new DateTime(item.Date.Y, item.Date.M, item.Date.D, item.Date.hh, item.Date.mm, item.Date.ss)
-                    });
-            }
-            DateTime dt = new DateTime(model.Data[0].Date.Y, model.Data[0].Date.M, model.Data[0].Date.D);
-            for (int i = 0; i < w; i++)
+                MaxZ = Math.Abs(item.MaxZ), MaxX = Math.Abs(item.MaxX), MaxY = Math.Abs(item.MaxY), DT = new DateTime(item.Date.Y, item.Date.M, item.Date.D, item.Date.hh, item.Date.mm, item.Date.ss)
+            }).ToList();
+            var dt = new DateTime(model.Data[0].Date.Y, model.Data[0].Date.M, model.Data[0].Date.D);
+            for (var i = 0; i < w; i++)
             {
-                DateTime dtTemp = dt + TimeSpan.FromMinutes(minutesInStep);
-                NormalizedData temp = new NormalizedData();
-                List<NormalizedData> models = nd.Where(p => p.DT > dt && p.DT <= dtTemp).ToList();
-                if(models.Count()>0)
+                var dtTemp = dt + TimeSpan.FromMinutes(minutesInStep);
+                var temp = new NormalizedData();
+                var models = nd.Where(p => p.DT > dt && p.DT <= dtTemp).ToList();
+                if(models.Any())
                 {
                     temp.MaxX = models.Max(p => p.MaxX) / 100.0f;
                     temp.MaxY = models.Max(p => p.MaxY) / 100.0f;
@@ -115,20 +120,18 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
                 NData.Add(temp);
                 dt = dtTemp;
             }
-            if (NData == null)
-                return;
-            if (NData.Count() < 1)
+            if (NData == null || !NData.Any())
                 return;
 
             //find min data
             double x=0;
-            if (NData.Where(p => p.MaxX > 0.1f).Count() > 0)
+            if (NData.Any(p => p.MaxX > 0.1f))
                 x = NData.Where(p => p.MaxX > 0.1f).Min(p => p.MaxX);
             double y = 0;
-            if (NData.Where(p => p.MaxY > 0.1f).Count() > 0)
+            if (NData.Any(p => p.MaxY > 0.1f))
                 y = NData.Where(p => p.MaxY > 0.1f).Min(p => p.MaxY);
             double z = 0;
-            if (NData.Where(p => p.MaxZ > 0.1f).Count() > 0)
+            if (NData.Any(p => p.MaxZ > 0.1f))
                 z = NData.Where(p => p.MaxZ > 0.1f).Min(p => p.MaxZ);
 
             foreach (var item in NData)

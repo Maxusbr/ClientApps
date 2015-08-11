@@ -44,7 +44,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
 
 
 
-        private static DependencyProperty DataProperty = DependencyProperty.Register("Data", typeof(List<CarStateModel>),
+        private static readonly DependencyProperty DataProperty = DependencyProperty.Register("Data", typeof(List<CarStateModel>),
             typeof(History_SatCount),
             new PropertyMetadata(new List<CarStateModel>(), DataPropertyChanged));
 
@@ -57,6 +57,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         private static void DataPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             History_SatCount control = sender as History_SatCount;
+            if (control == null) return;
             control._data = (List<CarStateModel>)e.NewValue;
             control.CalculateDisplayed();
         }
@@ -73,12 +74,12 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
                 secondsInStep = secondsInStep / 2;
                 sStep = sStep / 2;
             }
-
+            cnvData.Children.Clear();
             int currentSecond = 0;
             while (currentSecond < 86400)
             {
-                List<CarStateModel> temp = _data.Where(p => p.Seconds >= currentSecond && p.Seconds < currentSecond + secondsInStep).ToList();
-                if (temp.Count() < 1)
+                var temp = _data.Where(p => p.Seconds >= currentSecond && p.Seconds < currentSecond + secondsInStep).ToList();
+                if (!temp.Any())
                     AddBorder(step, currentSecond, secondsInStep, 0);
                 else
                 {
@@ -93,14 +94,13 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         {
             double height = vol;
             height = Math.Round(height) + 1;
-            Border b = new Border();
-            b.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
+            var b = new Border {VerticalAlignment = System.Windows.VerticalAlignment.Bottom, 
+                Background = new SolidColorBrush(Colors.Green)};
             if (vol < 5)
                 b.Background = new SolidColorBrush(Colors.Red);
             else if (vol < 8)
                 b.Background = new SolidColorBrush(Colors.Yellow);
-            else
-                b.Background = new SolidColorBrush(Colors.Green);
+
             b.Height = (int)height;
             double width = widthSeconds * step;
             if (width < 1)
@@ -114,52 +114,53 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             if (_currentWidth < 1)
                 return;
             cnvData.Children.Clear();
-            if (_data.Count() < 1)
-                return;
+            if (!_data.Any()) return;
             double step = (24.0 * 60.0) / _currentWidth;
             //step = Math.Round(step, 0) + 1;
 
-            TimeSpan ts = TimeSpan.FromMinutes(step);
+            var ts = TimeSpan.FromMinutes(step);
 
             int displayedDay = 0;
 
-            DateTime d1 = new DateTime(_data[0].yy, _data[0].Mnth, _data[0].dd, 0, 0, 0);
-            DateTime d2 = new DateTime();
+            var d1 = new DateTime(_data[0].yy, _data[0].Mnth, _data[0].dd, 0, 0, 0);
+            var d2 = new DateTime();
             displayedDay = d1.Day;
 
             while (d1.Day == displayedDay)
             {
                 d2 = d1;
                 d1 += ts;
-                List<CarStateModel> temp = _data.Where(p => p.hh >= d2.Hour && p.mm >= d2.Minute).ToList();
+                var temp = _data.Where(p => p.hh >= d2.Hour && p.mm >= d2.Minute).ToList();
                 temp = temp.Where(p => p.hh <= d1.Hour).ToList();
                 temp = temp.Where(p => p.mm <= d1.Minute).ToList();
-                if (temp.Count() > 0)
+                if (temp.Any())
                 {
                     int minSat = temp.Min(p => p.St);
                     if (minSat > 15)
                         minSat = 15;
                     if (minSat < 2)
                         minSat = 2;
-                    Border b = new Border
+                    var b = new Border
                     {
                         Width = 1,
                         Height = minSat * 2,
-                        VerticalAlignment = System.Windows.VerticalAlignment.Bottom
+                        VerticalAlignment = System.Windows.VerticalAlignment.Bottom, 
+                        Background = new SolidColorBrush(Colors.Green)
                     };
                     if (minSat < 3)
                         b.Background = new SolidColorBrush(Colors.Red);
                     else if (minSat < 5)
                         b.Background = new SolidColorBrush(Colors.Yellow);
-                    else
-                        b.Background = new SolidColorBrush(Colors.Green);
+
                     cnvData.Children.Add(b);
                 }
                 else
                 {
-                    Border b = new Border();
-                    b.Width = 1;
-                    b.Height = 30;
+                    var b = new Border
+                    {
+                        Width = 1,
+                        Height = 30
+                    };
                     cnvData.Children.Add(b);
                 }
             }

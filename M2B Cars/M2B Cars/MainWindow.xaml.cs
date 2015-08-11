@@ -181,19 +181,19 @@ namespace M2B_Cars
             //ShowWindow(700, 400, reports, "Отчеты", false, "", set);
         }
 
-        private void Image_MouseLeftButtonUp_2(object sender, MouseButtonEventArgs e)
-        {
-            var set = sender as SettingsModel;
-            HistoryControl history = new HistoryControl();
-            if (set != null)
-            {
-                var hvm = history.DataContext as DTCDev.Client.Cars.Controls.ViewModels.History.HistoryViewModel;
-                if (hvm != null)
-                {
-                    hvm.SetDates(DateTime.Today, DateTime.Today + new TimeSpan(1, 0, 0, 0));
-                }
-            }
-        }
+        //private void Image_MouseLeftButtonUp_2(object sender, MouseButtonEventArgs e)
+        //{
+        //    var set = sender as SettingsModel;
+        //    HistoryControl history = new HistoryControl();
+        //    if (set != null)
+        //    {
+        //        var hvm = history.DataContext as DTCDev.Client.Cars.Controls.ViewModels.History.HistoryViewModel;
+        //        if (hvm != null)
+        //        {
+        //            hvm.SetDates(DateTime.Today, DateTime.Today + new TimeSpan(1, 0, 0, 0));
+        //        }
+        //    }
+        //}
 
         private void Image_MouseLeftButtonUp_3(object sender, MouseButtonEventArgs e)
         {

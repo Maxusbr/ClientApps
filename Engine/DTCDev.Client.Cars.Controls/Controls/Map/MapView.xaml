@@ -282,9 +282,9 @@
         </DataTemplate>
 
     </UserControl.Resources>
-    <UserControl.DataContext>
+    <!--<UserControl.DataContext>
         <VM:MapViewModel />
-    </UserControl.DataContext>
+    </UserControl.DataContext>-->
 	<Grid Background="White">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition/>
@@ -305,7 +305,7 @@
 				SelectedItem="{Binding SelectedCar}"/>
 			<TextBlock TextWrapping="Wrap" Text="{Binding CurrentLocation}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Visibility="Collapsed"/>
 			<TextBlock TextWrapping="Wrap" Text="&#xE1D9;" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,10,0,0" FontFamily="Segoe UI Symbol" Visibility="Collapsed"/>
-			<TextBlock TextWrapping="Wrap" Text="{Binding EnableEditZone, Mode=TwoWay}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="35,0,-25.757,0" FontFamily="Segoe UI Symbol" Visibility="Collapsed"/>
+			<!--<TextBlock TextWrapping="Wrap" Text="{Binding EnableEditZone, Mode=TwoWay}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="35,0,-25.757,0" FontFamily="Segoe UI Symbol" Visibility="Collapsed"/>-->
 		</Map:Map>
 		<Button Content="{Binding NameShowButton}" HorizontalAlignment="Right" VerticalAlignment="Top" Width="150" Margin="0,36,10,0" Visibility="Collapsed">
 			<i:Interaction.Behaviors>
@@ -313,7 +313,7 @@
 			</i:Interaction.Behaviors>
 		</Button>
 		<Viewbox HorizontalAlignment="Right" Height="180" VerticalAlignment="Top" Width="150" Margin="0,58,10,0" 
-			Stretch="None" >
+			Stretch="None" Visibility="Collapsed" >
 			<Canvas Height="180" Width="150" ClipToBounds="True">
                 <ListBox SelectedItem="{Binding SelectedZone}"
 					ItemsSource="{Binding Zones}" Height="150" Width="150" Canvas.Top="{Binding PosLB}">

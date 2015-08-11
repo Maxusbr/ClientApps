@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Data;
 using DTCDev.Client.ViewModel;
 using DTCDev.Models.CarsSending.Car;
@@ -13,6 +14,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 {
     public class HistoryRowsViewModel : ViewModelBase
     {
+        private readonly System.Windows.Threading.Dispatcher _dispatcher;
         private readonly ObservableCollection<HistoryRow> _rowSList = new ObservableCollection<HistoryRow>();
         private HistoryRow _selectedRow;
 
@@ -43,6 +45,12 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         }
 
         private bool _isNotNull = true;
+
+        public HistoryRowsViewModel(System.Windows.Threading.Dispatcher dispatcher)
+        {
+            _dispatcher = dispatcher;
+        }
+
         public bool IsNotNull
         {
             get { return _isNotNull; }
@@ -56,19 +64,32 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         internal void Update(OBDHistoryDataModel model)
         {
-            for (var i = 0; i < RowsList.Count; i++)
+            var slowTask = new Task(delegate
             {
-                var item = RowsList[i];
-                var next = i + 1 < RowsList.Count ? RowsList[i + 1].Date : DateTime.Now;
-                var dt = new DateTime(item.Date.Year, item.Date.Month, item.Date.Day);
-                var list = model.Data.Where(o => dt + o.Time.ToTimeSpan() >= item.Date && dt + o.Time.ToTimeSpan() < next);
-
-                foreach (var el in list)
+                for (var i = 0; i < RowsList.Count; i++)
                 {
-                    item.Update(el);
+                    var item = RowsList[i];
+                    var next = i + 1 < RowsList.Count ? RowsList[i + 1].Date : DateTime.Now;
+                    var dt = new DateTime(item.Date.Year, item.Date.Month, item.Date.Day);
+                    var list =
+                        model.Data.Where(o => dt + o.Time.ToTimeSpan() >= item.Date && dt + o.Time.ToTimeSpan() < next);
+
+                    foreach (var el in list)
+                    {
+                        item.Update(el);
+                    }
                 }
-            }
-            ListHistoryRows.Refresh();
+            });
+            slowTask.ContinueWith(delegate
+            {
+                if (_dispatcher != null)
+                    _dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        ListHistoryRows.Refresh();
+                    }));
+                
+            });
+            slowTask.Start();
         }
 
         public HistoryRow SelectedRow

@@ -70,9 +70,8 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
                 List<string> prms = _data.Data.Select(p => p.Code).Distinct().ToList();
                 foreach (var item in prms)
                 {
-                    List<OBDHistoryDataModel.OBDParam> temp = _data.Data.Where(p => p.Code == item).ToList();
-                    OBDHistoryRow row = new OBDHistoryRow(item, temp);
-                    row.Margin = new Thickness(0, 2, 0, 2);
+                    var temp = _data.Data.Where(p => p.Code == item).ToList();
+                    var row = new OBDHistoryRow(item, temp) {Margin = new Thickness(0, 2, 0, 2)};
                     stkData.Children.Add(row);
                 }
             }

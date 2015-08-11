@@ -43,6 +43,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Car
 
             _carHandler = CarsHandler.Instance;
             _carHandler.CarsRefreshed += Instance_CarsRefreshed;
+
             if (!_carHandler.Cars.Any())
                 _carHandler.Update();
             _zoneHandler = ZonesHandler.Instance;
@@ -52,9 +53,10 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Car
             
         }
 
+        private readonly ObservableCollection<DISP_Car> _cars = new ObservableCollection<DISP_Car>();
         public ObservableCollection<DISP_Car> Cars
         {
-            get { return _carHandler.Cars; }
+            get { return _cars; }
         }
 
         private readonly CarsHandler _carHandler;
@@ -84,13 +86,15 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Car
         }
 
 
-        private void Instance_CarsRefreshed(object sender, EventArgs e)
+        private void Instance_CarsRefreshed(IEnumerable<DISP_Car> data)
         {
-            foreach (var el in Cars.Where(c => c.IsCreated))
+            var dispCars = data as IList<DISP_Car> ?? data.ToList();
+            foreach (var el in dispCars.Where(c => c.IsCreated))
             {
+                Cars.Add(el);
                 el.PropertyChanged += car_PropertyChanged;
             }
-            Cars.Where(c => c.IsCreated).ToList().ForEach(o => o.IsCreated = false);
+            dispCars.Where(c => c.IsCreated).ToList().ForEach(o => o.IsCreated = false);
         }
 
         private void car_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

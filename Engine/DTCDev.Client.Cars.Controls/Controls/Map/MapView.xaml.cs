@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DTCDev.Client.Cars.Controls.ViewModels.Map;
 
 namespace DTCDev.Client.Cars.Controls.Controls.Map
 {
@@ -22,6 +23,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Map
         public MapView()
         {
             InitializeComponent();
+            DataContext = new MapViewModel(Dispatcher);
         }
 
 

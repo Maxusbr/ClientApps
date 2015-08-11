@@ -82,16 +82,16 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             MultiValueSlider.ValueChanged += MultiValueSlider_ValueChanged;
-            _stDisplayHistory = Resources["stbDisplayWorkHistory"] as Storyboard;
-            if (_stDisplayHistory != null)
-                _stDisplayHistory.Completed += (o, args) => _isAnimation = false;
-            _stbHideHistory = Resources["stbHideWorkHistory"] as Storyboard;
-            if (_stbHideHistory != null)
-                _stbHideHistory.Completed += (o, args) =>
-                {
-                    btnShowDetail.Visibility = Visibility.Visible;
-                    _isAnimation = false;
-                };
+            //_stDisplayHistory = Resources["stbDisplayWorkHistory"] as Storyboard;
+            //if (_stDisplayHistory != null)
+            //    _stDisplayHistory.Completed += (o, args) => _isAnimation = false;
+            //_stbHideHistory = Resources["stbHideWorkHistory"] as Storyboard;
+            //if (_stbHideHistory != null)
+            //    _stbHideHistory.Completed += (o, args) =>
+            //    {
+            //        btnShowDetail.Visibility = Visibility.Visible;
+            //        _isAnimation = false;
+            //    };
         }
 
 
@@ -111,6 +111,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
                 _hvm.EnableHistory = true;
                 _hvm.LoadData();
                 _hvm.PropertyChanged += _hvm_PropertyChanged;
+                _hvm.CenterUpdates += _hvm_CenterUpdates;
                 //grdHistoryWork.Visibility = Visibility.Visible;
             }
             else
@@ -118,17 +119,26 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
                 CarPoints.Opacity = 1;
                 _hvm.EnableHistory = false;
                 _hvm.PropertyChanged -= _hvm_PropertyChanged;
+                _hvm.CenterUpdates -= _hvm_CenterUpdates;
                 //grdHistoryWork.Visibility = Visibility.Collapsed;
             }
             _displayHistory = !_displayHistory;
             CarPin.Visibility = ParkingsPin.Visibility =
             RouteLine.Visibility = WarningLine.Visibility = ErrorLine.Visibility = OfflineLine.Visibility =
-            _carZonesError.Visibility = grdHistoryWork.Visibility = _displayHistory ? Visibility.Visible : Visibility.Collapsed;
+            _carZonesError.Visibility = _displayHistory ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        void _hvm_CenterUpdates(Client.Controls.Map.Location southWest, Client.Controls.Map.Location northEast)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    Map.ZoomToBounds(southWest, northEast);
+                }));
         }
 
         private void _hvm_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName.Equals("TableHistory")) UpdateTable();
+            //if (e.PropertyName.Equals("TableHistory")) UpdateTable();
             if (!e.PropertyName.Equals("IsCheckedAccelerate") && !e.PropertyName.Equals("IsCheckedWay") && !e.PropertyName.Equals("IsCheckedSpeed")) return;
             if (_hvm.IsCheckedAccelerate || _hvm.IsCheckedWay || _hvm.IsCheckedSpeed)
             {
@@ -137,72 +147,72 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             }
         }
 
-        private void UpdateTable()
-        {
-            HistoryTable.Columns.Clear();
-            HistoryTable.Columns.Add(new DataGridTextColumn { Header = "Время", Binding = new Binding("Time") });
-            HistoryTable.Columns.Add(new DataGridTextColumn
-            {
-                Header = "Скорость",
-                Binding = new Binding("Speed"),
-                CellStyle = Resources["StyleCell"] as Style
-            });
-            HistoryTable.Columns.Add(new DataGridTextColumn { Header = "Спутники", Binding = new Binding("Satelite") });
-            var converter = new Engine.AppLogic.PIDConverter();
-            if (_hvm.OBDHistory == null || _hvm.OBDHistory.Data.Count == 0) return;
-            foreach (var item in _hvm.OBDHistory.Data.Select(p => p.Code).Distinct())
-            {
-                var tb = new TextBlock
-                {
-                    Text = converter.GetPidInfo(item),
-                    TextWrapping = TextWrapping.Wrap,
-                    MaxWidth = 100
-                };
-                var bd = new Binding() { Converter = new OBDKeyConverter(), ConverterParameter = item };
-                HistoryTable.Columns.Add(new DataGridTextColumn { Header = tb, Binding = bd });
-            }
-        }
+        //private void UpdateTable()
+        //{
+        //    HistoryTable.Columns.Clear();
+        //    HistoryTable.Columns.Add(new DataGridTextColumn { Header = "Время", Binding = new Binding("Time") });
+        //    HistoryTable.Columns.Add(new DataGridTextColumn
+        //    {
+        //        Header = "Скорость",
+        //        Binding = new Binding("Speed"),
+        //        CellStyle = Resources["StyleCell"] as Style
+        //    });
+        //    HistoryTable.Columns.Add(new DataGridTextColumn { Header = "Спутники", Binding = new Binding("Satelite") });
+        //    var converter = new Engine.AppLogic.PIDConverter();
+        //    if (_hvm.OBDHistory == null || _hvm.OBDHistory.Data.Count == 0) return;
+        //    foreach (var item in _hvm.OBDHistory.Data.Select(p => p.Code).Distinct())
+        //    {
+        //        var tb = new TextBlock
+        //        {
+        //            Text = converter.GetPidInfo(item),
+        //            TextWrapping = TextWrapping.Wrap,
+        //            MaxWidth = 100
+        //        };
+        //        var bd = new Binding() { Converter = new OBDKeyConverter(), ConverterParameter = item };
+        //        HistoryTable.Columns.Add(new DataGridTextColumn { Header = tb, Binding = bd });
+        //    }
+        //}
 
-        private void grdHistoryWork_MouseEnter(object sender, MouseEventArgs e)
-        {
-            var animation = _stDisplayHistory.Children[0] as DoubleAnimation;
-            if (animation == null || _isAnimation) return;
-            _isAnimation = true;
-            btnShowDetail.Visibility = Visibility.Collapsed;
-            animation.To = _gridWhidt;
-            _stDisplayHistory.Begin();
-        }
+        //private void grdHistoryWork_MouseEnter(object sender, MouseEventArgs e)
+        //{
+        //    var animation = _stDisplayHistory.Children[0] as DoubleAnimation;
+        //    if (animation == null || _isAnimation) return;
+        //    _isAnimation = true;
+        //    btnShowDetail.Visibility = Visibility.Collapsed;
+        //    animation.To = _gridWhidt;
+        //    _stDisplayHistory.Begin();
+        //}
 
-        private void grdHistoryWork_MouseLeave(object sender, MouseEventArgs e)
-        {
-            var animation = _stbHideHistory.Children[0] as DoubleAnimation;
-            if (animation == null || _isAnimation) return;
-            _isAnimation = true;
-            animation.From = _gridWhidt;
-            _stbHideHistory.Begin();
-        }
+        //private void grdHistoryWork_MouseLeave(object sender, MouseEventArgs e)
+        //{
+        //    var animation = _stbHideHistory.Children[0] as DoubleAnimation;
+        //    if (animation == null || _isAnimation) return;
+        //    _isAnimation = true;
+        //    animation.From = _gridWhidt;
+        //    _stbHideHistory.Begin();
+        //}
 
-        private bool _displayedDistance = false;
-        private void btnDistance_Click(object sender, RoutedEventArgs e)
-        {
-            if (_displayedDistance)
-                grdDistance.Visibility = Visibility.Collapsed;
-            else
-                grdDistance.Visibility = Visibility.Visible;
-            _displayedDistance = !_displayedDistance;
-        }
+        //private bool _displayedDistance = false;
+        //private void btnDistance_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (_displayedDistance)
+        //        grdDistance.Visibility = Visibility.Collapsed;
+        //    else
+        //        grdDistance.Visibility = Visibility.Visible;
+        //    _displayedDistance = !_displayedDistance;
+        //}
 
-        private double _gridWhidt;
-        private Storyboard _stDisplayHistory;
-        private Storyboard _stbHideHistory;
-        private bool _isAnimation;
+        //private double _gridWhidt;
+        //private Storyboard _stDisplayHistory;
+        //private Storyboard _stbHideHistory;
+        //private bool _isAnimation;
 
-        private void grdHistoryWork_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            var control = sender as Grid;
-            if (control == null) return;
-            if (control.Visibility == Visibility.Visible) _gridWhidt = Math.Max(_gridWhidt, control.ActualWidth);
-        }
+        //private void grdHistoryWork_SizeChanged(object sender, SizeChangedEventArgs e)
+        //{
+        //    var control = sender as Grid;
+        //    if (control == null) return;
+        //    if (control.Visibility == Visibility.Visible) _gridWhidt = Math.Max(_gridWhidt, control.ActualWidth);
+        //}
 
         private void CheckedSpeed_Checked(object sender, RoutedEventArgs e)
         {
