@@ -46,7 +46,10 @@ namespace DTCDev.Client.Cars.Controls.Controls
 
         void Instance_StartLoadCarData(object sender, EventArgs e)
         {
-            stbUpdate.Begin();
+            Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    stbUpdate.Begin();
+                }));
         }
 
         private void ThreadRefresh()

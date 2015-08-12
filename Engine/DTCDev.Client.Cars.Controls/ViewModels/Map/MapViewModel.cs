@@ -18,10 +18,14 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Map
 {
     public class MapViewModel : ViewModelBase
     {
-        public MapViewModel()
+        private readonly Dispatcher _dispatcher;
+        public MapViewModel(Dispatcher dispatcher)
         {
+            _dispatcher = dispatcher;
             _zoneHandler = ZonesHandler.Instance;
             _mapHandler = CarsHandler.Instance;
+            _mapHandler.CarsRefreshed += _mapHandler_CarsRefreshed;
+            _mapHandler.ChangeCarsStatus += _mapHandler_ChangeCarsStatus;
             MapCenter = MapCenterUser = new Location(55.75, 37.62);
             Zones.Add(new VmPolyline(Zones.Count));
             
@@ -61,6 +65,31 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Map
             //}
         }
 
+        void _mapHandler_ChangeCarsStatus(IEnumerable<DISP_Car> data)
+        {
+            if (_dispatcher != null)
+                _dispatcher.BeginInvoke(new Action(() =>
+                {
+                    foreach (var el in data)
+                    {
+                        var car = Points.FirstOrDefault(o => o.Car != null && o.Car.Id == el.Car.Id);
+                        if (car == null) continue;
+                        car.Data = el.Data;
+                        car.VIN = el.VIN;
+                        car.OBD = el.OBD;
+                        car.Errors = el.Errors;
+                        car.Device.Sensors = el.Device.Sensors;
+                    }
+                }));
+        }
+
+        void _mapHandler_CarsRefreshed(IEnumerable<DISP_Car> data)
+        {
+            Points.Clear();
+            foreach(var el in data)
+                Points.Add(el);
+        }
+
 
         void CarSelector_OnCarChanged(DISP_Car car)
         {
@@ -94,9 +123,10 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Map
             }
         }
 
+        private readonly ObservableCollection<DISP_Car> _cars = new ObservableCollection<DISP_Car>();
         public ObservableCollection<DISP_Car> Points
         {
-            get { return _mapHandler.Cars; }
+            get { return _cars; }
         }
         
         DISP_Car _selectedCar;
@@ -111,7 +141,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Map
                 if (_selectedCar == value) return;
                 if (_selectedCar != null)
                 {
-                    _selectedCar.PropertyChanged -= selectedMapObject_PropertyChanged;
+                    _selectedCar.Navigation.PropertyChanged -= selectedMapObject_PropertyChanged;
                     _selectedCar.ZoneData.InZone = true;
                     _selectedCar.IsSelected = false;
                 }
@@ -121,7 +151,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Map
                 {
                     MapCenter = MapCenterUser = _selectedCar.Navigation.LocationPoint;
                     _selectedCar.IsSelected = true;
-                    _selectedCar.PropertyChanged += selectedMapObject_PropertyChanged;
+                    _selectedCar.Navigation.PropertyChanged += selectedMapObject_PropertyChanged;
                     if (SelectedZone != null)
                         GetMoreInfo(_selectedCar);
                 }
@@ -138,10 +168,10 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Map
 
         void selectedMapObject_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (!e.PropertyName.Equals("Location")) return;
-            var obj = sender as DISP_Car;
-            if (obj == null || obj.Navigation == null) return;
-            MapCenter = MapCenterUser = obj.Navigation.LocationPoint;
+            if (!e.PropertyName.Equals("LocationPoint")) return;
+            var obj = sender as NavigationData;
+            if (obj == null) return;
+            MapCenter = MapCenterUser = obj.LocationPoint;
             if (SelectedZone != null)
                 GetMoreInfo(_selectedCar);
         }

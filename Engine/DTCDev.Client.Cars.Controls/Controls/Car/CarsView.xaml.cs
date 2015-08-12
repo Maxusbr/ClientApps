@@ -22,7 +22,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
         public CarsView()
         {
             InitializeComponent();
-            this.DataContext = new ViewModels.Car.CarsViewModel();
+            this.DataContext = new ViewModels.Car.CarsViewModel(Dispatcher);
         }
     }
 }

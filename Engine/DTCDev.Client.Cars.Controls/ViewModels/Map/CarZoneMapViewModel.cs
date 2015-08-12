@@ -51,9 +51,13 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Map
             }
         }
 
-        void carHandler_CarsRefreshed(object sender, EventArgs e)
+        void carHandler_CarsRefreshed(IEnumerable<DISP_Car> data)
         {
-            
+            Cars.Clear();
+            foreach (var item in data)
+            {
+                Cars.Add(item);
+            }
         }
 
         readonly ZonesHandler _zoneHandler = ZonesHandler.Instance;
@@ -79,9 +83,10 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Map
             }
         }
 
+        private readonly ObservableCollection<DISP_Car> _cars = new ObservableCollection<DISP_Car>();
         public ObservableCollection<DISP_Car> Cars
         {
-            get { return _carHandler.Cars; }
+            get { return _cars; }
         }
 
         DISP_Car _selectedCar;

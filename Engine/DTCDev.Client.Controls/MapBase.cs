@@ -454,8 +454,8 @@ namespace DTCDev.Client.Controls.Map
                 var lonZoom = Math.Log(lonScale, 2d);
                 var latZoom = Math.Log(latScale, 2d);
 
-                TargetZoomLevel = Math.Min(lonZoom, latZoom);
-                TargetCenter = MapTransform.Transform(new Point((p1.X + p2.X) / 2d, (p1.Y + p2.Y) / 2d));
+                TargetZoomLevel = Math.Min(lonZoom, latZoom) - .4;
+                Center = TargetCenter = MapTransform.Transform(new Point((p1.X + p2.X) / 2d, (p1.Y + p2.Y) / 2d));
                 TargetHeading = 0d;
             }
         }

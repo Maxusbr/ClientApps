@@ -43,6 +43,8 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
             get { return historyMessages; }
         }
 
+        public delegate void DayStateChanged(List<CarStateModel> list);
+        public event DayStateChanged DayStateChange;
 
         public delegate void dayRefreshed(DateTime day, List<CarStateModel> data);
         public event dayRefreshed DayRefreshed;
@@ -420,6 +422,11 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
         public int GetColRows()
         {
             return historyMessages.Count;
+        }
+
+        public virtual void OnDayStateChange(List<CarStateModel> list)
+        {
+            if (DayStateChange != null) DayStateChange(list);
         }
     }
 }

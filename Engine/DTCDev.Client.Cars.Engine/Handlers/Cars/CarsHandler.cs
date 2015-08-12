@@ -44,7 +44,7 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
         private int _interval = 5000;
         private bool _threadAskerIsWorked = false;
 
-        
+
 
         public void Update()
         {
@@ -59,14 +59,25 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
             }
         }
 
+        public delegate void CarsRefreshedBase(IEnumerable<DISP_Car> data);
 
+        public event CarsRefreshedBase ChangeCarsStatus;
+        protected virtual void OnChangeCarsStatus(IEnumerable<DISP_Car> data)
+        {
+            if (ChangeCarsStatus != null) ChangeCarsStatus(data);
+        }
 
-        public event EventHandler CarsRefreshed;
+        public event CarsRefreshedBase CarsRefreshed;
+        protected virtual void OnCarsRefreshed(IEnumerable<DISP_Car> data)
+        {
+            if (CarsRefreshed != null) CarsRefreshed(data);
+        }
+
         public event EventHandler StartLoadCarData;
         public event EventHandler SettingsLoaded;
 
-        ObservableCollection<DISP_Car> _cars = new ObservableCollection<DISP_Car>();
-        public ObservableCollection<DISP_Car> Cars
+        readonly List<DISP_Car> _cars = new List<DISP_Car>();
+        public List<DISP_Car> Cars
         {
             get { return _cars; }
         }
@@ -91,23 +102,24 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
         private void ThreadDataAsker()
         {
             _threadAskerIsWorked = true;
-            
-                while (true)
+
+            while (true)
+            {
+                Thread.Sleep(_interval);
+                try
                 {
-                    Thread.Sleep(_interval);
-                    try
-                    {
-                        TCPConnection.Instance.SendData("BB");
-                        if (StartLoadCarData != null)
-                            if (Application.Current != null)
-                                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                                    {
-                                        StartLoadCarData(this, new EventArgs());
-                                    }));
-                    }
-                    catch { }
+                    TCPConnection.Instance.SendData("BB");
+                    if (StartLoadCarData != null)
+                        //if (Application.Current != null)
+                        //    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                        //    {
+                                if (StartLoadCarData != null)
+                                    StartLoadCarData(this, new EventArgs());
+                            //}));
                 }
-            
+                catch { }
+            }
+
             _threadAskerIsWorked = false;
         }
 
@@ -165,30 +177,28 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
         {
             foreach (var item in temp)
             {
-                if (item != null)
+                if (item == null) continue;
+                var c = _cars.FirstOrDefault(p => p.Car != null && p.Car.Id == item.Id);
+                if (c == null)
                 {
-                    DISP_Car c = _cars.Where(p => p.Car.Id == item.Id && p.Car != null).FirstOrDefault();
-                    if (c == null)
+                    c = new DISP_Car
                     {
-                        _cars.Add(new DISP_Car
-                            {
-                                Car = item,
-                                FuelData = new FuelDataModel
-                                {
-                                    FuelDataPosition = item.FuelPosition,
-                                    StartFuelValue = item.StartValue,
-                                    StepPerLiter = ((decimal)item.StepsPerLiter) / 100.0m
-                                }
-                            });
-                    }
-                    else
-                    {
-                        c.Car = item;
-                    }
+                        Car = item,
+                        FuelData = new FuelDataModel
+                        {
+                            FuelDataPosition = item.FuelPosition,
+                            StartFuelValue = item.StartValue,
+                            StepPerLiter = ((decimal)item.StepsPerLiter) / 100.0m
+                        }
+                    };
+                    _cars.Add(c);
+                }
+                else
+                {
+                    c.Car = item;
                 }
             }
-            if (CarsRefreshed != null)
-                CarsRefreshed(this, new EventArgs());
+            OnCarsRefreshed(_cars);
             if (_threadAskerIsWorked == false)
             {
                 Thread tr = new Thread(ThreadDataAsker);
@@ -210,53 +220,56 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
         {
             try
             {
-                List<CarStateFullModel> temp = JsonConvert.DeserializeObject<List<CarStateFullModel>>(row);
+                var temp = JsonConvert.DeserializeObject<List<CarStateFullModel>>(row);
                 if (temp != null)
                 {
-                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                               {
-                                   List<string> ids = new List<string>();
-                                   ids = temp.Select(p => p.State.ID).Distinct().ToList();
-                                   foreach (var item in temp)
-                                   {
-                                       DISP_Car car = Cars.Where(p => p.Car.Id == item.State.ID).FirstOrDefault();
-                                       if (car != null)
-                                       {
-                                           car.Data = item.State;
-                                           car.VIN = item.VIN;
-                                           car.Errors.Clear();
-                                           foreach (var er in item.Errors)
-                                           {
-                                               car.Errors.Add(new DISP_Car.EOBDData
-                                                   {
-                                                       Key = er.Key,
-                                                       Value = er.Value
-                                                   });
-                                           }
-                                           car.OBD.Clear();
-                                           foreach (var obd in item.OBD)
-                                           {
-                                               car.OBD.Add(new DISP_Car.EOBDData
-                                               {
-                                                   Key = obd.Key,
-                                                   Value = obd.Value
-                                               });
-                                           }
+                    //Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    //           {
+                    //var ids = new List<string>();
+                    //ids = temp.Select(p => p.State.ID).Distinct().ToList();
+                    var cars = new List<DISP_Car>();
+                    foreach (var item in temp)
+                    {
+                        var excar = _cars.FirstOrDefault(p => p.Car.Id == item.State.ID);
+                        if (excar == null) continue;
+                        var car = new DISP_Car
+                        {
+                            Data = item.State,
+                            VIN = item.VIN, Car = excar.Car, FuelData = excar.FuelData
+                        };
+                        //car.Errors.Clear();
+                        foreach (var er in item.Errors)
+                        {
+                            car.Errors.Add(new DISP_Car.EOBDData
+                            {
+                                Key = er.Key,
+                                Value = er.Value
+                            });
+                        }
+                        //car.OBD.Clear();
+                        foreach (var obd in item.OBD)
+                        {
+                            car.OBD.Add(new DISP_Car.EOBDData
+                            {
+                                Key = obd.Key,
+                                Value = obd.Value
+                            });
+                        }
 
-                                           foreach (var sens in car.Device.Sensors)
-                                           {
-                                               int pos = sens.Model.Port-1;
-                                               int c = item.State.Sensors.Count()-1;
-                                               if (c >= pos)
-                                               {
-                                                   if (sens.State == null)
-                                                       sens.State = new SensorState();
-                                                   sens.State = new SensorState { Vol = item.State.Sensors[pos] };
-                                               }
-                                           }
-                                       }
-                                   }
-                               }));
+                        foreach (var sens in car.Device.Sensors)
+                        {
+                            int pos = sens.Model.Port - 1;
+                            int c = item.State.Sensors.Count() - 1;
+                            if (c < pos) continue;
+                            //if (sens.State == null)
+                            //    sens.State = new SensorState();
+                            sens.State = new SensorState { Vol = item.State.Sensors[pos] };
+                        }
+                        cars.Add(car);
+                    }
+                    OnChangeCarsStatus(cars);
+                    //_cars.ForEach(o => o.IsChanged = false);
+                    //}));
                 }
             }
             catch { }
@@ -266,43 +279,41 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
         {
             try
             {
-                List<DeviceDataModel> data = JsonConvert.DeserializeObject<List<DeviceDataModel>>(row);
-                int l = row.Length;
+                var data = JsonConvert.DeserializeObject<List<DeviceDataModel>>(row);
+                //int l = row.Length;
                 if (data != null)
                 {
-                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                                  {
+                    //Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    //              {
                                       foreach (var item in data)
                                       {
-                                          DISP_Car car = Cars.Where(p => p.Car.Id == item.DID).FirstOrDefault();
-                                          if (car != null)
+                                          var car = _cars.FirstOrDefault(p => p.Car.Id == item.DID);
+                                          if (car == null) continue;
+                                          if (car.Device == null)
                                           {
-                                              if (car.Device == null)
+                                              car.Device = new Models.DeviceSender.DISP.DevicePresenter
                                               {
-                                                  car.Device = new Models.DeviceSender.DISP.DevicePresenter
-                                                  {
-                                                      CT = item.CN,
-                                                      DID = item.DID,
-                                                      id = item.id,
-                                                      IsGuard = false,
-                                                      IsOnline = false,
-                                                      LastUpdate = DateTime.Now,
-                                                      Name = item.Name
-                                                  };
-                                              }
-
-                                              List<Models.DeviceSender.DISP.DevicePresenter.Sensor> sensors = new List<Models.DeviceSender.DISP.DevicePresenter.Sensor>();
-                                              foreach (var s in item.Sensors)
-                                              {
-                                                  sensors.Add(new Models.DeviceSender.DISP.DevicePresenter.Sensor
-                                                  {
-                                                      Model = s
-                                                  });
-                                              }
-                                              car.Device.Sensors = sensors;
+                                                  CT = item.CN,
+                                                  DID = item.DID,
+                                                  id = item.id,
+                                                  IsGuard = false,
+                                                  IsOnline = false,
+                                                  LastUpdate = DateTime.Now,
+                                                  Name = item.Name
+                                              };
                                           }
+
+                                          var sensors = new List<Models.DeviceSender.DISP.DevicePresenter.Sensor>();
+                                          foreach (var s in item.Sensors)
+                                          {
+                                              sensors.Add(new Models.DeviceSender.DISP.DevicePresenter.Sensor
+                                              {
+                                                  Model = s
+                                              });
+                                          }
+                                          car.Device.Sensors = sensors;
                                       }
-                                  }));
+                                  //}));
                 }
             }
             catch (Exception ex)
@@ -316,17 +327,15 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
         {
             try
             {
-                List<CarSettings> settings = JsonConvert.DeserializeObject<List<CarSettings>>(row);
+                var settings = JsonConvert.DeserializeObject<List<CarSettings>>(row);
                 Settings.Clear();
                 foreach (var item in settings)
                 {
                     Settings.Add(item);
-                    DISP_Car car = _cars.Where(p => p.ID == item.DID).FirstOrDefault();
-                    if(car!=null)
-                    {
-                        car.Name = item.CarName;
-                        car.VIN = item.VIN;
-                    }
+                    var car = _cars.FirstOrDefault(p => p.ID == item.DID);
+                    if (car == null) continue;
+                    car.Name = item.CarName;
+                    car.VIN = item.VIN;
                 }
                 if (SettingsLoaded != null)
                     SettingsLoaded(this, new EventArgs());
@@ -342,7 +351,7 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
         {
             foreach (var item in DriverHandler.Instance.ListDriver)
             {
-                List<DISP_Car> tempCars = Cars.Where(p => p.Car.driverID == item.Id).ToList();
+                List<DISP_Car> tempCars = _cars.Where(p => p.Car.driverID == item.Id).ToList();
                 foreach (var c in tempCars)
                 {
                     c.Driver = item;
@@ -352,12 +361,12 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
 
         public void SetDriverToCar(string carID, int driverID)
         {
-            DriverModel driver = DriverHandler.Instance.ListDriver.Where(p => p.Id == driverID).FirstOrDefault();
+            var driver = DriverHandler.Instance.ListDriver.FirstOrDefault(p => p.Id == driverID);
             if (driver == null)
                 return;
             else
             {
-                DISP_Car car = Cars.Where(p => p.Car.Id == carID).FirstOrDefault();
+                var car = _cars.FirstOrDefault(p => p.Car.Id == carID);
                 if (car == null)
                     return;
                 else
@@ -374,7 +383,7 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
 
         public void SetFuelInfo(string carID, int position, int startValue, decimal scale)
         {
-            SendFuelSettingsDataModel model = new SendFuelSettingsDataModel
+            var model = new SendFuelSettingsDataModel
             {
                 CarID = carID,
                 Position = position,
@@ -383,7 +392,7 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
             };
             try
             {
-                string req = "BE" + JsonConvert.SerializeObject(model);
+                var req = "BE" + JsonConvert.SerializeObject(model);
                 TCPConnection.Instance.SendData(req);
             }
             catch { }
@@ -413,13 +422,12 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
 
         public void SetCarMarkModel(string carNumber, string mark, string model)
         {
-            DISP_Car car = _cars.Where(p => p.Car.CarNumber == carNumber).FirstOrDefault();
-            if(car!=null)
-            {
-                car.Mark = mark;
-                car.Model = model;
-            }
+            var car = _cars.FirstOrDefault(p => p.Car.CarNumber == carNumber);
+            if (car == null) return;
+            car.Mark = mark;
+            car.Model = model;
         }
+
 
     }
 }

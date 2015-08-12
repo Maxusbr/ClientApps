@@ -1,4 +1,4 @@
-﻿<Window
+﻿<UserControl
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,20 +7,27 @@
             xmlns:Models="clr-namespace:DTCDev.Client.Cars.Controls.Models" 
             xmlns:local="clr-namespace:DTCDev.Client.Cars.Controls.Controls.History"
             xmlns:history="clr-namespace:DTCDev.Client.Cars.Controls.ViewModels.History"
+            xmlns:busy="clr-namespace:DTCDev.Client.Busy;assembly=DTCDev.Client"
             x:Class="DTCDev.Client.Cars.Controls.Controls.History.HistoryWorkControl" 
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="500" Loaded="UserControl_Loaded">
-    <Window.Resources>
+    <UserControl.Resources>
         <Storyboard x:Key="stbOpenToolBar" Storyboard.TargetName="grdToolbar" Storyboard.TargetProperty="(FrameworkElement.Width)">
             <DoubleAnimation From="40" To="180" Duration="0:0:0.2"/>
         </Storyboard>
         <Storyboard x:Key="stbCloseToolBar" Storyboard.TargetName="grdToolbar" Storyboard.TargetProperty="(FrameworkElement.Width)">
             <DoubleAnimation From="180" To="40" Duration="0:0:0.2"/>
         </Storyboard>
+        <Storyboard x:Key="stbDisplayWorkHistory" Storyboard.TargetName="grdHistoryWork" Storyboard.TargetProperty="(FrameworkElement.Width)">
+            <DoubleAnimation From="40" To="450" Duration="0:0:0.2"/>
+        </Storyboard>
+        <Storyboard x:Key="stbHideWorkHistory" BeginTime="0:0:1" >
+            <DoubleAnimation From="450" To="40" Duration="0:0:0.2" Storyboard.TargetName="grdHistoryWork" Storyboard.TargetProperty="(FrameworkElement.Width)"/>
+        </Storyboard>
         <Controls:SpeedConverter x:Key="speedConverter"/>
         <Models:InvertBoolConverter x:Key="InvertBoolConverter"/>
         <Models:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-    </Window.Resources>
+    </UserControl.Resources>
     <!--<UserControl.DataContext>
         <history:HistoryWorkViewModel/>
     </UserControl.DataContext>-->
@@ -94,8 +101,8 @@
                     <Border Background="LightGray" Margin="2" BorderThickness="1" BorderBrush="Gray" Grid.RowSpan="2" Grid.ColumnSpan="3"/>
                     <TextBlock Text="{Binding CDStartDay}" Grid.Column="1" Margin="7"/>
                     <TextBlock Text="{Binding CDStopDay}" Grid.Column="1" Grid.Row="1" Margin="7"/>
-                    <Path Visibility="{Binding VisCDStart}" Fill="Green" Data="M0,0 10,5 0,10" Margin="10"/>
-                    <Path Visibility="{Binding VisCDStop}" Fill="Green" Data="M0,0 10,5 0,10" Margin="10" Grid.Row="1"/>
+                    <Path Visibility="{Binding VisCDStart, Converter={StaticResource BoolToVisibilityConverter}}" Fill="Green" Data="M0,0 10,5 0,10" Margin="10"/>
+                    <Path Visibility="{Binding VisCDStop, Converter={StaticResource BoolToVisibilityConverter}}" Fill="Green" Data="M0,0 10,5 0,10" Margin="10" Grid.Row="1"/>
                     <TextBlock Text="{Binding TotalDistance, StringFormat=Всего \{0\} км}" Grid.Column="2" Grid.RowSpan="2" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Grid>
             </Grid>
@@ -115,9 +122,9 @@
                         <Image Margin="3,3,0,6" Width="24" HorizontalAlignment="Left"  Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/car-add-icon.png" ToolTipService.ToolTip="Автомобиль в движении"/>
                         <Image Margin="3,3,0,6" Width="24" HorizontalAlignment="Left" Grid.Row="1" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/satellite-dish-icon.png" ToolTipService.ToolTip="Количество спутников"/>
                         <local:History_OnWay Data="{Binding DayStates}" Margin="57,0,30,0" />
-                        <TextBlock Margin="40,0" HorizontalAlignment="Left" Height="23" MinWidth="10" VerticalAlignment="Center" Text="{Binding SelectedState.Spd, Converter={StaticResource speedConverter}}"/>
-                        <local:History_SatCount Visibility="Collapsed" Grid.Row="1"  Height="30" Margin="57,0,30,0" x:Name="history_SatCount1" Data="{Binding DayStates}"/>
-                        <TextBlock Grid.Row="1" Margin="40,0" HorizontalAlignment="Left" Height="23" MinWidth="10" VerticalAlignment="Center" Text="{Binding SelectedState.Sat}"/>
+                        <!--<TextBlock Margin="40,0" HorizontalAlignment="Left" Height="23" MinWidth="10" VerticalAlignment="Center" Text="{Binding SelectedState.Spd, Converter={StaticResource speedConverter}}"/>-->
+                        <local:History_SatCount Grid.Row="1"  Height="30" Margin="57,0,30,0" x:Name="history_SatCount1" Data="{Binding DayStates}"/>
+                        <!--<TextBlock Grid.Row="1" Margin="40,0" HorizontalAlignment="Left" Height="23" MinWidth="10" VerticalAlignment="Center" Text="{Binding SelectedState.Sat}"/>-->
 
                         <local:LinesHistoryPresenter Grid.Row="2" Data="{Binding Lines}"/>
 
@@ -142,5 +149,6 @@
                 </Grid>
             </TabItem>
         </TabControl>
+        <busy:MacBusyControl IsWaiting="{Binding Iswaiting}" Grid.RowSpan="3" d:IsHidden="True" Grid.Column="1" />
     </Grid>
-</Window>
+</UserControl>

@@ -183,13 +183,13 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
         {
             try
             {
-                List<KVPBase> temp = JsonConvert.DeserializeObject<List<KVPBase>>(row);
-                if (temp != null)
-                    if (Application.Current != null)
-                        Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                            {
-                                SpecificationDataStorage.Instance.SetMarks(temp);
-                            }));
+                var temp = JsonConvert.DeserializeObject<List<KVPBase>>(row);
+                if (temp == null) return;
+                //if (Application.Current != null)
+                //    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                //    {
+                        SpecificationDataStorage.Instance.SetMarks(temp);
+                    //}));
             }
             catch { }
         }
@@ -198,13 +198,13 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
         {
             try
             {
-                List<KVPBase> temp = JsonConvert.DeserializeObject<List<KVPBase>>(row);
-                if (temp != null)
-                    if (Application.Current != null)
-                        Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                        {
-                            SpecificationDataStorage.Instance.SetModels(temp);
-                        }));
+                var temp = JsonConvert.DeserializeObject<List<KVPBase>>(row);
+                if (temp == null) return;
+                //if (Application.Current != null)
+                //    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                //    {
+                        SpecificationDataStorage.Instance.SetModels(temp);
+                    //}));
             }
             catch { }
         }
@@ -213,13 +213,13 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
         {
             try
             {
-                List<KVPBase> temp = JsonConvert.DeserializeObject<List<KVPBase>>(row);
-                if (temp != null)
-                    if (Application.Current != null)
-                        Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                        {
-                            SpecificationDataStorage.Instance.SetBodyTypes(temp);
-                        }));
+                var temp = JsonConvert.DeserializeObject<List<KVPBase>>(row);
+                if (temp == null) return;
+                //if (Application.Current != null)
+                //    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                //    {
+                        SpecificationDataStorage.Instance.SetBodyTypes(temp);
+                    //}));
             }
             catch { }
         }
@@ -228,13 +228,13 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
         {
             try
             {
-                List<KVPBase> temp = JsonConvert.DeserializeObject<List<KVPBase>>(row);
-                if (temp != null)
-                    if (Application.Current != null)
-                        Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                        {
-                            SpecificationDataStorage.Instance.SetEngineTypes(temp);
-                        }));
+                var temp = JsonConvert.DeserializeObject<List<KVPBase>>(row);
+                if (temp == null) return;
+                //if (Application.Current != null)
+                //    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                //    {
+                        SpecificationDataStorage.Instance.SetEngineTypes(temp);
+                    //}));
             }
             catch { }
         }
@@ -243,13 +243,13 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
         {
             try
             {
-                List<KVPBase> temp = JsonConvert.DeserializeObject<List<KVPBase>>(row);
-                if (temp != null)
-                    if (Application.Current != null)
-                        Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                        {
-                            SpecificationDataStorage.Instance.SetEngineVolumes(temp);
-                        }));
+                var temp = JsonConvert.DeserializeObject<List<KVPBase>>(row);
+                if (temp == null) return;
+                //if (Application.Current != null)
+                //    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                //    {
+                        SpecificationDataStorage.Instance.SetEngineVolumes(temp);
+                    //}));
             }
             catch { }
         }
@@ -258,13 +258,13 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
         {
             try
             {
-                List<KVPBase> temp = JsonConvert.DeserializeObject<List<KVPBase>>(row);
-                if (temp != null)
-                    if (Application.Current != null)
-                        Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                        {
-                            SpecificationDataStorage.Instance.SetTransTypes(temp);
-                        }));
+                var temp = JsonConvert.DeserializeObject<List<KVPBase>>(row);
+                if (temp == null) return;
+                //if (Application.Current != null)
+                //    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                //    {
+                        SpecificationDataStorage.Instance.SetTransTypes(temp);
+                    //}));
             }
             catch { }
         }
@@ -273,13 +273,13 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
         {
             try
             {
-                List<CurrentDevicesDataModel> devices = JsonConvert.DeserializeObject<List<CurrentDevicesDataModel>>(row);
-                if (devices != null)
-                    if (Application.Current != null)
-                        Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                            {
-                                CarDataStorage.Instance.SetDevices(devices);
-                            }));
+                var devices = JsonConvert.DeserializeObject<List<CurrentDevicesDataModel>>(row);
+                if (devices == null) return;
+                //if (Application.Current != null)
+                //    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                //    {
+                        CarDataStorage.Instance.SetDevices(devices);
+                    //}));
             }
             catch { }
         }
@@ -288,17 +288,17 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
         {
             try
             {
-                List<CarPresenterDataModel> cars = JsonConvert.DeserializeObject<List<CarPresenterDataModel>>(row);
-                if (cars != null)
-                    if (Application.Current != null)
-                        Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                            {
-                                CarDataStorage.Instance.SetCars(cars);
-                                foreach (var item in cars)
-                                {
-                                    CarsHandler.Instance.SetCarMarkModel(item.CarNumber, item.Mark, item.Model);
-                                }
-                            }));
+                var cars = JsonConvert.DeserializeObject<List<CarPresenterDataModel>>(row);
+                if (cars == null) return;
+                //if (Application.Current != null)
+                //    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                //    {
+                        CarDataStorage.Instance.SetCars(cars);
+                        foreach (var item in cars)
+                        {
+                            CarsHandler.Instance.SetCarMarkModel(item.CarNumber, item.Mark, item.Model);
+                        }
+                    //}));
             }
             catch { }
         }

@@ -53,9 +53,7 @@
         <Storyboard x:Key="stbDisplayWorkHistory" Storyboard.TargetName="grdHistoryWork" Storyboard.TargetProperty="(FrameworkElement.Width)">
             <DoubleAnimation From="40" To="450" Duration="0:0:0.2"/>
         </Storyboard>
-        <Storyboard x:Key="stbHideWorkHistory" BeginTime="0:0:1" >
-            <DoubleAnimation From="450" To="40" Duration="0:0:0.2" Storyboard.TargetName="grdHistoryWork" Storyboard.TargetProperty="(FrameworkElement.Width)"/>
-        </Storyboard>
+        <Storyboard x:Key="stbHideWorkHistory" BeginTime="0:0:1" />
 
 
         <Style TargetType="{x:Type Button}" x:Key="feBtnStyle">
@@ -357,14 +355,14 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Visibility="Collapsed" Margin="0,0,0,580" Grid.RowSpan="2" Width="0">
+        <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Visibility="Collapsed" Margin="0,0,0,580" Grid.RowSpan="2" Width="0">
             <TextBlock Text="Даты запроса:" Margin="5"/>
             <Button Content="{Binding SelectedDateText}" Margin="5,0" Width="100" VerticalAlignment="Center" Command="{Binding SelectedDateCommand}"/>
             <ToggleButton IsChecked="{Binding UseAccelleration, Mode=TwoWay}" HorizontalAlignment="Left" Content="Оптимизация" VerticalAlignment="Center" Margin="5,0" Width="100"/>
             <ToggleButton x:Name="checkBox" IsChecked="{Binding TablePackageView, Mode=TwoWay}" HorizontalAlignment="Left" Content="Таблица" VerticalAlignment="Center" Margin="5,0" Width="70"/>
             <TextBlock FontWeight="Bold" HorizontalAlignment="Right" Margin="0,6,10,6" Text="{Binding SelectedDevice}"/>
             <ToggleButton Content="Все дни" VerticalAlignment="Center" Margin="0,3,10,3" IsChecked="{Binding PeriodSet}" HorizontalAlignment="Right" Width="70"/>
-        </StackPanel>
+        </StackPanel>-->
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="2" Margin="0,0,0,580" Grid.RowSpan="2" Width="0" Grid.ColumnSpan="2"/>
 
@@ -392,6 +390,7 @@
             </Map:Pushpin>
             <Map:MapScale/>
         </Map:Map>
+        <local:HistoryWorkControl Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" /> <!--Visibility="{Binding EnableHistory, Converter={StaticResource BoolToVisibilityConverter}}"-->
         <Grid Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left" Width="200" Height="220">
             <Border Width="32" Height="210" Background="White" HorizontalAlignment="Left" Margin="6,10" Opacity="0.8"/>
             <Slider x:Name="sldrZoom" Grid.Row="1" SmallChange="1" VerticalAlignment="Top" HorizontalAlignment="Left" Width="200" RenderTransformOrigin="0.5,0.5" Margin="-78,100,0,0" Maximum="18" Minimum="1" Value="{Binding ZoomLevel, Mode=TwoWay}">
@@ -404,131 +403,6 @@
                     </TransformGroup>
                 </Slider.RenderTransform>
             </Slider>
-        </Grid>
-
-
-
-
-
-        <Grid x:Name="grdHistoryWork" Grid.Row="1" Background="White" Grid.Column="1" HorizontalAlignment="Right"
-		Visibility="{Binding EnableHistory, Converter={StaticResource BoolToVisibilityConverter}}" 
-              MouseLeave="grdHistoryWork_MouseLeave" SizeChanged="grdHistoryWork_SizeChanged">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Grid x:Name="btnShowDetail" Width="40" HorizontalAlignment="Left" Background="LightGray" Grid.RowSpan="3" 
-                  Visibility="Collapsed" MouseEnter="grdHistoryWork_MouseEnter" >
-                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/way.png" Width="34" Height="34"/>
-            </Grid>
-            <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <TextBlock Text="{Binding LoadedText}" Margin="10,10,10,0" VerticalAlignment="Top"/>
-                <DataGrid Margin="10,7,70,40" ItemsSource="{Binding HistoryRows}" AutoGenerateColumns="False" SelectedItem="{Binding SelectedHistoryRow, Mode=TwoWay}" CanUserAddRows="False" Grid.Row="2" SelectionMode="Single">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding StringDate}" Header="Дата" Width="*" IsReadOnly="True"/>
-                        <DataGridTextColumn Binding="{Binding Mileage}" Header="Пробег" IsReadOnly="True"/>
-                        <DataGridTextColumn Binding="{Binding MiddleSpeed}" Header="Ср. скорость" IsReadOnly="True"/>
-                        <DataGridTextColumn Binding="{Binding Start}" Header="Начало" IsReadOnly="True"/>
-                        <DataGridTextColumn Binding="{Binding Stop}" Header="Окончание" IsReadOnly="True"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-                <TextBlock Text="{Binding DistanceAll}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,19,20" Grid.Row="2"/>
-                <Button Content="Загрузить еще 10 дней" Command="{Binding LoadNext10Command}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,10" Grid.Row="2"/>
-                <Grid Margin="0,7,10,40" Width="40" HorizontalAlignment="Right" x:Name="grdToolbar" Background="LightGray" Grid.Row="2">
-                    <Grid.Triggers>
-                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
-                            <BeginStoryboard Storyboard="{StaticResource stbOpenToolBar}"/>
-                        </EventTrigger>
-                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
-                            <BeginStoryboard Storyboard="{StaticResource stbCloseToolBar}"/>
-                        </EventTrigger>
-                    </Grid.Triggers>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="40"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="40"/>
-                    </Grid.ColumnDefinitions>
-                    <Button Command="{Binding ClickDistanceCommand}" x:Name="btnDistance" Width="34" Height="34" Grid.Column="1" Click="btnDistance_Click" >
-                        <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/way.png"/>
-                    </Button>
-                    <TextBlock TextWrapping="Wrap" FontStyle="Italic" Margin="5" Text="Пробег автомобиля за несколько дней"/>
-                </Grid>
-                <Grid Grid.Row="1">
-                    <Grid x:Name="grdDistance" Height="60" Visibility="Collapsed">
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="30"/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Border Background="LightGray" Margin="2" BorderThickness="1" BorderBrush="Gray" Grid.RowSpan="2" Grid.ColumnSpan="3"/>
-                        <TextBlock Text="{Binding CDStartDay}" Grid.Column="1" Margin="7"/>
-                        <TextBlock Text="{Binding CDStopDay}" Grid.Column="1" Grid.Row="1" Margin="7"/>
-                        <Path Visibility="{Binding VisCDStart}" Fill="Green" Data="M0,0 10,5 0,10" Margin="10"/>
-                        <Path Visibility="{Binding VisCDStop}" Fill="Green" Data="M0,0 10,5 0,10" Margin="10" Grid.Row="1"/>
-                        <TextBlock Text="{Binding TotalDistance, StringFormat=Всего \{0\} км}" Grid.Column="2" Grid.RowSpan="2" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    </Grid>
-                </Grid>
-
-            </Grid>
-            <TabControl Grid.Row="2" Grid.Column="1">
-                <TabItem Header="Графическое представление">
-                    <ScrollViewer  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="32"/>
-                                <RowDefinition Height="32"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="200"/>
-                            </Grid.RowDefinitions>
-                            <Image Margin="3,3,0,6" Width="24" HorizontalAlignment="Left"  Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/car-add-icon.png" ToolTipService.ToolTip="Автомобиль в движении"/>
-                            <Image Margin="3,3,0,6" Width="24" HorizontalAlignment="Left" Grid.Row="1" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/satellite-dish-icon.png" ToolTipService.ToolTip="Количество спутников"/>
-                            <local:History_OnWay Data="{Binding DayStates}" Margin="57,0,30,0" />
-                            <TextBlock Margin="40,0" HorizontalAlignment="Left" Height="23" MinWidth="10" VerticalAlignment="Center" Text="{Binding SelectedState.Spd, Converter={StaticResource speedConverter}}"/>
-                            <local:History_SatCount Visibility="Collapsed" Grid.Row="1"  Height="30" Margin="57,0,30,0" x:Name="history_SatCount1" Data="{Binding DayStates}"/>
-                            <TextBlock Grid.Row="1" Margin="40,0" HorizontalAlignment="Left" Height="23" MinWidth="10" VerticalAlignment="Center" Text="{Binding SelectedState.Sat}"/>
-
-                            <local:LinesHistoryPresenter Grid.Row="2" Data="{Binding Lines}"/>
-
-                            <local:OBDDataPresenter Grid.Row="3" Data="{Binding OBDHistory}"/>
-
-                            <local:AccDataPresenter Grid.Row="4" Data="{Binding AccHistory}"/>
-                        </Grid>
-                    </ScrollViewer>
-                </TabItem>
-                <TabItem Header="Табличное представление">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,4">
-                            <ToggleButton Content="все данные" IsChecked="{Binding TableHistory.IsNotNull, Converter={StaticResource InvertBoolConverter}}" Padding="4,1"/>
-                            <ToggleButton Content="только в движении" IsChecked="{Binding TableHistory.IsNotNull}" Margin="20,0,0,0" Padding="4,1"/>
-                        </StackPanel>
-                        <DataGrid x:Name="HistoryTable" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single"       
-                			ItemsSource="{Binding TableHistory.ListHistoryRows}" CanUserAddRows="False" SelectedItem="{Binding TableHistory.SelectedRow, Mode=TwoWay}" Grid.Row="1"/>
-                    </Grid>
-                </TabItem>
-            </TabControl>
         </Grid>
 
         <Car:CarZonesError x:Name="_carZonesError" VerticalAlignment="Top" Grid.Row="2" DataContext="{Binding HistoryErrorVm}" Visibility="Collapsed" Height="0" Grid.ColumnSpan="2"/>
