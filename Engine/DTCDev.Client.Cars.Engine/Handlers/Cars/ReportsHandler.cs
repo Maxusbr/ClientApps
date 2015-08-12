@@ -111,6 +111,10 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
                 case 'E':
                     FillFuelReport(row);
                     break;
+                case 'f':
+                case 'F':
+                    FillCompilateReport(row);
+                    break;
             }
         }
 
@@ -209,6 +213,11 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
                 }));
         }
 
+        private void FillCompilateReport(string row)
+        {
+
+        }
+
 
 
 
@@ -296,6 +305,11 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
         public void GetFuelReport(string devID, DateTime dtStart, DateTime dtStop)
         {
             GetReportBase('E', devID, dtStart, dtStop);
+        }
+
+        public void GetCompilateReport(string devID, DateTime dtStart, DateTime dtStop)
+        {
+            GetReportBase('F', devID, dtStart, dtStop);
         }
 
 

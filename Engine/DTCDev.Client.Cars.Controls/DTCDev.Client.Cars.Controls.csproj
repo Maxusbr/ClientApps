@@ -214,6 +214,7 @@
     <Compile Include="ViewModels\Map\CarZoneMapViewModel.cs" />
     <Compile Include="ViewModels\Map\MapViewModel.cs" />
     <Compile Include="ViewModels\Map\ZoneMapViewModel.cs" />
+    <Compile Include="ViewModels\Reports\CompilateReportViewModel.cs" />
     <Compile Include="ViewModels\Reports\DistanceReportViewModel.cs" />
     <Compile Include="ViewModels\Reports\FuelReportViewModel.cs" />
     <Compile Include="ViewModels\Reports\ReportsViewModel.cs" />
