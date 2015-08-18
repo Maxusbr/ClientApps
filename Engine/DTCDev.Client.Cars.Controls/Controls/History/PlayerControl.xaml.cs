@@ -182,9 +182,8 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         {
             var slowTask = new Task(delegate
             {
-                while (true)
+                while (_isPlayed)
                 {
-                    if (!_isPlayed) break;
                     var time = _curentTime + new TimeSpan(SpeedValue * 1000000);
                     if (time >= _endTime)
                     {
@@ -192,7 +191,12 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
                         _isPlayed = false;
                     }
                     if (Application.Current != null)
-                        Application.Current.Dispatcher.BeginInvoke(new Action(() => CurentTime = time));
+                        Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            if (_isPlayed)
+                                CurentTime = time;
+
+                        }));
                     Thread.Sleep(10);
                 }
             });

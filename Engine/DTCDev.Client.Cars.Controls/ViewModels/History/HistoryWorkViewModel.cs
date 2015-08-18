@@ -41,6 +41,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         {
             _dispatcher = dispatcher;
             _tableHistory = new HistoryRowsViewModel(dispatcher);
+            _tableHistory.PropertyChanged += _tableHistory_PropertyChanged;
             _handler = HistoryHandler.Instance;
             CarSelector.OnCarChanged += CarSelector_OnCarChanged;
             _handler.LoadCompleted += Instance_LoadCompleted;
@@ -48,6 +49,12 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             _handler.LinesLoaded += Instance_LinesLoaded;
             _handler.OBDLoaded += Instance_OBDLoaded;
             _handler.AccLoaded += Instance_AccLoaded;
+        }
+
+        void _tableHistory_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if(!e.PropertyName.Equals("SelectedRow") || _tableHistory.SelectedRow == null) return;
+            _handler.OnSetDateTimePosition(_tableHistory.SelectedRow.Date);
         }
 
         private bool _iswaiting = false;
