@@ -27,6 +27,6 @@ namespace DTCDev.Models.Date
             return string.Format("{0:00}.{1:00}.{2:00}", D, M, Y);
         }
 
-        public DateTime ToDate { get { return new DateTime(Y, M, D > 0 ? D : 1); } }
+        public DateTime ToDate { get { return new DateTime(Y > 0 ? Y : 1, M > 0 ? M : 1, D > 0 ? D : 1); } }
     }
 }

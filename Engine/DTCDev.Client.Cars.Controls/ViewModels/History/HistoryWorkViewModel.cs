@@ -53,7 +53,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         void _tableHistory_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if(!e.PropertyName.Equals("SelectedRow") || _tableHistory.SelectedRow == null) return;
+            if (!e.PropertyName.Equals("SelectedRow") || _tableHistory.SelectedRow == null) return;
             _handler.OnSetDateTimePosition(_tableHistory.SelectedRow.Date);
         }
 
@@ -87,6 +87,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             get { return _historyRows; }
         }
 
+        /// <summary>
+        /// Выбранная дата истории
+        /// </summary>
         public LoadedHistoryRows SelectedHistoryRow
         {
             get { return _selectedRow; }
@@ -105,11 +108,17 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
+        /// <summary>
+        /// Данные по выбранному дню
+        /// </summary>
         public HistoryRowsViewModel TableHistory
         {
             get { return _tableHistory; }
         }
 
+        /// <summary>
+        /// Пройденная дистанция
+        /// </summary>
         public double DistanceAll
         {
             get { return Math.Round(_distanceAll, 2); }
@@ -120,6 +129,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
+        /// <summary>
+        /// Список навигационных данных
+        /// </summary>
         public List<CarStateModel> DayStates
         {
             get { return _dayStates; }
@@ -132,6 +144,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
+        /// <summary>
+        /// Текущий авто
+        /// </summary>
         public DISP_Car Position
         {
 
@@ -154,6 +169,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
+        /// <summary>
+        /// Использовать оптимизацию?
+        /// </summary>
         public bool UseAccelleration
         {
             get { return _useAccelleration; }
@@ -164,6 +182,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
+        /// <summary>
+        /// Модель набора данных траектории
+        /// </summary>
         private CarAccHistoryModel _accHistory = new CarAccHistoryModel();
         public CarAccHistoryModel AccHistory
         {
@@ -175,6 +196,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
+        /// <summary>
+        /// Модель набора данных ускорения
+        /// </summary>
         private OBDHistoryDataModel _obdHistory = new OBDHistoryDataModel();
         public OBDHistoryDataModel OBDHistory
         {
@@ -199,7 +223,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         private void CarSelector_OnCarChanged(DISP_Car car)
         {
-            if(car == null) return;
+            if (car == null) return;
             Position = new DISP_Car
             {
                 Car = new SCarModel
@@ -211,6 +235,10 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             LoadData();
         }
 
+        /// <summary>
+        /// Обновление данных трактории
+        /// </summary>
+        /// <param name="model"></param>
         private void Instance_AccLoaded(CarAccHistoryModel model)
         {
             var acc = new CarAccHistoryModel { DevID = model.DevID };
@@ -236,6 +264,10 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             slowTask.Start();
         }
 
+        /// <summary>
+        /// Обновление данных OBDII
+        /// </summary>
+        /// <param name="model"></param>
         private void Instance_OBDLoaded(OBDHistoryDataModel model)
         {
             var obd = new OBDHistoryDataModel { DevID = model.DevID, DT = model.DT };
@@ -259,19 +291,27 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                     {
                         OBDHistory = obd;
                         TableHistory.Update(obd);
-                        OnPropertyChanged("TableHistory"); 
+                        OnPropertyChanged("TableHistory");
                     }));
             });
             slowTask.Start();
         }
+
 
         private void Instance_LinesLoaded(LinesDataModel model)
         {
             Lines = model;
         }
 
+        /// <summary>
+        /// Хендлер обновления навигационных данных
+        /// </summary>
+        /// <param name="day"></param>
+        /// <param name="data"></param>
         private void Instance_DayRefreshed(DateTime day, List<CarStateModel> data)
         {
+            var f = data.FirstOrDefault();
+            if (f == null || f.DevID != Position.ID) return;
             BuildHistoryRow(data, day);
             if (CarSelector.SelectedCar != null)
                 CacheRoute(string.Format("[{0}]-{1}-{2}-{3}", CarSelector.SelectedCar.ID, day.Day, day.Month, day.Year), data);
@@ -368,7 +408,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 this.OnPropertyChanged("VisCDStop");
             }
         }
-       
+
 
         private void DistanceSelectedDayChanged()
         {
@@ -386,7 +426,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             VisCDStart = !VisCDStart;
             VisCDStop = !VisCDStop;
             if (_distanceStart <= -1 || _distanceStop <= -1 ||
-                _distanceStart >= HistoryRows.Count() || _distanceStop >= HistoryRows.Count()) return;
+                _distanceStart >= HistoryRows.Count() || _distanceStop >= HistoryRows.Count())
+                return;
             double dist = 0;
             for (var i = _distanceStart; i <= _distanceStop; i++)
             {
@@ -414,7 +455,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             {
                 GetCache(_lastLoadedDate - TimeSpan.FromDays(i + 1));
             }
-            HistoryHandler.Instance.StartLoadHistory(CarSelector.SelectedCar.Car.Id, 
+            HistoryHandler.Instance.StartLoadHistory(CarSelector.SelectedCar.Car.Id,
                 _lastLoadedDate - TimeSpan.FromDays(days + 1), _lastLoadedDate - TimeSpan.FromDays(1), UseAccelleration);
         }
 
@@ -424,16 +465,21 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         public void LoadData()
         {
             if (Position == null || string.IsNullOrEmpty(Position.Car.Id)) return;
-                const int days = 30;
-                for (var i = 0; i < 30; i++)
-                {
-                    GetCache(DateTime.Now - TimeSpan.FromDays(i));
-                }
-                //Загружаем историю за последние 30 дней
-                HistoryHandler.Instance.StartLoadHistory(Position.Car.Id, 
-                    DateTime.Now - TimeSpan.FromDays(days), DateTime.Now, UseAccelleration);
+            const int days = 30;
+            for (var i = 0; i < 30; i++)
+            {
+                GetCache(DateTime.Now - TimeSpan.FromDays(i));
+            }
+            //Загружаем историю за последние 30 дней
+            HistoryHandler.Instance.StartLoadHistory(Position.Car.Id,
+                DateTime.Now - TimeSpan.FromDays(days), DateTime.Now, UseAccelleration);
         }
 
+        /// <summary>
+        /// Кэширование навигационных данных
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="data"></param>
         private void CacheRoute(string name, List<CarStateModel> data)
         {
             var slowTask = new Task(delegate
@@ -444,18 +490,32 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                     if (Directory.Exists(myDocs) == false)
                         Directory.CreateDirectory(myDocs);
                     if (File.Exists(myDocs + name))
-                        File.Delete(myDocs + name);
+                        using (var lockFile = new FileStream(myDocs + name,
+                                                            FileMode.OpenOrCreate,
+                                                            FileAccess.ReadWrite,
+                                                            FileShare.Delete))
+                        {
+                            File.Delete(myDocs + name);
+                        }
+
                     using (var writer = new StreamWriter(myDocs + name))
                     {
-                        var row = JsonConvert.SerializeObject(data);
-                        writer.WriteLine(row);
+                        lock (writer)
+                        {
+                            var row = JsonConvert.SerializeObject(data);
+                            writer.WriteLine(row);
+                        }
                     }
                 }
-                catch (Exception){}
+                catch (Exception) { }
             });
             slowTask.Start();
         }
 
+        /// <summary>
+        /// Получение навигационных данных из кэша
+        /// </summary>
+        /// <param name="date"></param>
         private void GetCache(DateTime date)
         {
             var slowTask = new Task(delegate
@@ -469,7 +529,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                     List<CarStateModel> cr;
                     using (var reader = new StreamReader(myDocs + name))
                     {
-                        cr = JsonConvert.DeserializeObject<List<CarStateModel>>(reader.ReadToEnd());
+                        lock (reader)
+                           cr = JsonConvert.DeserializeObject<List<CarStateModel>>(reader.ReadToEnd());
                     }
                     if (cr == null) return;
                     BuildHistoryRow(cr, date);
@@ -478,6 +539,11 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }); slowTask.Start();
         }
 
+        /// <summary>
+        /// Обновление навигационных данных
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="date"></param>
         private void BuildHistoryRow(List<CarStateModel> data, DateTime date)
         {
             var r = new LoadedHistoryRows { Date = date, Data = data };
@@ -538,6 +604,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             slowTask.Start();
         }
 
+        /// <summary>
+        /// Запрос данных для выбранного дня
+        /// </summary>
         private void SortData()
         {
             if (SelectedHistoryRow == null) return;
@@ -549,7 +618,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             _handler.StartLoadDayLines(Position.Car.Id, SelectedHistoryRow.Date);
             _handler.StartLoadOBD(Position.Car.Id, SelectedHistoryRow.Date);
             _handler.StartLoadAcc(Position.Car.Id, SelectedHistoryRow.Date);
-            
+
         }
 
         public override void OnPropertyChanged(string propertyName)

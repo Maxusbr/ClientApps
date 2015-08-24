@@ -660,7 +660,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
-
         public DISP_Car Position
         {
 

@@ -390,7 +390,20 @@
             </Map:Pushpin>
             <Map:MapScale/>
         </Map:Map>
-        <local:HistoryWorkControl Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" /> <!--Visibility="{Binding EnableHistory, Converter={StaticResource BoolToVisibilityConverter}}"-->
+        <Grid VerticalAlignment="Bottom" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,40,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <local:PlayerControl HorizontalAlignment="Center" Visibility="{Binding VisablePlayer, Converter={StaticResource BoolToVisibilityConverter}}"
+        		IsPlayed="{Binding IsPlayerStart, Mode=TwoWay}" 
+        		StartTime="{Binding PlayerStartTime, Mode=TwoWay}" 
+        		EndTime="{Binding PlayerEndTime, Mode=TwoWay}" 
+        		CurentTime="{Binding PlayerCurentTime, Mode=TwoWay}" VerticalAlignment="Center" />
+            <local:HistoryChartControl Grid.Column="1" Visibility="{Binding VisableChart, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        </Grid>
+        <local:HistoryWorkControl Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" d:IsHidden="True" />
+        <!--Visibility="{Binding EnableHistory, Converter={StaticResource BoolToVisibilityConverter}}"-->
         <Grid Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left" Width="200" Height="220">
             <Border Width="32" Height="210" Background="White" HorizontalAlignment="Left" Margin="6,10" Opacity="0.8"/>
             <Slider x:Name="sldrZoom" Grid.Row="1" SmallChange="1" VerticalAlignment="Top" HorizontalAlignment="Left" Width="200" RenderTransformOrigin="0.5,0.5" Margin="-78,100,0,0" Maximum="18" Minimum="1" Value="{Binding ZoomLevel, Mode=TwoWay}">
@@ -420,11 +433,6 @@
 
             </StackPanel>
         </Border>
-        <local:PlayerControl HorizontalAlignment="Center" Visibility="{Binding VisablePlayer, Converter={StaticResource BoolToVisibilityConverter}}"
-                	IsPlayed="{Binding IsPlayerStart, Mode=TwoWay}" 
-                	StartTime="{Binding PlayerStartTime, Mode=TwoWay}" 
-                	EndTime="{Binding PlayerEndTime, Mode=TwoWay}" 
-                	CurentTime="{Binding PlayerCurentTime, Mode=TwoWay}" VerticalAlignment="Bottom" Grid.Row="1" />
         <busy:MacBusyControl IsWaiting="{Binding Iswaiting}" Grid.RowSpan="2" Grid.ColumnSpan="2" d:IsHidden="True" />
     </Grid>
 </UserControl>
