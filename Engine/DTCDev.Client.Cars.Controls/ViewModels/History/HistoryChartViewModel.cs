@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
@@ -24,6 +25,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         private int _scale = 5;
         private DISP_Car _selectedCar;
         private readonly List<LoadedHistoryRows> _loadedData = new List<LoadedHistoryRows>();
+        private readonly List<OBDHistoryDataModel> _loadedObdData = new List<OBDHistoryDataModel>();
         private ScaleValuesData _listData;
         private DateTime _selectedDate;
         private int _valueNormal = 90;
@@ -119,8 +121,10 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             get { return _selectedDate; }
             set
             {
+                if(_selectedDate == value) return;
                 _selectedDate = value;
-
+                if(value > new DateTime(1,1,1))
+                    _handler.StartLoadOBD(SelectedCar.ID, value);
             }
         }
 
@@ -149,9 +153,26 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         }
 
-        private void Instance_OBDLoaded(OBDHistoryDataModel model)
+        private void Instance_OBDLoaded(OBDHistoryDataModel data)
         {
-
+            //TODO OBDHistoryDataModel должен возвращать дату. public DateDataModel DT { get; set; }
+            return;
+            var exist = _loadedObdData.FirstOrDefault(o => o.DT.ToDate.Equals(data.DT.ToDate));
+            if (exist == null)
+                _loadedObdData.Add(data);
+            
+            if (!data.DT.ToDate.Equals(SelectedDate)) return;
+            var list = new List<ScaleValuesData>();
+            var slowTask = new Task(delegate
+            {
+                var prms = data.Data.Select(p => p.Code).Distinct();
+                list.AddRange(prms.Select(el => new ScaleValuesData {Code = el, Scale = Scale, Data = GetOBDData(el)}));
+            });
+            slowTask.ContinueWith(delegate
+            {
+                
+            });
+            slowTask.Start();
         }
 
         private void Instance_DayRefreshed(DateTime day, List<CarStateModel> data)
@@ -278,6 +299,12 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                     Data = GetMoreData(),
                     Scale = Scale,
                 });
+                //TODO OBDHistoryDataModel должен возвращать дату. public DateDataModel DT { get; set; }
+                return;
+                var obd = _loadedObdData.FirstOrDefault(o => o.DT.ToDate.Equals(SelectedDate));
+                if(obd == null) return;
+                var prms = obd.Data.Select(p => p.Code).Distinct();
+                list.AddRange(prms.Select(el => new ScaleValuesData { Code = el, Scale = Scale, Data = GetOBDData(el) }));
             });
             slowTask.ContinueWith(delegate
             {
@@ -338,6 +365,59 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
             return data;
         }
+
+        private List<ChartValuesData> GetOBDData(string code)
+        {
+            var data = new List<ChartValuesData>();
+            switch (Scale)
+            {
+                case 1:
+                    data.AddRange(GetMinutesOBD(1, code));
+                    break;
+                case 2:
+                    data.AddRange(GetMinutesOBD(15, code));
+                    break;
+                case 3:
+                    data.AddRange(GetMinutesOBD(30, code));
+                    break;
+                case 4:
+                    data.AddRange(GetHourOBD(code));
+                    break;
+            }
+            return data;
+        }
+
+        private IEnumerable<ChartValuesData> GetHourOBD(string code)
+        {
+            var list = new List<OBDHistoryDataModel.OBDParam>();
+            foreach (var item in _loadedObdData.Where(o => o.DT.ToDate.Equals(SelectedDate)))
+                list.AddRange(item.Data.Where(o => o.Code.Equals(code)));
+            return list.GroupBy(x =>
+            {
+                var stamp = SelectedDate + x.Time.ToTimeSpan();
+                stamp = stamp.AddMinutes(-stamp.Minute);
+                stamp = stamp.AddMilliseconds(-stamp.Millisecond - 1000 * stamp.Second);
+                return stamp;
+            })
+           .Select(g => new ChartValuesData { Date = g.Key, Value = g.Average(s => s.Vol) });
+        }
+
+        private IEnumerable<ChartValuesData> GetMinutesOBD(int minute, string code)
+        {
+            var list = new List<OBDHistoryDataModel.OBDParam>();
+            foreach (var item in _loadedObdData.Where(o => o.DT.ToDate.Equals(SelectedDate)))
+                list.AddRange(item.Data.Where(o => o.Code.Equals(code)));
+            return list.GroupBy(x =>
+            {
+                var stamp = SelectedDate + x.Time.ToTimeSpan();
+                stamp = stamp.AddMinutes(-(stamp.Minute % minute));
+                stamp = stamp.AddMilliseconds(-stamp.Millisecond - 1000 * stamp.Second);
+                return stamp;
+            })
+           .Select(g => new ChartValuesData { Date = g.Key, Value = g.Max(s => s.Vol) });
+        }
+
+
         private IEnumerable<ChartValuesData> GetDayMileage()
         {
             return _loadedData.OrderByDescending(o => o.Date).
@@ -518,5 +598,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         public int MinVal { get; set; }
 
         public string Name { get; set; }
+
+        public string Code { get; set; }
     }
 }

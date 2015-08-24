@@ -45,12 +45,12 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             var cntrl = cntrls.FirstOrDefault(o => o.Name.Equals(model.Name));
             if (cntrl == null)
             {
-                cntrl = new ChartDataControl { Name = model.Name, MinHeight = 80};
+                cntrl = new ChartDataControl { Name = string.IsNullOrEmpty(model.Name) ? "OBD" + model.Code: model.Name, MinHeight = 80};
                 cntrl.MouseWeel += ChartDataControl_MouseWheel;
                 stCharts.Children.Add(cntrl);
                 var element = new Border
                 {
-                    Child = GetElement(model.Name),
+                    Child = GetElement(model.Name, model.Data.Any() ? ((int)model.Data[0].Value).ToString(): ""),
                     //BorderThickness = new Thickness(1),
                     //BorderBrush = new SolidColorBrush(Colors.Gray)
                 };
@@ -68,7 +68,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             _vm.Scale += e.Delta < 0 ? 1 : -1;
         }
 
-        private FrameworkElement GetElement(string name)
+        private FrameworkElement GetElement(string name, string val = "")
         {
             var element = new FrameworkElement {Width = 24};
             switch (name)
@@ -87,6 +87,9 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
                        Source = new BitmapImage(new Uri("/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/satellite-dish-icon.png", UriKind.Relative))
                    };
                     break;
+                default:
+                    Sensors.OBD.OBDSensorDetector detector = new Sensors.OBD.OBDSensorDetector();
+                    return detector.GetControl(name, val);
             }
             return element;
         }

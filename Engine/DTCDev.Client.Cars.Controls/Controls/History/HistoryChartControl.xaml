@@ -386,7 +386,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition />
                         </Grid.RowDefinitions>
-                        <Border Height="{Binding ActualHeight, ElementName=ChartDataControl, Mode=OneWay}" BorderThickness="1" BorderBrush="#FFCBCBCB">
+                        <Border Height="{Binding ActualHeight, ElementName=ChartDataControl, Mode=OneWay}">
                             <Image  Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/car-add-icon.png" ToolTipService.ToolTip="Автомобиль в движении" Width="24"/>
                         </Border>
                         <StackPanel x:Name="stImages" Orientation="Vertical" Grid.Row="1" Height="{Binding ActualHeight, ElementName=stCharts, Mode=OneWay}" VerticalAlignment="Top"/>
