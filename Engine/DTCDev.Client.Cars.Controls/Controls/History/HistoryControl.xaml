@@ -400,7 +400,7 @@
         		StartTime="{Binding PlayerStartTime, Mode=TwoWay}" 
         		EndTime="{Binding PlayerEndTime, Mode=TwoWay}" 
         		CurentTime="{Binding PlayerCurentTime, Mode=TwoWay}" VerticalAlignment="Center" />
-            <local:HistoryChartControl Grid.Column="1" Visibility="{Binding VisableChart, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <local:HistoryChartControl Grid.Column="1" Visibility="{Binding VisableChart, Converter={StaticResource BoolToVisibilityConverter}}" Height="300"/>
         </Grid>
         <local:HistoryWorkControl Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" d:IsHidden="True" />
         <!--Visibility="{Binding EnableHistory, Converter={StaticResource BoolToVisibilityConverter}}"-->

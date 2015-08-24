@@ -376,24 +376,30 @@
                 <ToggleButton Content="Скорость" Padding="5,1" Margin="0,5,0,0" IsChecked="{Binding IsWayView, Converter={StaticResource InvertBoolConverter}}"/>
             </StackPanel>
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition />
-                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="32"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Image HorizontalAlignment="Center"  Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/car-add-icon.png" ToolTipService.ToolTip="Автомобиль в движении" Width="24" Height="{Binding ActualHeight, ElementName=ChartDataControl, Mode=OneWay}"/>
-                <StackPanel x:Name="stImages" Orientation="Vertical"/>
-                <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" BorderBrush="Black" BorderThickness="1" >
+                <ScrollViewer x:Name="scrlImage"  VerticalScrollBarVisibility="Hidden" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollChanged="scrlImage_ScrollChanged"  >
+                    <Grid ScrollViewer.CanContentScroll="True">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Border Height="{Binding ActualHeight, ElementName=ChartDataControl, Mode=OneWay}" BorderThickness="1" BorderBrush="#FFCBCBCB">
+                            <Image  Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/car-add-icon.png" ToolTipService.ToolTip="Автомобиль в движении" Width="24"/>
+                        </Border>
+                        <StackPanel x:Name="stImages" Orientation="Vertical" Grid.Row="1" Height="{Binding ActualHeight, ElementName=stCharts, Mode=OneWay}" VerticalAlignment="Top"/>
+                    </Grid>
+                </ScrollViewer>
+                <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollChanged="ScrollViewer_ScrollChanged" >
                     <Grid >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition />
                         </Grid.RowDefinitions>
                         <local:ChartDataControl x:Name="ChartDataControl" Data="{Binding ListData}" Background="#00000000" VerticalAlignment="Top" MinHeight="100" />
-                        <StackPanel x:Name="stCharts" Grid.Row="1"/>
+                        <StackPanel x:Name="stCharts" Grid.Row="1" VerticalAlignment="Top"/>
                     </Grid>
                 </ScrollViewer>
             </Grid>

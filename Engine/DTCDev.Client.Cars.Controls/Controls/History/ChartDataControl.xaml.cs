@@ -20,8 +20,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
     /// </summary>
     public partial class ChartDataControl : UserControl
     {
-        private ICollection<ChartValuesData> _data;
-        private int _scale = 5;
+        private ScaleValuesData _data;
         private double _controlWidth;
         private double _controlHeight;
 
@@ -53,6 +52,20 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             set { SetValue(DataProperty, value); }
         }
 
+        private double ControlHeight
+        {
+            get
+            {
+                return _controlHeight;
+            }
+            set
+            {
+                _controlHeight = value;
+                if (value > 0)
+                    DisplayData(_data);
+            }
+        }
+
         private static void DataPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             var control = sender as ChartDataControl;
@@ -63,19 +76,20 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         {
             _controlWidth = stkData.ActualWidth > 0 && (stkData.ActualWidth < _controlWidth || _controlWidth < 1) ?
                 (int)stkData.ActualWidth - 2 : _controlWidth;
-            _controlHeight = stkData.ActualHeight > 0 && (stkData.ActualHeight - 18 < _controlHeight || _controlHeight < 1) ?
+            ControlHeight = _controlHeight < 1 ?
                 (int)stkData.ActualHeight - 2 : _controlHeight;
         }
 
+        
+
         private void DisplayData(ScaleValuesData model)
         {
-            _data = model.Data;
-            _scale = model.Scale;
+            _data = model;
             ClearEvent(); stkTicks.Children.Clear();
 
-            if (_data == null || !_data.Any() || Math.Abs(stkData.ActualWidth) < 0.1) return;
-            Prescale(_data.Max(o => o.Value));
-            if (_data.Any(o => o.Date.Hour > 0))
+            if (_data == null || _data.Data == null || !_data.Data.Any() || Math.Abs(_controlWidth) < 0.1) return;
+            Prescale(_data.Data.Max(o => o.Value));
+            if (_data.Data.Any(o => o.Date.Hour > 0))
                 DisplayHourData(model.UseMaxMin, model.MinVal, model.MaxVal);
             else DisplayDayData(model.UseMaxMin, model.MinVal, model.MaxVal);
 
@@ -83,14 +97,14 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
 
         private void DisplayDayData(bool useMaxMin, int minval, int maxval)
         {
-            CurenDate = _data.Min(o => o.Date);
-            var min = _data.Min(o => o.Value);
+            CurenDate = _data.Data.Min(o => o.Date);
+            var min = _data.Data.Min(o => o.Value);
             if (min > 0) min = 0;
-            var max = _data.Max(o => o.Value);
-            var w = _controlWidth / _data.Count - 2;
+            var max = _data.Data.Max(o => o.Value);
+            var w = _controlWidth / _data.Data.Count - 2;
             var h = _controlHeight / (max - min);
             h = h < 0 ? 0 : h;
-            foreach (var el in _data.OrderBy(o => o.Date))
+            foreach (var el in _data.Data.OrderBy(o => o.Date))
             {
                 var b = new Border
                 {
@@ -117,19 +131,19 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
 
         private void DisplayHourData(bool useMaxMin, int minval, int maxval)
         {
-            var first = _data.OrderBy(o => o.Date).FirstOrDefault();
+            var first = _data.Data.OrderBy(o => o.Date).FirstOrDefault();
             if (first == null) return;
             var ts = new TimeSpan(first.Date.Hour, 0, 0);
-            var cnt = _data.Max(o => o.Date.Hour) - _data.Min(o => o.Date.Hour) + 1;
-            var min = Math.Max(_data.Min(o => o.Value), 0);
-            var max = _data.Max(o => o.Value);
+            var cnt = _data.Data.Max(o => o.Date.Hour) - _data.Data.Min(o => o.Date.Hour) + 1;
+            var min = Math.Max(_data.Data.Min(o => o.Value), 0);
+            var max = _data.Data.Max(o => o.Value);
             var w = (int)Math.Max(_controlWidth / cnt / multy, 1);
             var h = _controlHeight / (max - min);
             stkData.MouseWheel += OnMouseWeel;
             for (var i = 0; i < cnt * multy; i++)
             {
                 var crnt = (int)(ts.TotalMinutes + multyTs.TotalMinutes * i);
-                var el = _data.FirstOrDefault(
+                var el = _data.Data.FirstOrDefault(
                         o => o.Date.TimeOfDay.TotalMinutes >= crnt &&
                             o.Date.TimeOfDay.TotalMinutes < crnt + multyTs.TotalMinutes);
                 var b = new Border
@@ -137,7 +151,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
                     VerticalAlignment = VerticalAlignment.Bottom,
                     Background = el != null ? new SolidColorBrush(Colors.Blue) : null,
                     ToolTip = el != null ? el.Date.ToString("g") : null,
-                    Height = el != null ? (int)(h * el.Value): 0,
+                    Height = el != null && h > 0 ? (int)(h * el.Value): 0,
                     Width = w
                 };
                 if (el != null && useMaxMin) b.Background = GetBrush(el.Value, minval, maxval);
@@ -157,7 +171,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         {
             get
             {
-                switch (_scale)
+                switch (_data.Scale)
                 {
                     case 1:
                         return 60;
@@ -175,7 +189,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         {
             get
             {
-                switch (_scale)
+                switch (_data.Scale)
                 {
                     case 1:
                         return new TimeSpan(0, 1, 0);
@@ -206,7 +220,8 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
 
         private void ClearEvent()
         {
-            if (_scale == 5)
+            if(_data == null) return;
+            if (_data.Scale == 5)
                 foreach (var b in (from object el in stkData.Children select el as Border).Where(b => b == null))
                     b.MouseWheel -= OnMouseWeel;
             stkData.MouseWheel -= OnMouseWeel;

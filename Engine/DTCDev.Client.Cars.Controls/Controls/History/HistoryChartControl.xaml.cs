@@ -39,15 +39,24 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             stImages.Children.Clear();
         }
 
-        private void Vm_AddControl(string name, ScaleValuesData model)
+        private void Vm_AddControl(ScaleValuesData model)
         {
             var cntrls = stCharts.Children.OfType<ChartDataControl>();
-            var cntrl = cntrls.FirstOrDefault(o => o.Name.Equals(name));
+            var cntrl = cntrls.FirstOrDefault(o => o.Name.Equals(model.Name));
             if (cntrl == null)
             {
-                cntrl = new ChartDataControl();
+                cntrl = new ChartDataControl { Name = model.Name, MinHeight = 80};
                 cntrl.MouseWeel += ChartDataControl_MouseWheel;
                 stCharts.Children.Add(cntrl);
+                var element = new Border
+                {
+                    Child = GetElement(model.Name),
+                    //BorderThickness = new Thickness(1),
+                    //BorderBrush = new SolidColorBrush(Colors.Gray)
+                };
+                var bind = new Binding("ActualHeight") { Source = cntrl };
+                element.SetBinding(HeightProperty, bind);
+                stImages.Children.Add(element);
             }
             cntrl.Data = model;
         }
@@ -55,8 +64,41 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         private void ChartDataControl_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             var cntrl = sender as ChartDataControl;
-            if (cntrl != null) _vm.SelectedDate = cntrl.CurenDate;
+            if (cntrl != null && cntrl.CurenDate > new DateTime(1, 1, 1)) _vm.SelectedDate = cntrl.CurenDate;
             _vm.Scale += e.Delta < 0 ? 1 : -1;
+        }
+
+        private FrameworkElement GetElement(string name)
+        {
+            var element = new FrameworkElement {Width = 24};
+            switch (name)
+            {
+                case "speed": element = new Image
+                   {
+                       Width = 24,
+                       HorizontalAlignment = HorizontalAlignment.Center,
+                       Source = new BitmapImage(new Uri("/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/car-add-icon.png", UriKind.Relative))
+                   };
+                    break;
+                case "satelites": element = new Image
+                   {
+                       Width = 24,
+                       HorizontalAlignment = HorizontalAlignment.Center,
+                       Source = new BitmapImage(new Uri("/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/satellite-dish-icon.png", UriKind.Relative))
+                   };
+                    break;
+            }
+            return element;
+        }
+
+        private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            scrlImage.ScrollToVerticalOffset(e.VerticalOffset);
+        }
+
+        private void scrlImage_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+
         }
     }
 }

@@ -47,7 +47,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         #region Events
 
-        public delegate void AddControlHandler(string name, ScaleValuesData model);
+        public delegate void AddControlHandler(ScaleValuesData model);
 
         public event AddControlHandler AddControl;
         public event EventHandler ClearControls;
@@ -79,7 +79,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             get { return _isWayView; }
             set
             {
-                if(_isWayView == value) return;
+                if (_isWayView == value) return;
                 _isWayView = value;
                 OnPropertyChanged("IsWayView");
                 Recalqulate();
@@ -120,7 +120,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             set
             {
                 _selectedDate = value;
-                
+
             }
         }
 
@@ -133,14 +133,15 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             if (ClearControls != null) ClearControls.Invoke(this, EventArgs.Empty);
         }
 
-        protected virtual void OnAddControl(string name, ScaleValuesData model)
+        protected virtual void OnAddControl(ScaleValuesData model)
         {
-            if (AddControl != null) AddControl.Invoke(name, model);
+            if (AddControl != null) AddControl.Invoke(model);
         }
 
         private void CarSelector_OnCarChanged(DISP_Car car)
         {
             SelectedCar = car;
+            Scale = 5;
         }
 
         private void Instance_AccLoaded(CarAccHistoryModel model)
@@ -162,15 +163,15 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             {
                 var dt = new DateTime(day.Year, day.Month, day.Day);
                 BuildDataRow(data, dt);
-                if(dt.Equals(SelectedDate))
-                    list = GetData(IsWayView);
+                if (dt.Equals(SelectedDate))
+                    list = GetStaticData(IsWayView);
             });
             slowTask.ContinueWith(delegate
             {
                 DispatherThreadRun(delegate
                 {
-                    if(list.Any())
-                        ListData = new ScaleValuesData {Data = list, Scale = Scale, UseMaxMin = !IsWayView, MinVal = _valueNormal, MaxVal = _valueWarning };
+                    if (list.Any())
+                        ListData = new ScaleValuesData { Data = list, Scale = Scale, UseMaxMin = !IsWayView, MinVal = _valueNormal, MaxVal = _valueWarning };
                 });
             });
             slowTask.Start();
@@ -201,13 +202,13 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                     GetCache(dt.AddDays(-i));
                 }
                 _selectedDate = _loadedData.Where(w => w.Data.Any()).Min(o => o.Date);
-                list = GetData(IsWayView);
+                list = GetStaticData(IsWayView);
             });
             slowTask.ContinueWith(delegate
             {
                 DispatherThreadRun(delegate
                 {
-                    ListData = new ScaleValuesData {Data = list, Scale = Scale, UseMaxMin = !IsWayView, MinVal = _valueNormal, MaxVal = _valueWarning };
+                    ListData = new ScaleValuesData { Data = list, Scale = Scale, UseMaxMin = !IsWayView, MinVal = _valueNormal, MaxVal = _valueWarning };
                 });
             });
             slowTask.Start();
@@ -243,13 +244,47 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             var list = new List<ChartValuesData>();
             var slowTask = new Task(delegate
             {
-                list = GetData(IsWayView);
+                list = GetStaticData(IsWayView);
             });
             slowTask.ContinueWith(delegate
             {
                 DispatherThreadRun(delegate
                 {
-                    ListData = new ScaleValuesData {Data = list, Scale = Scale, UseMaxMin = !IsWayView, MinVal = _valueNormal, MaxVal = _valueWarning };
+                    if (Scale == 5) OnClearControls();
+                    else AddMoreCharts();
+                    ListData = new ScaleValuesData { Data = list, Scale = Scale, UseMaxMin = !IsWayView, MinVal = _valueNormal, MaxVal = _valueWarning };
+                });
+            });
+            slowTask.Start();
+        }
+
+        private void AddMoreCharts()
+        {
+            var list = new List<ScaleValuesData>();
+            var slowTask = new Task(delegate
+            {
+                list.Add(new ScaleValuesData
+                {
+                    Name = "speed",
+                    Data = GetStaticData(false),
+                    UseMaxMin = true,
+                    Scale = Scale,
+                    MinVal = _valueNormal,
+                    MaxVal = _valueWarning
+                });
+                list.Add(new ScaleValuesData
+                {
+                    Name = "satelites",
+                    Data = GetMoreData(),
+                    Scale = Scale,
+                });
+            });
+            slowTask.ContinueWith(delegate
+            {
+                DispatherThreadRun(delegate
+                {
+                    foreach (var model in list)
+                        OnAddControl(model);
                 });
             });
             slowTask.Start();
@@ -259,7 +294,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         /// Формирование массива данных для графика
         /// </summary>
         /// <returns></returns>
-        private List<ChartValuesData> GetData(bool getway = true)
+        private List<ChartValuesData> GetStaticData(bool getway = true)
         {
             var data = new List<ChartValuesData>();
             switch (Scale)
@@ -274,15 +309,35 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                     data.AddRange(getway ? GetMinutesMileage(30) : GetMinutesSpeed(30));
                     break;
                 case 4:
-                    data.AddRange(getway ? GetHourMileage(): GetHourSpeed());
+                    data.AddRange(getway ? GetHourMileage() : GetHourSpeed());
                     break;
                 case 5:
-                    data.AddRange(getway ? GetDayMileage(): GetDaySpeed());
+                    data.AddRange(getway ? GetDayMileage() : GetDaySpeed());
                     break;
             }
             return data;
         }
 
+        private List<ChartValuesData> GetMoreData()
+        {
+            var data = new List<ChartValuesData>();
+            switch (Scale)
+            {
+                case 1:
+                    data.AddRange(GetMinutesSatelite(1));
+                    break;
+                case 2:
+                    data.AddRange(GetMinutesSatelite(15));
+                    break;
+                case 3:
+                    data.AddRange(GetMinutesSatelite(30));
+                    break;
+                case 4:
+                    data.AddRange(GetHourSatelite());
+                    break;
+            }
+            return data;
+        }
         private IEnumerable<ChartValuesData> GetDayMileage()
         {
             return _loadedData.OrderByDescending(o => o.Date).
@@ -355,6 +410,36 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
            .Select(g => new ChartValuesData { Date = g.Key, Value = g.Max(s => s.Spd / 10.0) });
         }
 
+        private IEnumerable<ChartValuesData> GetHourSatelite()
+        {
+            var list = new List<CarStateModel>();
+            foreach (var item in _loadedData.Where(o => o.Date.Equals(SelectedDate)))
+                list.AddRange(item.Data);
+            return list.GroupBy(x =>
+            {
+                var stamp = x.Date;
+                stamp = stamp.AddMinutes(-stamp.Minute);
+                stamp = stamp.AddMilliseconds(-stamp.Millisecond - 1000 * stamp.Second);
+                return stamp;
+            })
+           .Select(g => new ChartValuesData { Date = g.Key, Value = g.Average(s => s.St) });
+        }
+
+        private IEnumerable<ChartValuesData> GetMinutesSatelite(int minute)
+        {
+            var list = new List<CarStateModel>();
+            foreach (var item in _loadedData.Where(o => o.Date.Equals(SelectedDate)))
+                list.AddRange(item.Data);
+            return list.GroupBy(x =>
+            {
+                var stamp = x.Date;
+                stamp = stamp.AddMinutes(-(stamp.Minute % minute));
+                stamp = stamp.AddMilliseconds(-stamp.Millisecond - 1000 * stamp.Second);
+                return stamp;
+            })
+           .Select(g => new ChartValuesData { Date = g.Key, Value = g.Average(s => s.St) });
+        }
+
         /// <summary>
         /// Формирование массива данных для дня day
         /// </summary>
@@ -404,7 +489,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         #endregion
 
-        
+
     }
 
     /// <summary>
@@ -418,7 +503,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
     public class ScaleValuesData
     {
-        public ScaleValuesData() {
+        public ScaleValuesData()
+        {
             Data = new List<ChartValuesData>();
             UseMaxMin = false;
         }
@@ -430,5 +516,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         public int MaxVal { get; set; }
 
         public int MinVal { get; set; }
+
+        public string Name { get; set; }
     }
 }
