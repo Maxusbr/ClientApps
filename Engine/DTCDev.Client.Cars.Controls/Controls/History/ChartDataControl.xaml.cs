@@ -95,7 +95,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
 
         }
 
-        private void DisplayDayData(bool useMaxMin, int minval, int maxval)
+        private void DisplayDayData(bool useMaxMin, double minval, double maxval)
         {
             CurenDate = _data.Data.Min(o => o.Date);
             var min = _data.Data.Min(o => o.Value);
@@ -129,7 +129,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             }
         }
 
-        private void DisplayHourData(bool useMaxMin, int minval, int maxval)
+        private void DisplayHourData(bool useMaxMin, double minval, double maxval)
         {
             var first = _data.Data.OrderBy(o => o.Date).FirstOrDefault();
             if (first == null) return;
@@ -203,7 +203,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             }
         }
 
-        private SolidColorBrush GetBrush(double vol, int min, int max)
+        private SolidColorBrush GetBrush(double vol, double min, double max)
         {
             if (vol < min)
                 return new SolidColorBrush(Colors.Green);
@@ -212,10 +212,10 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
 
         private void Prescale(double max)
         {
-            var pre = (int)max / 3;
-            txt0.Text = pre.ToString();
-            txt1.Text = (pre * 2).ToString();
-            txt2.Text = ((int)Math.Ceiling(max)).ToString();
+            var pre = max / 3;
+            txt0.Text = pre < 1 ? pre.ToString("F2"): ((int)pre).ToString();
+            txt1.Text = pre < 1 ? (pre*2).ToString("F2"): ((int)pre * 2).ToString();
+            txt2.Text = pre < 1 ? max.ToString("F2"): ((int)Math.Ceiling(max)).ToString();
         }
 
         private void ClearEvent()

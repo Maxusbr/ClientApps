@@ -87,6 +87,15 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
                        Source = new BitmapImage(new Uri("/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/satellite-dish-icon.png", UriKind.Relative))
                    };
                     break;
+                case "XChart":
+                    element = new TextBlock {Width = 24, Text = "X", FontSize = 16, FontWeight = FontWeights.Bold, HorizontalAlignment = HorizontalAlignment.Stretch};
+                    break;
+                case "YChart":
+                    element = new TextBlock { Width = 24, Text = "Y", FontSize = 16, FontWeight = FontWeights.Bold, HorizontalAlignment = HorizontalAlignment.Stretch };
+                    break;
+                case "ZChart":
+                    element = new TextBlock { Width = 24, Text = "Z", FontSize = 16, FontWeight = FontWeights.Bold, HorizontalAlignment = HorizontalAlignment.Stretch };
+                    break;
                 default:
                     Sensors.OBD.OBDSensorDetector detector = new Sensors.OBD.OBDSensorDetector();
                     return detector.GetControl(name, val);

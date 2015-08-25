@@ -20,6 +20,9 @@ namespace DTCDev.Models.CarsSending.Car
             [JsonProperty(PropertyName = "F")]
         public List<AccRow> Data { get; set; }
 
+        [JsonIgnore]
+        public DateTime Date { get { return Data.Any() ? Data[0].Date.ToDate() : new DateTime(1,1,1); } }
+
         public class AccRow
         {
             [JsonProperty(PropertyName = "A")]

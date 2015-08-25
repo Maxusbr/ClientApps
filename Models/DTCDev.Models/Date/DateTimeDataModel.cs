@@ -26,7 +26,12 @@ namespace DTCDev.Models.Date
 
         public DateTime ToDateTime()
         {
-            return new DateTime(Y != 0 ? Y : 2001, M != 0 ? M : 1, D != 0 ? D : 1, hh, mm, ss);
+            return new DateTime(Y != 0 ? Y : 1, M != 0 ? M : 1, D != 0 ? D : 1, hh, mm, ss);
+        }
+
+        public DateTime ToDate()
+        {
+            return new DateTime(Y != 0 ? Y : 1, M != 0 ? M : 1, D != 0 ? D : 1);
         }
 
         public TimeSpan ToTime()
