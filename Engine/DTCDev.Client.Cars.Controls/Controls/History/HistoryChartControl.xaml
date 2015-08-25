@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DTCDev.Client.Cars.Controls.Controls.History"
              xmlns:vm="clr-namespace:DTCDev.Client.Cars.Controls.ViewModels.History" 
-             xmlns:models="clr-namespace:DTCDev.Client.Cars.Controls.Models" 
+             xmlns:models="clr-namespace:DTCDev.Client.Cars.Controls.Models"
+             xmlns:busy="clr-namespace:DTCDev.Client.Busy;assembly=DTCDev.Client"
              x:Class="DTCDev.Client.Cars.Controls.Controls.History.HistoryChartControl"
              mc:Ignorable="d" 
              Height="200" d:DesignWidth="500" >
@@ -402,6 +403,10 @@
                         <StackPanel x:Name="stCharts" Grid.Row="1" VerticalAlignment="Top"/>
                     </Grid>
                 </ScrollViewer>
+            </Grid>
+            <Grid Visibility="{Binding IsWaiting, Converter={StaticResource BoolToVisibilityConverter}}" >
+                <Border Background="DarkGray" Opacity="0.7"/>
+                <TextBlock Text="Загрузка" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Grid>
         </Grid>
     </Border>

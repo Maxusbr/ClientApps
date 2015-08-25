@@ -6,7 +6,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="286" SizeChanged="UserControl_SizeChanged" >
     <Grid>
-        <Border BorderBrush="#FF808080" BorderThickness="0,0,0,1"/>
+        <Border BorderBrush="#FF808080" BorderThickness="0,0,0,1" Visibility="Collapsed"/>
 
         <Border x:Name="vbData" Margin="6" >
             <Grid>

@@ -31,6 +31,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         private DateTime _selectedDate;
         private int _valueNormal = 90;
         private int _valueWarning = 120;
+        private bool _isWaiting;
 
         #endregion
 
@@ -46,7 +47,10 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             _handler.DayRefreshed += Instance_DayRefreshed;
             _handler.OBDLoaded += Instance_OBDLoaded;
             _handler.AccLoaded += Instance_AccLoaded;
+            _handler.DayStateChange += _handler_DayStateChange;
         }
+
+        
 
         #region Events
 
@@ -89,6 +93,16 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
+        public bool IsWaiting
+        {
+            get { return _isWaiting; }
+            set
+            {
+                _isWaiting = value;
+                OnPropertyChanged("IsWaiting");
+            }
+        }
+
         /// <summary>
         /// Масштаб отображения графика от 5 до 1 (день/час/30 минут/15 минут/минута)
         /// </summary>
@@ -125,6 +139,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 if (_selectedDate == value) return;
                 _selectedDate = value;
                 if (value <= new DateTime(1, 1, 1)) return;
+                if (Scale == 5) Scale = 4;
+                else Recalqulate();
                 _handler.StartLoadOBD(SelectedCar.ID, value);
                 _handler.StartLoadAcc(SelectedCar.ID, value);
             }
@@ -134,6 +150,14 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
 
         #region Handlers
+        private void _handler_DayStateChange(List<CarStateModel> list)
+        {
+            var first = list.FirstOrDefault();
+            if(first == null || first.Date <= new DateTime(1, 1, 1)) return;
+            var dt = first.Date;
+            SelectedDate = new DateTime(dt.Year, dt.Month, dt.Day);
+        }
+
         protected virtual void OnClearControls()
         {
             if (ClearControls != null) ClearControls.Invoke(this, EventArgs.Empty);
@@ -155,7 +179,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             if (_loadedAccData.All(o => o.Date != SelectedDate))
                 _loadedAccData.Add(model);
 
-            if (!model.Date.Equals(SelectedDate)) return;
+            if (!model.Date.Equals(SelectedDate) || Scale == 5) return;
             var list = new List<ScaleValuesData>();
             var slowTask = new Task(delegate
             {
@@ -287,6 +311,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         private void Recalqulate()
         {
+            IsWaiting = true;
             var list = new List<ChartValuesData>();
             var slowTask = new Task(delegate
             {
@@ -296,9 +321,10 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             {
                 DispatherThreadRun(delegate
                 {
+                    ListData = new ScaleValuesData { Data = list, Scale = Scale, UseMaxMin = !IsWayView, MinVal = _valueNormal, MaxVal = _valueWarning };
                     if (Scale == 5) OnClearControls();
                     else AddMoreCharts();
-                    ListData = new ScaleValuesData { Data = list, Scale = Scale, UseMaxMin = !IsWayView, MinVal = _valueNormal, MaxVal = _valueWarning };
+                    IsWaiting = false;
                 });
             });
             slowTask.Start();
