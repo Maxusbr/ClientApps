@@ -98,8 +98,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         private void DisplayDayData(bool useMaxMin, double minval, double maxval)
         {
             CurenDate = _data.Data.Min(o => o.Date);
-            var min = _data.Data.Min(o => o.Value);
-            if (min > 0) min = 0;
+            var min = 0;//_data.Data.Min(o => o.Value);
             var max = _data.Data.Max(o => o.Value);
             var w = _controlWidth / _data.Data.Count - 2;
             var h = _controlHeight / (max - min);
@@ -135,10 +134,10 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             if (first == null) return;
             var ts = new TimeSpan(first.Date.Hour, 0, 0);
             var cnt = _data.Data.Max(o => o.Date.Hour) - _data.Data.Min(o => o.Date.Hour) + 1;
-            var min = Math.Max(_data.Data.Min(o => o.Value), 0);
+            var min = 0;//Math.Max(_data.Data.Min(o => o.Value), 0);
             var max = _data.Data.Max(o => o.Value);
             var w = (int)Math.Max(_controlWidth / cnt / multy, 1);
-            var h = _controlHeight / (max - min);
+            var h = max > 0 ?_controlHeight / (max - min): 0;
             stkData.MouseWheel += OnMouseWeel;
             for (var i = 0; i < cnt * multy; i++)
             {
@@ -151,7 +150,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
                     VerticalAlignment = VerticalAlignment.Bottom,
                     Background = el != null ? new SolidColorBrush(Colors.Blue) : null,
                     ToolTip = el != null ? el.Date.ToString("g") : null,
-                    Height = el != null && h > 0 ? (int)(h * el.Value): 0,
+                    Height = el != null ? (int)(h * el.Value): 0,
                     Width = w
                 };
                 if (el != null && useMaxMin) b.Background = GetBrush(el.Value, minval, maxval);

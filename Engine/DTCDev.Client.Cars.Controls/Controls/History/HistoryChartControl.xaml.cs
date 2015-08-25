@@ -42,15 +42,16 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         private void Vm_AddControl(ScaleValuesData model)
         {
             var cntrls = stCharts.Children.OfType<ChartDataControl>();
-            var cntrl = cntrls.FirstOrDefault(o => o.Name.Equals(model.Name));
+            var cntrl = cntrls.FirstOrDefault(o => o.Name.Equals(model.Name ?? "OBD" + model.Code));
             if (cntrl == null)
             {
                 cntrl = new ChartDataControl { Name = string.IsNullOrEmpty(model.Name) ? "OBD" + model.Code: model.Name, MinHeight = 80};
                 cntrl.MouseWeel += ChartDataControl_MouseWheel;
                 stCharts.Children.Add(cntrl);
+                var value = model.Data.Average(o => o.Value);
                 var element = new Border
                 {
-                    Child = GetElement(model.Name, model.Data.Any() ? ((int)model.Data[0].Value).ToString(): ""),
+                    Child = GetElement(model.Name ?? model.Code, ((int)value).ToString()),
                     //BorderThickness = new Thickness(1),
                     //BorderBrush = new SolidColorBrush(Colors.Gray)
                 };
