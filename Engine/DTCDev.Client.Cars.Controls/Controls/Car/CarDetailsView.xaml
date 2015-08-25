@@ -79,9 +79,21 @@
     </UserControl.Resources>
     <Grid >
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0"/>
+            <ColumnDefinition Width="50"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
+        <Grid x:Name="grdButtons">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <ToggleButton x:Name="btnPanel" Style="{DynamicResource ToggleButtonStyle}" Background="#FF707070" BorderBrush="#FFA2A2A2" Margin="0,1" Click="btnPanel_Click">
+                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/SettingsMenu/car-icon.png"/>
+            </ToggleButton>
+            <ToggleButton x:Name="btnSettings" Style="{DynamicResource ToggleButtonStyle}" Background="#FF707070" Grid.Row="1" BorderBrush="#FFA2A2A2" Margin="0,1" Click="btnPanel_Click">
+                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/connect.png" Stretch="None"/>
+            </ToggleButton>
+        </Grid>
         <Grid x:Name="grdParams" Grid.Column="1" Background="#FF272528">
             <Grid.RowDefinitions>
                 <RowDefinition Height="20"/>
@@ -168,68 +180,6 @@
                 </Border>
             </Border>
         </Grid>
-        <!--<TabControl Margin="5">
-            <TabItem Header="Текущие показатели">
-                
-                <Grid Margin="10,5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="200"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <TextBlock x:Name="txtDate" FontWeight="Bold" Grid.ColumnSpan="4" TextAlignment="Center"/>
-                    <Grid Grid.Row="1" Margin="10,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="50"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="24"/>
-                            <RowDefinition Height="21"/>
-                            <RowDefinition Height="21"/>
-                            <RowDefinition Height="21"/>
-                            <RowDefinition Height="21"/>
-                            <RowDefinition Height="21"/>
-                            <RowDefinition Height="21"/>
-                            <RowDefinition Height="21"/>
-                        </Grid.RowDefinitions>
-                         <TextBlock Text="Скорость" />
-                        <TextBlock x:Name="txtSpeed" Grid.Column="1"/>
-                        <TextBlock Text="Кол-во спутников" Grid.Row="1"/>
-                        <TextBlock x:Name="txtSat" Grid.Column="1" Grid.Row="1"/>
-                        <TextBlock Text="Уровень топлива" Grid.Row="2"/>
-                        <TextBlock x:Name="txtFuel" Grid.Column="1" Grid.Row="2"/>
-                    </Grid>
-                    <ScrollViewer Margin="20,0,0,0" Grid.Column="1" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                        <StackPanel Grid.Column="1" x:Name="stkOBD"/>
-                    </ScrollViewer>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Настройки">
-                <Grid Margin="10,5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="200"/>
-                        <ColumnDefinition Width="200"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="20"/>
-                        <RowDefinition Height="28"/>
-                        <RowDefinition Height="28"/>
-                        <RowDefinition Height="28"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="1" Text="Название" Margin="6"/>
-                    <TextBlock Grid.Row="2" Text="VIN" Margin="6"/>
-                    <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Path=Name, Mode=TwoWay}" Margin="4"/>
-                    <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Path=VIN, Mode=TwoWay}" Margin="4"/>
-                    <Button Grid.Column="1" Grid.Row="3" Content="Сохранить" Command="{Binding Path=SaveSettingsCommand}" Margin="20,3"/>
-                </Grid>
-            </TabItem>
-        </TabControl>-->
         <Button x:Name="btnClose" Grid.Column="1" Height="16" Width="20" Margin="0,5,5,0" Click="btnClose_Click" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Right">
             <Grid>
                 <Border Width="2" Height="10" BorderBrush="#FF00CCFF" Background="#FF00CCFF" RenderTransformOrigin="0.5,0.5">
@@ -256,18 +206,27 @@
                 </Border>
             </Grid>
         </Button>
-        <Grid Visibility="Collapsed">
+
+        <Grid Grid.Column="1" Background="White" x:Name="grdSettings" Visibility="Collapsed">
+            <Grid Margin="10,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="28"/>
+                <RowDefinition Height="28"/>
+                <RowDefinition Height="28"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <ToggleButton Style="{DynamicResource ToggleButtonStyle}" Background="#FF707070" BorderBrush="#FFA2A2A2" Margin="0,1">
-                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/SettingsMenu/car-icon.png"/>
-            </ToggleButton>
-            <ToggleButton Style="{DynamicResource ToggleButtonStyle}" Background="#FF707070" Grid.Row="1" BorderBrush="#FFA2A2A2" Margin="0,1">
-                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/connect.png" Stretch="None"/>
-            </ToggleButton>
+            <TextBlock Grid.Row="1" Text="Название" Margin="6"/>
+            <TextBlock Grid.Row="2" Text="VIN" Margin="6"/>
+            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Path=Name, Mode=TwoWay}" Margin="4"/>
+            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Path=VIN, Mode=TwoWay}" Margin="4"/>
+            <Button Grid.Column="1" Grid.Row="3" Content="Сохранить" Command="{Binding Path=SaveSettingsCommand}" Margin="20,3"/>
+        </Grid>
         </Grid>
     </Grid>
 </UserControl>

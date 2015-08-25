@@ -27,5 +27,8 @@ namespace DTCDev.Models.CarsSending.Car
 
         [JsonProperty(PropertyName = "z")]
         public int StepsPerLiter { get; set; }
+
+        [JsonProperty(PropertyName="t")]
+        public string VIN { get; set; }
     }
 }

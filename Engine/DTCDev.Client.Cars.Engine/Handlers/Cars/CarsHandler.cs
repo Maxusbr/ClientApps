@@ -189,7 +189,8 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
                             FuelDataPosition = item.FuelPosition,
                             StartFuelValue = item.StartValue,
                             StepPerLiter = ((decimal)item.StepsPerLiter) / 100.0m
-                        }
+                        },
+                        VIN = item.VIN
                     };
                     _cars.Add(c);
                 }

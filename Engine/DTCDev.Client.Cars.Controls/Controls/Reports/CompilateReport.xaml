@@ -25,12 +25,9 @@
 
         </StackPanel>
         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Grid.Row="2">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-        </Grid>
+            <StackPanel x:Name="stkData">
+                
+            </StackPanel>
         </ScrollViewer>
 
     </Grid>

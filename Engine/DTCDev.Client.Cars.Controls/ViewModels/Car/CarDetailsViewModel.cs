@@ -80,6 +80,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Car
             settings.DID = CAR.ID;
             settings.CarName = Name;
             settings.VIN = VIN;
+            CAR.Name = Name;
+            CAR.VIN = VIN;
             CarsHandler.Instance.SaveCarSettings(settings);
         }
     }

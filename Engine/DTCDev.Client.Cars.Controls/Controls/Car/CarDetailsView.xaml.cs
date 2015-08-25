@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using DTCDev.Client.Cars.Controls.ViewModels.Car;
 using DTCDev.Client.Cars.Engine.AppLogic;
 using DTCDev.Client.Cars.Engine.DisplayModels;
+using System.Windows.Controls.Primitives;
 
 namespace DTCDev.Client.Cars.Controls.Controls.Car
 {
@@ -120,6 +121,20 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
         {
             if (CloseMe != null)
                 CloseMe(this, new EventArgs());
+        }
+
+        private void btnPanel_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleButton tb = (ToggleButton)sender;
+            foreach (var item in grdButtons.Children)
+            {
+                if (((ToggleButton)item).Name != tb.Name)
+                    ((ToggleButton)item).IsChecked = false;
+            }
+            if (tb.Name == "btnSettings")
+                grdSettings.Visibility = Visibility.Visible;
+            else
+                grdSettings.Visibility = Visibility.Collapsed;
         }
     }
 }
