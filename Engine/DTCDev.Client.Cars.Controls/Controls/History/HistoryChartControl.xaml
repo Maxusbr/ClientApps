@@ -372,10 +372,6 @@
             <Border Grid.Column="1" Padding="5" >
                 <Slider Orientation="Vertical" Maximum="5" SmallChange="1" Style="{DynamicResource SliderStyle}" IsSnapToTickEnabled="True" TickPlacement="TopLeft" Minimum="1" Value="{Binding Scale, Mode=TwoWay}" BorderBrush="#FF3C3C3C"/>
             </Border>
-            <StackPanel Grid.Column="2" Orientation="Vertical" VerticalAlignment="Center" CanVerticallyScroll="True" Margin="5">
-                <ToggleButton Content="Пробег" Padding="5,1" IsChecked="{Binding IsWayView}"/>
-                <ToggleButton Content="Скорость" Padding="5,1" Margin="0,5,0,0" IsChecked="{Binding IsWayView, Converter={StaticResource InvertBoolConverter}}"/>
-            </StackPanel>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="32"/>

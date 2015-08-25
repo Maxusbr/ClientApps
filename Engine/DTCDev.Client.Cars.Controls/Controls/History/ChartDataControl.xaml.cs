@@ -74,10 +74,9 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         }
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            _controlWidth = stkData.ActualWidth > 0 && (stkData.ActualWidth < _controlWidth || _controlWidth < 1) ?
-                (int)stkData.ActualWidth - 2 : _controlWidth;
-            ControlHeight = _controlHeight < 1 ?
-                (int)stkData.ActualHeight - 2 : _controlHeight;
+            _controlWidth = stkData.ActualWidth > 0 && _controlWidth < 1 ?
+                (int)stkData.ActualWidth : _controlWidth;
+            ControlHeight = _controlHeight < 1 ? (int)stkData.ActualHeight - 2 : _controlHeight;
         }
 
         
@@ -111,7 +110,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
                     Background = new SolidColorBrush(Colors.Blue),
                     Margin = new Thickness(1),
                     Height = (int)(h * el.Value),
-                    Width = (int)w,
+                    Width = w,
                     ToolTip = el.Date.ToShortDateString(),
                     Child = el.Value > 5 * h ? new TextBlock
                     {
@@ -125,6 +124,14 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
                 if (useMaxMin) b.Background = GetBrush(el.Value, minval, maxval);
                 b.MouseWheel += OnMouseWeel;
                 stkData.Children.Add(b);
+                stkTicks.Children.Add(new Border
+                {
+                    Width = w,
+                    Margin = new Thickness(1),
+                    BorderThickness = new Thickness(1, 0, 0, 0),
+                    BorderBrush = new SolidColorBrush(Colors.Gray),
+                    Child = new TextBlock { Text = el.Date.ToString("dd.MM"), FontSize = 8 }
+                });
             }
         }
 

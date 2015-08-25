@@ -76,9 +76,9 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             {
                 case "speed": element = new Image
                    {
-                       Width = 24,
+                       Width = 32,
                        HorizontalAlignment = HorizontalAlignment.Center,
-                       Source = new BitmapImage(new Uri("/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/car-add-icon.png", UriKind.Relative))
+                       Source = new BitmapImage(new Uri("/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/speed.png", UriKind.Relative))
                    };
                     break;
                 case "satelites": element = new Image

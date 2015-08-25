@@ -42,6 +42,8 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
         {
             get { return historyMessages; }
         }
+        public delegate void DayChanged(DateTime date);
+        public event DayChanged DayChange;
 
         public delegate void DayStateChanged(List<CarStateModel> list);
         public event DayStateChanged DayStateChange;
@@ -434,5 +436,9 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
             if (DayStateChange != null) DayStateChange(list);
         }
 
+        public virtual void OnDayChange(DateTime date)
+        {
+            if (DayChange != null) DayChange.Invoke(date);
+        }
     }
 }

@@ -49,6 +49,14 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             _handler.LinesLoaded += Instance_LinesLoaded;
             _handler.OBDLoaded += Instance_OBDLoaded;
             _handler.AccLoaded += Instance_AccLoaded;
+            _handler.DayChange += _handler_DayChange;
+        }
+
+        private void _handler_DayChange(DateTime date)
+        {
+            var pos = HistoryRows.FirstOrDefault(o => o.Date.Year == date.Year && o.Date.Month == date.Month &&  o.Date.Day == date.Day);
+            if (pos != null)
+                SelectedHistoryRow = pos;
         }
 
         void _tableHistory_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -95,6 +103,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             get { return _selectedRow; }
             set
             {
+                if(_selectedRow == value) return;
                 _selectedRow = value;
                 Iswaiting = true;
                 TableHistory.Update(value);
@@ -588,10 +597,10 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                         if (item != null)
                         {
                             var indx = HistoryRows.IndexOf(item);
-                            var selected = HistoryRows[indx].Equals(SelectedHistoryRow);
+                            //var selected = HistoryRows[indx].Equals(SelectedHistoryRow);
                             DistanceAll -= HistoryRows[indx].Mileage;
                             HistoryRows[indx] = r;
-                            if (selected) SelectedHistoryRow = r;
+                            //if (selected) SelectedHistoryRow = r;
                             DistanceAll += r.Mileage;
                         }
                         else
