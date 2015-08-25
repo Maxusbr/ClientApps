@@ -66,6 +66,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\History\ChartDataControl.xaml.cs">
+      <DependentUpon>ChartDataControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Car\CarDetailsView.xaml.cs">
       <DependentUpon>CarDetailsView.xaml</DependentUpon>
     </Compile>
@@ -96,6 +99,9 @@
     </Compile>
     <Compile Include="Controls\History\ControllerLineHistoryRow.xaml.cs">
       <DependentUpon>ControllerLineHistoryRow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\History\HistoryChartControl.xaml.cs">
+      <DependentUpon>HistoryChartControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\History\HistoryControl.xaml.cs">
       <DependentUpon>HistoryControl.xaml</DependentUpon>
@@ -209,6 +215,7 @@
     <Compile Include="ViewModels\Car\CarZoneHistoryErrorViewModel.cs" />
     <Compile Include="ViewModels\Car\CarZonesErrorViewModel.cs" />
     <Compile Include="ViewModels\Driver\DriversWinViewModel.cs" />
+    <Compile Include="ViewModels\History\HistoryChartViewModel.cs" />
     <Compile Include="ViewModels\History\HistoryRowsViewModel.cs" />
     <Compile Include="ViewModels\History\HistoryViewModel.cs" />
     <Compile Include="ViewModels\History\HistoryWorkViewModel.cs" />
@@ -224,6 +231,10 @@
     <Compile Include="ViewModels\Reports\SpeedOveralReportViewModel.cs" />
     <Compile Include="ViewModels\Reports\SpeedReportViewModel.cs" />
     <Compile Include="ViewModels\Reports\WorkTimeReportViewModel.cs" />
+    <Page Include="Controls\History\ChartDataControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Car\CarDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -269,6 +280,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\History\ControllerLineHistoryRow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\History\HistoryChartControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

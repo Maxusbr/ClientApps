@@ -12,6 +12,19 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="500" Loaded="UserControl_Loaded">
     <UserControl.Resources>
+        <local:SpeedValueToStyleConverter x:Key="ValueToStyleConverter" СonditionValue="{StaticResource DarkOrange1}" TrueValue="{StaticResource Green1}" FalseValue="{StaticResource DarkRed1}" DesibleValue="Transparent" />
+        <Style x:Key="StyleCell" TargetType="{x:Type DataGridCell}">
+            <Setter Property="Background" >
+                <Setter.Value>
+                    <MultiBinding Converter="{StaticResource ValueToStyleConverter}" >
+                        <Binding RelativeSource="{RelativeSource Self}"/>
+                        <Binding Path="." />
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Models:InvertBoolToVisibilityConverter x:Key="InvertBoolToVisibilityConverter"/>
+        <Models:BoolToColorConverter x:Key="BoolToColorConverter"/>
         <Storyboard x:Key="stbOpenToolBar" Storyboard.TargetName="grdToolbar" Storyboard.TargetProperty="(FrameworkElement.Width)">
             <DoubleAnimation From="40" To="180" Duration="0:0:0.2"/>
         </Storyboard>

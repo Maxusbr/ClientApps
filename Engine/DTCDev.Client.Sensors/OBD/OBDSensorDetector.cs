@@ -8,7 +8,7 @@ namespace DTCDev.Client.Sensors.OBD
 {
     public class OBDSensorDetector
     {
-        public UIElement GetControl(string pid, string value)
+        public FrameworkElement GetControl(string pid, string value)
         {
             switch (pid)
             {

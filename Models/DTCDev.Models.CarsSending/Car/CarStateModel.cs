@@ -116,5 +116,8 @@ namespace DTCDev.Models.CarsSending.Car
 
         [JsonIgnore]
         public DateTime Date { get { return new DateTime(yy, Mnth, dd, hh, mm, ss);} }
+
+        [JsonIgnore]
+        public double Mileage { get; set; }
     }
 }

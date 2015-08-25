@@ -60,7 +60,12 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
 
         public event EventHandler LoadCompleted;
 
-
+        public delegate void DateTimePositionHandler(DateTime position);
+        public event DateTimePositionHandler SetDateTimePosition;
+        public virtual void OnSetDateTimePosition(DateTime position)
+        {
+            if (SetDateTimePosition != null) SetDateTimePosition(position);
+        }
 
         public void Split(char fx, string row)
         {
@@ -428,5 +433,6 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
         {
             if (DayStateChange != null) DayStateChange(list);
         }
+
     }
 }

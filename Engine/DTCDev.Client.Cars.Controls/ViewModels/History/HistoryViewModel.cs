@@ -100,11 +100,30 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             //_handler.OBDLoaded += Instance_OBDLoaded;
             _handler.AccLoaded += Instance_AccLoaded;
             _handler.DayStateChange += _handler_DayStateChange;
+            _handler.SetDateTimePosition += _handler_SetDateTimePosition;
 
             //TableHistory.PropertyChanged += TableHistory_PropertyChanged;
             if (!_zoneHandler.Zones.Any())
                 _zoneHandler.Update();
 
+        }
+
+        void _handler_SetDateTimePosition(DateTime position)
+        {
+            IsPlayerStart = false;
+            var slowTask = new Task(delegate
+            {
+                Thread.Sleep(50);
+            });
+            slowTask.ContinueWith(o => {
+                if (_dispatcher != null)
+                    _dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        PlayerCurentTime = position;
+                    }));
+            });
+            slowTask.Start();
+            //UpdateCurentPosition(position);
         }
 
         void _handler_DayStateChange(List<CarStateModel> list)
@@ -640,7 +659,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 OnPropertyChanged("MapCenterUser");
             }
         }
-
 
         public DISP_Car Position
         {
