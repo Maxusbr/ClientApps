@@ -35,13 +35,13 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         private void ChartDataControl_BorderClick(DateTime date)
         {
             if (date > new DateTime(1, 1, 1)) _vm.SelectedTime = date;
-            tbDate.Text = date.ToString("g");
+            //tbDate.Text = date.ToString("g");
         }
         private void ChartDataControl_MouseWheel(DateTime date, MouseWheelEventArgs e)
         {
             if (date > new DateTime(1, 1, 1)) _vm.SelectedTime = date;
             _vm.Scale += e.Delta < 0 ? 1 : -1;
-            tbDate.Text = date.ToString("g");
+            //tbDate.Text = date.ToString("g");
         }
 
         private void Vm_ClearControls(object sender, EventArgs e)
