@@ -374,6 +374,7 @@
                 <RowDefinition/>                
             </Grid.RowDefinitions>
             <TextBlock x:Name="tbDate" VerticalAlignment="Top" HorizontalAlignment="Left" Text="{Binding UpDate}"/>
+            <TextBlock VerticalAlignment="Top" HorizontalAlignment="Right" Text="{Binding StrSelectedDate}"/>
             <Border Grid.Column="1" Padding="5" Grid.Row="1" >
                 <Slider Orientation="Vertical" Maximum="5" SmallChange="1" Style="{DynamicResource SliderStyle}" IsSnapToTickEnabled="True" TickPlacement="TopLeft" Minimum="1" Value="{Binding Scale, Mode=TwoWay}" BorderBrush="#FF3C3C3C"/>
             </Border>

@@ -112,7 +112,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             var min = 0;//_data.Data.Min(o => o.Value);
             var max = _data.Data.Max(o => o.Value);
             var w = _controlWidth / _data.Data.Count - 2;
-            var h = _controlHeight / (max - min);
+            var h = max > 0 ? _controlHeight / (max - min): 0;
             h = h < 0 ? 0 : h;
             foreach (var el in _data.Data.OrderBy(o => o.Date))
             {

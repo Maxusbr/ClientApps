@@ -34,7 +34,9 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
 
         private void ChartDataControl_BorderClick(DateTime date)
         {
-            if (date > new DateTime(1, 1, 1)) _vm.SelectedTime = date;
+            if (date <= new DateTime(1, 1, 1)) return;
+            if( _vm.SelectedTime != date ) _vm.SelectedTime = date;
+            if(_vm.Scale == 5) _vm.Scale -= 1;
             //tbDate.Text = date.ToString("g");
         }
         private void ChartDataControl_MouseWheel(DateTime date, MouseWheelEventArgs e)

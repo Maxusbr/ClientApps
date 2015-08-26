@@ -152,8 +152,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             {
                 if (_selectedDate == value) return;
                 _selectedDate = value;
+                OnPropertyChanged("StrSelectedDate");
                 if (value <= new DateTime(1, 1, 1)) return;
-
                 if (Scale == 5)
                 {
                     Scale = 4;
@@ -167,6 +167,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 _handler.OnDayChange(value);
             }
         }
+
+        public string StrSelectedDate { get { return SelectedDate> new DateTime(1, 1, 1) ? SelectedDate.ToShortDateString(): ""; } }
 
         public string UpDate
         {
@@ -240,19 +242,21 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         {
             ////TODO OBDHistoryDataModel должен возвращать дату. public DateDataModel DT { get; set; }
             //return;
-            _loadedObdData.Clear();
             //var exist = _loadedObdData.FirstOrDefault(o => o.DT.ToDate.Equals(data.DT.ToDate));
             //if (exist == null)
-            _loadedObdData.Add(data);
-
             //if (!data.DT.ToDate.Equals(SelectedDate)) return;
             var list = new List<ScaleValuesData>();
             var slowTask = new Task(delegate
             {
-                var prms = data.Data.Select(p => p.Code).Distinct();
-                list.AddRange(prms.Select(el => new ScaleValuesData { Code = el, Scale = Scale, Data = GetOBDData(el) }));
-                if (!_loadedAccData.Any(o => o.Date.Equals(SelectedDate)))
-                    _handler.StartLoadAcc(SelectedCar.ID, SelectedDate);
+                lock (_loadedObdData)
+                {
+                    _loadedObdData.Clear();
+                    _loadedObdData.Add(data);
+                    var prms = data.Data.Select(p => p.Code).Distinct();
+                    list.AddRange(prms.Select(el => new ScaleValuesData { Code = el, Scale = Scale, Data = GetOBDData(el) }));
+                    if (!_loadedAccData.Any(o => o.Date.Equals(SelectedDate)))
+                        _handler.StartLoadAcc(SelectedCar.ID, SelectedDate);
+                }
             });
             slowTask.ContinueWith(delegate
             {
@@ -274,17 +278,17 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         private void Instance_DayRefreshed(DateTime day, List<CarStateModel> data)
         {
             var f = data.FirstOrDefault();
-            if (f == null || f.DevID != SelectedCar.ID) return;
+            if (f == null) return;
+            CacheRoute(string.Format("[{0}]-{1}-{2}-{3}", f.DevID, day.Day, day.Month, day.Year), data);
+            if (f.DevID != SelectedCar.ID) return;
             var list = new List<ChartValuesData>();
             UpDate = "Обновляю данные за " + day.ToShortDateString();
             var slowTask = new Task(delegate
             {
                 var dt = new DateTime(day.Year, day.Month, day.Day);
                 BuildDataRow(data, dt);
-                if (dt.Equals(SelectedDate) || Scale == 5)
-                    list = GetStaticData(true);
-                if (CarSelector.SelectedCar != null)
-                    CacheRoute(string.Format("[{0}]-{1}-{2}-{3}", CarSelector.SelectedCar.ID, day.Day, day.Month, day.Year), data);
+                if (dt.Equals(SelectedDate))
+                    list = GetStaticData();
             });
             slowTask.ContinueWith(delegate
             {
@@ -317,7 +321,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             var dt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
             var list = new List<ChartValuesData>();
             _loadedData.Clear();
-            UpDate = string.Format("Запрос данных {0} - {1}", (DateTime.Now - TimeSpan.FromDays(days)).ToShortDateString(), 
+            UpDate = string.Format("Запрос данных {0} - {1}", (DateTime.Now - TimeSpan.FromDays(days)).ToShortDateString(),
                 DateTime.Now.ToShortDateString());
             var slowTask = new Task(delegate
             {
@@ -325,9 +329,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 {
                     GetCache(dt.AddDays(-i));
                 }
-                if(_loadedData.Any())
+                if (_loadedData.Any())
                 {
-                    _selectedDate = _loadedData.Where(w => w.Data.Any()).Min(o => o.Date);
+                    //_selectedDate = _loadedData.Where(w => w.Data.Any()).Min(o => o.Date);
                     list = GetStaticData();
                 }
                 _handler.StartLoadHistory(SelectedCar.ID, DateTime.Now - TimeSpan.FromDays(days), DateTime.Now, true);
@@ -407,13 +411,13 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         /// <summary>
         /// Метод обновления данных графиков
         /// </summary>
-        private void Recalqulate()
+        public void Recalqulate()
         {
             IsWaiting = true;
             var list = new List<ChartValuesData>();
             var slowTask = new Task(delegate
             {
-                list = GetStaticData(true);
+                list = GetStaticData();
             });
             slowTask.ContinueWith(delegate
             {
