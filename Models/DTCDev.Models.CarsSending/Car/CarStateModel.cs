@@ -115,7 +115,19 @@ namespace DTCDev.Models.CarsSending.Car
         }
 
         [JsonIgnore]
-        public DateTime Date { get { return new DateTime(yy, Mnth, dd, hh, mm, ss);} }
+        public DateTime Date
+        {
+            get { return new DateTime(yy, Mnth, dd, hh, mm, ss); }
+            set
+            {
+                yy = value.Year;
+                Mnth = value.Month;
+                dd = value.Day;
+                hh = value.Hour;
+                mm = value.Minute;
+                ss = value.Second;
+            }
+        }
 
         [JsonIgnore]
         public double Mileage { get; set; }

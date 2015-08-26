@@ -29,12 +29,28 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             _vm.AddControl += Vm_AddControl;
             _vm.ClearControls += Vm_ClearControls;
             ChartDataControl.MouseWeel += ChartDataControl_MouseWheel;
+            ChartDataControl.BorderClick += ChartDataControl_BorderClick;
+        }
+
+        private void ChartDataControl_BorderClick(DateTime date)
+        {
+            if (date > new DateTime(1, 1, 1)) _vm.SelectedTime = date;
+            tbDate.Text = date.ToString("g");
+        }
+        private void ChartDataControl_MouseWheel(DateTime date, MouseWheelEventArgs e)
+        {
+            if (date > new DateTime(1, 1, 1)) _vm.SelectedTime = date;
+            _vm.Scale += e.Delta < 0 ? 1 : -1;
+            tbDate.Text = date.ToString("g");
         }
 
         private void Vm_ClearControls(object sender, EventArgs e)
         {
             foreach (var cntrl in stCharts.Children.OfType<ChartDataControl>())
+            {
                 cntrl.MouseWeel -= ChartDataControl_MouseWheel;
+                cntrl.BorderClick -= ChartDataControl_BorderClick;
+            }
             stCharts.Children.Clear();
             stImages.Children.Clear();
         }
@@ -47,6 +63,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             {
                 cntrl = new ChartDataControl { Name = string.IsNullOrEmpty(model.Name) ? "OBD" + model.Code: model.Name, MinHeight = 80};
                 cntrl.MouseWeel += ChartDataControl_MouseWheel;
+                cntrl.BorderClick += ChartDataControl_BorderClick;
                 stCharts.Children.Add(cntrl);
                 var value = model.Data.Average(o => o.Value);
                 var element = new Border
@@ -62,12 +79,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             cntrl.Data = model;
         }
 
-        private void ChartDataControl_MouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            var cntrl = sender as ChartDataControl;
-            if (cntrl != null && cntrl.CurenDate > new DateTime(1, 1, 1)) _vm.SelectedDate = cntrl.CurenDate;
-            _vm.Scale += e.Delta < 0 ? 1 : -1;
-        }
+
 
         private FrameworkElement GetElement(string name, string val = "")
         {

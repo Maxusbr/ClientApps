@@ -369,10 +369,15 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Border Grid.Column="1" Padding="5" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>                
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="tbDate" VerticalAlignment="Top" HorizontalAlignment="Left" Text="{Binding UpDate}"/>
+            <Border Grid.Column="1" Padding="5" Grid.Row="1" >
                 <Slider Orientation="Vertical" Maximum="5" SmallChange="1" Style="{DynamicResource SliderStyle}" IsSnapToTickEnabled="True" TickPlacement="TopLeft" Minimum="1" Value="{Binding Scale, Mode=TwoWay}" BorderBrush="#FF3C3C3C"/>
             </Border>
-            <Grid>
+            <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="32"/>
                     <ColumnDefinition/>
@@ -400,7 +405,7 @@
                     </Grid>
                 </ScrollViewer>
             </Grid>
-            <Grid Visibility="{Binding IsWaiting, Converter={StaticResource BoolToVisibilityConverter}}" >
+            <Grid Visibility="{Binding IsWaiting, Converter={StaticResource BoolToVisibilityConverter}}" Grid.Row="1" >
                 <Border Background="DarkGray" Opacity="0.7"/>
                 <TextBlock Text="Загрузка" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Grid>

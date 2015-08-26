@@ -30,13 +30,25 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
 
         }
 
-        public event MouseWheelEventHandler MouseWeel;
+        public delegate void BorderClickHandler(DateTime date);
+        public delegate void BorderMouseWeelHandler(DateTime date, MouseWheelEventArgs e);
+        public event BorderClickHandler BorderClick;
+        protected virtual void OnBorderClick(object sender, MouseButtonEventArgs e)
+        {
+            var obj = sender as Border;
+            DateTime dt;
+            if (BorderClick == null || obj == null || !DateTime.TryParse(obj.ToolTip.ToString(), out dt)) return;
+            CurenDate = new DateTime(dt.Year, dt.Month, dt.Day);
+            BorderClick(dt);
+        }
+
+        public event BorderMouseWeelHandler MouseWeel;
         protected virtual void OnMouseWeel(object sender, MouseWheelEventArgs e)
         {
             var obj = sender as Border;
             DateTime dt;
-            if (obj != null && DateTime.TryParse(obj.ToolTip.ToString(), out dt)) CurenDate = dt;
-            if (MouseWeel != null) MouseWeel.Invoke(this, e);
+            if (MouseWeel != null && obj != null && DateTime.TryParse(obj.ToolTip.ToString(), out dt))
+                MouseWeel.Invoke(dt, e);
         }
 
         public DateTime CurenDate { get; set; }
@@ -79,7 +91,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             ControlHeight = _controlHeight < 1 ? (int)stkData.ActualHeight - 2 : _controlHeight;
         }
 
-        
+
 
         private void DisplayData(ScaleValuesData model)
         {
@@ -112,6 +124,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
                     Height = (int)(h * el.Value),
                     Width = w,
                     ToolTip = el.Date.ToShortDateString(),
+                    Cursor = Cursors.Hand,
                     Child = el.Value > 5 * h ? new TextBlock
                     {
                         Text = ((int)el.Value).ToString("###"),
@@ -122,7 +135,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
                     } : null
                 };
                 if (useMaxMin) b.Background = GetBrush(el.Value, minval, maxval);
-                b.MouseWheel += OnMouseWeel;
+                b.MouseLeftButtonUp += OnBorderClick;
                 stkData.Children.Add(b);
                 stkTicks.Children.Add(new Border
                 {
@@ -144,8 +157,8 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             var min = 0;//Math.Max(_data.Data.Min(o => o.Value), 0);
             var max = _data.Data.Max(o => o.Value);
             var w = (int)Math.Max(_controlWidth / cnt / multy, 1);
-            var h = max > 0 ?_controlHeight / (max - min): 0;
-            stkData.MouseWheel += OnMouseWeel;
+            var h = max > 0 ? _controlHeight / (max - min) : 0;
+
             for (var i = 0; i < cnt * multy; i++)
             {
                 var crnt = (int)(ts.TotalMinutes + multyTs.TotalMinutes * i);
@@ -157,10 +170,13 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
                     VerticalAlignment = VerticalAlignment.Bottom,
                     Background = el != null ? new SolidColorBrush(Colors.Blue) : null,
                     ToolTip = el != null ? el.Date.ToString("g") : null,
-                    Height = el != null ? (int)(h * el.Value): 0,
-                    Width = w
+                    Height = el != null ? (int)(h * el.Value) : 0,
+                    Width = w,
+                    Cursor = Cursors.Hand
                 };
                 if (el != null && useMaxMin) b.Background = GetBrush(el.Value, minval, maxval);
+                b.MouseWheel += OnMouseWeel;
+                b.MouseLeftButtonUp += OnBorderClick;
                 stkData.Children.Add(b);
             }
             for (var i = 0; i < cnt; i++)
@@ -219,20 +235,23 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         private void Prescale(double max)
         {
             var pre = max / 3;
-            txt0.Text = pre < 1 ? pre.ToString("F2"): ((int)pre).ToString();
-            txt1.Text = pre < 1 ? (pre*2).ToString("F2"): ((int)pre * 2).ToString();
-            txt2.Text = pre < 1 ? max.ToString("F2"): ((int)Math.Ceiling(max)).ToString();
+            txt0.Text = pre < 1 ? pre.ToString("F2") : ((int)pre).ToString();
+            txt1.Text = pre < 1 ? (pre * 2).ToString("F2") : ((int)pre * 2).ToString();
+            txt2.Text = pre < 1 ? max.ToString("F2") : ((int)Math.Ceiling(max)).ToString();
         }
 
         private void ClearEvent()
         {
-            if(_data == null) return;
+            if (_data == null) return;
             if (_data.Scale == 5)
                 foreach (var b in (from object el in stkData.Children select el as Border).Where(b => b == null))
+                {
                     b.MouseWheel -= OnMouseWeel;
-            stkData.MouseWheel -= OnMouseWeel;
+                    b.MouseLeftButtonUp -= OnBorderClick;
+                }
             stkData.Children.Clear();
         }
+
 
     }
 }

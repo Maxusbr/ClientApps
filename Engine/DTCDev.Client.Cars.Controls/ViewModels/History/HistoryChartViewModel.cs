@@ -33,6 +33,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         private int _valueNormal = 90;
         private int _valueWarning = 120;
         private bool _isWaiting;
+        private DateTime _selectedTime;
+        private string _upDate;
 
         #endregion
 
@@ -128,6 +130,18 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
+        public DateTime SelectedTime
+        {
+            get { return _selectedTime; }
+            set
+            {
+                if (_selectedTime == value) return;
+                _selectedTime = value;
+                SelectedDate = new DateTime(value.Year, value.Month, value.Day);
+                _handler.OnSetDateTimePosition(value);
+            }
+        }
+
         /// <summary>
         /// Выбранная дата
         /// </summary>
@@ -139,11 +153,28 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 if (_selectedDate == value) return;
                 _selectedDate = value;
                 if (value <= new DateTime(1, 1, 1)) return;
-                if (Scale == 5) Scale = 4;
+
+                if (Scale == 5)
+                {
+                    Scale = 4;
+                    var list = _loadedData.FirstOrDefault(o => o.Date.Equals(value));
+                    if (list != null)
+                        _handler.OnDayStateChange(list.Data);
+                }
                 else Recalqulate();
                 //if(!_loadedObdData.Any(o => o.DT.ToDate.Equals(value)))
                 _handler.StartLoadOBD(SelectedCar.ID, value);
                 _handler.OnDayChange(value);
+            }
+        }
+
+        public string UpDate
+        {
+            get { return _upDate; }
+            set
+            {
+                _upDate = value;
+                OnPropertyChanged("UpDate");
             }
         }
 
@@ -162,7 +193,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             var dt = first.Date;
             SelectedDate = new DateTime(dt.Year, dt.Month, dt.Day);
         }
-        
+
         /// <summary>
         /// Хендлер обработки выбранного авто
         /// </summary>
@@ -245,19 +276,23 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             var f = data.FirstOrDefault();
             if (f == null || f.DevID != SelectedCar.ID) return;
             var list = new List<ChartValuesData>();
+            UpDate = "Обновляю данные за " + day.ToShortDateString();
             var slowTask = new Task(delegate
             {
                 var dt = new DateTime(day.Year, day.Month, day.Day);
                 BuildDataRow(data, dt);
-                if (dt.Equals(SelectedDate))
+                if (dt.Equals(SelectedDate) || Scale == 5)
                     list = GetStaticData(true);
+                if (CarSelector.SelectedCar != null)
+                    CacheRoute(string.Format("[{0}]-{1}-{2}-{3}", CarSelector.SelectedCar.ID, day.Day, day.Month, day.Year), data);
             });
             slowTask.ContinueWith(delegate
             {
                 DispatherThreadRun(delegate
                 {
                     if (list.Any())
-                        ListData = new ScaleValuesData { Data = list, Scale = Scale};
+                        ListData = new ScaleValuesData { Data = list, Scale = Scale };
+                    UpDate = "";
                 });
             });
             slowTask.Start();
@@ -281,20 +316,27 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             const int days = 30;
             var dt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
             var list = new List<ChartValuesData>();
+            _loadedData.Clear();
+            UpDate = string.Format("Запрос данных {0} - {1}", (DateTime.Now - TimeSpan.FromDays(days)).ToShortDateString(), 
+                DateTime.Now.ToShortDateString());
             var slowTask = new Task(delegate
             {
                 for (var i = days; i >= 0; i--)
                 {
                     GetCache(dt.AddDays(-i));
                 }
-                _selectedDate = _loadedData.Where(w => w.Data.Any()).Min(o => o.Date);
-                list = GetStaticData(true);
+                if(_loadedData.Any())
+                {
+                    _selectedDate = _loadedData.Where(w => w.Data.Any()).Min(o => o.Date);
+                    list = GetStaticData();
+                }
+                _handler.StartLoadHistory(SelectedCar.ID, DateTime.Now - TimeSpan.FromDays(days), DateTime.Now, true);
             });
             slowTask.ContinueWith(delegate
             {
                 DispatherThreadRun(delegate
                 {
-                    ListData = new ScaleValuesData { Data = list, Scale = Scale};
+                    ListData = new ScaleValuesData { Data = list, Scale = Scale };
                 });
             });
             slowTask.Start();
@@ -323,6 +365,43 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             catch
             {
             }
+        }
+
+        /// <summary>
+        /// Кэширование навигационных данных
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="data"></param>
+        private void CacheRoute(string name, List<CarStateModel> data)
+        {
+            var slowTask = new Task(delegate
+            {
+                var myDocs = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\M2B\\Cache\\";
+                try
+                {
+                    if (Directory.Exists(myDocs) == false)
+                        Directory.CreateDirectory(myDocs);
+                    if (File.Exists(myDocs + name))
+                        using (var lockFile = new FileStream(myDocs + name,
+                                                            FileMode.OpenOrCreate,
+                                                            FileAccess.ReadWrite,
+                                                            FileShare.Delete))
+                        {
+                            File.Delete(myDocs + name);
+                        }
+
+                    using (var writer = new StreamWriter(myDocs + name))
+                    {
+                        lock (writer)
+                        {
+                            var row = JsonConvert.SerializeObject(data);
+                            writer.WriteLine(row);
+                        }
+                    }
+                }
+                catch (Exception) { }
+            });
+            slowTask.Start();
         }
 
         /// <summary>
@@ -436,8 +515,17 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         private IEnumerable<ChartValuesData> GetHourMileage()
         {
             var list = new List<CarStateModel>();
+            //foreach (var item in _loadedData.Where(o => o.Date.Equals(SelectedDate)))
+            //    list.AddRange(item.Data);
             foreach (var item in _loadedData.Where(o => o.Date.Equals(SelectedDate)))
-                list.AddRange(item.Data);
+                for (var i = 0; i < 24; i++)
+                {
+                    var range = item.Data.Where(o => o.hh == i).ToList();
+                    if (range.Any())
+                        list.AddRange(range);
+                    else
+                        list.Add(new CarStateModel { Date = SelectedDate + new TimeSpan(i, 0, 0) });
+                }
             return list.GroupBy(x =>
             {
                 var stamp = x.Date;
@@ -454,8 +542,17 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         private IEnumerable<ChartValuesData> GetMinutesMileage(int minute)
         {
             var list = new List<CarStateModel>();
+            //foreach (var item in _loadedData.Where(o => o.Date.Equals(SelectedDate)))
+            //    list.AddRange(item.Data);
             foreach (var item in _loadedData.Where(o => o.Date.Equals(SelectedDate)))
-                list.AddRange(item.Data);
+                for (var i = 0; i < 24; i++)
+                {
+                    var range = item.Data.Where(o => o.hh == i).ToList();
+                    if (range.Any())
+                        list.AddRange(range);
+                    else
+                        list.Add(new CarStateModel { Date = SelectedDate + new TimeSpan(i, 0, 0) });
+                }
             return list.GroupBy(x =>
             {
                 var stamp = x.Date;
@@ -481,8 +578,17 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         private IEnumerable<ChartValuesData> GetHourSpeed()
         {
             var list = new List<CarStateModel>();
+            //foreach (var item in _loadedData.Where(o => o.Date.Equals(SelectedDate)))
+            //    list.AddRange(item.Data);
             foreach (var item in _loadedData.Where(o => o.Date.Equals(SelectedDate)))
-                list.AddRange(item.Data);
+                for (var i = 0; i < 24; i++)
+                {
+                    var range = item.Data.Where(o => o.hh == i).ToList();
+                    if (range.Any())
+                        list.AddRange(range);
+                    else
+                        list.Add(new CarStateModel { Date = SelectedDate + new TimeSpan(i, 0, 0) });
+                }
             return list.GroupBy(x =>
             {
                 var stamp = x.Date;
@@ -499,8 +605,17 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         private IEnumerable<ChartValuesData> GetMinutesSpeed(int minute)
         {
             var list = new List<CarStateModel>();
+            //foreach (var item in _loadedData.Where(o => o.Date.Equals(SelectedDate)))
+            //    list.AddRange(item.Data);
             foreach (var item in _loadedData.Where(o => o.Date.Equals(SelectedDate)))
-                list.AddRange(item.Data);
+                for (var i = 0; i < 24; i++)
+                {
+                    var range = item.Data.Where(o => o.hh == i).ToList();
+                    if (range.Any())
+                        list.AddRange(range);
+                    else
+                        list.Add(new CarStateModel { Date = SelectedDate + new TimeSpan(i, 0, 0) });
+                }
             return list.GroupBy(x =>
             {
                 var stamp = x.Date;
@@ -541,8 +656,17 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         private IEnumerable<ChartValuesData> GetHourSatelite()
         {
             var list = new List<CarStateModel>();
+            //foreach (var item in _loadedData.Where(o => o.Date.Equals(SelectedDate)))
+            //    list.AddRange(item.Data);
             foreach (var item in _loadedData.Where(o => o.Date.Equals(SelectedDate)))
-                list.AddRange(item.Data);
+                for (var i = 0; i < 24; i++)
+                {
+                    var range = item.Data.Where(o => o.hh == i).ToList();
+                    if (range.Any())
+                        list.AddRange(range);
+                    else
+                        list.Add(new CarStateModel { Date = SelectedDate + new TimeSpan(i, 0, 0) });
+                }
             return list.GroupBy(x =>
             {
                 var stamp = x.Date;
@@ -559,8 +683,17 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         private IEnumerable<ChartValuesData> GetMinutesSatelite(int minute)
         {
             var list = new List<CarStateModel>();
+            //foreach (var item in _loadedData.Where(o => o.Date.Equals(SelectedDate)))
+            //    list.AddRange(item.Data);
             foreach (var item in _loadedData.Where(o => o.Date.Equals(SelectedDate)))
-                list.AddRange(item.Data);
+                for (var i = 0; i < 24; i++)
+                {
+                    var range = item.Data.Where(o => o.hh == i).ToList();
+                    if (range.Any())
+                        list.AddRange(range);
+                    else
+                        list.Add(new CarStateModel { Date = SelectedDate + new TimeSpan(i, 0, 0) });
+                }
             return list.GroupBy(x =>
             {
                 var stamp = x.Date;
@@ -678,8 +811,17 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         private IEnumerable<ChartValuesData> GetHourAcc(string code)
         {
             var list = new List<CarAccHistoryModel.AccRow>();
+            //foreach (var item in _loadedAccData.Where(o => o.Date.Equals(SelectedDate)))
+            //    list.AddRange(item.Data);
             foreach (var item in _loadedAccData.Where(o => o.Date.Equals(SelectedDate)))
-                list.AddRange(item.Data);
+                for (var i = 0; i < 24; i++)
+                {
+                    var range = item.Data.Where(o => o.Date.hh == i).ToList();
+                    if (range.Any())
+                        list.AddRange(range);
+                    else
+                        list.Add(new CarAccHistoryModel.AccRow { Date = new DateTimeDataModel(SelectedDate + new TimeSpan(i, 0, 0)) });
+                }
             switch (code)
             {
                 case "X":
@@ -720,8 +862,17 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         private IEnumerable<ChartValuesData> GetMinutesAcc(int minute, string code)
         {
             var list = new List<CarAccHistoryModel.AccRow>();
+            //foreach (var item in _loadedAccData.Where(o => o.Date.Equals(SelectedDate)))
+            //    list.AddRange(item.Data);
             foreach (var item in _loadedAccData.Where(o => o.Date.Equals(SelectedDate)))
-                list.AddRange(item.Data);
+                for (var i = 0; i < 24; i++)
+                {
+                    var range = item.Data.Where(o => o.Date.hh == i).ToList();
+                    if (range.Any())
+                        list.AddRange(range);
+                    else
+                        list.Add(new CarAccHistoryModel.AccRow { Date = new DateTimeDataModel(SelectedDate + new TimeSpan(i, 0, 0)) });
+                }
             switch (code)
             {
                 case "X":
