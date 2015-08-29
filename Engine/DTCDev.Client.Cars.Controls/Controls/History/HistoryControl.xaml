@@ -13,6 +13,7 @@
              xmlns:Client="clr-namespace:DTCDev.Client;assembly=DTCDev.Client"
              xmlns:busy="clr-namespace:DTCDev.Client.Busy;assembly=DTCDev.Client"
              x:Class="DTCDev.Client.Cars.Controls.Controls.History.HistoryControl"
+             xmlns:Properties="clr-namespace:DTCDev.Client.Cars.Controls.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="580" d:DesignWidth="900" Loaded="UserControl_Loaded">
 
@@ -352,7 +353,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="0"/>
             <RowDefinition />
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="{Binding MyColumnHeightSetting, Mode=TwoWay, Source={x:Static Properties:Settings.Default}}"/>
         </Grid.RowDefinitions>
 
         <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Visibility="Collapsed" Margin="0,0,0,580" Grid.RowSpan="2" Width="0">
@@ -390,9 +391,9 @@
             </Map:Pushpin>
             <Map:MapScale/>
         </Map:Map>
-        <Grid VerticalAlignment="Bottom" Grid.Row="2" Grid.ColumnSpan="2" >
+        <Grid Grid.Row="2" Grid.ColumnSpan="2" MinHeight="200" >
             <Grid.RowDefinitions>
-                <RowDefinition />
+                <RowDefinition Height="Auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
             <local:PlayerControl HorizontalAlignment="Center" Visibility="{Binding VisablePlayer, Converter={StaticResource BoolToVisibilityConverter}}"
@@ -400,8 +401,9 @@
         		StartTime="{Binding PlayerStartTime, Mode=TwoWay}" 
         		EndTime="{Binding PlayerEndTime, Mode=TwoWay}" 
         		CurentTime="{Binding PlayerCurentTime, Mode=TwoWay}" VerticalAlignment="Center" />
-            <local:HistoryChartControl Visibility="{Binding VisableChart, Converter={StaticResource BoolToVisibilityConverter}}" MaxHeight="400" Grid.Row="1" Height="Auto"/>
+            <local:HistoryChartControl Visibility="{Binding VisableChart, Converter={StaticResource BoolToVisibilityConverter}}" Grid.Row="1" Height="Auto"/>
         </Grid>
+        <GridSplitter ResizeDirection="Rows" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="5" Grid.ColumnSpan="2" Grid.Row="2" DragCompleted="GridSplitter_DragCompleted" />
         <!--<local:HistoryWorkControl Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" d:IsHidden="True" />
         Visibility="{Binding EnableHistory, Converter={StaticResource BoolToVisibilityConverter}}"-->
         <Grid Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left" Width="200" Height="220">

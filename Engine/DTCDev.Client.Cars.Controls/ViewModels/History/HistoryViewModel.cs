@@ -1392,72 +1392,76 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 var dc = new DistanceCalculator();
                 var slowTask = new Task(delegate
                 {
-                    var foundParking = true;
-                    var nullDate = first.Spd < 6 || StateDateTimeHelper.EqualInterval(DisplayedHistoryDate, first)
-                        ? first : null;
-                    int indx;
-                    foreach (var item in DayStates.OrderBy(o => o.Date))
+                    lock (_routesModel)
                     {
-                        var itemtime = StateDateTimeHelper.GetTime(item);
-                        var spantime = itemtime - StateDateTimeHelper.GetTime(first);
-                        var loc = new Location
+                        var foundParking = true;
+                        var nullDate = first.Spd < 6 || StateDateTimeHelper.EqualInterval(DisplayedHistoryDate, first)
+                            ? first : null;
+                        int indx;
+                        foreach (var item in DayStates.OrderBy(o => o.Date))
                         {
-                            Latitude = item.Lt / 10000.0,
-                            Longitude = item.Ln / 10000.0
-                        };
-                        if (DayStates.IndexOf(item) > 0)
-                        {
-                            nullDate = nullDate ?? first;
-                            var firsttime = StateDateTimeHelper.GetTime(nullDate);
-                            var isParking = StateDateTimeHelper.IsParking(item, ref nullDate);
-                            if (foundParking && isParking)
+                            var itemtime = StateDateTimeHelper.GetTime(item);
+                            var spantime = itemtime - StateDateTimeHelper.GetTime(first);
+                            var loc = new Location
                             {
-                                var selectedParkingModel = new ParkingModel(firsttime, itemtime, prev);
-                                var trash = _routesModel.Parkings.FirstOrDefault(o => o.Equals(selectedParkingModel));
-                                if (trash == null)
+                                Latitude = item.Lt / 10000.0,
+                                Longitude = item.Ln / 10000.0
+                            };
+                            if (DayStates.IndexOf(item) > 0)
+                            {
+                                nullDate = nullDate ?? first;
+                                var firsttime = StateDateTimeHelper.GetTime(nullDate);
+                                var isParking = StateDateTimeHelper.IsParking(item, ref nullDate);
+                                if (foundParking && isParking)
                                 {
-                                    _routesModel.Parkings.Add(selectedParkingModel);
-                                    foundParking = false;
+                                    var selectedParkingModel = new ParkingModel(firsttime, itemtime, prev);
+                                    var trash = _routesModel.Parkings.FirstOrDefault(o => o.Equals(selectedParkingModel));
+                                    if (trash == null)
+                                    {
+                                        _routesModel.Parkings.Add(selectedParkingModel);
+                                        foundParking = false;
+                                    }
                                 }
-                            }
-                            else if (!foundParking && !isParking)
-                            {
-                                foundParking = true;
-                                nullDate = null;
-                                if (_routesModel.Parkings.Count > 0)
-                                    _routesModel.Parkings[_routesModel.Parkings.Count - 1].SetEndDates(itemtime);
-                            }
-                            var curdist = dc.Calculate(first, item);
-                            var spd = 1000 * curdist / spantime.TotalSeconds;
-                            if (item.Spd > 0 && Math.Abs(curdist) > .001 && !(foundParking && isParking))
-                            {
-                                if (spd > 35)
+                                else if (!foundParking && !isParking)
                                 {
-                                    var trrr = 0;
+                                    foundParking = true;
+                                    nullDate = null;
+                                    if (_routesModel.Parkings.Count > 0)
+                                        _routesModel.Parkings[_routesModel.Parkings.Count - 1].SetEndDates(itemtime);
                                 }
-                                if (IsCheckedSpeed)
-                                    curroute = SortLocation(prev, loc, curroute, item.Spd / 10.0, item.Date);
-                                dist += curdist;
-                                prev = loc;
+                                var curdist = dc.Calculate(first, item);
+                                var spd = 1000 * curdist / spantime.TotalSeconds;
+                                if (item.Spd > 0 && Math.Abs(curdist) > .001 && !(foundParking && isParking))
+                                {
+                                    if (spd > 35)
+                                    {
+                                        var trrr = 0;
+                                    }
+                                    if (IsCheckedSpeed)
+                                        curroute = SortLocation(prev, loc, curroute, item.Spd / 10.0, item.Date);
+                                    dist += curdist;
+                                    prev = loc;
+                                }
+                                first = item;
                             }
-                            first = item;
-                        }
-                        RouteOpacited.Add(new MovedLocation(loc)
-                        {
-                            Dates = new DateTime(item.yy, item.Mnth, item.dd, item.hh, item.mm, item.ss)
-                        });
+                            RouteOpacited.Add(new MovedLocation(loc)
+                            {
+                                Dates = new DateTime(item.yy, item.Mnth, item.dd, item.hh, item.mm, item.ss)
+                            });
 
+                        }
+                        var last = DayStates.LastOrDefault();
+                        if (last == null) return;
+                        if (!StateDateTimeHelper.EqualInterval(DateTime.Now, last)) return;
+                        prev = new Location
+                        {
+                            Latitude = last.Lt / 10000.0,
+                            Longitude = last.Ln / 10000.0,
+                        };
+                        if (StateDateTimeHelper.EqualInterval(StopDate, last))
+                            _routesModel.Parkings.Add(new ParkingModel(StateDateTimeHelper.GetTime(last), StopDate, prev));
+                            
                     }
-                    var last = DayStates.LastOrDefault();
-                    if (last == null) return;
-                    if (!StateDateTimeHelper.EqualInterval(DateTime.Now, last)) return;
-                    prev = new Location
-                    {
-                        Latitude = last.Lt / 10000.0,
-                        Longitude = last.Ln / 10000.0,
-                    };
-                    if (StateDateTimeHelper.EqualInterval(StopDate, last))
-                        _routesModel.Parkings.Add(new ParkingModel(StateDateTimeHelper.GetTime(last), StopDate, prev));
                 });
                 slowTask.ContinueWith(o =>
                 {
@@ -1716,34 +1720,37 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         private void UpdateCurentPosition(DateTime time, bool updateCenter = false)
         {
-            var pos = _routesModel.TimeRoute.OrderBy(o => o.Date).LastOrDefault(f => f.Date <= time);
-            if (!EnableHistory || Position == null) return;
-            if (pos != null && updateCenter)
+            lock (_routesModel.TimeRoute)
             {
-                //MapCenter = MapCenterUser = pos.Point;
-                var maxlong = _routesModel.TimeRoute.Max(o => o.Point.Longitude);
-                var maxlat = _routesModel.TimeRoute.Max(o => o.Point.Latitude);
-                var minlong = _routesModel.TimeRoute.Min(o => o.Point.Longitude);
-                var minlat = _routesModel.TimeRoute.Min(o => o.Point.Latitude);
-                OnCenterUpdates(new Location(minlat, minlong), new Location(maxlat, maxlong));
-                return;
-            }
-
-            _dt = pos != null && _dt < pos.Date ? pos.Date : time;
-            var detail = pos != null ? DayStates.FirstOrDefault(o => o.Date.Equals(pos.Date)) : new CarStateModel();
-            if (detail != null)
-            {
-                Position.Data = new SCarData
+                var pos = _routesModel.TimeRoute.OrderBy(o => o.Date).LastOrDefault(f => f.Date <= time);
+                if (!EnableHistory || Position == null) return;
+                if (pos != null && updateCenter)
                 {
-                    Navigation = new SNaviData
+                    //MapCenter = MapCenterUser = pos.Point;
+                    var maxlong = _routesModel.TimeRoute.Max(o => o.Point.Longitude);
+                    var maxlat = _routesModel.TimeRoute.Max(o => o.Point.Latitude);
+                    var minlong = _routesModel.TimeRoute.Min(o => o.Point.Longitude);
+                    var minlat = _routesModel.TimeRoute.Min(o => o.Point.Latitude);
+                    OnCenterUpdates(new Location(minlat, minlong), new Location(maxlat, maxlong));
+                    return;
+                }
+
+                _dt = pos != null && _dt < pos.Date ? pos.Date : time;
+                var detail = pos != null ? DayStates.FirstOrDefault(o => o.Date.Equals(pos.Date)) : new CarStateModel();
+                if (detail != null)
+                {
+                    Position.Data = new SCarData
                     {
-                        Sattelites = detail.St,
-                        Speed = detail.Spd,
-                        Latitude = detail.Lt,
-                        Longitude = detail.Ln
-                    },
-                    DateUpdate = new DateTimeDataModel(_dt)
-                };
+                        Navigation = new SNaviData
+                        {
+                            Sattelites = detail.St,
+                            Speed = detail.Spd,
+                            Latitude = detail.Lt,
+                            Longitude = detail.Ln
+                        },
+                        DateUpdate = new DateTimeDataModel(_dt)
+                    };
+                }
             }
         }
 

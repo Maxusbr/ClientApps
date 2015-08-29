@@ -33,6 +33,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             if (DesignerProperties.GetIsInDesignMode(this))
                 return;
             DataContext  = _hvm = new HistoryViewModel(Dispatcher);
+            Properties.Settings.Default.Reload();
         }
 
         public HistoryControl(DateTime date)
@@ -44,6 +45,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             this.DataContext = _hvm;
             _hvm.StartDate = date;
             _hvm.StopDate = date + new TimeSpan(1, 0, 0, 0);
+            Properties.Settings.Default.Reload();
         }
 
         void hvm_HideSelectDate(object sender, EventArgs e)
@@ -247,7 +249,10 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             }
         }
 
-
+        private void GridSplitter_DragCompleted(object sender, DragCompletedEventArgs e)
+        {
+            Properties.Settings.Default.Save();
+        }
     }
 
     public class OBDKeyConverter : IValueConverter
