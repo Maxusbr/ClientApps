@@ -52,7 +52,7 @@ namespace DTCDev.Client.Cars.Engine.AppLogic
                 case 0x1E: return "Auxiliary input status";
                 case 0x1F: return "Время, прошедшее с запуска двигателя";
                 case 0x20: return "Список поддерживаемых PID'ов (21-40)";
-                case 0x21: return "Дистанция, пройденная с зажженной лампой «проверь двигатель»";
+                case 0x21: return "Дистанция, пройденная с «проверь двигатель»";
                 case 0x22: return "Fuel Rail Pressure ";
                 case 0x23: return "Fuel Rail Pressure ";
                 case 0x24: return "O2S2_WR_lambda(1):Equivalence Ratio";
@@ -66,8 +66,8 @@ namespace DTCDev.Client.Cars.Engine.AppLogic
                 case 0x2D: return "EGR Error";
                 case 0x2E: return "Commanded evaporative purge	0";
                 case 0x2F: return "Уровень топлива ";
-                case 0x30: return "Количество прогревов со времени очистки кодов нейсправности)";
-                case 0x31: return "Дистанция, пройденная со времени очистки кодов нейсправностей";
+                case 0x30: return "Количество прогревов с очистки кодов нейсправности";
+                case 0x31: return "Дистанция, пройденная с очистки кодов нейсправностей";
                 case 0x32: return "Evap. System Vapor Pressure";
                 case 0x33: return "Атмосферное давление (абсолютное)";
                 case 0x34: return "O2S1_WR_lambda(1): Equivalence Ratio";
@@ -173,6 +173,7 @@ namespace DTCDev.Client.Cars.Engine.AppLogic
                 return -1;
             switch (data1[0])
             {
+                case 0x00: return 0;
                 case 0x04: return 100;
                 case 0x05: return 215;
                 case 0x06: return 100;
@@ -275,6 +276,7 @@ namespace DTCDev.Client.Cars.Engine.AppLogic
                 return 0;
             switch (data1[0])
             {
+                case 0x00: return 0;
                 case 0x05: return -40;
                 case 0x06: return -100;
                 case 0x07: return -100;

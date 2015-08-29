@@ -6,9 +6,6 @@
              xmlns:Models="clr-namespace:DTCDev.Client.Cars.Controls.Models" x:Class="DTCDev.Client.Cars.Controls.Controls.Car.CarViewElement"
              mc:Ignorable="d" 
              Height="Auto" d:DesignWidth="500" x:Name="control" Foreground="Black">
-    <!--<UserControl.ToolTip>
-        <local:CarToolTipView />
-    </UserControl.ToolTip>-->
     <UserControl.Resources>
         <Models:InvertBoolToVisibilityConverter x:Key="InvertBoolToVisibilityConverter"/>
         <Storyboard x:Key="stbShowDetails">
@@ -36,65 +33,116 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="30"/>
             <ColumnDefinition Width="120"/>
-            <ColumnDefinition Width="32"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="32"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="30"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>
             <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <Border Grid.ColumnSpan="7" Background="White" Opacity="0.5"/>
-
         <Image x:Name="image1" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/more.png" Opacity="0" Height="28" Width="28" MouseLeftButtonUp="image1_MouseLeftButtonUp"/>
         <TextBlock FontSize="14" FontWeight="Bold" Text="{Binding CarExemplar.Car.CarNumber, ElementName=control}" Margin="4,7" Grid.Column="1"/>
-        <Image x:Name="imgSatOk" Grid.Column="2" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/gps.png" />
-        <Image x:Name="imgSatErr" Grid.Column="2" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/gpsor.png" />
-        <Grid Grid.Column="4" x:Name="grdOnLine" >
-            <Image x:Name="imgConnectionOff" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/off.png"/>
-            <Image x:Name="imgConnection1" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/onone.png" Visibility="Collapsed"/>
-            <Image x:Name="imgConnection2" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/ontw.png" Visibility="Collapsed"/>
-            <Image x:Name="imgConnection3" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/onth.png" Visibility="Collapsed"/>
-        </Grid>
-        <Grid Grid.Column="5" Width="32" x:Name="grdTime">
-            <Image x:Name="imgConnect" Width="20" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/connect.png"/>
-            <Image x:Name="imgOldConnect" Width="20"  Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/clock_red.png"/>
-            <Image x:Name="imgNoConnect" Width="20"  Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/clock yellow.png"/>
-        </Grid>
-        <Grid Grid.Column="6">
+        <Grid x:Name="grdStatus" Grid.Column="2">
+            <Grid.Triggers>
+                <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                    <BeginStoryboard>
+                        <Storyboard >
+                            <DoubleAnimation Storyboard.TargetName="grdStatusNetwork" From="0" To="32" Duration="0:0:0.1" Storyboard.TargetProperty="Height"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard >
+                            <DoubleAnimation Storyboard.TargetName="grdStatusNetwork" From="32" To="0" Duration="0:0:0.1" Storyboard.TargetProperty="Height"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Grid.Triggers>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="32"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
+            <Border Background="White" Opacity="0" Grid.ColumnSpan="2"/>
+            <Border x:Name="brdrSat" Background="Blue" Margin="6,2,2,2"/>
+            <Border x:Name="brdrConnection" Grid.Column="1" Background="Blue" Margin="2,2,6,2"/>
+        </Grid>
+        <Grid x:Name="grdSpeed" Grid.Column="3">
             <Image x:Name="imgSpeedOk" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/speed.png"/>
             <Image x:Name="imgSpeedErr" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/speedor.png" />
             <TextBlock x:Name="txtSpeed" Text="0" VerticalAlignment="Bottom" HorizontalAlignment="Center" />
-            <Grid x:Name="grdAccelerometer" Grid.Column="1" Width="0">
-                <Image Width="22" Height="22" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/sensors-applet.png"/>
-                <Grid HorizontalAlignment="Left" Width="3" VerticalAlignment="Bottom" Height="15" x:Name="grdGood">
-                    <Border x:Name="brdrMaxGood" Background="Green"/>
-                    <Border x:Name="brdrMaxBad" Background="Red"/>
-                    <Border x:Name="brdrMaxNotConnect" Background="Gray"/>
-                </Grid>
-                <Grid HorizontalAlignment="Right" Width="3" VerticalAlignment="Bottom" Height="15" x:Name="grdGoodCent">
-                    <Border x:Name="brdrCentGood" Background="Green"/>
-                    <Border x:Name="brdrCentBad" Background="Red"/>
-                    <Border x:Name="brdrCentNotConnect" Background="Gray"/>
-                </Grid>
-            </Grid>
-            <Grid Width="32" Grid.Column="4" x:Name="grdFuel" Visibility="Collapsed" Margin="0,0,190,0">
-                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/gas_station.png" Width="14" Height="14" VerticalAlignment="Top" Margin="3"/>
-                <TextBlock x:Name="txtFuel" Text="000 л" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
-            </Grid>
-            <!-- OBD data-->
-            <StackPanel x:Name="stkOBDSensors" Grid.Column="2" Orientation="Horizontal" Grid.ColumnSpan="3" Margin="0,0,222,0"/>
-            <StackPanel x:Name="stkSensors" Orientation="Horizontal" Grid.Column="3" Grid.ColumnSpan="2"/>
         </Grid>
-        <Border Grid.ColumnSpan="7" BorderBrush="DarkRed" Visibility="{Binding CarExemplar.ZoneData.InZone, Converter={StaticResource InvertBoolToVisibilityConverter}, ElementName=control}" BorderThickness="1"/>
+        <Grid Grid.Column="4" x:Name="grdOBDStatus" Margin="4">
+            <Grid.Triggers>
+                <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                    <BeginStoryboard>
+                        <Storyboard >
+                            <DoubleAnimation Storyboard.TargetName="grdObdPresenter" From="0" To="150" Duration="0:0:0.1" Storyboard.TargetProperty="Height"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard >
+                            <DoubleAnimation Storyboard.TargetName="grdObdPresenter" From="150" To="0" Duration="0:0:0.1" Storyboard.TargetProperty="Height"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Grid.Triggers>
+            <Border x:Name="brdrOBDStatus" Background="Blue" CornerRadius="2"/>
+            <TextBlock Text="OBD II" Foreground="White" Margin="8,4" FontWeight="Bold"/>
+        </Grid>
+
+        <Grid x:Name="grdAccelerometer" Grid.Column="5">
+            <Image Width="22" Height="22" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/sensors-applet.png"/>
+            <Grid HorizontalAlignment="Left" Width="3" VerticalAlignment="Bottom" Height="15" x:Name="grdGood">
+                <Border x:Name="brdrMaxGood" Background="Green"/>
+                <Border x:Name="brdrMaxBad" Background="Red"/>
+                <Border x:Name="brdrMaxNotConnect" Background="Gray"/>
+            </Grid>
+            <Grid HorizontalAlignment="Right" Width="3" VerticalAlignment="Bottom" Height="15" x:Name="grdGoodCent">
+                <Border x:Name="brdrCentGood" Background="Green"/>
+                <Border x:Name="brdrCentBad" Background="Red"/>
+                <Border x:Name="brdrCentNotConnect" Background="Gray"/>
+            </Grid>
+        </Grid>
+        <Grid Width="32" Grid.Column="6" x:Name="grdFuel" Visibility="Collapsed">
+            <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/gas_station.png" Width="14" Height="14" VerticalAlignment="Top" Margin="3"/>
+            <TextBlock x:Name="txtFuel" Text="000 л" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+        </Grid>
+        <Border Grid.ColumnSpan="5" BorderBrush="DarkRed" Visibility="{Binding CarExemplar.ZoneData.InZone, Converter={StaticResource InvertBoolToVisibilityConverter}, ElementName=control}" BorderThickness="1"/>
+        
+        
+        <!-- Statuses-->
+        <Grid Grid.Row="1" Grid.ColumnSpan="8" x:Name="grdStatusNetwork" Height="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="32"/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="32"/>
+                <ColumnDefinition Width="180"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Image x:Name="imgSatOk" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/gps.png" />
+            <Image x:Name="imgSatErr" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/gpsor.png" />
+            <Grid Grid.Column="2" Width="32" x:Name="grdTime">
+                <Image x:Name="imgConnect" Width="20" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/connect.png"/>
+                <Image x:Name="imgOldConnect" Width="20"  Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/clock_red.png"/>
+                <Image x:Name="imgNoConnect" Width="20"  Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/clock yellow.png"/>
+            </Grid>
+
+            <TextBlock Text="Спутников - 0" x:Name="txtSatCount" Margin="8" Grid.Column="1" VerticalAlignment="Center"/>
+            <TextBlock Text="Последний выход на связь 22.12.2007 12:12:12" x:Name="txtLastEntered" Margin="8,0" TextWrapping="Wrap" Grid.Column="3"/>
+        </Grid>
+        <Grid Grid.Row="2" Grid.ColumnSpan="9" x:Name="grdObdPresenter" Height="0">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+                <StackPanel x:Name="stkOBDParams"/>
+            </ScrollViewer>
+        </Grid>
     </Grid>
 </UserControl>

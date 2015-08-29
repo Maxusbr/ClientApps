@@ -40,14 +40,14 @@
                             <Ellipse Fill="Black" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="50" Margin="0,-18,0,-21" Visibility="Collapsed"/>
                             <Path Data="M5.1666667,-0.88273054 C5.2496713,-0.79971467 5.5830237,4.8333333 9.4165766,4.8333333 11.916577,4.8333333 36.584787,4.8333333 39.418295,4.8333333 43.418524,4.8333333 43.861494,-0.98841159 43.861494,-0.98841159 z" Fill="Black" HorizontalAlignment="Stretch" Height="6.895" Margin="3,-0.479,2.875,0" Stretch="Fill" Stroke="{x:Null}" VerticalAlignment="Top" Width="Auto"/>
                             <Path Data="M5.1666667,-0.88273054 C5.2496713,-0.79971467 5.5830237,4.8333333 9.4165766,4.8333333 11.916577,4.8333333 36.584787,4.8333333 39.418295,4.8333333 43.418524,4.8333333 43.751877,-0.88287126 43.751877,-0.88287126 z" Fill="Black" HorizontalAlignment="Stretch" Height="6.77" Stretch="Fill" Stroke="{x:Null}" VerticalAlignment="Bottom" Width="Auto" RenderTransformOrigin="0.5,0.5" Margin="3,0,3,-0.708">
-                            	<Path.RenderTransform>
-                            		<TransformGroup>
-                            			<ScaleTransform ScaleY="-1" ScaleX="1"/>
-                            			<SkewTransform AngleY="0" AngleX="0"/>
-                            			<RotateTransform Angle="0"/>
-                            			<TranslateTransform Y="-0.3539999999999992"/>
-                            		</TransformGroup>
-                            	</Path.RenderTransform>
+                                <Path.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform ScaleY="-1" ScaleX="1"/>
+                                        <SkewTransform AngleY="0" AngleX="0"/>
+                                        <RotateTransform Angle="0"/>
+                                        <TranslateTransform Y="-0.3539999999999992"/>
+                                    </TransformGroup>
+                                </Path.RenderTransform>
                             </Path>
                         </Grid>
                         <ControlTemplate.Triggers>
@@ -87,10 +87,24 @@
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <ToggleButton x:Name="btnPanel" Style="{DynamicResource ToggleButtonStyle}" Background="#FF707070" BorderBrush="#FFA2A2A2" Margin="0,1" Click="btnPanel_Click">
+            <ToggleButton x:Name="btnPanel" Style="{DynamicResource ToggleButtonStyle}" BorderBrush="#FFA2A2A2" Margin="0,1" Click="btnPanel_Click">
+                <ToggleButton.Background>
+                    <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                        <GradientStop Color="#FF3A3A3A" Offset="1"/>
+                        <GradientStop Color="#FF3A3A3A"/>
+                        <GradientStop Color="#FF7C7C7C" Offset="0.5"/>
+                    </LinearGradientBrush>
+                </ToggleButton.Background>
                 <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/SettingsMenu/car-icon.png"/>
             </ToggleButton>
-            <ToggleButton x:Name="btnSettings" Style="{DynamicResource ToggleButtonStyle}" Background="#FF707070" Grid.Row="1" BorderBrush="#FFA2A2A2" Margin="0,1" Click="btnPanel_Click">
+            <ToggleButton x:Name="btnSettings" Style="{DynamicResource ToggleButtonStyle}" Grid.Row="1" BorderBrush="#FFA2A2A2" Margin="0,1" Click="btnPanel_Click">
+                <ToggleButton.Background>
+                    <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                        <GradientStop Color="#FF3A3A3A" Offset="1"/>
+                        <GradientStop Color="#FF3A3A3A"/>
+                        <GradientStop Color="#FF7C7C7C" Offset="0.5"/>
+                    </LinearGradientBrush>
+                </ToggleButton.Background>
                 <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/connect.png" Stretch="None"/>
             </ToggleButton>
         </Grid>
@@ -209,24 +223,24 @@
 
         <Grid Grid.Column="1" Background="White" x:Name="grdSettings" Visibility="Collapsed">
             <Grid Margin="10,5">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"/>
-                <ColumnDefinition Width="200"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="20"/>
-                <RowDefinition Height="28"/>
-                <RowDefinition Height="28"/>
-                <RowDefinition Height="28"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Row="1" Text="Название" Margin="6"/>
-            <TextBlock Grid.Row="2" Text="VIN" Margin="6"/>
-            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Path=Name, Mode=TwoWay}" Margin="4"/>
-            <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Path=VIN, Mode=TwoWay}" Margin="4"/>
-            <Button Grid.Column="1" Grid.Row="3" Content="Сохранить" Command="{Binding Path=SaveSettingsCommand}" Margin="20,3"/>
-        </Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="28"/>
+                    <RowDefinition Height="28"/>
+                    <RowDefinition Height="28"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="1" Text="Название" Margin="6"/>
+                <TextBlock Grid.Row="2" Text="VIN" Margin="6"/>
+                <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Path=Name, Mode=TwoWay}" Margin="4"/>
+                <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Path=VIN, Mode=TwoWay}" Margin="4"/>
+                <Button Grid.Column="1" Grid.Row="3" Content="Сохранить" Command="{Binding Path=SaveSettingsCommand}" Margin="20,3"/>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>

@@ -70,5 +70,12 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
             grdContent.Visibility = Visibility.Visible;
             stkBack.Visibility = Visibility.Visible;
         }
+
+        private void grdCompilateReport_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            grdContent.Children.Add(new CompilateReport());
+            grdContent.Visibility = Visibility.Visible;
+            stkBack.Visibility = Visibility.Visible;
+        }
     }
 }

@@ -71,21 +71,21 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
             {
                 DisplayState((DISP_Car)sender);
                 DisplayOBD((DISP_Car)sender);
-                DisplayAccelerometer((DISP_Car)sender);
+                //DisplayAccelerometer((DISP_Car)sender);
                 DisplaySensors((DISP_Car)sender);
             }
         }
 
         private void DisplaySensors(DISP_Car car)
         {
-            stkSensors.Children.Clear();
-            SensorLocator locator = new SensorLocator();
-            foreach (var item in car.Device.Sensors)
-            {
-                UserControl control = locator.GetSensor(SensorsTypeEnum.SensorsMode.MIN, item);
-                if (control != null)
-                    stkSensors.Children.Add(control);
-            }
+            //stkSensors.Children.Clear();
+            //SensorLocator locator = new SensorLocator();
+            //foreach (var item in car.Device.Sensors)
+            //{
+            //    UserControl control = locator.GetSensor(SensorsTypeEnum.SensorsMode.MIN, item);
+            //    if (control != null)
+            //        stkSensors.Children.Add(control);
+            //}
         }
 
         private void DisplayState(DISP_Car car)
@@ -102,19 +102,23 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
                 imgOldConnect.Visibility = Visibility.Collapsed;
                 imgNoConnect.Visibility = Visibility.Collapsed;
 
-                grdTime.ToolTip = (dt + tsUtc).ToString("dd.MM.yy HH.mm.ss");
+
+                txtLastEntered.Text = "Последний выход на связь "+(dt + tsUtc).ToString("dd.MM.yy HH.mm.ss");
 
                 if ((ts.TotalMinutes > 10 && ts.TotalDays<60) || TCPConnection.Instance.IsConnected == false)
                 {
                     imgOldConnect.Visibility = Visibility.Visible;
+                    brdrConnection.Background = new SolidColorBrush(Colors.Orange);
                 }
                 else if (ts.TotalDays >= 60)
                 {
                     imgNoConnect.Visibility = Visibility.Visible;
+                    brdrConnection.Background = new SolidColorBrush(Colors.DarkGray);
                 }
                 else
                 {
                     imgConnect.Visibility = Visibility.Visible;
+                    brdrConnection.Background = new SolidColorBrush(Colors.Blue);
 
                 }
                 txtSpeed.Text = (CarExemplar.Data.Navigation.Speed/10).ToString();
@@ -128,79 +132,126 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
                     imgSpeedOk.Visibility = Visibility.Collapsed;
                     imgSpeedErr.Visibility = Visibility.Visible;
                 }
-                if (CarExemplar.Data.Navigation.Sattelites < 5 || ts.TotalMinutes>10)
+                if (CarExemplar.Data.Navigation.Sattelites < 5)
                 {
                     imgSatOk.Visibility = Visibility.Collapsed;
                     imgSatErr.Visibility = Visibility.Visible;
+                    brdrSat.Background = new SolidColorBrush(Colors.Orange);
                 }
                 else
                 {
                     imgSatOk.Visibility = Visibility.Visible;
                     imgSatErr.Visibility = Visibility.Collapsed;
+                    brdrSat.Background = new SolidColorBrush(Colors.Blue);
                 }
-                DetectConnection(ts, car);
+                txtSatCount.Text = "Спутников - " + CarExemplar.Data.Navigation.Sattelites.ToString();
 
                 DisplayFuel(car);
             }
             catch { }
         }
 
+        int _lastFuel = 0;
+
         private void DisplayFuel(DISP_Car car)
         {
             if (car.FuelData.FuelDataPosition < 0)
             {
-                grdFuel.Visibility = Visibility.Collapsed;
+                if (car.OBD != null)
+                {
+                    if (car.OBD.Count() > 0)
+                    {
+                        DISP_Car.EOBDData obd = car.OBD.Where(p => p.Key == "2F").FirstOrDefault();
+                        if (obd == null)
+                            grdFuel.Visibility = Visibility.Collapsed;
+                        else
+                        {
+                            grdFuel.Visibility = Visibility.Visible;
+                            txtFuel.Text = obd.Value + "%";
+                        }
+                    }
+                    else
+                        grdFuel.Visibility = Visibility.Collapsed;
+                }
+                else
+                    grdFuel.Visibility = Visibility.Collapsed;
             }
             else
             {
                 grdFuel.Visibility = Visibility.Visible;
-                if (car.FuelData.FuelLevelValue < 1000)
-                    txtFuel.Text = car.FuelData.FuelLevelValue.ToString() + " л";
+                if (car.Data.Sensors != null)
+                {
+                    if (car.Data.Sensors.Count() > car.FuelData.FuelDataPosition)
+                    {
+                        int vol = car.Data.Sensors[car.FuelData.FuelDataPosition];
+                        vol = vol - car.FuelData.StartFuelValue;
+                        vol = (int)(vol / car.FuelData.StepPerLiter);
+                        if (vol != _lastFuel)
+                        {
+                            txtFuel.Text = vol.ToString() + " л";
+                            _lastFuel = vol;
+                        }
+                    }
+                    else
+                        grdFuel.Visibility = Visibility.Collapsed;
+                }
                 else
-                    txtFuel.Text = car.FuelData.FuelLevelValue.ToString();
-            }
-        }
-
-        private void DetectConnection(TimeSpan timeout, DISP_Car car)
-        {
-            if (timeout.TotalMinutes > 10)
-            {
-                imgConnection1.Visibility = Visibility.Collapsed;
-                imgConnection2.Visibility = Visibility.Collapsed;
-                imgConnection3.Visibility = Visibility.Collapsed;
-                imgConnectionOff.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                imgConnection1.Visibility = Visibility.Collapsed;
-                imgConnection2.Visibility = Visibility.Collapsed;
-                imgConnection3.Visibility = Visibility.Collapsed;
-                imgConnectionOff.Visibility = Visibility.Collapsed;
-                if (car.Data.GSM_Level < 30)
-                    imgConnection1.Visibility = Visibility.Visible;
-                else if (car.Data.GSM_Level >= 30 && car.Data.GSM_Level < 60)
-                    imgConnection2.Visibility = Visibility.Visible;
-                else
-                    imgConnection3.Visibility = Visibility.Visible;
+                    grdFuel.Visibility = Visibility.Collapsed;
+                //if (car.FuelData.FuelLevelValue < 1000)
+                //    txtFuel.Text = car.FuelData.FuelLevelValue.ToString() + " л";
+                //else
+                //    txtFuel.Text = car.FuelData.FuelLevelValue.ToString();
             }
         }
 
         private void DisplayOBD(DISP_Car car)
         {
-            stkOBDSensors.Children.Clear();
-            stkOBDSensors.Children.Add(new TextBlock { Text = "OBD", Margin = new Thickness(0, 5, 6, 5) });
-            OBDSensorDetector detector = new OBDSensorDetector();
-            int count = 0;
-            foreach (var item in car.OBD)
+            if (car.OBD == null)
+                return;
+            stkOBDParams.Children.Clear();
+            PIDConverter converter = new PIDConverter();
+            bool errorfinded=false;
+            if (car.OBD.Count() > 0)
             {
-                UIElement elm = detector.GetControl(item.Key, item.Value);
-                if (elm != null)
+                foreach (var item in car.OBD)
                 {
-                    stkOBDSensors.Children.Add(elm);
-                    count++;
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append(item.Value);
+                    sb.Append(" - ");
+                    sb.Append(converter.GetPidInfo(item.Key));
+                    int min = converter.GetMinVol(item.Key);
+                    int max = converter.GetMaxVol(item.Key);
+                    int vol = 0;
+                    Int32.TryParse(item.Value, out vol);
+                    TextBlock text = new TextBlock();
+                    text.Text = sb.ToString();
+                    if (vol < min || vol > max)
+                    {
+                        errorfinded = true;
+                        text.Foreground = new SolidColorBrush(Colors.DarkRed);
+                        text.FontWeight = FontWeights.Bold;
+                    }
+                    stkOBDParams.Children.Add(text);
                 }
+                if (errorfinded)
+                    brdrOBDStatus.Background = new SolidColorBrush(Colors.Orange);
+                else
+                    brdrOBDStatus.Background = new SolidColorBrush(Colors.Blue);
             }
-            stkOBDSensors.Width = count * 32;
+            //stkOBDSensors.Children.Clear();
+            //stkOBDSensors.Children.Add(new TextBlock { Text = "OBD", Margin = new Thickness(0, 5, 6, 5) });
+            //OBDSensorDetector detector = new OBDSensorDetector();
+            //int count = 0;
+            //foreach (var item in car.OBD)
+            //{
+            //    UIElement elm = detector.GetControl(item.Key, item.Value);
+            //    if (elm != null)
+            //    {
+            //        stkOBDSensors.Children.Add(elm);
+            //        count++;
+            //    }
+            //}
+            //stkOBDSensors.Width = count * 32;
         }
 
         private void DisplayAccelerometer(DISP_Car car)
