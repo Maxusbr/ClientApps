@@ -227,6 +227,7 @@
     <Compile Include="ViewModels\Reports\CompilateReportViewModel.cs" />
     <Compile Include="ViewModels\Reports\DistanceReportViewModel.cs" />
     <Compile Include="ViewModels\Reports\FuelReportViewModel.cs" />
+    <Compile Include="ViewModels\Reports\HistoryCarStateViewModel.cs" />
     <Compile Include="ViewModels\Reports\ReportsViewModel.cs" />
     <Compile Include="ViewModels\Reports\SpeedOveralReportViewModel.cs" />
     <Compile Include="ViewModels\Reports\SpeedReportViewModel.cs" />
