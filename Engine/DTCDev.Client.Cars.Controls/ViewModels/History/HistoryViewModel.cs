@@ -1481,8 +1481,11 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         private void ContinueSortData(int dist)
         {
-            UpdateCenter();
-            UpdateErrorControl();
+            DispatherThreadRun(delegate {
+                UpdateCenter();
+                UpdateErrorControl();
+            });
+            
             //MaxSpeed = DayStates.Max(p => p.Spd) / 10;
             //RoundedSpeed = DayStates.Sum(p => p.Spd) / (10 * DayStates.Count());
 
@@ -1940,7 +1943,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         #endregion DISTANCE_CHECKER
 
-        private enum RouteSelect
+        public enum RouteSelect
         {
             Normal,
             Warning,
@@ -1956,6 +1959,15 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 }));
         }
 
-        
+        /// <summary>
+        /// Выполнение метода action в потоке приложения
+        /// </summary>
+        /// <param name="action"></param>
+        private void DispatherThreadRun(Action action)
+        {
+            if (_dispatcher != null)
+                _dispatcher.BeginInvoke(action);
+
+        }
     }
 }

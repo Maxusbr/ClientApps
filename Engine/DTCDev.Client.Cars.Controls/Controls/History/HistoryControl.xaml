@@ -15,7 +15,7 @@
              x:Class="DTCDev.Client.Cars.Controls.Controls.History.HistoryControl"
              xmlns:Properties="clr-namespace:DTCDev.Client.Cars.Controls.Properties"
              mc:Ignorable="d" 
-             d:DesignHeight="580" d:DesignWidth="900" Loaded="UserControl_Loaded">
+             d:DesignHeight="580" d:DesignWidth="900" Loaded="UserControl_Loaded" d:DataContext="{d:DesignInstance History:HistoryViewModel}">
 
     <UserControl.Resources>
         <Models:InvertBoolConverter x:Key="InvertBoolConverter"/>

@@ -22,7 +22,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         private readonly HistoryHandler _handler;
         private readonly Dispatcher _dispatcher;
-        private bool _isWayView = true;
         private int _scale = 5;
         private DISP_Car _selectedCar;
         private readonly List<LoadedHistoryRows> _loadedData = new List<LoadedHistoryRows>();

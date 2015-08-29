@@ -33,7 +33,14 @@ namespace DTCDev.Client.Controls.Map
                         if(el.FirstPoint)
                             context.BeginFigure(point, IsClosed, IsClosed);
                         else
-                            context.LineTo(point, true, true);
+                            try
+                            {
+                                context.LineTo(point, true, true);
+                            }
+                            catch (Exception e)
+                            {
+                                context.BeginFigure(point, IsClosed, IsClosed);
+                            }
                     }
                 }
                 geometry.Transform = ParentMap.ViewportTransform;

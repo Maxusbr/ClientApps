@@ -345,7 +345,7 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
 
 
 
-        public void StartLoadHistory(string deviceID, DateTime start, DateTime stop, bool optim)
+        public void StartLoadHistory(string deviceID, DateTime start, DateTime stop, bool optim = true)
         {
             historyMessages.Clear();
             optimization = optim;
