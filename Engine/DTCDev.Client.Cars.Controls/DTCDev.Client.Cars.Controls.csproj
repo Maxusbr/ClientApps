@@ -66,6 +66,12 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\Car\LeftIndicatorView.xaml.cs">
+      <DependentUpon>LeftIndicatorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Car\RightIndicatorView.xaml.cs">
+      <DependentUpon>RightIndicatorView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\History\ChartDataControl.xaml.cs">
       <DependentUpon>ChartDataControl.xaml</DependentUpon>
     </Compile>
@@ -77,9 +83,6 @@
     </Compile>
     <Compile Include="Controls\Car\CarZonesError.xaml.cs">
       <DependentUpon>CarZonesError.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Car\RightIndicatorView.xaml.cs">
-      <DependentUpon>RightIndicatorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Convertors.cs" />
     <Compile Include="Controls\Driver\AddNewDriver.xaml.cs">
@@ -200,9 +203,6 @@
     <Compile Include="Helpers\CalcLeavingZone.cs" />
     <Compile Include="Helpers\GeoAdress.cs" />
     <Compile Include="Helpers\StateDateTimeHelper.cs" />
-    <Compile Include="Controls\Car\LeftIndicatorView.xaml.cs">
-      <DependentUpon>LeftIndicatorView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Models\BoolToVisibilityConverter.cs" />
     <Compile Include="Models\EventToCommandBehavior.cs" />
     <Compile Include="Models\ExportToExcel.cs" />
@@ -231,6 +231,14 @@
     <Compile Include="ViewModels\Reports\SpeedOveralReportViewModel.cs" />
     <Compile Include="ViewModels\Reports\SpeedReportViewModel.cs" />
     <Compile Include="ViewModels\Reports\WorkTimeReportViewModel.cs" />
+    <Page Include="Controls\Car\LeftIndicatorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Car\RightIndicatorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\History\ChartDataControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -254,10 +262,6 @@
     <Page Include="Controls\Car\CarZonesError.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Car\RightIndicatorView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\Driver\AddNewDriver.xaml">
       <SubType>Designer</SubType>
@@ -416,10 +420,6 @@
     <Page Include="Controls\StateBaseControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Car\LeftIndicatorView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Generic.xaml">
       <SubType>Designer</SubType>
