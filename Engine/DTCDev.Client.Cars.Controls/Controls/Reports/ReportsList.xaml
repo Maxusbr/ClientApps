@@ -30,7 +30,7 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Border Grid.ColumnSpan="2" Background="White" Opacity="0"/>
-                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/ReportsMenu/report.png" Width="33"/>
+                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/ReportsMenu/report.png" Width="32"/>
                 <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="Скорость" VerticalAlignment="Center" FontSize="16" Margin="10,0,0,0"/>
             </Grid>
             <Grid Width="200" Height="40" Margin="5" x:Name="grdSpeedDropReport" MouseLeftButtonUp="grdSpeedDropReport_MouseLeftButtonUp" Cursor="Hand">
@@ -39,7 +39,7 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Border Grid.ColumnSpan="2" Background="White" Opacity="0"/>
-                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/ReportsMenu/excess.png" Width="33"/>
+                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/ReportsMenu/excess.png" Width="32"/>
                 <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="Превышения скорости" VerticalAlignment="Center" FontSize="16" Margin="10,0,0,0"/>
             </Grid>
             <Grid Width="200" Height="40" Margin="5" x:Name="grdStartStopReport" MouseLeftButtonUp="grdStartStopReport_MouseLeftButtonUp" Cursor="Hand">
@@ -48,7 +48,7 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Border Grid.ColumnSpan="2" Background="White" Opacity="0"/>
-                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/ReportsMenu/work.png" Width="33"/>
+                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/ReportsMenu/work.png" Width="32"/>
                 <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="Начало/окончание работы" VerticalAlignment="Center" FontSize="16" Margin="10,0,0,0"/>
             </Grid>
             <Grid Width="200" Height="40" Margin="5" Visibility="Collapsed" x:Name="grdParkingReport" MouseLeftButtonUp="grdParkingReport_MouseLeftButtonUp" Cursor="Hand">
@@ -66,8 +66,17 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Border Grid.ColumnSpan="2" Background="White" Opacity="0"/>
-                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/ReportsMenu/Fuel-icon.png" Width="33"/>
+                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/ReportsMenu/Fuel-icon.png" Width="32"/>
                 <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="Отчеты о топливе (OBD II)" VerticalAlignment="Center" FontSize="16" Margin="10,0,0,0"/>
+            </Grid>
+            <Grid Width="200" Height="40" Margin="5" x:Name="grdCompilateReport" MouseLeftButtonUp="grdCompilateReport_MouseLeftButtonUp" Cursor="Hand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.ColumnSpan="2" Background="White" Opacity="0"/>
+                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/ReportsMenu/compilate_report.png" Width="32"/>
+                <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="Сводный отчет" VerticalAlignment="Center" FontSize="16" Margin="10,0,0,0"/>
             </Grid>
         </WrapPanel>
         <Grid Grid.Row="1" x:Name="grdContent" Visibility="Collapsed" Background="White">

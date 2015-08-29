@@ -35,7 +35,9 @@
             <ColumnDefinition Width="120"/>
             <ColumnDefinition Width="30"/>
             <ColumnDefinition Width="30"/>
-            <!--<ColumnDefinition Width="Auto"/>-->
+            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="30"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -71,62 +73,54 @@
             <Border x:Name="brdrSat" Background="Blue" Margin="6,2,2,2"/>
             <Border x:Name="brdrConnection" Grid.Column="1" Background="Blue" Margin="2,2,6,2"/>
         </Grid>
-        <Grid Grid.Column="4">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="32"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
+        <Grid x:Name="grdSpeed" Grid.Column="3">
             <Image x:Name="imgSpeedOk" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/speed.png"/>
             <Image x:Name="imgSpeedErr" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/speedor.png" />
             <TextBlock x:Name="txtSpeed" Text="0" VerticalAlignment="Bottom" HorizontalAlignment="Center" />
-            <Grid x:Name="grdAccelerometer" Grid.Column="1" Width="0">
-                <Image Width="22" Height="22" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/sensors-applet.png"/>
-                <Grid HorizontalAlignment="Left" Width="3" VerticalAlignment="Bottom" Height="15" x:Name="grdGood">
-                    <Border x:Name="brdrMaxGood" Background="Green"/>
-                    <Border x:Name="brdrMaxBad" Background="Red"/>
-                    <Border x:Name="brdrMaxNotConnect" Background="Gray"/>
-                </Grid>
-                <Grid HorizontalAlignment="Right" Width="3" VerticalAlignment="Bottom" Height="15" x:Name="grdGoodCent">
-                    <Border x:Name="brdrCentGood" Background="Green"/>
-                    <Border x:Name="brdrCentBad" Background="Red"/>
-                    <Border x:Name="brdrCentNotConnect" Background="Gray"/>
-                </Grid>
+        </Grid>
+        <Grid Grid.Column="4" x:Name="grdOBDStatus" Margin="4">
+            <Grid.Triggers>
+                <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                    <BeginStoryboard>
+                        <Storyboard >
+                            <DoubleAnimation Storyboard.TargetName="grdObdPresenter" From="0" To="150" Duration="0:0:0.1" Storyboard.TargetProperty="Height"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard >
+                            <DoubleAnimation Storyboard.TargetName="grdObdPresenter" From="150" To="0" Duration="0:0:0.1" Storyboard.TargetProperty="Height"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Grid.Triggers>
+            <Border x:Name="brdrOBDStatus" Background="Blue" CornerRadius="2"/>
+            <TextBlock Text="OBD II" Foreground="White" Margin="8,4" FontWeight="Bold"/>
+        </Grid>
+
+        <Grid x:Name="grdAccelerometer" Grid.Column="5">
+            <Image Width="22" Height="22" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/sensors-applet.png"/>
+            <Grid HorizontalAlignment="Left" Width="3" VerticalAlignment="Bottom" Height="15" x:Name="grdGood">
+                <Border x:Name="brdrMaxGood" Background="Green"/>
+                <Border x:Name="brdrMaxBad" Background="Red"/>
+                <Border x:Name="brdrMaxNotConnect" Background="Gray"/>
             </Grid>
-            <Grid Width="32" Grid.Column="4" x:Name="grdFuel" Visibility="Collapsed" Margin="0,0,190,0">
-                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/gas_station.png" Width="14" Height="14" VerticalAlignment="Top" Margin="3"/>
-                <TextBlock x:Name="txtFuel" Text="000 л" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+            <Grid HorizontalAlignment="Right" Width="3" VerticalAlignment="Bottom" Height="15" x:Name="grdGoodCent">
+                <Border x:Name="brdrCentGood" Background="Green"/>
+                <Border x:Name="brdrCentBad" Background="Red"/>
+                <Border x:Name="brdrCentNotConnect" Background="Gray"/>
             </Grid>
-            <Grid Grid.Column="2" x:Name="grdOBDStatus" Margin="4">
-                <Grid.Triggers>
-                    <EventTrigger RoutedEvent="Mouse.MouseEnter">
-                        <BeginStoryboard>
-                            <Storyboard >
-                                <DoubleAnimation Storyboard.TargetName="grdObdPresenter" From="0" To="150" Duration="0:0:0.1" Storyboard.TargetProperty="Height"/>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </EventTrigger>
-                    <EventTrigger RoutedEvent="Mouse.MouseLeave">
-                        <BeginStoryboard>
-                            <Storyboard >
-                                <DoubleAnimation Storyboard.TargetName="grdObdPresenter" From="150" To="0" Duration="0:0:0.1" Storyboard.TargetProperty="Height"/>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </EventTrigger>
-                </Grid.Triggers>
-                <Border x:Name="brdrOBDStatus" Background="Blue" CornerRadius="2"/>
-                <TextBlock Text="OBD II" Foreground="White" Margin="8,4" FontWeight="Bold"/>
-            </Grid>
-            <!-- OBD data-->
-            <StackPanel x:Name="stkSensors" Orientation="Horizontal" Grid.Column="3" Grid.ColumnSpan="2"/>
+        </Grid>
+        <Grid Width="32" Grid.Column="6" x:Name="grdFuel" Visibility="Collapsed">
+            <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/gas_station.png" Width="14" Height="14" VerticalAlignment="Top" Margin="3"/>
+            <TextBlock x:Name="txtFuel" Text="000 л" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
         </Grid>
         <Border Grid.ColumnSpan="5" BorderBrush="DarkRed" Visibility="{Binding CarExemplar.ZoneData.InZone, Converter={StaticResource InvertBoolToVisibilityConverter}, ElementName=control}" BorderThickness="1"/>
         
         
         <!-- Statuses-->
-        <Grid Grid.Row="1" Grid.ColumnSpan="5" x:Name="grdStatusNetwork" Height="0">
+        <Grid Grid.Row="1" Grid.ColumnSpan="8" x:Name="grdStatusNetwork" Height="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="32"/>
                 <ColumnDefinition Width="120"/>
@@ -145,7 +139,7 @@
             <TextBlock Text="Спутников - 0" x:Name="txtSatCount" Margin="8" Grid.Column="1" VerticalAlignment="Center"/>
             <TextBlock Text="Последний выход на связь 22.12.2007 12:12:12" x:Name="txtLastEntered" Margin="8,0" TextWrapping="Wrap" Grid.Column="3"/>
         </Grid>
-        <Grid Grid.Row="2" Grid.ColumnSpan="5" x:Name="grdObdPresenter" Height="0">
+        <Grid Grid.Row="2" Grid.ColumnSpan="9" x:Name="grdObdPresenter" Height="0">
             <ScrollViewer HorizontalScrollBarVisibility="Disabled">
                 <StackPanel x:Name="stkOBDParams"/>
             </ScrollViewer>

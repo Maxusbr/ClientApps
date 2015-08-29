@@ -71,21 +71,21 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
             {
                 DisplayState((DISP_Car)sender);
                 DisplayOBD((DISP_Car)sender);
-                DisplayAccelerometer((DISP_Car)sender);
+                //DisplayAccelerometer((DISP_Car)sender);
                 DisplaySensors((DISP_Car)sender);
             }
         }
 
         private void DisplaySensors(DISP_Car car)
         {
-            stkSensors.Children.Clear();
-            SensorLocator locator = new SensorLocator();
-            foreach (var item in car.Device.Sensors)
-            {
-                UserControl control = locator.GetSensor(SensorsTypeEnum.SensorsMode.MIN, item);
-                if (control != null)
-                    stkSensors.Children.Add(control);
-            }
+            //stkSensors.Children.Clear();
+            //SensorLocator locator = new SensorLocator();
+            //foreach (var item in car.Device.Sensors)
+            //{
+            //    UserControl control = locator.GetSensor(SensorsTypeEnum.SensorsMode.MIN, item);
+            //    if (control != null)
+            //        stkSensors.Children.Add(control);
+            //}
         }
 
         private void DisplayState(DISP_Car car)
@@ -151,19 +151,56 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
             catch { }
         }
 
+        int _lastFuel = 0;
+
         private void DisplayFuel(DISP_Car car)
         {
             if (car.FuelData.FuelDataPosition < 0)
             {
-                grdFuel.Visibility = Visibility.Collapsed;
+                if (car.OBD != null)
+                {
+                    if (car.OBD.Count() > 0)
+                    {
+                        DISP_Car.EOBDData obd = car.OBD.Where(p => p.Key == "2F").FirstOrDefault();
+                        if (obd == null)
+                            grdFuel.Visibility = Visibility.Collapsed;
+                        else
+                        {
+                            grdFuel.Visibility = Visibility.Visible;
+                            txtFuel.Text = obd.Value + "%";
+                        }
+                    }
+                    else
+                        grdFuel.Visibility = Visibility.Collapsed;
+                }
+                else
+                    grdFuel.Visibility = Visibility.Collapsed;
             }
             else
             {
                 grdFuel.Visibility = Visibility.Visible;
-                if (car.FuelData.FuelLevelValue < 1000)
-                    txtFuel.Text = car.FuelData.FuelLevelValue.ToString() + " л";
+                if (car.Data.Sensors != null)
+                {
+                    if (car.Data.Sensors.Count() > car.FuelData.FuelDataPosition)
+                    {
+                        int vol = car.Data.Sensors[car.FuelData.FuelDataPosition];
+                        vol = vol - car.FuelData.StartFuelValue;
+                        vol = (int)(vol / car.FuelData.StepPerLiter);
+                        if (vol != _lastFuel)
+                        {
+                            txtFuel.Text = vol.ToString() + " л";
+                            _lastFuel = vol;
+                        }
+                    }
+                    else
+                        grdFuel.Visibility = Visibility.Collapsed;
+                }
                 else
-                    txtFuel.Text = car.FuelData.FuelLevelValue.ToString();
+                    grdFuel.Visibility = Visibility.Collapsed;
+                //if (car.FuelData.FuelLevelValue < 1000)
+                //    txtFuel.Text = car.FuelData.FuelLevelValue.ToString() + " л";
+                //else
+                //    txtFuel.Text = car.FuelData.FuelLevelValue.ToString();
             }
         }
 
@@ -192,6 +229,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
                     {
                         errorfinded = true;
                         text.Foreground = new SolidColorBrush(Colors.DarkRed);
+                        text.FontWeight = FontWeights.Bold;
                     }
                     stkOBDParams.Children.Add(text);
                 }
