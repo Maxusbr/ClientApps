@@ -38,8 +38,8 @@ namespace DTCDev.Client.Cars.Controls.Models
                 _errorRoute = value;
             }
         }
-        private ObservableCollection<ParkingModel> _parkings = new ObservableCollection<ParkingModel>();
-        public ObservableCollection<ParkingModel> Parkings
+        private List<ParkingModel> _parkings = new List<ParkingModel>();
+        public List<ParkingModel> Parkings
         {
             get { return _parkings; }
             set

@@ -79,7 +79,7 @@
                 <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="Сводный отчет" VerticalAlignment="Center" FontSize="16" Margin="10,0,0,0"/>
             </Grid>
         </WrapPanel>
-        <Grid Grid.Row="1" x:Name="grdContent" Visibility="Collapsed" Background="White">
+        <Grid Grid.Row="1" x:Name="grdContent" Visibility="Collapsed" Background="White" Margin="0,0,25,25">
             
         </Grid>
     </Grid>

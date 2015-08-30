@@ -25,7 +25,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Reports
 
         private LocationCollection _errorRoute = new LocationCollection();
         private LocationCollection _warningRoute = new LocationCollection();
-        private ObservableCollection<ParkingModel> _parkings = new ObservableCollection<ParkingModel>();
+        private List<ParkingModel> _parkings = new List<ParkingModel>();
         private LocationCollection _route = new LocationCollection();
         private readonly List<MinMidMaxValues> _obdList = new List<MinMidMaxValues>();
 
@@ -125,7 +125,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Reports
             }
         }
 
-        public ObservableCollection<ParkingModel> Parkings
+        public List<ParkingModel> Parkings
         {
             get { return _parkings; }
             set
@@ -266,9 +266,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Reports
 
         private void ClearRoutes(bool clearParcing = true)
         {
+            _routesModel = new RoutesModel();
             DispatherThreadRun(delegate
             {
-                _routesModel = new RoutesModel();
                 Route.Clear();
                 WarningRoute.Clear();
                 ErrorRoute.Clear();
@@ -349,9 +349,27 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Reports
 
     public class MinMidMaxValues
     {
+        private double _min;
+        private double _mid;
+        private double _max;
         public string Name { get; set; }
-        public double Min { get; set; }
-        public double Mid { get; set; }
-        public double Max { get; set; }
+
+        public double Min
+        {
+            get { return Math.Round(_min, 2); }
+            set { _min = value; }
+        }
+
+        public double Mid
+        {
+            get { return Math.Round(_mid, 2); }
+            set { _mid = value; }
+        }
+
+        public double Max
+        {
+            get { return Math.Round(_max, 2); }
+            set { _max = value; }
+        }
     }
 }

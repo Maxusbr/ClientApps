@@ -27,20 +27,17 @@ namespace DTCDev.Client.Controls.Map
             {
                 using (var context = geometry.Open())
                 {
+                    var first = true;
                     foreach (var el in locations)
                     {
                         var point = ParentMap.MapTransform.Transform(el);
-                        if(el.FirstPoint)
+                        if(el.FirstPoint || first)
+                        {
                             context.BeginFigure(point, IsClosed, IsClosed);
+                            first = false;
+                        }
                         else
-                            try
-                            {
-                                context.LineTo(point, true, true);
-                            }
-                            catch (Exception e)
-                            {
-                                context.BeginFigure(point, IsClosed, IsClosed);
-                            }
+                            context.LineTo(point, true, true);
                     }
                 }
                 geometry.Transform = ParentMap.ViewportTransform;

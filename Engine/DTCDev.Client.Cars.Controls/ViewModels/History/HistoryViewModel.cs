@@ -1706,7 +1706,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 if (_routesModel.ErrorRoute.Count > 0)
                     ErrorRoute = _routesModel.ErrorRoute;
                 if (_routesModel.Parkings.Count > 0)
-                    Parkings = _routesModel.Parkings;
+                    _routesModel.Parkings.ForEach(o => Parkings.Add(o));
                 if (_routesModel.TimeRoute.Count > 0)
                 {
                     PlayerEndTime = _routesModel.TimeRoute.Max(o => o.Date);
