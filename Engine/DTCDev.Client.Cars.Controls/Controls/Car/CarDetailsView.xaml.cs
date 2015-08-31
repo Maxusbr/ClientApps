@@ -16,6 +16,8 @@ using DTCDev.Client.Cars.Controls.ViewModels.Car;
 using DTCDev.Client.Cars.Engine.AppLogic;
 using DTCDev.Client.Cars.Engine.DisplayModels;
 using System.Windows.Controls.Primitives;
+using DTCDev.Client.Cars.Engine.DisplayModels.CarModelHelper;
+using DTCDev.Client.Cars.Engine.Handlers.Cars;
 
 namespace DTCDev.Client.Cars.Controls.Controls.Car
 {
@@ -43,6 +45,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
             _currentCar.PropertyChanged += _currentCar_PropertyChanged;
             UpdateData();
             _vm.CAR = carData;
+            SetOutStates();
         }
 
         void _currentCar_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -92,6 +95,51 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
 
                 
             }
+
+        }
+
+        /// <summary>
+        /// исходное состояние линий выхода
+        /// </summary>
+        private OutStateModel _currentOutsState = new OutStateModel();
+
+        /// <summary>
+        /// Установить текущее состояние выходов
+        /// </summary>
+        private void SetOutStates()
+        {
+            if (_currentCar == null)
+                return;
+            else
+            {
+                imgChangedState1.Visibility = Visibility.Collapsed;
+                imgChangedState2.Visibility = Visibility.Collapsed;
+                imgChangedState3.Visibility = Visibility.Collapsed;
+
+                brdrSetSate1.Visibility = Visibility.Collapsed;
+                brdrSetSate2.Visibility = Visibility.Collapsed;
+                brdrSetSate3.Visibility = Visibility.Collapsed;
+
+                if (_currentCar.Outs.Out1)
+                    brdrCurrentSate1.Background = new SolidColorBrush(Colors.LightGreen);
+                else
+                    brdrCurrentSate1.Background = new SolidColorBrush(Colors.Gray);
+                
+                if (_currentCar.Outs.Out2)
+                    brdrCurrentSate2.Background = new SolidColorBrush(Colors.LightGreen);
+                else
+                    brdrCurrentSate2.Background = new SolidColorBrush(Colors.Gray);
+                
+                if (_currentCar.Outs.Out3)
+                    brdrCurrentSate3.Background = new SolidColorBrush(Colors.LightGreen);
+                else
+                    brdrCurrentSate3.Background = new SolidColorBrush(Colors.Gray);
+
+                _currentOutsState.Out1 = _currentCar.Outs.Out1;
+                _currentOutsState.Out2 = _currentCar.Outs.Out2;
+                _currentOutsState.Out3 = _currentCar.Outs.Out3;
+                CheckButton();
+            }
         }
 
         void outBorder_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -100,8 +148,6 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
             if(outBorder == null) return;
             var value = 0;
             if(!int.TryParse(outBorder.Tag.ToString(), out value)) return;
-            //var txtVol = new TextBlock { FontWeight = FontWeights.Bold, Text = value.ToString(), FontSize = 10,
-            //    Margin = new Thickness(2), HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center};
             var converter = new PIDConverter();
             var maxVal = converter.GetMaxVol(outBorder.Uid);
             var minVal = converter.GetMinVol(outBorder.Uid);
@@ -114,7 +160,6 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
                 Background = new SolidColorBrush(Colors.White)
             };
             outBorder.Child = inBorder;
-            //inBorder.Child = txtVol; 
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
@@ -132,9 +177,96 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
                     ((ToggleButton)item).IsChecked = false;
             }
             if (tb.Name == "btnSettings")
+            {
                 grdSettings.Visibility = Visibility.Visible;
-            else
+                grdControl.Visibility = Visibility.Collapsed;
+            }
+            else if (tb.Name == "btnPanel")
+            {
                 grdSettings.Visibility = Visibility.Collapsed;
+                grdControl.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                grdSettings.Visibility = Visibility.Collapsed;
+                grdControl.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void btnChangeOut_1_Click(object sender, RoutedEventArgs e)
+        {
+            _currentCar.Outs.Out1 = !_currentCar.Outs.Out1;
+            if(_currentCar.Outs.Out1==_currentOutsState.Out1)
+            {
+                imgChangedState1.Visibility = Visibility.Collapsed;
+                brdrSetSate1.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                imgChangedState1.Visibility = Visibility.Visible;
+                brdrSetSate1.Visibility = Visibility.Visible;
+                if (_currentCar.Outs.Out1)
+                    brdrSetSate1.Background = new SolidColorBrush(Colors.LightGreen);
+                else
+                    brdrSetSate1.Background = new SolidColorBrush(Colors.Gray);
+            }
+            CheckButton();
+        }
+
+        private void btnChangeOut_2_Click(object sender, RoutedEventArgs e)
+        {
+            _currentCar.Outs.Out2 = !_currentCar.Outs.Out2;
+            if (_currentCar.Outs.Out2 == _currentOutsState.Out2)
+            {
+                imgChangedState2.Visibility = Visibility.Collapsed;
+                brdrSetSate2.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                imgChangedState2.Visibility = Visibility.Visible;
+                brdrSetSate2.Visibility = Visibility.Visible;
+                if (_currentCar.Outs.Out2)
+                    brdrSetSate2.Background = new SolidColorBrush(Colors.LightGreen);
+                else
+                    brdrSetSate2.Background = new SolidColorBrush(Colors.Gray);
+            }
+            CheckButton();
+        }
+
+        private void btnChangeOut_3_Click(object sender, RoutedEventArgs e)
+        {
+            _currentCar.Outs.Out3 = !_currentCar.Outs.Out3;
+            if (_currentCar.Outs.Out3 == _currentOutsState.Out3)
+            {
+                imgChangedState3.Visibility = Visibility.Collapsed;
+                brdrSetSate3.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                imgChangedState3.Visibility = Visibility.Visible;
+                brdrSetSate3.Visibility = Visibility.Visible;
+                if (_currentCar.Outs.Out3)
+                    brdrSetSate3.Background = new SolidColorBrush(Colors.LightGreen);
+                else
+                    brdrSetSate3.Background = new SolidColorBrush(Colors.Gray);
+            }
+            CheckButton();
+        }
+
+        private void btnSaveDriving_Click(object sender, RoutedEventArgs e)
+        {
+            CarsHandler.Instance.SaveOutState(_currentCar);
+            SetOutStates();
+        }
+
+        private void CheckButton()
+        {
+            if (_currentOutsState.Out1 != _currentCar.Outs.Out1 ||
+                _currentOutsState.Out2 != _currentCar.Outs.Out2 ||
+                _currentOutsState.Out3 != _currentCar.Outs.Out3)
+                btnSaveDriving.Visibility = Visibility.Visible;
+            else
+                btnSaveDriving.Visibility = Visibility.Collapsed;
         }
     }
 }

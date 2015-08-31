@@ -12,6 +12,7 @@ using DTCDev.Models.CarsSending.Navigation;
 using DTCDev.Models.DeviceSender;
 using DTCDev.Models.DeviceSender.DISP;
 using DTCDev.Models.CarBase.CarStatData;
+using DTCDev.Client.Cars.Engine.DisplayModels.CarModelHelper;
 
 namespace DTCDev.Client.Cars.Engine.DisplayModels
 {
@@ -122,6 +123,14 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
         public ZoneModel ZoneData
         {
             get { return _zoneData; }
+        }
+
+        private OutStateModel _outs = new OutStateModel();
+
+        public OutStateModel Outs
+        {
+            get { return _outs; }
+            set { _outs = value; }
         }
 
         bool _isChanged = false;
