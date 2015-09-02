@@ -143,6 +143,9 @@
     <Compile Include="Controls\History\PlayerControl.xaml.cs">
       <DependentUpon>PlayerControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\History\PolylineToolTip.xaml.cs">
+      <DependentUpon>PolylineToolTip.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\History\StateDatePresenter.xaml.cs">
       <DependentUpon>StateDatePresenter.xaml</DependentUpon>
     </Compile>
@@ -337,6 +340,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\History\PlayerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\History\PolylineToolTip.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

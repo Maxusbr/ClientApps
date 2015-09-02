@@ -18,6 +18,7 @@
              d:DesignHeight="580" d:DesignWidth="900" Loaded="UserControl_Loaded" d:DataContext="{d:DesignInstance History:HistoryViewModel}">
 
     <UserControl.Resources>
+        <local:RouteBrushTypesConverter x:Key="RouteBrushTypesConverter" ErrorValue="{StaticResource DarkRed1}" NoneValue="Transparent" NormalValue="{StaticResource Green1}" WarningValue="{StaticResource DarkOrange1}" />
         <Models:InvertBoolConverter x:Key="InvertBoolConverter"/>
         <local:SpeedValueToStyleConverter x:Key="ValueToStyleConverter" СonditionValue="{StaticResource DarkOrange1}" TrueValue="{StaticResource Green1}" FalseValue="{StaticResource DarkRed1}" DesibleValue="Transparent" />
         <Style x:Key="StyleCell" TargetType="{x:Type DataGridCell}">
@@ -337,6 +338,17 @@
             </Setter>
             <!--<EventSetter Event="UIElement.TouchDown" Handler="MapItemTouchDown"/>-->
         </Style>
+        <DataTemplate x:Key="RoutesLineItem">
+            <Grid Width="1" Height="1">
+                <Map:MapPolyline Locations="{Binding Points}" Stroke="{Binding TypeRoute, Converter={StaticResource RouteBrushTypesConverter}}"
+                                 StrokeThickness="3" IsClosed="False" MouseLeftButtonUp="MapPolyline_MouseLeftButtonUp" Cursor="Hand">
+                    <Map:MapPolyline.ToolTip>
+                        <local:PolylineToolTip />
+                    </Map:MapPolyline.ToolTip>
+                </Map:MapPolyline>
+            </Grid>
+        </DataTemplate>
+
     </UserControl.Resources>
 
     <!--<UserControl.DataContext>
@@ -379,13 +391,15 @@
             <Map:MapItemsControl x:Name="CarPoints" ItemsSource="{Binding Points}" 
 				ItemContainerStyle="{StaticResource PointItemStyle}" 
 				SelectedItem="{Binding Position, Mode=TwoWay}"/>
-            <Map:MapColorLine x:Name="RouteLine" Locations="{Binding Route}" StrokeThickness="3" Stroke="DarkGreen" IsClosed="False" Visibility="Collapsed" />
+            <!--<Map:MapColorLine x:Name="RouteLine" Locations="{Binding Route}" StrokeThickness="3" Stroke="DarkGreen" IsClosed="False" Visibility="Collapsed" />
             <Map:MapColorLine x:Name="WarningLine" Locations="{Binding WarningRoute}" StrokeThickness="3" Stroke="DarkOrange" IsClosed="False" Visibility="Collapsed" />
             <Map:MapColorLine x:Name="ErrorLine" Locations="{Binding ErrorRoute}" StrokeThickness="3" Stroke="DarkRed" IsClosed="False" Visibility="Collapsed" />
-            <Map:MapColorLine x:Name="OfflineLine" Locations="{Binding OfflineRoute}" StrokeThickness="3" Stroke="Gray" IsClosed="False" Visibility="Collapsed" />
+            <Map:MapColorLine x:Name="OfflineLine" Locations="{Binding OfflineRoute}" StrokeThickness="3" Stroke="Gray" IsClosed="False" 
+                              Visibility="Collapsed" />-->
+            <Map:MapItemsControl x:Name="RouteLines" ItemsSource="{Binding Routes}"  Focusable="True"  IsSynchronizedWithCurrentItem="False" 
+				IsEnabled="True" ItemTemplate="{DynamicResource RoutesLineItem}" />
             <Map:MapItemsControl x:Name="ParkingsPin" ItemsSource="{Binding Parkings}"  Focusable="True"  IsSynchronizedWithCurrentItem="False" 
-				IsEnabled="True" ItemContainerStyle="{DynamicResource ParkingItemStyle}" Visibility="Collapsed" 
-                                 />
+				IsEnabled="True" ItemContainerStyle="{DynamicResource ParkingItemStyle}" Visibility="Collapsed" />
             <Map:Pushpin x:Name="CarPin" Map:MapPanel.Location="{Binding Position.Navigation.LocationPoint}" Background="{x:Null}" Visibility="Collapsed" >
                 <Map1:MapViewElement DataContext="{Binding Position}" Margin="-62,0,0,-77" />
             </Map:Pushpin>

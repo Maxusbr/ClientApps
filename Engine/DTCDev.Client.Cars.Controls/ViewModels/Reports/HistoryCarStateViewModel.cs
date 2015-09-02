@@ -158,7 +158,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Reports
 
             var first = data.OrderBy(o => o.Date).FirstOrDefault();
             if (first == null) return;
-            var curroute = HistoryViewModel.RouteSelect.None;
+            var curroute = RouteSelect.None;
             var prev = new Location
             {
                 Latitude = first.Lt / 10000.0,
@@ -278,8 +278,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Reports
 
         }
 
-        private HistoryViewModel.RouteSelect SortLocation(Location prev, Location loc,
-            HistoryViewModel.RouteSelect prevroute, double spd, DateTime dt)
+        private RouteSelect SortLocation(Location prev, Location loc,
+            RouteSelect prevroute, double spd, DateTime dt)
         {
             _routesModel.TimeRoute.Add(new RoutePoint { Point = prev, Date = dt });
             var curroute = GetRouteClass(spd);
@@ -300,19 +300,19 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Reports
         /// </summary>
         /// <param name="loc"></param>
         /// <param name="curroute"></param>
-        private void AddToRoute(Location loc, HistoryViewModel.RouteSelect curroute)
+        private void AddToRoute(Location loc, RouteSelect curroute)
         {
             switch (curroute)
             {
-                case HistoryViewModel.RouteSelect.Normal:
+                case RouteSelect.Normal:
                     var added = _routesModel.Route.Count < 1 ? new Location(loc, true) : loc;
                     if (_routesModel.Route.IndexOf(added) < 0)
                         _routesModel.Route.Add(added);
                     break;
-                case HistoryViewModel.RouteSelect.Warning:
+                case RouteSelect.Warning:
                     _routesModel.WarningRoute.Add(_routesModel.WarningRoute.Count < 1 ? new Location(loc, true) : loc);
                     break;
-                case HistoryViewModel.RouteSelect.Error:
+                case RouteSelect.Error:
                     _routesModel.ErrorRoute.Add(_routesModel.ErrorRoute.Count < 1 ? new Location(loc, true) : loc);
                     break;
             }
@@ -323,10 +323,10 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Reports
         /// </summary>
         /// <param name="spd"></param>
         /// <returns></returns>
-        private HistoryViewModel.RouteSelect GetRouteClass(double spd)
+        private RouteSelect GetRouteClass(double spd)
         {
-            if (spd >= SpdWarning) return HistoryViewModel.RouteSelect.Error;
-            return spd <= SpdNormal ? HistoryViewModel.RouteSelect.Normal : HistoryViewModel.RouteSelect.Warning;
+            if (spd >= SpdWarning) return RouteSelect.Error;
+            return spd <= SpdNormal ? RouteSelect.Normal : RouteSelect.Warning;
         }
         public override void OnPropertyChanged(string propertyName)
         {

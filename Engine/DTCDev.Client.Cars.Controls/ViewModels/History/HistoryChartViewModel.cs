@@ -49,7 +49,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             _handler.DayRefreshed += Instance_DayRefreshed;
             _handler.OBDLoaded += Instance_OBDLoaded;
             _handler.AccLoaded += Instance_AccLoaded;
-            _handler.DayStateChange += _handler_DayStateChange;
+            //_handler.DayStateChange += _handler_DayStateChange;
         }
 
 
@@ -191,8 +191,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         {
             var first = list.FirstOrDefault();
             if (first == null || first.Date <= new DateTime(1, 1, 1)) return;
-            var dt = first.Date;
-            SelectedDate = new DateTime(dt.Year, dt.Month, dt.Day);
+            var dt = new DateTime(first.Date.Year, first.Date.Month, first.Date.Day);
+            if(dt.Equals(SelectedDate)) Recalqulate();
         }
 
         /// <summary>

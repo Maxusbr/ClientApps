@@ -97,7 +97,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             //_handler.LoadCompleted += Instance_LoadCompleted;
             //_handler.DayRefreshed += Instance_DayRefreshed;
             //_handler.LinesLoaded += Instance_LinesLoaded;
-            //_handler.OBDLoaded += Instance_OBDLoaded;
+            _handler.OBDLoaded += Instance_OBDLoaded;
             _handler.AccLoaded += Instance_AccLoaded;
             _handler.DayStateChange += _handler_DayStateChange;
             _handler.SetDateTimePosition += _handler_SetDateTimePosition;
@@ -108,7 +108,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         }
 
-        void _handler_SetDateTimePosition(DateTime position)
+        public void _handler_SetDateTimePosition(DateTime position)
         {
             IsPlayerStart = false;
             var slowTask = new Task(delegate
@@ -185,42 +185,48 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             slowTask.Start();
         }
 
-        //void Instance_OBDLoaded(OBDHistoryDataModel model)
-        //{
-        //    IsPlayerStart = false;
-        //    var obd = new OBDHistoryDataModel { DevID = model.DevID, DT = model.DT };
-        //    var slowTask = new Task(delegate
-        //    {
-        //        for (var i = 0; i < DayStates.Count; i++)
-        //        {
-        //            var item = DayStates[i];
-        //            var next = i + 1 < DayStates.Count ? DayStates[i + 1].Date : DateTime.Now;
-        //            var dt = new DateTime(item.Date.Year, item.Date.Month, item.Date.Day);
-        //            var list =
-        //                model.Data.Where(o => dt + o.Time.ToTimeSpan() >= item.Date && dt + o.Time.ToTimeSpan() < next);
-        //            foreach (var el in list)
-        //                obd.Data.Add(el);
-        //        }
-        //    });
-        //    slowTask.ContinueWith(obj =>
-        //    {
-        //        if (_dispatcher != null)
-        //            _dispatcher.BeginInvoke(new Action(() =>
-        //            {
-        //                OBDHistory = obd;
-        //                //TableHistory.Update(obd);
-        //                //OnPropertyChanged("TableHistory");
-        //            }));
-        //    });
-        //    slowTask.Start();
-        //}
+        void Instance_OBDLoaded(OBDHistoryDataModel model)
+        {
+            IsPlayerStart = false;
+            var obd = new OBDHistoryDataModel { DevID = model.DevID, DT = model.DT };
+            var converter = new PIDConverter();
+            var prms = model.Data.Select(p => p.Code).Distinct().ToList();
+            var slowTask = new Task(delegate
+            {
+                foreach (var item in Routes)
+                {
+                    var dt = new DateTime(item.StartDate.Year, item.StartDate.Month, item.StartDate.Day);
+                    var list =
+                        model.Data.Where(o => dt + o.Time.ToTimeSpan() >= item.StartDate && dt + o.Time.ToTimeSpan() < item.EndDate);
+                    if(!list.Any()) continue;
+                    foreach (var el in prms.Select(pr => list.FirstOrDefault(o => o.Code.Equals(pr))).Where(el => el != null))
+                    {
+                        item.AddTipValue(converter.GetPidInfo(el.Code), el.Vol);
+                    }
+                    //if(list.Any())
+                    //    obd.Data.AddRange(list);
+                }
+            });
+            slowTask.ContinueWith(obj =>
+            {
+                if (_dispatcher != null)
+                    _dispatcher.BeginInvoke(new Action(() =>
+                    {
+
+                        //OBDHistory = obd;
+                        //TableHistory.Update(obd);
+                        //OnPropertyChanged("TableHistory");
+                    }));
+            });
+            slowTask.Start();
+        }
 
         //void Instance_LinesLoaded(DTCDev.Models.LinesDataModel model)
         //{
         //    Lines = model;
         //}
 
-        
+
 
 
         #region Fields
@@ -268,7 +274,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         private RoutesModel _routesModel = new RoutesModel();
 
         private DateTime _displayedHistoryDate;
-        
+
+        private readonly ObservableCollection<RouteLine> _routes = new ObservableCollection<RouteLine>();
+        private readonly List<RouteLine> _tempRoutes = new List<RouteLine>();
         //private int _roundedSpeed = 0;
 
         //private int _maxSpeed = 0;
@@ -386,16 +394,16 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
-        private LocationCollection _route = new LocationCollection();
-        public LocationCollection Route
-        {
-            get { return _route; }
-            set
-            {
-                _route = value;
-                this.OnPropertyChanged("Route");
-            }
-        }
+        //private LocationCollection _route = new LocationCollection();
+        //public LocationCollection Route
+        //{
+        //    get { return _route; }
+        //    set
+        //    {
+        //        _route = value;
+        //        this.OnPropertyChanged("Route");
+        //    }
+        //}
 
         private LinesDataModel _lines = new LinesDataModel();
 
@@ -431,38 +439,38 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
-        private LocationCollection _warningRoute = new LocationCollection();
-        public LocationCollection WarningRoute
-        {
-            get { return _warningRoute; }
-            set
-            {
-                _warningRoute = value;
-                this.OnPropertyChanged("WarningRoute");
-            }
-        }
+        //private LocationCollection _warningRoute = new LocationCollection();
+        //public LocationCollection WarningRoute
+        //{
+        //    get { return _warningRoute; }
+        //    set
+        //    {
+        //        _warningRoute = value;
+        //        this.OnPropertyChanged("WarningRoute");
+        //    }
+        //}
 
-        private LocationCollection _errorRoute = new LocationCollection();
-        public LocationCollection ErrorRoute
-        {
-            get { return _errorRoute; }
-            set
-            {
-                _errorRoute = value;
-                this.OnPropertyChanged("ErrorRoute");
-            }
-        }
+        //private LocationCollection _errorRoute = new LocationCollection();
+        //public LocationCollection ErrorRoute
+        //{
+        //    get { return _errorRoute; }
+        //    set
+        //    {
+        //        _errorRoute = value;
+        //        this.OnPropertyChanged("ErrorRoute");
+        //    }
+        //}
 
-        public LocationCollection _offlineRoute = new LocationCollection();
-        public LocationCollection OfflineRoute
-        {
-            get { return _offlineRoute; }
-            set
-            {
-                _offlineRoute = value;
-                this.OnPropertyChanged("OfflineRoute");
-            }
-        }
+        //public LocationCollection _offlineRoute = new LocationCollection();
+        //public LocationCollection OfflineRoute
+        //{
+        //    get { return _offlineRoute; }
+        //    set
+        //    {
+        //        _offlineRoute = value;
+        //        this.OnPropertyChanged("OfflineRoute");
+        //    }
+        //}
 
         private ObservableCollection<ParkingModel> _parkings = new ObservableCollection<ParkingModel>();
         public ObservableCollection<ParkingModel> Parkings
@@ -991,6 +999,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         }
 
         private bool _isPlayerStart;
+        
+
         public bool IsPlayerStart
         {
             get { return _isPlayerStart; }
@@ -1002,8 +1012,11 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
+        public ObservableCollection<RouteLine> Routes
+        {
+            get { return _routes; }
+        }
 
-        
         #endregion
 
         #region Режимы отображения траектории
@@ -1094,7 +1107,12 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                         Longitude = itemLoc.Ln / 10000.0
                     };
                     if (itemLoc.Spd > 0)
-                        curroute = SortLocation(prev, loc, curroute, Math.Max(Math.Abs(item.Y), Math.Abs(item.Z)) / 100.0, itemLoc.Date);
+                    {
+                        var el = SortLocation(prev, loc, Math.Max(Math.Abs(item.Y), Math.Abs(item.Z)) / 100.0, firstLoc.Date, item.Date.ToDateTime());
+                        el.AddTipValue("Скорость", firstLoc.Spd / 10.0);
+                        el.AddTipValue("Количество спутников", firstLoc.St);
+                        _tempRoutes.Add(el);
+                    }
                     prev = loc;
                     first = item;
                     firstLoc = itemLoc;
@@ -1123,7 +1141,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 if (firstLoc == null) return;
                 var first = AccHistory.Data.OrderBy(o => o.Date.ToDateTime()).FirstOrDefault();
                 if (first == null) return;
-                var curroute = RouteSelect.None;
                 var prev = new Location
                 {
                     Latitude = firstLoc.Lt / 10000.0,
@@ -1142,7 +1159,12 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                         Longitude = itemLoc.Ln / 10000.0
                     };
                     if (itemLoc.Spd > 0)
-                        curroute = SortLocation(prev, loc, curroute, Math.Abs(item.X) / 100.0, itemLoc.Date);
+                    {
+                        var el = SortLocation(prev, loc, Math.Abs(item.X) / 100.0, firstLoc.Date, item.Date.ToDateTime());
+                        el.AddTipValue("Скорость", firstLoc.Spd / 10.0);
+                        el.AddTipValue("Количество спутников", firstLoc.St);
+                        _tempRoutes.Add(el);
+                    }
                     prev = loc;
                     first = item;
                     firstLoc = itemLoc;
@@ -1171,10 +1193,11 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         /// </summary>
         private void ClearRoutes(bool clearParcing = true)
         {
+            Routes.Clear(); _tempRoutes.Clear();
             _routesModel = new RoutesModel();
-            Route.Clear();
-            WarningRoute.Clear();
-            ErrorRoute.Clear();
+            //Route.Clear();
+            //WarningRoute.Clear();
+            //ErrorRoute.Clear();
             RouteOpacited.Clear();
             if (clearParcing)
                 Parkings.Clear();
@@ -1313,10 +1336,11 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 //HistoryRows.Clear();
                 //DistanceAll = 0;
                 DayStates.Clear();
-                Route.Clear();
-                WarningRoute.Clear();
-                OfflineRoute.Clear();
-                ErrorRoute.Clear();
+                //Route.Clear();
+                //WarningRoute.Clear();
+                //OfflineRoute.Clear();
+                //ErrorRoute.Clear();
+                Routes.Clear();
                 Parkings.Clear();
                 //int days = 30;
                 //for (int i = 0; i < 30; i++)
@@ -1426,19 +1450,19 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                                 {
                                     foundParking = true;
                                     nullDate = null;
-                                    if (_routesModel.Parkings.Count > 0)
+                                    if (_routesModel.Parkings.Any())
                                         _routesModel.Parkings[_routesModel.Parkings.Count - 1].SetEndDates(itemtime);
                                 }
                                 var curdist = dc.Calculate(first, item);
-                                var spd = 1000 * curdist / spantime.TotalSeconds;
                                 if (item.Spd > 0 && Math.Abs(curdist) > .001 && !(foundParking && isParking))
                                 {
-                                    if (spd > 35)
-                                    {
-                                        var trrr = 0;
-                                    }
                                     if (IsCheckedSpeed)
-                                        curroute = SortLocation(prev, loc, curroute, item.Spd / 10.0, item.Date);
+                                    {
+                                        var el = SortLocation(prev, loc, first.Spd / 10.0, first.Date, item.Date);
+                                        el.AddTipValue("Скорость", first.Spd/10.0);
+                                        el.AddTipValue("Количество спутников", first.St);
+                                        _tempRoutes.Add(el);
+                                    }
                                     dist += curdist;
                                     prev = loc;
                                 }
@@ -1644,21 +1668,26 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         //    //}
         //}
 
-        private RouteSelect SortLocation(Location prev, Location loc, RouteSelect prevroute, double spd, DateTime dt)
+        private RouteLine SortLocation(Location prev, Location loc, double spd, DateTime dt, DateTime sdt)
         {
-            _routesModel.TimeRoute.Add(new RoutePoint { Point = prev, Date = dt });
+            //_routesModel.TimeRoute.Add(new RoutePoint { Point = prev, Date = dt });
             var curroute = GetRouteClass(spd);
-            if (prevroute != curroute)
-            {
-                loc.FirstPoint = false;
-                AddToRoute(loc, prevroute);
-                //if(spd > 0)
-                AddToRoute(new Location(prev, true), curroute);
-            }
-            //if(spd > 0)
-            AddToRoute(loc, curroute);
-            return curroute;
-        }
+            var line = new RouteLine(_dispatcher) {StartDate = dt, TypeRoute = curroute, EndDate = sdt};
+            line.Points.Add(prev);line.Points.Add(loc);
+            return line;
+        }            
+
+            
+            //if (prevroute != curroute)
+            //{
+            //    loc.FirstPoint = false;
+            //    AddToRoute(loc, prevroute);
+            //    //if(spd > 0)
+            //    AddToRoute(new Location(prev, true), curroute);
+            //}
+            ////if(spd > 0)
+            //AddToRoute(loc, curroute);
+
 
         /// <summary>
         /// filter data to different route tracks
@@ -1699,21 +1728,28 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             try
             {
                 Iswaiting = false;
-                if (_routesModel.Route.Count > 0)
-                    Route = _routesModel.Route;
-                if (_routesModel.WarningRoute.Count > 0)
-                    WarningRoute = _routesModel.WarningRoute;
-                if (_routesModel.ErrorRoute.Count > 0)
-                    ErrorRoute = _routesModel.ErrorRoute;
+                //if (_routesModel.Route.Count > 0)
+                //    Route = _routesModel.Route;
+                //if (_routesModel.WarningRoute.Count > 0)
+                //    WarningRoute = _routesModel.WarningRoute;
+                //if (_routesModel.ErrorRoute.Count > 0)
+                //    ErrorRoute = _routesModel.ErrorRoute;
+                //if (_routesModel.TimeRoute.Count > 0)
+                //{
+                //    PlayerEndTime = _routesModel.TimeRoute.Max(o => o.Date);
+                //    PlayerStartTime = _routesModel.TimeRoute.Min(o => o.Date);
+                //    //UpdateCurentPosition(PlayerStartTime, true);
+                //}
                 if (_routesModel.Parkings.Count > 0)
                     _routesModel.Parkings.ForEach(o => Parkings.Add(o));
-                if (_routesModel.TimeRoute.Count > 0)
+                if (_tempRoutes.Any())
                 {
-                    PlayerEndTime = _routesModel.TimeRoute.Max(o => o.Date);
-                    PlayerStartTime = _routesModel.TimeRoute.Min(o => o.Date);
+                    PlayerEndTime = _tempRoutes.Max(o => o.StartDate);
+                    PlayerStartTime = _tempRoutes.Min(o => o.StartDate);
+                    _tempRoutes.ForEach(o => Routes.Add(o));
                     UpdateCurentPosition(PlayerStartTime, true);
                 }
-                if (Route == null || Route.Count <= 0) return;
+                //if (Route == null || Route.Count <= 0) return;
             }
             catch (Exception e)
             {
@@ -1723,23 +1759,27 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         private void UpdateCurentPosition(DateTime time, bool updateCenter = false)
         {
-            lock (_routesModel.TimeRoute)
+            lock (Routes)
             {
-                var pos = _routesModel.TimeRoute.OrderBy(o => o.Date).LastOrDefault(f => f.Date <= time);
+                var pos = Routes.OrderBy(o => o.StartDate).LastOrDefault(f => f.StartDate <= time);
                 if (!EnableHistory || Position == null) return;
-                if (pos != null && updateCenter)
+                if (Routes.Any() && updateCenter)//pos != null && 
                 {
                     //MapCenter = MapCenterUser = pos.Point;
-                    var maxlong = _routesModel.TimeRoute.Max(o => o.Point.Longitude);
-                    var maxlat = _routesModel.TimeRoute.Max(o => o.Point.Latitude);
-                    var minlong = _routesModel.TimeRoute.Min(o => o.Point.Longitude);
-                    var minlat = _routesModel.TimeRoute.Min(o => o.Point.Latitude);
+                    //var maxlong = _routesModel.TimeRoute.Max(o => o.Point.Longitude);
+                    //var maxlat = _routesModel.TimeRoute.Max(o => o.Point.Latitude);
+                    //var minlong = _routesModel.TimeRoute.Min(o => o.Point.Longitude);
+                    //var minlat = _routesModel.TimeRoute.Min(o => o.Point.Latitude);
+                    var maxlong = Routes.Max(o => o.Points.Max(p => p.Longitude));
+                    var maxlat = Routes.Max(o => o.Points.Max(p => p.Latitude));
+                    var minlong = Routes.Min(o => o.Points.Min(p => p.Longitude));
+                    var minlat = Routes.Min(o => o.Points.Min(p => p.Latitude));
                     OnCenterUpdates(new Location(minlat, minlong), new Location(maxlat, maxlong));
                     return;
                 }
 
-                _dt = pos != null && _dt < pos.Date ? pos.Date : time;
-                var detail = pos != null ? DayStates.FirstOrDefault(o => o.Date.Equals(pos.Date)) : new CarStateModel();
+                _dt = pos != null && _dt < pos.StartDate ? pos.StartDate : time;
+                var detail = pos != null ? DayStates.FirstOrDefault(o => o.Date.Equals(pos.StartDate)) : new CarStateModel();
                 if (detail != null)
                 {
                     Position.Data = new SCarData
@@ -1943,12 +1983,12 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         #endregion DISTANCE_CHECKER
 
-        public enum RouteSelect
-        {
-            Normal,
-            Warning,
-            Error, None
-        };
+        //public enum RouteSelect
+        //{
+        //    Normal,
+        //    Warning,
+        //    Error, None
+        //};
 
         public override void OnPropertyChanged(string propertyName)
         {

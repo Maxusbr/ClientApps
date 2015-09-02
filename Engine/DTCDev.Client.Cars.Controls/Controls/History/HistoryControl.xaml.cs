@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -16,6 +17,7 @@ using System.Windows.Shapes;
 using DTCDev.Client.Cars.Controls.ViewModels.History;
 using System.Windows.Media.Animation;
 using System.Windows.Controls.Primitives;
+using DTCDev.Client.Cars.Controls.Models;
 
 namespace DTCDev.Client.Cars.Controls.Controls.History
 {
@@ -126,7 +128,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             }
             _displayHistory = !_displayHistory;
             CarPin.Visibility = ParkingsPin.Visibility =
-            RouteLine.Visibility = WarningLine.Visibility = ErrorLine.Visibility = OfflineLine.Visibility =
+            //RouteLine.Visibility = WarningLine.Visibility = ErrorLine.Visibility = OfflineLine.Visibility =
             _carZonesError.Visibility = _displayHistory ? Visibility.Visible : Visibility.Collapsed;
         }
 
@@ -253,6 +255,15 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         {
             Properties.Settings.Default.Save();
         }
+
+        private void MapPolyline_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var line = sender as FrameworkElement;
+            if (line == null) return;
+            var vm = line.DataContext as RouteLine;
+            if (vm == null) return;
+            _hvm._handler_SetDateTimePosition(vm.StartDate);
+        }
     }
 
     public class OBDKeyConverter : IValueConverter
@@ -300,4 +311,34 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
     }
 
     public class SpeedValueToStyleConverter : ValuesMultyConverter<Brush> { }
+
+    public class RouteTypesConverter<T> : IValueConverter
+    {
+        public T NormalValue { get; set; }
+        public T WarningValue { get; set; }
+        public T ErrorValue { get; set; }
+        public T NoneValue { get; set; }
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var type = value is RouteSelect ? (RouteSelect) value : RouteSelect.None;
+            switch (type)
+            {
+                case RouteSelect.Normal:
+                    return NormalValue;
+                case RouteSelect.Warning:
+                    return WarningValue;
+                case RouteSelect.Error:
+                    return ErrorValue;
+                default:
+                    return NoneValue;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    public class RouteBrushTypesConverter : RouteTypesConverter<Brush> { }
 }
