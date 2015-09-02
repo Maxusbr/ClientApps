@@ -55,6 +55,7 @@
     <Compile Include="AppLogic\GeoAdress.cs" />
     <Compile Include="AppLogic\PIDConverter.cs" />
     <Compile Include="DisplayModels\CarModelHelper\FuelDataModel.cs" />
+    <Compile Include="DisplayModels\CarModelHelper\OutStateModel.cs" />
     <Compile Include="DisplayModels\CarModelHelper\ZoneModel.cs" />
     <Compile Include="DisplayModels\DISP_Car.cs" />
     <Compile Include="DisplayModels\IndicatorPercentModel.cs" />

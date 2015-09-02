@@ -110,12 +110,8 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
                 {
                     TCPConnection.Instance.SendData("BB");
                     if (StartLoadCarData != null)
-                        //if (Application.Current != null)
-                        //    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                        //    {
-                                if (StartLoadCarData != null)
-                                    StartLoadCarData(this, new EventArgs());
-                            //}));
+                        if (StartLoadCarData != null)
+                            StartLoadCarData(this, new EventArgs());
                 }
                 catch { }
             }
@@ -150,6 +146,10 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
                 case 'g':
                 case 'G':
                     FillCarSettings(row);
+                    break;
+                case 'h':
+                case 'H':
+                    FillControlState(row);
                     break;
             }
         }
@@ -224,10 +224,6 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
                 var temp = JsonConvert.DeserializeObject<List<CarStateFullModel>>(row);
                 if (temp != null)
                 {
-                    //Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                    //           {
-                    //var ids = new List<string>();
-                    //ids = temp.Select(p => p.State.ID).Distinct().ToList();
                     var cars = new List<DISP_Car>();
                     foreach (var item in temp)
                     {
@@ -238,7 +234,6 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
                             Data = item.State,
                             VIN = item.VIN, Car = excar.Car, FuelData = excar.FuelData
                         };
-                        //car.Errors.Clear();
                         foreach (var er in item.Errors)
                         {
                             car.Errors.Add(new DISP_Car.EOBDData
@@ -247,7 +242,6 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
                                 Value = er.Value
                             });
                         }
-                        //car.OBD.Clear();
                         foreach (var obd in item.OBD)
                         {
                             car.OBD.Add(new DISP_Car.EOBDData
@@ -262,15 +256,14 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
                             int pos = sens.Model.Port - 1;
                             int c = item.State.Sensors.Count() - 1;
                             if (c < pos) continue;
-                            //if (sens.State == null)
-                            //    sens.State = new SensorState();
                             sens.State = new SensorState { Vol = item.State.Sensors[pos] };
                         }
                         cars.Add(car);
                     }
                     OnChangeCarsStatus(cars);
-                    //_cars.ForEach(o => o.IsChanged = false);
-                    //}));
+                    //запрос информации о состоянии выходов контроллеров
+                    try { TCPConnection.Instance.SendData("BH"); }
+                    catch { }
                 }
             }
             catch { }
@@ -340,6 +333,34 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
                 }
                 if (SettingsLoaded != null)
                     SettingsLoaded(this, new EventArgs());
+            }
+            catch { }
+        }
+
+        private void FillControlState(string row)
+        {
+            try
+            {
+                List<DeviceControlInfo> data = JsonConvert.DeserializeObject<List<DeviceControlInfo>>(row);
+                foreach (var item in data)
+                {
+                    DISP_Car car = _cars.Where(p => p.ID == item.DID).FirstOrDefault();
+                    if(car!=null)
+                    {
+                        if (item.Out1 == 1)
+                            car.Outs.Out1 = true;
+                        else
+                            car.Outs.Out1 = false;
+                        if (item.Out2 == 1)
+                            car.Outs.Out2 = true;
+                        else
+                            car.Outs.Out2 = false;
+                        if (item.Out3 == 1)
+                            car.Outs.Out3 = true;
+                        else
+                            car.Outs.Out3 = false;
+                    }
+                }
             }
             catch { }
         }
@@ -427,6 +448,31 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
             if (car == null) return;
             car.Mark = mark;
             car.Model = model;
+        }
+
+        public void SaveOutState(DISP_Car car)
+        {
+            try
+            {
+                DeviceControlInfo dci = new DeviceControlInfo();
+                dci.DID = car.ID;
+                if (car.Outs.Out1)
+                    dci.Out1 = 1;
+                else
+                    dci.Out1 = 0;
+                if (car.Outs.Out2)
+                    dci.Out2 = 1;
+                else
+                    dci.Out2 = 0;
+                if (car.Outs.Out3)
+                    dci.Out3 = 1;
+                else
+                    dci.Out3 = 0;
+                string req = "BI" + JsonConvert.SerializeObject(dci);
+                TCPConnection.Instance.SendData(req);
+
+            }
+            catch { }
         }
 
 

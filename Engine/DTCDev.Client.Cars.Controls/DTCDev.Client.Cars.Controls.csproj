@@ -553,9 +553,6 @@
     <Resource Include="Assets\Content\Images\CarDetailsView\panel.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\Content\Images\CarDetailsView\340116-5000x3350.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Assets\Content\Images\off.png" />
     <Resource Include="Assets\Content\Images\on.png" />
     <Resource Include="Assets\Content\Images\onone.png" />
@@ -635,6 +632,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Content\Images\ReportsMenu\compilate_report.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Content\Images\CarDetailsView\control_panel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Content\Images\CarDetailsView\Gnome-Multimedia-Volume-Control-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Content\Images\CarDetailsView\control_arrow-right.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -22,7 +22,15 @@
                     </Style>
                 </Setter.Value>
             </Setter>
-            <Setter Property="Background" Value="#FFDDDDDD"/>
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                        <GradientStop Color="#FF3A3A3A" Offset="1"/>
+                        <GradientStop Color="#FF3A3A3A"/>
+                        <GradientStop Color="#FF7C7C7C" Offset="0.5"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
             <Setter Property="BorderBrush" Value="#FF707070"/>
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
             <Setter Property="BorderThickness" Value="1"/>
@@ -86,26 +94,16 @@
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
-            <ToggleButton x:Name="btnPanel" Style="{DynamicResource ToggleButtonStyle}" BorderBrush="#FFA2A2A2" Margin="0,1" Click="btnPanel_Click">
-                <ToggleButton.Background>
-                    <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                        <GradientStop Color="#FF3A3A3A" Offset="1"/>
-                        <GradientStop Color="#FF3A3A3A"/>
-                        <GradientStop Color="#FF7C7C7C" Offset="0.5"/>
-                    </LinearGradientBrush>
-                </ToggleButton.Background>
-                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/SettingsMenu/car-icon.png"/>
+            <ToggleButton x:Name="btnPanel" Style="{DynamicResource ToggleButtonStyle}" BorderBrush="#FFA2A2A2" Click="btnPanel_Click">
+                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/SettingsMenu/car-icon.png" Width="32" Height="32"/>
             </ToggleButton>
-            <ToggleButton x:Name="btnSettings" Style="{DynamicResource ToggleButtonStyle}" Grid.Row="1" BorderBrush="#FFA2A2A2" Margin="0,1" Click="btnPanel_Click">
-                <ToggleButton.Background>
-                    <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                        <GradientStop Color="#FF3A3A3A" Offset="1"/>
-                        <GradientStop Color="#FF3A3A3A"/>
-                        <GradientStop Color="#FF7C7C7C" Offset="0.5"/>
-                    </LinearGradientBrush>
-                </ToggleButton.Background>
-                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/connect.png" Stretch="None"/>
+            <ToggleButton x:Name="btnSettings" Style="{DynamicResource ToggleButtonStyle}" Grid.Row="1" BorderBrush="#FFA2A2A2" Click="btnPanel_Click">
+                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/CarDetailsView/control_panel.png" Width="32" Height="32"/>
+            </ToggleButton>
+            <ToggleButton x:Name="btnControl" Style="{DynamicResource ToggleButtonStyle}" Grid.Row="2" Click="btnPanel_Click">
+                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/CarDetailsView/Gnome-Multimedia-Volume-Control-32.png" Width="32" Height="32"/>
             </ToggleButton>
         </Grid>
         <Grid x:Name="grdParams" Grid.Column="1" Background="#FF272528">
@@ -241,6 +239,47 @@
                 <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Path=VIN, Mode=TwoWay}" Margin="4"/>
                 <Button Grid.Column="1" Grid.Row="3" Content="Сохранить" Command="{Binding Path=SaveSettingsCommand}" Margin="20,3"/>
             </Grid>
+        </Grid>
+
+        <Grid Grid.Column="1" Background="#FF272528" x:Name="grdControl" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="45"/>
+                <RowDefinition Height="44"/>
+                <RowDefinition Height="44"/>
+                <RowDefinition Height="44"/>
+                <RowDefinition Height="44"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="48"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Управление автомобилем" Grid.ColumnSpan="4" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="1.533,8,0,0" Foreground="White"/>
+            <Button x:Name="btnChangeOut_1" Content="Изменить" Grid.Row="1" Margin="10" Click="btnChangeOut_1_Click" Grid.Column="1"/>
+            <Button x:Name="btnChangeOut_2" Content="Изменить" Grid.Row="2" Margin="10" Click="btnChangeOut_2_Click" Grid.Column="1"/>
+            <Button x:Name="btnChangeOut_3" Content="Изменить" Grid.Row="3" Margin="10" Click="btnChangeOut_3_Click" Grid.Column="1"/>
+
+            <Border x:Name="brdrCurrentSate1" Grid.Column="2" Grid.Row="1" Margin="5,15" Background="LightGreen"/>
+            <Border x:Name="brdrCurrentSate2" Grid.Column="2" Grid.Row="2" Margin="5,15" Background="Gray"/>
+            <Border x:Name="brdrCurrentSate3" Grid.Column="2" Grid.Row="3" Margin="5,15" Background="Gray"/>
+
+            <Image x:Name="imgChangedState1" Grid.Column="3" Grid.Row="1" Margin="8,6" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/CarDetailsView/control_arrow-right.png"/>
+            <Image x:Name="imgChangedState2" Grid.Column="3" Grid.Row="2" Margin="8,6" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/CarDetailsView/control_arrow-right.png"/>
+            <Image x:Name="imgChangedState3" Grid.Column="3" Grid.Row="3" Margin="8,6" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/CarDetailsView/control_arrow-right.png"/>
+
+            <Border x:Name="brdrSetSate1" Grid.Column="4" Grid.Row="1" Margin="5,15" Background="Gray"/>
+            <Border x:Name="brdrSetSate2" Grid.Column="4" Grid.Row="2" Margin="5,15" Background="Gray"/>
+            <Border x:Name="brdrSetSate3" Grid.Column="4" Grid.Row="3" Margin="5,15" Background="Gray"/>
+
+            <TextBlock Text="Вых 1" Grid.Row="1" Foreground="White" Margin="8,14,4,14"/>
+            <TextBlock Text="Вых 2" Grid.Row="2" Foreground="White" Margin="8,14,4,14"/>
+            <TextBlock Text="Вых 3" Grid.Row="3" Foreground="White" Margin="8,14,4,14"/>
+            
+            <Button Grid.Column="5" Grid.Row="4" HorizontalAlignment="Right" Margin="8" Content="Сохранить изменения" Padding="5" x:Name="btnSaveDriving" Click="btnSaveDriving_Click"/>
         </Grid>
     </Grid>
 </UserControl>

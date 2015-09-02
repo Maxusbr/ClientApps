@@ -51,6 +51,7 @@
     <Compile Include="Car\CarStateModel.cs" />
     <Compile Include="Car\CarStateOBDModel.cs" />
     <Compile Include="Car\CarWithSettingDevice.cs" />
+    <Compile Include="Car\DeviceControlInfo.cs" />
     <Compile Include="Car\OBDHistoryDataModel.cs" />
     <Compile Include="Car\SCarData.cs" />
     <Compile Include="Car\SCarModel.cs" />
