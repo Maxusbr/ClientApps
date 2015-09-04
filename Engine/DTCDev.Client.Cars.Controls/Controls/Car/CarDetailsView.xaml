@@ -46,8 +46,23 @@
                             </Border>
                             <Ellipse Fill="Black" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="50" Margin="0,-21,0,0" Visibility="Collapsed"/>
                             <Ellipse Fill="Black" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="50" Margin="0,-18,0,-21" Visibility="Collapsed"/>
-                            <Path Data="M5.1666667,-0.88273054 C5.2496713,-0.79971467 5.5830237,4.8333333 9.4165766,4.8333333 11.916577,4.8333333 36.584787,4.8333333 39.418295,4.8333333 43.418524,4.8333333 43.861494,-0.98841159 43.861494,-0.98841159 z" Fill="Black" HorizontalAlignment="Stretch" Height="6.895" Margin="3,-0.479,2.875,0" Stretch="Fill" Stroke="{x:Null}" VerticalAlignment="Top" Width="Auto"/>
-                            <Path Data="M5.1666667,-0.88273054 C5.2496713,-0.79971467 5.5830237,4.8333333 9.4165766,4.8333333 11.916577,4.8333333 36.584787,4.8333333 39.418295,4.8333333 43.418524,4.8333333 43.751877,-0.88287126 43.751877,-0.88287126 z" Fill="Black" HorizontalAlignment="Stretch" Height="6.77" Stretch="Fill" Stroke="{x:Null}" VerticalAlignment="Bottom" Width="Auto" RenderTransformOrigin="0.5,0.5" Margin="3,0,3,-0.708">
+                            <Path Data="M5.1666667,-0.88273054 C5.2496713,-0.79971467 5.5830237,4.8333333 9.4165766,4.8333333 11.916577,4.8333333 36.584787,4.8333333 39.418295,4.8333333 43.418524,4.8333333 43.861494,-0.98841159 43.861494,-0.98841159 z" HorizontalAlignment="Stretch" Height="6.895" Margin="3,-0.479,2.875,0" Stretch="Fill" Stroke="{x:Null}" VerticalAlignment="Top" Width="Auto">
+                                <Path.Fill>
+                                    <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
+                                        <GradientStop Color="Black" Offset="0"/>
+                                        <GradientStop Color="Black" Offset="1"/>
+                                        <GradientStop Color="Gray" Offset="0.502"/>
+                                    </LinearGradientBrush>
+                                </Path.Fill>
+                            </Path>
+                            <Path Data="M5.1666667,-0.88273054 C5.2496713,-0.79971467 5.5830237,4.8333333 9.4165766,4.8333333 11.916577,4.8333333 36.584787,4.8333333 39.418295,4.8333333 43.418524,4.8333333 43.751877,-0.88287126 43.751877,-0.88287126 z" HorizontalAlignment="Stretch" Height="6.77" Stretch="Fill" Stroke="{x:Null}" VerticalAlignment="Bottom" Width="Auto" RenderTransformOrigin="0.5,0.5" Margin="3,0,3,-0.708">
+                                <Path.Fill>
+                                    <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
+                                        <GradientStop Color="Black" Offset="0"/>
+                                        <GradientStop Color="Black" Offset="1"/>
+                                        <GradientStop Color="Gray" Offset="0.502"/>
+                                    </LinearGradientBrush>
+                                </Path.Fill>
                                 <Path.RenderTransform>
                                     <TransformGroup>
                                         <ScaleTransform ScaleY="-1" ScaleX="1"/>
@@ -192,32 +207,6 @@
                 </Border>
             </Border>
         </Grid>
-        <Button x:Name="btnClose" Grid.Column="1" Height="16" Width="20" Margin="0,5,5,0" Click="btnClose_Click" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Right">
-            <Grid>
-                <Border Width="2" Height="10" BorderBrush="#FF00CCFF" Background="#FF00CCFF" RenderTransformOrigin="0.5,0.5">
-                    <Border.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform/>
-                            <SkewTransform/>
-                            <RotateTransform Angle="45"/>
-                            <TranslateTransform/>
-                        </TransformGroup>
-                    </Border.RenderTransform>
-
-                </Border>
-                <Border Width="2" Height="10" BorderBrush="#FF00CCFF" Background="#FF00CCFF" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" >
-                    <Border.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform/>
-                            <SkewTransform/>
-                            <RotateTransform Angle="-45"/>
-                            <TranslateTransform/>
-                        </TransformGroup>
-                    </Border.RenderTransform>
-
-                </Border>
-            </Grid>
-        </Button>
 
         <Grid Grid.Column="1" Background="White" x:Name="grdSettings" Visibility="Collapsed">
             <Grid Margin="10,5">
@@ -228,9 +217,9 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="20"/>
-                    <RowDefinition Height="28"/>
-                    <RowDefinition Height="28"/>
-                    <RowDefinition Height="28"/>
+                    <RowDefinition Height="36"/>
+                    <RowDefinition Height="36"/>
+                    <RowDefinition Height="36"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="1" Text="Название" Margin="6"/>
@@ -260,26 +249,51 @@
             </Grid.ColumnDefinitions>
             <TextBlock Text="Управление автомобилем" Grid.ColumnSpan="4" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="1.533,8,0,0" Foreground="White"/>
             <Button x:Name="btnChangeOut_1" Content="Изменить" Grid.Row="1" Margin="10" Click="btnChangeOut_1_Click" Grid.Column="1"/>
-            <Button x:Name="btnChangeOut_2" Content="Изменить" Grid.Row="2" Margin="10" Click="btnChangeOut_2_Click" Grid.Column="1"/>
-            <Button x:Name="btnChangeOut_3" Content="Изменить" Grid.Row="3" Margin="10" Click="btnChangeOut_3_Click" Grid.Column="1"/>
+            <Button x:Name="btnChangeOut_2" Content="Заглушить автомобиль" Grid.Row="1" Margin="10" Click="btnChangeOut_2_Click" Grid.Column="5" HorizontalAlignment="Right" Padding="5,0"/>
+            <TextBlock x:Name="txtSendLock" Visibility="Collapsed" Text="Будет отправлена команда заглушить" Grid.Row="2" Grid.Column="5" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="8"/>
+            <Button x:Name="btnChangeOut_3" Content="Изменить" Grid.Row="2" Margin="10" Click="btnChangeOut_3_Click" Grid.Column="1"/>
 
             <Border x:Name="brdrCurrentSate1" Grid.Column="2" Grid.Row="1" Margin="5,15" Background="LightGreen"/>
-            <Border x:Name="brdrCurrentSate2" Grid.Column="2" Grid.Row="2" Margin="5,15" Background="Gray"/>
-            <Border x:Name="brdrCurrentSate3" Grid.Column="2" Grid.Row="3" Margin="5,15" Background="Gray"/>
+            <Border x:Name="brdrCurrentSate3" Grid.Column="2" Grid.Row="2" Margin="5,15" Background="Gray"/>
 
             <Image x:Name="imgChangedState1" Grid.Column="3" Grid.Row="1" Margin="8,6" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/CarDetailsView/control_arrow-right.png"/>
-            <Image x:Name="imgChangedState2" Grid.Column="3" Grid.Row="2" Margin="8,6" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/CarDetailsView/control_arrow-right.png"/>
-            <Image x:Name="imgChangedState3" Grid.Column="3" Grid.Row="3" Margin="8,6" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/CarDetailsView/control_arrow-right.png"/>
+            <Image x:Name="imgChangedState3" Grid.Column="3" Grid.Row="2" Margin="8,6" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/CarDetailsView/control_arrow-right.png"/>
 
             <Border x:Name="brdrSetSate1" Grid.Column="4" Grid.Row="1" Margin="5,15" Background="Gray"/>
-            <Border x:Name="brdrSetSate2" Grid.Column="4" Grid.Row="2" Margin="5,15" Background="Gray"/>
-            <Border x:Name="brdrSetSate3" Grid.Column="4" Grid.Row="3" Margin="5,15" Background="Gray"/>
+            <Border x:Name="brdrSetSate3" Grid.Column="4" Grid.Row="2" Margin="5,15" Background="Gray"/>
 
             <TextBlock Text="Вых 1" Grid.Row="1" Foreground="White" Margin="8,14,4,14"/>
-            <TextBlock Text="Вых 2" Grid.Row="2" Foreground="White" Margin="8,14,4,14"/>
-            <TextBlock Text="Вых 3" Grid.Row="3" Foreground="White" Margin="8,14,4,14"/>
-            
+            <TextBlock Text="Вых 2" Grid.Row="2" Foreground="White" Margin="8,14,4,14" Visibility="Collapsed"/>
+            <TextBlock Text="Вых 3" Grid.Row="2" Foreground="White" Margin="8,14,4,14"/>
+
             <Button Grid.Column="5" Grid.Row="4" HorizontalAlignment="Right" Margin="8" Content="Сохранить изменения" Padding="5" x:Name="btnSaveDriving" Click="btnSaveDriving_Click"/>
         </Grid>
+
+        <Button x:Name="btnClose" Grid.Column="1" Height="16" Width="20" Margin="0,5,5,0" Click="btnClose_Click" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Right">
+            <Grid>
+                <Border Width="2" Height="10" BorderBrush="#FF00CCFF" Background="#FF00CCFF" RenderTransformOrigin="0.5,0.5">
+                    <Border.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="45"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Border.RenderTransform>
+
+                </Border>
+                <Border Width="2" Height="10" BorderBrush="#FF00CCFF" Background="#FF00CCFF" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" >
+                    <Border.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="-45"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Border.RenderTransform>
+
+                </Border>
+            </Grid>
+        </Button>
     </Grid>
 </UserControl>

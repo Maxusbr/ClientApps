@@ -89,6 +89,9 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
         }
 
 
+        private List<SensorFullModel> _sensors = new List<SensorFullModel>();
+
+
 
         public void SetInterval(double interval)
         {
@@ -151,6 +154,14 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
                 case 'H':
                     FillControlState(row);
                     break;
+                case 'j':
+                case 'J':
+                    FillSensors(row);
+                    break;
+                case 'k':
+                case 'K':
+                    FillSensorConnections(row);
+                    break;
             }
         }
 
@@ -166,6 +177,8 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
                                    FillCars(temp);
                                }));
                 }
+                try { TCPConnection.Instance.SendData("BJ"); }
+                catch { }
             }
             catch (Exception ex)
             {
@@ -359,6 +372,43 @@ namespace DTCDev.Client.Cars.Engine.Handlers.Cars
                             car.Outs.Out3 = true;
                         else
                             car.Outs.Out3 = false;
+                    }
+                }
+            }
+            catch { }
+        }
+
+        private void FillSensors(string row)
+        {
+            try
+            {
+                _sensors = JsonConvert.DeserializeObject<List<SensorFullModel>>(row);
+                TCPConnection.Instance.SendData("BK");
+            }
+            catch { }
+        }
+
+        private void FillSensorConnections(string row)
+        {
+            try
+            {
+                List<SensorConnectionInfo> data = JsonConvert.DeserializeObject<List<SensorConnectionInfo>>(row);
+                foreach (var item in data)
+                {
+                    DISP_Car car = _cars.Where(p => p.ID == item.DID).FirstOrDefault();
+                    if(car!=null)
+                    {
+                        foreach (var sns in item.Connections)
+                        {
+                            SensorFullModel sfm = _sensors.Where(p => p.id == sns.idSensor).FirstOrDefault();
+                            if(sfm!=null)
+                            {
+                                if(car.ConnectedSensors.ContainsKey(sns.Port)==false)
+                                {
+                                    car.ConnectedSensors.Add(sns.Port, sfm);
+                                }
+                            }
+                        }
                     }
                 }
             }

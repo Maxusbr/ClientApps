@@ -138,7 +138,7 @@ namespace DTCDev.Client.Sensors.Analog.Min
             if (_displayMode == SensorsTypeEnum.SensorsMode.HIST)
             {
                 DisplayWidth = 50;
-                decimal vol = Model.State.Vol / 1000.0m;
+                decimal vol = Model.State.Vol;
                 string sv = vol.ToString();
                 if (sv.Length > 5)
                     sv = sv.Substring(0, 5);
@@ -146,7 +146,7 @@ namespace DTCDev.Client.Sensors.Analog.Min
             }
             else
             {
-                decimal vol = Model.State.Vol / 1000.0m;
+                decimal vol = Model.State.Vol;
                 string sv = vol.ToString();
                 if (sv.Length > 3)
                     sv = sv.Substring(0, 3);

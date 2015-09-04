@@ -39,13 +39,17 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
 
         public void UpdateCarData(DISP_Car carData)
         {
-            if (_currentCar != null)
-                _currentCar.PropertyChanged -= _currentCar_PropertyChanged;
-            _currentCar = carData;
-            _currentCar.PropertyChanged += _currentCar_PropertyChanged;
-            UpdateData();
-            _vm.CAR = carData;
-            SetOutStates();
+            try
+            {
+                if (_currentCar != null)
+                    _currentCar.PropertyChanged -= _currentCar_PropertyChanged;
+                _currentCar = carData;
+                _currentCar.PropertyChanged += _currentCar_PropertyChanged;
+                UpdateData();
+                _vm.CAR = carData;
+                SetOutStates();
+            }
+            catch { }
         }
 
         void _currentCar_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -113,22 +117,20 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
             else
             {
                 imgChangedState1.Visibility = Visibility.Collapsed;
-                imgChangedState2.Visibility = Visibility.Collapsed;
                 imgChangedState3.Visibility = Visibility.Collapsed;
 
                 brdrSetSate1.Visibility = Visibility.Collapsed;
-                brdrSetSate2.Visibility = Visibility.Collapsed;
                 brdrSetSate3.Visibility = Visibility.Collapsed;
 
                 if (_currentCar.Outs.Out1)
                     brdrCurrentSate1.Background = new SolidColorBrush(Colors.LightGreen);
                 else
                     brdrCurrentSate1.Background = new SolidColorBrush(Colors.Gray);
-                
+
                 if (_currentCar.Outs.Out2)
-                    brdrCurrentSate2.Background = new SolidColorBrush(Colors.LightGreen);
+                    btnChangeOut_2.Content = "Разрешить запуск";
                 else
-                    brdrCurrentSate2.Background = new SolidColorBrush(Colors.Gray);
+                    btnChangeOut_2.Content = "Заглушить автомобиль";
                 
                 if (_currentCar.Outs.Out3)
                     brdrCurrentSate3.Background = new SolidColorBrush(Colors.LightGreen);
@@ -144,6 +146,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
 
         void outBorder_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+
             var outBorder = sender as Border;
             if(outBorder == null) return;
             var value = 0;
@@ -151,11 +154,14 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
             var converter = new PIDConverter();
             var maxVal = converter.GetMaxVol(outBorder.Uid);
             var minVal = converter.GetMinVol(outBorder.Uid);
+            double curWidth = value * outBorder.ActualWidth / (maxVal - minVal);
+            if (curWidth < 0)
+                curWidth = 0;
             var inBorder = new Border
             {
                 MinWidth = 20, Height = 6, 
                 HorizontalAlignment = HorizontalAlignment.Left,
-                Width = value * outBorder.ActualWidth / (maxVal - minVal),
+                Width = curWidth,
                 BorderThickness = new Thickness(1),
                 Background = new SolidColorBrush(Colors.White)
             };
@@ -218,17 +224,15 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
             _currentCar.Outs.Out2 = !_currentCar.Outs.Out2;
             if (_currentCar.Outs.Out2 == _currentOutsState.Out2)
             {
-                imgChangedState2.Visibility = Visibility.Collapsed;
-                brdrSetSate2.Visibility = Visibility.Collapsed;
+                txtSendLock.Visibility = Visibility.Collapsed;
             }
             else
             {
-                imgChangedState2.Visibility = Visibility.Visible;
-                brdrSetSate2.Visibility = Visibility.Visible;
+                txtSendLock.Visibility = Visibility.Visible;
                 if (_currentCar.Outs.Out2)
-                    brdrSetSate2.Background = new SolidColorBrush(Colors.LightGreen);
+                    txtSendLock.Text = "Будет отправлена команда заглушить";
                 else
-                    brdrSetSate2.Background = new SolidColorBrush(Colors.Gray);
+                    txtSendLock.Text = "Будет отправлена команда разрешить запуск";
             }
             CheckButton();
         }
@@ -255,8 +259,30 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
 
         private void btnSaveDriving_Click(object sender, RoutedEventArgs e)
         {
-            CarsHandler.Instance.SaveOutState(_currentCar);
-            SetOutStates();
+            try
+            {
+                if (_currentCar == null)
+                    return;
+                if ((DateTime.Now - _currentCar.Navigation.DateLastUpdate).Seconds > 60)
+                {
+                    MessageBox.Show("Автомобиль не на связи. Команда не будет отправлена");
+                    return;
+                }
+                else if (_currentCar.Navigation.Current_Speed > 5)
+                {
+                    MessageBox.Show("Автомобиль находится в движении. Глушение автомобиля невозможно");
+                    return;
+                }
+                else
+                {
+                    CarsHandler.Instance.SaveOutState(_currentCar);
+                    SetOutStates();
+                }
+            }
+            catch
+            {
+                MessageBox.Show("При выполнении запроса произошла ошибка. Попробуйте повторить позднее");
+            }
         }
 
         private void CheckButton()

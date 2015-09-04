@@ -78,8 +78,8 @@
             <Image x:Name="imgSpeedErr" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/speedor.png" />
             <TextBlock x:Name="txtSpeed" Text="0" VerticalAlignment="Bottom" HorizontalAlignment="Center" />
         </Grid>
-        <Grid Grid.Column="4" x:Name="grdOBDStatus" Margin="4">
-            <Grid.Triggers>
+        <Grid Grid.Column="4" x:Name="grdOBDStatus" Margin="4" Cursor="Hand" MouseLeftButtonUp="grdOBDStatus_MouseLeftButtonUp">
+            <!--<Grid.Triggers>
                 <EventTrigger RoutedEvent="Mouse.MouseEnter">
                     <BeginStoryboard>
                         <Storyboard >
@@ -94,7 +94,7 @@
                         </Storyboard>
                     </BeginStoryboard>
                 </EventTrigger>
-            </Grid.Triggers>
+            </Grid.Triggers>-->
             <Border x:Name="brdrOBDStatus" Background="Blue" CornerRadius="2"/>
             <TextBlock Text="OBD II" Foreground="White" Margin="8,4" FontWeight="Bold"/>
         </Grid>
@@ -144,5 +144,7 @@
                 <StackPanel x:Name="stkOBDParams"/>
             </ScrollViewer>
         </Grid>
+        
+        <StackPanel x:Name="stkSensors" Grid.Column="10"/>
     </Grid>
 </UserControl>

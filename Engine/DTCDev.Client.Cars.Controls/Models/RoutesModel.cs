@@ -84,7 +84,7 @@ namespace DTCDev.Client.Cars.Controls.Models
             Points = new LocationCollection();
         }
 
-        public LocationCollection Points { get; } 
+        public LocationCollection Points { get; set; } 
 
         public RouteSelect TypeRoute { get; set; }
         public DateTime StartDate { get; set; }

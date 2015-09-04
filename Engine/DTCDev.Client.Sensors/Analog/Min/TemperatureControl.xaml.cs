@@ -44,5 +44,10 @@ namespace DTCDev.Client.Sensors.Analog.Min
         public decimal Scale { get; set; }
 
         public decimal Offset { get; set; }
+
+        public void SetData(int vol)
+        {
+            
+        }
     }
 }

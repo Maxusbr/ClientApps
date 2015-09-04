@@ -133,6 +133,14 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
             set { _outs = value; }
         }
 
+        private Dictionary<int, SensorFullModel> _connectedSensors = new Dictionary<int, SensorFullModel>();
+
+        public Dictionary<int, SensorFullModel> ConnectedSensors
+        {
+            get { return _connectedSensors; }
+            set { _connectedSensors = value; }
+        }
+
         bool _isChanged = false;
         public bool IsChanged
         {

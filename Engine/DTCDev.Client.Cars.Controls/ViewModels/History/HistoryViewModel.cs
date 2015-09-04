@@ -883,15 +883,19 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             get { return _isCheckedSpeed; }
             set
             {
-                if (_isCheckedSpeed == value) return;
-                _isCheckedSpeed = value;
-                if (!value) return;
-                _maxValue = DayStates != null ? Math.Max(DayStates.Max(o => o.Spd) / 10.0m, 150) : 150;
-                _minValue = 0;
-                _leftValue = 90;
-                _rightValue = 120;
-                OnPropertyChanged("IsCheckedSpeed");
-                UpdateRouteSpeed();
+                try
+                {
+                    if (_isCheckedSpeed == value) return;
+                    _isCheckedSpeed = value;
+                    if (!value) return;
+                    _maxValue = DayStates != null ? Math.Max(DayStates.Max(o => o.Spd) / 10.0m, 150) : 150;
+                    _minValue = 0;
+                    _leftValue = 90;
+                    _rightValue = 120;
+                    OnPropertyChanged("IsCheckedSpeed");
+                    UpdateRouteSpeed();
+                }
+                catch { }
             }
         }
 

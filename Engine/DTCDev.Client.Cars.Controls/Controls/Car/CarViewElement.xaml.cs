@@ -18,6 +18,7 @@ using DTCDev.Client.Sensors;
 using DTCDev.Models.CarsSending.Car;
 using DTCDev.Client.Sensors.OBD;
 using DTCDev.Client.Cars.Engine.AppLogic;
+using DTCDev.Models.DeviceSender.DISP;
 
 namespace DTCDev.Client.Cars.Controls.Controls.Car
 {
@@ -76,16 +77,42 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
             }
         }
 
+        List<DevicePresenter.Sensor> _sensorsData = new List<DevicePresenter.Sensor>();
+
         private void DisplaySensors(DISP_Car car)
         {
-            //stkSensors.Children.Clear();
-            //SensorLocator locator = new SensorLocator();
-            //foreach (var item in car.Device.Sensors)
-            //{
-            //    UserControl control = locator.GetSensor(SensorsTypeEnum.SensorsMode.MIN, item);
-            //    if (control != null)
-            //        stkSensors.Children.Add(control);
-            //}
+            if(car!=null)
+                if(car.ConnectedSensors!=null)
+                    if(car.ConnectedSensors.Count()>0)
+                    {
+                        stkSensors.Children.Clear();
+                        _sensorsData.Clear();
+                        foreach (var item in car.ConnectedSensors)
+                        {
+                            SensorLocator sl = new SensorLocator();
+                            DevicePresenter.Sensor sensor = new DevicePresenter.Sensor();
+                            sensor.Model = new DTCDev.Models.DeviceSender.DeviceSensorsModel
+                            {
+                                id = item.Value.id,
+                                IsAnalog = item.Value.isNumeric,
+                                IsInput = 1,
+                                NormalMax = Convert.ToInt32(item.Value.Max.Split('.')[0]),
+                                NormalMin = Convert.ToInt32(item.Value.Min.Split('.')[0]),
+                                Name = item.Value.Name,
+                                Max = Convert.ToInt32(item.Value.Max.Split('.')[0]) * 5,
+                                Min = Convert.ToInt32(item.Value.Min.Split('.')[0]) * 5,
+                                Port = item.Key,
+                                PrType = item.Value.PresentModel
+                            };
+                            sensor.State = new DTCDev.Models.DeviceSender.SensorState();
+                            if (car.Data.Sensors != null)
+                                if (car.Data.Sensors.Count() > item.Key)
+                                    sensor.State.Vol = car.Data.Sensors[item.Key] + Convert.ToInt32(item.Value.StartValue.Split('.')[0]);
+
+                            UserControl control = sl.GetSensor(SensorsTypeEnum.SensorsMode.MIN, sensor);
+                            stkSensors.Children.Add(control);
+                        }
+                    }
         }
 
         private void DisplayState(DISP_Car car)
@@ -334,6 +361,21 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
         private void image1_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             CarSelector.ViewCarDetailsCar = this.CarExemplar;
+        }
+
+        bool _displayedOBD = false;
+
+        private void grdOBDStatus_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (_displayedOBD)
+            {
+                grdObdPresenter.Height = 0;
+            }
+            else
+            {
+                grdObdPresenter.Height = 150;
+            }
+            _displayedOBD = !_displayedOBD;
         }
 
 

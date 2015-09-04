@@ -173,42 +173,6 @@ namespace M2B_Cars
             }
         }
 
-        private void Image_MouseLeftButtonUp_1(object sender, MouseButtonEventArgs e)
-        {
-            var set = sender as SettingsModel;
-            ccContent.Content = new ReportsList();
-            ContentGrid.Visibility = Visibility.Visible;
-            //ShowWindow(700, 400, reports, "Отчеты", false, "", set);
-        }
-
-        //private void Image_MouseLeftButtonUp_2(object sender, MouseButtonEventArgs e)
-        //{
-        //    var set = sender as SettingsModel;
-        //    HistoryControl history = new HistoryControl();
-        //    if (set != null)
-        //    {
-        //        var hvm = history.DataContext as DTCDev.Client.Cars.Controls.ViewModels.History.HistoryViewModel;
-        //        if (hvm != null)
-        //        {
-        //            hvm.SetDates(DateTime.Today, DateTime.Today + new TimeSpan(1, 0, 0, 0));
-        //        }
-        //    }
-        //}
-
-        private void Image_MouseLeftButtonUp_3(object sender, MouseButtonEventArgs e)
-        {
-            var set = sender as SettingsModel;
-            ccContent.Content = new DriversControl();
-            ContentGrid.Visibility = Visibility.Visible;
-        }
-
-        private void Image_MouseLeftButtonUp_4(object sender, MouseButtonEventArgs e)
-        {
-            var set = sender as SettingsModel;
-            ccContent.Content = new SettingsBase();
-            ContentGrid.Visibility = Visibility.Visible;
-        }
-
 
 
         private void threadDisconnect()
@@ -233,9 +197,30 @@ namespace M2B_Cars
             ccContent.Content = null;
         }
 
-        private void Image_MouseLeftButtonUp_5(object sender, MouseButtonEventArgs e)
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            MapView.Visibility = MapView.Visibility == Visibility.Visible ?  Visibility.Collapsed: Visibility.Visible;
+            var set = sender as SettingsModel;
+            ccContent.Content = new ReportsList();
+            ContentGrid.Visibility = Visibility.Visible;
+        }
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            var set = sender as SettingsModel;
+            ccContent.Content = new DriversControl();
+            ContentGrid.Visibility = Visibility.Visible;
+        }
+
+        private void MenuItem_Click_2(object sender, RoutedEventArgs e)
+        {
+            var set = sender as SettingsModel;
+            ccContent.Content = new SettingsBase();
+            ContentGrid.Visibility = Visibility.Visible;
+        }
+
+        private void MenuItem_Click_3(object sender, RoutedEventArgs e)
+        {
+            MapView.Visibility = MapView.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
             HistoryControl.Visibility = HistoryControl.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
             HistoryControl.HistoryButton_Click();
         }

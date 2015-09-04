@@ -52,6 +52,7 @@
     <Compile Include="DISP\HistoryPresenter.cs" />
     <Compile Include="IntSetModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SensorConnectionInfo.cs" />
     <Compile Include="SensorConnectionModel.cs" />
     <Compile Include="SensorFullModel.cs" />
     <Compile Include="SensorMessage.cs" />
