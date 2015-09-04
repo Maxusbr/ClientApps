@@ -72,7 +72,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
             {
                 DisplayState((DISP_Car)sender);
                 DisplayOBD((DISP_Car)sender);
-                //DisplayAccelerometer((DISP_Car)sender);
+                DisplayAccelerometer((DISP_Car)sender);
                 DisplaySensors((DISP_Car)sender);
             }
         }
@@ -263,7 +263,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
                 if (errorfinded)
                     brdrOBDStatus.Background = new SolidColorBrush(Colors.Orange);
                 else
-                    brdrOBDStatus.Background = new SolidColorBrush(Colors.Blue);
+                    brdrOBDStatus.Background = new SolidColorBrush(Colors.White);
             }
             //stkOBDSensors.Children.Clear();
             //stkOBDSensors.Children.Add(new TextBlock { Text = "OBD", Margin = new Thickness(0, 5, 6, 5) });
@@ -287,71 +287,98 @@ namespace DTCDev.Client.Cars.Controls.Controls.Car
                 && car.Data.AcsYMax == 0 && car.Data.AcsZ == 0
                 && car.Data.AcsZMax == 0)
             {
-                grdAccelerometer.Width = 0;
             }
             else
             {
-                grdAccelerometer.Width = 32;
-                brdrCentNotConnect.Visibility = Visibility.Collapsed;
-                brdrMaxNotConnect.Visibility = Visibility.Collapsed;
+                double x = car.Data.AcsX - car.Data.AcsXMax;
+                double y = car.Data.AcsY - car.Data.AcsYMax;
+                double z = car.Data.AcsZ - car.Data.AcsZMax;
 
-                if (car.Data.AcsX > 50 && car.Data.AcsY > 50 && car.Data.AcsZ > 50)
-                    brdrCentBad.Visibility = Visibility.Visible;
+                x = Math.Abs(x);
+                y = Math.Abs(y);
+                z = Math.Abs(z);
+
+                x = (100 - x) / 100.0d * 0.3d;
+                y = (100 - y) / 100.0d * 0.5d;
+                z = (100 - z) / 100.0d * 0.2d;
+
+                //x = Math.Abs(x);
+                //y = Math.Abs(y);
+                //z = Math.Abs(z);
+
+                double ak = (x + y + z) * 0.7;
+                double spk = 0;
+                if (car.Data.Navigation.Speed < 30)
+                    spk = 0.3d;
                 else
-                    brdrCentBad.Visibility = Visibility.Collapsed;
+                    spk = 30 / car.Data.Navigation.Speed;
+                if (car.Data.Navigation.Speed > 110)
+                    ak = ak * 110 / car.Data.Navigation.Speed;
 
-                if (car.Data.AcsXMax > 50 && car.Data.AcsYMax > 50 && car.Data.AcsZMax > 50)
-                    brdrMaxBad.Visibility = Visibility.Visible;
-                else
-                    brdrMaxBad.Visibility = Visibility.Collapsed;
+                int scorr = (int)((ak + spk) * 100);
 
-                int maxCent = 0;
-                int maxMax = 0;
+                txtScorr.Text = scorr.ToString();
 
-                if (maxCent < car.Data.AcsX)
-                    maxCent = car.Data.AcsX;
-                if (maxCent < car.Data.AcsY)
-                    maxCent = car.Data.AcsY;
-                if (maxCent < car.Data.AcsZ)
-                    maxCent = car.Data.AcsZ;
+                //brdrCentNotConnect.Visibility = Visibility.Collapsed;
+                //brdrMaxNotConnect.Visibility = Visibility.Collapsed;
 
-                if (maxMax < car.Data.AcsXMax)
-                    maxMax = car.Data.AcsXMax;
-                if (maxMax < car.Data.AcsYMax)
-                    maxMax = car.Data.AcsYMax;
-                if (maxMax < car.Data.AcsZMax)
-                    maxMax = car.Data.AcsZMax;
+                //if (car.Data.AcsX > 50 && car.Data.AcsY > 50 && car.Data.AcsZ > 50)
+                //    brdrCentBad.Visibility = Visibility.Visible;
+                //else
+                //    brdrCentBad.Visibility = Visibility.Collapsed;
 
-                maxCent = maxCent / 2;
-                maxMax = maxMax / 2;
-                if (maxCent < 3)
-                    maxCent = 3;
+                //if (car.Data.AcsXMax > 50 && car.Data.AcsYMax > 50 && car.Data.AcsZMax > 50)
+                //    brdrMaxBad.Visibility = Visibility.Visible;
+                //else
+                //    brdrMaxBad.Visibility = Visibility.Collapsed;
 
-                if (maxMax < 3)
-                    maxMax = 3;
+                //int maxCent = 0;
+                //int maxMax = 0;
 
-                if (maxCent > 32)
-                    maxCent = 32;
-                if (maxMax > 32)
-                    maxMax = 32;
-                grdGoodCent.Height = maxCent;
-                grdGood.Height = maxMax;
+                //if (maxCent < car.Data.AcsX)
+                //    maxCent = car.Data.AcsX;
+                //if (maxCent < car.Data.AcsY)
+                //    maxCent = car.Data.AcsY;
+                //if (maxCent < car.Data.AcsZ)
+                //    maxCent = car.Data.AcsZ;
 
-                StackPanel sp = new StackPanel();
-                sp.Background = new SolidColorBrush(Colors.Gray);
-                grdAccelerometer.ToolTip = sp;
-                TextBlock txt = new TextBlock { Text = "Ускорение Х = " + car.Data.AcsX.ToString(), Margin = new Thickness(5) };
-                sp.Children.Add(txt);
-                TextBlock txt1 = new TextBlock { Text = "Ускорение Y = " + car.Data.AcsY.ToString(), Margin = new Thickness(5) };
-                sp.Children.Add(txt1);
-                TextBlock txt2 = new TextBlock { Text = "Ускорение Z = " + car.Data.AcsZ.ToString(), Margin = new Thickness(5) };
-                sp.Children.Add(txt2);
-                TextBlock txt3 = new TextBlock { Text = "Максимальное ускорение Х = " + car.Data.AcsXMax.ToString(), Margin = new Thickness(5) };
-                sp.Children.Add(txt3);
-                TextBlock txt4 = new TextBlock { Text = "Максимальное ускорение Y = " + car.Data.AcsXMax.ToString(), Margin = new Thickness(5) };
-                sp.Children.Add(txt4);
-                TextBlock txt5 = new TextBlock { Text = "Максимальное ускорение Z = " + car.Data.AcsXMax.ToString(), Margin = new Thickness(5) };
-                sp.Children.Add(txt5);
+                //if (maxMax < car.Data.AcsXMax)
+                //    maxMax = car.Data.AcsXMax;
+                //if (maxMax < car.Data.AcsYMax)
+                //    maxMax = car.Data.AcsYMax;
+                //if (maxMax < car.Data.AcsZMax)
+                //    maxMax = car.Data.AcsZMax;
+
+                //maxCent = maxCent / 2;
+                //maxMax = maxMax / 2;
+                //if (maxCent < 3)
+                //    maxCent = 3;
+
+                //if (maxMax < 3)
+                //    maxMax = 3;
+
+                //if (maxCent > 32)
+                //    maxCent = 32;
+                //if (maxMax > 32)
+                //    maxMax = 32;
+                //grdGoodCent.Height = maxCent;
+                //grdGood.Height = maxMax;
+
+                //StackPanel sp = new StackPanel();
+                //sp.Background = new SolidColorBrush(Colors.Gray);
+                //grdAccelerometer.ToolTip = sp;
+                //TextBlock txt = new TextBlock { Text = "Ускорение Х = " + car.Data.AcsX.ToString(), Margin = new Thickness(5) };
+                //sp.Children.Add(txt);
+                //TextBlock txt1 = new TextBlock { Text = "Ускорение Y = " + car.Data.AcsY.ToString(), Margin = new Thickness(5) };
+                //sp.Children.Add(txt1);
+                //TextBlock txt2 = new TextBlock { Text = "Ускорение Z = " + car.Data.AcsZ.ToString(), Margin = new Thickness(5) };
+                //sp.Children.Add(txt2);
+                //TextBlock txt3 = new TextBlock { Text = "Максимальное ускорение Х = " + car.Data.AcsXMax.ToString(), Margin = new Thickness(5) };
+                //sp.Children.Add(txt3);
+                //TextBlock txt4 = new TextBlock { Text = "Максимальное ускорение Y = " + car.Data.AcsXMax.ToString(), Margin = new Thickness(5) };
+                //sp.Children.Add(txt4);
+                //TextBlock txt5 = new TextBlock { Text = "Максимальное ускорение Z = " + car.Data.AcsXMax.ToString(), Margin = new Thickness(5) };
+                //sp.Children.Add(txt5);
             }
         }
 

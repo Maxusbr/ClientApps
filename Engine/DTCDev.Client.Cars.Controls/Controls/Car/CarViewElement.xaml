@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:Models="clr-namespace:DTCDev.Client.Cars.Controls.Models" x:Class="DTCDev.Client.Cars.Controls.Controls.Car.CarViewElement"
              mc:Ignorable="d" 
-             Height="Auto" d:DesignWidth="500" x:Name="control" Foreground="Black">
+             Height="Auto" d:DesignWidth="500" MinWidth="350" x:Name="control" Foreground="Black">
     <UserControl.Resources>
         <Models:InvertBoolToVisibilityConverter x:Key="InvertBoolToVisibilityConverter"/>
         <Storyboard x:Key="stbShowDetails">
@@ -36,7 +36,7 @@
             <ColumnDefinition Width="30"/>
             <ColumnDefinition Width="30"/>
             <ColumnDefinition Width="60"/>
-            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="37"/>
             <ColumnDefinition Width="30"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
@@ -45,10 +45,10 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Border Grid.ColumnSpan="7" Background="White" Opacity="0.5"/>
+        <Border Grid.ColumnSpan="10" Background="White" Opacity="0.5"/>
         <Image x:Name="image1" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/more.png" Opacity="0" Height="28" Width="28" MouseLeftButtonUp="image1_MouseLeftButtonUp"/>
-        <TextBlock FontSize="14" FontWeight="Bold" Text="{Binding CarExemplar.Car.CarNumber, ElementName=control}" Margin="4,7" Grid.Column="1"/>
-        <Grid x:Name="grdStatus" Grid.Column="2">
+        <TextBlock FontSize="14" FontWeight="Bold" Width="120" Text="{Binding CarExemplar.Car.CarNumber, ElementName=control}" Margin="4,7" Grid.Column="1"/>
+        <Grid x:Name="grdStatus" Grid.Column="2" Width="30">
             <Grid.Triggers>
                 <EventTrigger RoutedEvent="Mouse.MouseEnter">
                     <BeginStoryboard>
@@ -70,8 +70,8 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Border Background="White" Opacity="0" Grid.ColumnSpan="2"/>
-            <Border x:Name="brdrSat" Background="Blue" Margin="6,2,2,2"/>
-            <Border x:Name="brdrConnection" Grid.Column="1" Background="Blue" Margin="2,2,6,2"/>
+            <Border x:Name="brdrSat" Background="Blue" Margin="6,10,2,10"/>
+            <Border x:Name="brdrConnection" Grid.Column="1" Background="Blue" Margin="2,10,6,10"/>
         </Grid>
         <Grid x:Name="grdSpeed" Grid.Column="3">
             <Image x:Name="imgSpeedOk" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/speed.png"/>
@@ -95,12 +95,14 @@
                     </BeginStoryboard>
                 </EventTrigger>
             </Grid.Triggers>-->
-            <Border x:Name="brdrOBDStatus" Background="Blue" CornerRadius="2"/>
-            <TextBlock Text="OBD II" Foreground="White" Margin="8,4" FontWeight="Bold"/>
+            <Border x:Name="brdrOBDStatus" BorderBrush="Blue" BorderThickness="1"/>
+            <TextBlock Text="OBD II"  Margin="8,4" FontWeight="Bold"/>
         </Grid>
 
-        <Grid x:Name="grdAccelerometer" Grid.Column="5">
-            <Image Width="22" Height="22" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/sensors-applet.png"/>
+        <Grid x:Name="grdAccelerometer" Grid.Column="5" ToolTip="Скорринг-балл">
+            <Border Background="White" Opacity="0"/>
+            <TextBlock x:Name="txtScorr" Text="100" Margin="4" FontSize="16" TextAlignment="Center" FontWeight="Bold"/>
+            <!--<Image Width="22" Height="22" Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/sensors-applet.png"/>
             <Grid HorizontalAlignment="Left" Width="3" VerticalAlignment="Bottom" Height="15" x:Name="grdGood">
                 <Border x:Name="brdrMaxGood" Background="Green"/>
                 <Border x:Name="brdrMaxBad" Background="Red"/>
@@ -110,7 +112,7 @@
                 <Border x:Name="brdrCentGood" Background="Green"/>
                 <Border x:Name="brdrCentBad" Background="Red"/>
                 <Border x:Name="brdrCentNotConnect" Background="Gray"/>
-            </Grid>
+            </Grid>-->
         </Grid>
         <Grid Width="32" Grid.Column="6" x:Name="grdFuel" Visibility="Collapsed">
             <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/gas_station.png" Width="14" Height="14" VerticalAlignment="Top" Margin="3"/>
