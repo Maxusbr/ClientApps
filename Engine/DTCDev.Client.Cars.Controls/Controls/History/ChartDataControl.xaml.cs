@@ -234,10 +234,11 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
 
         private void Prescale(double max)
         {
-            var pre = max / 3;
+            var pre = max / 4;
             txt0.Text = pre < 1 ? pre.ToString("F2") : ((int)pre).ToString();
             txt1.Text = pre < 1 ? (pre * 2).ToString("F2") : ((int)pre * 2).ToString();
-            txt2.Text = pre < 1 ? max.ToString("F2") : ((int)Math.Ceiling(max)).ToString();
+            txt2.Text = pre < 1 ? (pre * 3).ToString("F2") : ((int)pre * 3).ToString();
+            txt3.Text = pre < 1 ? max.ToString("F2") : ((int)Math.Ceiling(max)).ToString();
         }
 
         private void ClearEvent()

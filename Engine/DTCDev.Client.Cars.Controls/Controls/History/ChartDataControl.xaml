@@ -14,17 +14,21 @@
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
+                    <RowDefinition/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
+                <StackPanel x:Name="stkData" Orientation="Horizontal" Grid.RowSpan="4" Background="#00000000"/>
+                <StackPanel x:Name="stkTicks" Orientation="Horizontal" Grid.Row="4" Height="12"/>
                 <Border VerticalAlignment="Top" Height="1" Background="#7F808080"/>
                 <Border VerticalAlignment="Bottom" Height="1" Background="#7F808080"/>
                 <Border VerticalAlignment="Bottom" Height="1" Background="#7F808080" Grid.Row="1"/>
                 <Border VerticalAlignment="Bottom" Height="1" Background="#7F808080" Grid.Row="2"/>
-                <TextBlock x:Name="txt2" Text="50" FontSize="7" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,0,0,2"/>
-                <TextBlock x:Name="txt1" Text="50" FontSize="7" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,0,0,2" Grid.Row="1"/>
-                <TextBlock x:Name="txt0" Text="50" FontSize="7" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,0,0,2" Grid.Row="2"/>
-                <StackPanel x:Name="stkData" Orientation="Horizontal" Grid.RowSpan="3" Background="#00000000"/>
-                <StackPanel x:Name="stkTicks" Orientation="Horizontal" Grid.Row="3" Height="12"/>
+                <Border VerticalAlignment="Bottom" Height="1" Background="#7F808080" Grid.Row="3"/>
+                <TextBlock x:Name="txt3" Text="50" FontSize="7" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,0,0,2"/>
+                <TextBlock x:Name="txt2" Text="50" FontSize="7" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,0,0,2" Grid.Row="1"/>
+                <TextBlock x:Name="txt1" Text="50" FontSize="7" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,0,0,2" Grid.Row="2"/>
+                <TextBlock x:Name="txt0" Text="50" FontSize="7" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,0,0,2" Grid.Row="3"/>
+
 
             </Grid>
 

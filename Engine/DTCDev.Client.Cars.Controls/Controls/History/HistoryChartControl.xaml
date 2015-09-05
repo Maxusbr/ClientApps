@@ -373,8 +373,12 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>                
             </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,4,10,10">
+                <Button x:Name="btnLeft" Content="{Binding Path=PreviosDate}" Visibility="{Binding Path=VisButtons}" Click="btnLeft_Click"/>
+                <TextBlock VerticalAlignment="Top" HorizontalAlignment="Right" Text="{Binding StrSelectedDate}" Margin="10,4" FontSize="14" FontWeight="Bold"/>
+                <Button x:Name="btnRight" Content="{Binding Path=NextDate}" Visibility="{Binding Path=VisButtons}" Click="btnRight_Click"/>
+            </StackPanel>
             <TextBlock x:Name="tbDate" VerticalAlignment="Top" HorizontalAlignment="Left" Text="{Binding UpDate}"/>
-            <TextBlock VerticalAlignment="Top" HorizontalAlignment="Right" Text="{Binding StrSelectedDate}"/>
             <Border Grid.Column="1" Padding="5" Grid.Row="1" >
                 <Slider Orientation="Vertical" Maximum="5" SmallChange="1" Style="{DynamicResource SliderStyle}" IsSnapToTickEnabled="True" TickPlacement="TopLeft" Minimum="1" Value="{Binding Scale, Mode=TwoWay}" BorderBrush="#FF3C3C3C"/>
             </Border>
@@ -406,7 +410,7 @@
                     </Grid>
                 </ScrollViewer>
             </Grid>
-            <Grid Visibility="{Binding IsWaiting, Converter={StaticResource BoolToVisibilityConverter}}" Grid.Row="1" >
+            <Grid Visibility="{Binding IsWaiting, Converter={StaticResource BoolToVisibilityConverter}}" Grid.RowSpan="2" >
                 <Border Background="DarkGray" Opacity="0.7"/>
                 <TextBlock Text="Загрузка" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Grid>

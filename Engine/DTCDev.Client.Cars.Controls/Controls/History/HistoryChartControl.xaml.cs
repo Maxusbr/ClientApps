@@ -32,17 +32,20 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
             ChartDataControl.BorderClick += ChartDataControl_BorderClick;
         }
 
+        DateTime _displayedDate;
+
         private void ChartDataControl_BorderClick(DateTime date)
         {
             if (date <= new DateTime(1, 1, 1)) return;
+            _displayedDate = date;
             if( _vm.SelectedTime != date ) _vm.SelectedTime = date;
             if(_vm.Scale == 5) _vm.Scale -= 1;
             //tbDate.Text = date.ToString("g");
         }
         private void ChartDataControl_MouseWheel(DateTime date, MouseWheelEventArgs e)
         {
-            if (date > new DateTime(1, 1, 1)) _vm.SelectedTime = date;
-            _vm.Scale += e.Delta < 0 ? 1 : -1;
+            //if (date > new DateTime(1, 1, 1)) _vm.SelectedTime = date;
+            //_vm.Scale += e.Delta < 0 ? 1 : -1;
             //tbDate.Text = date.ToString("g");
         }
 
@@ -126,6 +129,20 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         private void scrlImage_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
 
+        }
+
+        private void btnRight_Click(object sender, RoutedEventArgs e)
+        {
+            _displayedDate += TimeSpan.FromDays(1);
+            _vm.Scale = 5;
+            _vm.SelectedTime = _displayedDate;
+        }
+
+        private void btnLeft_Click(object sender, RoutedEventArgs e)
+        {
+            _displayedDate -= TimeSpan.FromDays(1);
+            _vm.Scale = 5;
+            _vm.SelectedTime = _displayedDate;
         }
     }
 }

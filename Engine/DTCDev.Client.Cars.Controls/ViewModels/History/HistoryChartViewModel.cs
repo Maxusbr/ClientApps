@@ -13,6 +13,7 @@ using DTCDev.Client.ViewModel;
 using DTCDev.Models.CarsSending.Car;
 using DTCDev.Models.Date;
 using Newtonsoft.Json;
+using System.Windows;
 
 namespace DTCDev.Client.Cars.Controls.ViewModels.History
 {
@@ -113,6 +114,10 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 _scale = scale;
                 OnPropertyChanged("Scale");
                 Recalqulate();
+                if (Scale == 5)
+                    VisButtons = Visibility.Collapsed;
+                else
+                    VisButtons = Visibility.Visible;
             }
         }
 
@@ -141,6 +146,42 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
+        private string _previosDate = "";
+
+        public string PreviosDate
+        {
+            get { return _previosDate; }
+            set
+            {
+                _previosDate = value;
+                this.OnPropertyChanged("PreviosDate");
+            }
+        }
+
+        private string _nextDate = "";
+
+        public string NextDate
+        {
+            get { return _nextDate; }
+            set
+            {
+                _nextDate = value;
+                this.OnPropertyChanged("NextDate");
+            }
+        }
+
+        private Visibility _visButtons = Visibility.Collapsed;
+
+        public Visibility VisButtons
+        {
+            get { return _visButtons; }
+            set
+            {
+                _visButtons = value;
+                this.OnPropertyChanged("VisButtons");
+            }
+        }
+
         /// <summary>
         /// Выбранная дата
         /// </summary>
@@ -149,6 +190,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             get { return _selectedDate; }
             set
             {
+
                 if (_selectedDate == value) return;
                 _selectedDate = value;
                 OnPropertyChanged("StrSelectedDate");
@@ -164,6 +206,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 //if(!_loadedObdData.Any(o => o.DT.ToDate.Equals(value)))
                 _handler.StartLoadOBD(SelectedCar.ID, value);
                 _handler.OnDayChange(value);
+                PreviosDate = (value - TimeSpan.FromDays(1)).ToString("dd.MM.yyyy");
+                NextDate = (value + TimeSpan.FromDays(1)).ToString("dd.MM.yyyy");
             }
         }
 
