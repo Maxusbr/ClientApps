@@ -47,10 +47,14 @@ namespace DTCDev.Client.Cars.Controls.Controls.Map
             if ((bool)e.NewValue)
             {
                 VisualStateManager.GoToState(this, "Selected", true);
+                detail.Visibility = Visibility.Visible;
+                _isClicked = true;
             }
             else
             {
                 VisualStateManager.GoToState(this, "Normal", false);
+                detail.Visibility = Visibility.Collapsed;
+                _isClicked = false;
             }
         }
 
