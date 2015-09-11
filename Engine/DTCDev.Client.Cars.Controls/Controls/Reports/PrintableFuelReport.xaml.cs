@@ -46,11 +46,11 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
         {
             if (_vm.Result == null || _vm.Result.Report == null || !_vm.Result.Report.Any())
                 return;
-            if(addtable)
+            if(!addtable)
             {
-                grdData.Visibility= Visibility.Visible;
-                ItemsData.ItemsSource = _vm.Report;
-            }
+                grdData.Visibility= Visibility.Collapsed;
+                
+            }else ItemsData.ItemsSource = _vm.Report;
             tbCarNumber.Text = _vm.CarNumber;
             tbSelectedDate.Text = _vm.SelectedDate;
             CreateData();
