@@ -170,6 +170,9 @@
     <Compile Include="Controls\Reports\FuelReport.xaml.cs">
       <DependentUpon>FuelReport.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Reports\PrintableFuelReport.xaml.cs">
+      <DependentUpon>PrintableFuelReport.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Reports\ReportsList.xaml.cs">
       <DependentUpon>ReportsList.xaml</DependentUpon>
     </Compile>
@@ -231,6 +234,7 @@
     <Compile Include="ViewModels\Reports\DistanceReportViewModel.cs" />
     <Compile Include="ViewModels\Reports\FuelReportViewModel.cs" />
     <Compile Include="ViewModels\Reports\HistoryCarStateViewModel.cs" />
+    <Compile Include="ViewModels\Reports\PrintableFuelReportViewModel.cs" />
     <Compile Include="ViewModels\Reports\ReportsViewModel.cs" />
     <Compile Include="ViewModels\Reports\SpeedOveralReportViewModel.cs" />
     <Compile Include="ViewModels\Reports\SpeedReportViewModel.cs" />
@@ -376,6 +380,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Reports\FuelReport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Reports\PrintableFuelReport.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
