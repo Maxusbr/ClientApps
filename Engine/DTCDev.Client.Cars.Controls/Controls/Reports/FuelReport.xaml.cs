@@ -155,15 +155,15 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
 
                 for (int i = 0; i < col; i++)
                 {
-                    if(Math.Abs(_dtm[i].Vol-_dtm[i+1].Vol)>iMax)
+                    if (Math.Abs(_dtm[i].Vol - _dtm[i + 1].Vol) > iMax)
                     {
                         int a = 0;
-                        for (int j = i+2; j < i+10; j++)
+                        for (int j = i + 2; j < i + 10; j++)
                         {
                             a += _dtm[j].Vol;
                         }
                         a = a / 8;
-                        if(Math.Abs(a-_dtm[i].Vol)<iMax)
+                        if (Math.Abs(a - _dtm[i].Vol) < iMax)
                         {
                             _dtm.RemoveAt(i + 1);
                             col--;
@@ -188,7 +188,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
                             lIndexes.Add(j);
                         }
                     }
-                    if(lIndexes.Count>2)
+                    if (lIndexes.Count > 2)
                     {
                         foreach (var item in hIndexes)
                         {
