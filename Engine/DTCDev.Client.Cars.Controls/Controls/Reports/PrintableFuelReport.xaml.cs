@@ -38,7 +38,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
             InitializeComponent();
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject())) return;
             _dt = dt;
-            DataContext = _vm = new PrintableFuelReportViewModel(model, dt);
+            _vm = new PrintableFuelReportViewModel(model, dt);
             DisplayData();
         }
 
@@ -46,6 +46,9 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
         {
             if (_vm.Result == null || _vm.Result.Report == null || !_vm.Result.Report.Any())
                 return;
+            ItemsData.ItemsSource = _vm.Report;
+            tbCarNumber.Text = _vm.CarNumber;
+            tbSelectedDate.Text = _vm.SelectedDate;
             CreateData();
             DisplayCharts();
             CalcParams();
@@ -381,9 +384,6 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
             return width;
         }
 
-
-
-
         private class DTM
         {
             public DateTime DT { get; set; }
@@ -393,5 +393,6 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
             public Point WidthPoint { get; set; }
         }
 
+        
     }
 }
