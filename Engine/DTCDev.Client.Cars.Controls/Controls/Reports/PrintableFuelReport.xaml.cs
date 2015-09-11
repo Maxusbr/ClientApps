@@ -33,25 +33,29 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
             DataContext = _vm = new PrintableFuelReportViewModel();
         }
 
-        public PrintableFuelReport(FuelReportViewModel model, DateTime dt)
+        public PrintableFuelReport(FuelReportViewModel model, DateTime dt, bool addGraph = true, bool addtable = true )
         {
             InitializeComponent();
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject())) return;
             _dt = dt;
             _vm = new PrintableFuelReportViewModel(model, dt);
-            DisplayData();
+            DisplayData(addGraph, addtable);
         }
 
-        private void DisplayData()
+        private void DisplayData(bool addGraph, bool addtable)
         {
             if (_vm.Result == null || _vm.Result.Report == null || !_vm.Result.Report.Any())
                 return;
-            ItemsData.ItemsSource = _vm.Report;
+            if(addtable)
+            {
+                grdData.Visibility= Visibility.Visible;
+                ItemsData.ItemsSource = _vm.Report;
+            }
             tbCarNumber.Text = _vm.CarNumber;
             tbSelectedDate.Text = _vm.SelectedDate;
             CreateData();
             DisplayCharts();
-            CalcParams();
+            CalcParams(addGraph);
         }
 
         List<DTM> _dtm = new List<DTM>();
@@ -296,7 +300,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
             Canvas.SetTop(brdrH5, 200);
         }
 
-        private void CalcParams()
+        private void CalcParams(bool addGraph)
         {
             if (_dtm.Count < 5)
                 return;
@@ -304,6 +308,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
             imax = imax / 10;
             var added = 0;
             var deleted = 0;
+            if(addGraph)
             for (var i = 0; i < _dtm.Count - 1; i++)
             {
                 if (_dtm[i + 1].Vol - _dtm[i].Vol > imax)

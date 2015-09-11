@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:Busy="clr-namespace:DTCDev.Client.Busy;assembly=DTCDev.Client" xmlns:local="clr-namespace:DTCDev.Client.Cars.Controls.Controls.Reports" x:Class="DTCDev.Client.Cars.Controls.Controls.Reports.FuelReport" 
              mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="645">
+             d:DesignHeight="500" d:DesignWidth="841.937">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
@@ -95,6 +95,23 @@
             </Grid>
             <Busy:MacBusyControl Grid.ColumnSpan="2" IsWaiting="{Binding Vaiting}" d:IsHidden="True"/>
         </Grid>
-        <StackPanel x:Name="PrintPage" Grid.Row="3" />
+        <Border x:Name="PrinterSetup" Grid.Row="1" VerticalAlignment="Top" Margin="311,5,0,0" BorderThickness="1" BorderBrush="Gray" Background="White" Grid.RowSpan="2" HorizontalAlignment="Left" Visibility="Collapsed">
+            <Grid Margin="10,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <CheckBox x:Name="chbGraph" Margin="10"  Content="Накладывать на график сливы и/или заправки?" IsChecked="True"/>
+                <CheckBox x:Name="chbTable" Margin="10"  Content="Печатать таблицу с данными?" Grid.Row="1" IsChecked="True"/>
+                <StackPanel Orientation="Horizontal" Height="40" Grid.Row="2" HorizontalAlignment="Center" Margin="0,10">
+                    <Button Content="OK" Margin="5" Width="100" Click="OK_Click"/>
+                    <Button Content="Отменить" Margin="5" Width="100" Click="Cancel_Click" />
+                </StackPanel>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

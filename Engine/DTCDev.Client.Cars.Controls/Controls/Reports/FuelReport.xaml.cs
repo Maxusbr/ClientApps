@@ -550,50 +550,46 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Print();
+            PrinterSetup.Visibility = Visibility.Visible;
         }
 
         internal void Print()
         {
             var dlg = new PrintDialog();
-            if ((bool)dlg.ShowDialog())
+            if (!(bool) dlg.ShowDialog()) return;
+            var dt = new DateTime(vm.DateStart.Year, vm.DateStart.Month, vm.DateStart.Day);
+            var pageSize = new Size(dlg.PrintableAreaWidth - 80, dlg.PrintableAreaHeight-80);
+            var doc = new FlowDocument
             {
-                var dt = new DateTime(vm.DateStart.Year, vm.DateStart.Month, vm.DateStart.Day);
-                var pageSize = new Size(dlg.PrintableAreaWidth - 80, dlg.PrintableAreaHeight-80);
-                var doc = new FlowDocument
-                {
-                    PageHeight = dlg.PrintableAreaHeight,
-                    PageWidth = dlg.PrintableAreaWidth, ColumnWidth = dlg.PrintableAreaWidth, FontFamily = new FontFamily("Segoe UI")
-                };
-                for (var i = 0; i < days; i++)
-                {
-                    var cntrl = GetDayReport(dt + TimeSpan.FromDays(i));
-                    cntrl.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                    var scale = pageSize.Width / (cntrl.DesiredSize.Width);//Math.Min(PageSize.Width/(cntrl.ActualWidth + 80), PageSize.Height / (cntrl.ActualHeight + 80));
-                    cntrl.RenderTransform = new ScaleTransform(scale, scale);
-                    cntrl.Measure(pageSize);
-                    cntrl.Arrange(new Rect(new Point(40, 40), pageSize));
+                PageHeight = dlg.PrintableAreaHeight,
+                PageWidth = dlg.PrintableAreaWidth, ColumnWidth = dlg.PrintableAreaWidth, FontFamily = new FontFamily("Segoe UI")
+            };
+            for (var i = 0; i < days; i++)
+                doc.Blocks.Add(new BlockUIContainer(GetDayReport(dt + TimeSpan.FromDays(i), pageSize)));
 
-                    //dlg.PrintVisual(cntrl, "Печать отчета о топливе");
-                    //PrintPage.Children.Add(cntrl);
-                    doc.Blocks.Add(new BlockUIContainer(cntrl));
-                }
-                var capabilities = dlg.PrintQueue.GetPrintCapabilities(dlg.PrintTicket);
-                var paginator = new ProgramPaginator(PrintPage)
-                {
-                    PageSize = new Size(dlg.PrintableAreaWidth, dlg.PrintableAreaHeight)
-                };
-                
-                dlg.PrintDocument(((IDocumentPaginatorSource)doc).DocumentPaginator, "Печать отчета о топливе");
-            }
-            PrintPage.Children.Clear();
+            dlg.PrintDocument(((IDocumentPaginatorSource)doc).DocumentPaginator, "Печать отчета о топливе");
         }
 
-        private PrintableFuelReport GetDayReport(DateTime dt)
+        private PrintableFuelReport GetDayReport(DateTime dt, Size pageSize)
         {
-            var cntrl = new PrintableFuelReport(vm, dt);
-            
+            var cntrl = new PrintableFuelReport(vm, dt, chbGraph.IsChecked == true, chbTable.IsChecked == true);
+            cntrl.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            var scale = pageSize.Width / (cntrl.DesiredSize.Width);//Math.Min(PageSize.Width/(cntrl.ActualWidth + 80), PageSize.Height / (cntrl.ActualHeight + 80));
+            cntrl.RenderTransform = new ScaleTransform(scale, scale);
+            cntrl.Measure(pageSize);
+            cntrl.Arrange(new Rect(new Point(40, 40), pageSize));
             return cntrl;
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            PrinterSetup.Visibility = Visibility.Collapsed;
+        }
+
+        private void OK_Click(object sender, RoutedEventArgs e)
+        {
+            Print();
+            PrinterSetup.Visibility = Visibility.Collapsed;
         }
     }
 

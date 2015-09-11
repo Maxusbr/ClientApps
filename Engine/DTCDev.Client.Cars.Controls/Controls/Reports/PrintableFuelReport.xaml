@@ -13,8 +13,8 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30" />
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Отчет для автомобиля: "/>
@@ -75,7 +75,7 @@
                     <Canvas x:Name="cnvDisplay" Height="280" Margin="5,0"/>
                 </Grid>
             </Grid>
-            <Grid Grid.Row="4">
+            <Grid x:Name="grdData" Grid.Row="4" Visibility="Collapsed">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition/>
