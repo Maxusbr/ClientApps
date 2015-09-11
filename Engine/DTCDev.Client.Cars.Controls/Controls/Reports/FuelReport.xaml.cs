@@ -67,7 +67,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
                 });
             }
             _dtm = _dtm.OrderBy(p => p.DT).ToList();
-            if(_dtm.Count()>10)
+            if (_dtm.Count() > 10)
             {
                 double max = _dtm.Max(p => p.Vol);
                 int iMax = (int)max;
@@ -75,16 +75,16 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
                 //remove max values for eraise engine off
                 for (int i = 0; i < abc; i++)
                 {
-                    if(_dtm[i].Vol==iMax)
+                    if (_dtm[i].Vol == iMax)
                     {
                         _dtm.RemoveAt(i);
                         i--;
                         abc--;
                     }
                 }
-                int col = _dtm.Count()-4;
+                int col = _dtm.Count() - 4;
 
-                
+
 
                 //commented because there are no more max data
                 //for (int i = 3; i < col; i++)
@@ -155,15 +155,15 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
 
                 for (int i = 0; i < col; i++)
                 {
-                    if(Math.Abs(_dtm[i].Vol-_dtm[i+1].Vol)>iMax)
+                    if (Math.Abs(_dtm[i].Vol - _dtm[i + 1].Vol) > iMax)
                     {
                         int a = 0;
-                        for (int j = i+2; j < i+10; j++)
+                        for (int j = i + 2; j < i + 10; j++)
                         {
                             a += _dtm[j].Vol;
                         }
                         a = a / 8;
-                        if(Math.Abs(a-_dtm[i].Vol)<iMax)
+                        if (Math.Abs(a - _dtm[i].Vol) < iMax)
                         {
                             _dtm.RemoveAt(i + 1);
                             col--;
@@ -188,7 +188,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
                             lIndexes.Add(j);
                         }
                     }
-                    if(lIndexes.Count>2)
+                    if (lIndexes.Count > 2)
                     {
                         foreach (var item in hIndexes)
                         {
@@ -230,7 +230,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
                 DTM model = _dtm.Where(p => p.DT >= dt && p.DT < dt + TimeSpan.FromDays(1)).FirstOrDefault();
                 if (model != null)
                 {
-                    int DayWidth=0;
+                    int DayWidth = 0;
                     //Если есть какие то данные за эти сутки
                     for (int h = 0; h < 24; h++)
                     {
@@ -241,7 +241,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
                             for (int m = 0; m < 60; m++)
                             {
                                 model = _dtm.Where(p => p.DT >= dt && p.DT < dt + TimeSpan.FromMinutes(1)).FirstOrDefault();
-                                if(model!=null)
+                                if (model != null)
                                 {
                                     lastFuel = 200 - model.Vol * 2;
                                     model.WidthPoint = new Point(width + DayWidth + hourWidth, lastFuel);
@@ -267,15 +267,15 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
 
                             TextBlock text = new TextBlock();
                             if (h < 10)
-                                text.Text = "0" + h.ToString()+":00";
+                                text.Text = "0" + h.ToString() + ":00";
                             else
-                                text.Text = h.ToString()+":00";
+                                text.Text = h.ToString() + ":00";
                             text.TextAlignment = TextAlignment.Center;
                             text.Width = hourWidth;
                             cnvDisplay.Children.Add(text);
                             Canvas.SetLeft(text, width + DayWidth);
                             Canvas.SetTop(text, 210);
-                            
+
                             DayWidth += hourWidth;
 
                             Border b1 = new Border();
@@ -304,7 +304,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
                             figure.Segments.Add(ls);
                         }
                     }
-                    width = DecorateDay(width, dt, DayWidth);
+                    width = DecorateDay(width, dt - TimeSpan.FromDays(1), DayWidth);
                     //width+=DayWidth;
                 }
                 else
@@ -398,7 +398,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
             //            }
             //            stkFuel.Children.Add(b);
             //            dt += TimeSpan.FromMinutes(1);
-                        
+
             //        }
             //    }
             //}
@@ -410,11 +410,11 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
                 return;
             int imax = _dtm.Max(p => p.Vol);
             imax = imax / 10;
-            int added=0;
+            int added = 0;
             int deleted = 0;
-            for (int i = 0; i < _dtm.Count-1; i++)
+            for (int i = 0; i < _dtm.Count - 1; i++)
             {
-                if(_dtm[i+1].Vol-_dtm[i].Vol>imax)
+                if (_dtm[i + 1].Vol - _dtm[i].Vol > imax)
                 {
                     added += _dtm[i + 1].Vol - _dtm[i].Vol;
                     Border brdr = new Border
@@ -436,7 +436,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
                     cnvDisplay.Children.Add(brdr);
                     Canvas.SetLeft(brdr, _dtm[i + 1].WidthPoint.X - 15);
                 }
-                if(_dtm[i].Vol-_dtm[i+1].Vol>imax)
+                if (_dtm[i].Vol - _dtm[i + 1].Vol > imax)
                 {
                     deleted += _dtm[i].Vol - _dtm[i + 1].Vol;
                     Border brdr = new Border
@@ -452,7 +452,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
                         Foreground = new SolidColorBrush(Colors.White),
                         FontWeight = FontWeights.Bold,
                         FontSize = 14,
-                        TextAlignment= TextAlignment.Center
+                        TextAlignment = TextAlignment.Center
                     };
                     brdr.Child = txt;
                     cnvDisplay.Children.Add(brdr);
@@ -471,7 +471,9 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
                 TextAlignment = TextAlignment.Center,
                 Width = dayWidth,
                 FontSize = 16,
-                FontWeight = FontWeights.Bold
+                FontWeight = FontWeights.Bold,
+                Background = new SolidColorBrush(Colors.BlanchedAlmond),
+                Tag = dt.ToString("dd.MM.yyyy")
             };
             cnvDisplay.Children.Add(text);
             Canvas.SetLeft(text, width);
@@ -480,7 +482,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
             {
                 BorderBrush = new SolidColorBrush(Colors.Blue),
                 BorderThickness = new Thickness(2, 0, 2, 2),
-                Width = dayWidth-2,
+                Width = dayWidth - 2,
                 Height = 25
             };
             cnvDisplay.Children.Add(brdr);
@@ -490,7 +492,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
             return width;
         }
 
-       
+
 
 
         private class DTM
@@ -540,6 +542,107 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
                 State = X0 + K * (data - H * X0);
                 Covariance = (1 - K * H) * P0;
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Print();
+        }
+
+        internal void Print()
+        {
+            var dlg = new PrintDialog();
+            if ((bool)dlg.ShowDialog())
+            {
+                var dt = new DateTime(vm.DateStart.Year, vm.DateStart.Month, vm.DateStart.Day);
+                for (var i = 0; i < days; i++)
+                {
+                    var cntrl = GetDayReport(dt + TimeSpan.FromDays(i));
+                    PrintPage.Children.Add(cntrl);
+                }
+                var paginator = new ProgramPaginator(PrintPage)
+                {
+                    PageSize = new Size(dlg.PrintableAreaWidth, dlg.PrintableAreaHeight)
+                };
+                dlg.PrintDocument(paginator, "Program");
+            }
+            PrintPage.Children.Clear();
+        }
+
+        private PrintableFuelReport GetDayReport(DateTime dt)
+        {
+            var cntrl = new PrintableFuelReport(vm, dt);
+
+            return cntrl;
+        }
+    }
+
+    class ProgramPaginator : DocumentPaginator
+    {
+        private readonly FrameworkElement _element;
+
+        public ProgramPaginator(FrameworkElement element) { _element = element; }
+
+        public override DocumentPage GetPage(int pageNumber)
+        {
+            var stackPanel = _element as StackPanel;
+            DocumentPage page;
+            if (stackPanel == null)
+            {
+                var elementSize = new Size(_element.ActualWidth, _element.ActualHeight);
+                _element.RenderTransform =
+                    new TranslateTransform(-PageSize.Width * (pageNumber % Columns), -PageSize.Height * (pageNumber / Columns));
+                _element.Measure(elementSize);
+                _element.Arrange(new Rect(new Point(0, 0), elementSize));
+                page = new DocumentPage(_element);
+                _element.RenderTransform = null;
+                return page;
+            }
+            var cntrl = stackPanel.Children[pageNumber] as FrameworkElement;
+            if (cntrl != null)
+            {
+                var scale = PageSize.Width/(cntrl.ActualWidth + 80);//Math.Min(, PageSize.Height / (cntrl.ActualHeight + 80));
+                cntrl.RenderTransform = new ScaleTransform(scale, scale);
+                cntrl.Measure(PageSize);
+                cntrl.Arrange(new Rect(new Point(40, 40), PageSize));
+            }
+
+            page = new DocumentPage(cntrl);
+            return page;
+        }
+
+        public override bool IsPageCountValid { get { return true; } }
+
+        public int Columns
+        {
+            get
+            {
+                var stackPanel = _element as StackPanel;
+                return stackPanel != null ? 1 : (int)Math.Ceiling(_element.ActualWidth / PageSize.Width);
+            }
+        }
+
+        public int Rows
+        {
+            get
+            {
+                var stackPanel = _element as StackPanel;
+                return
+                    stackPanel != null ? stackPanel.Children.Count
+                        : (int)Math.Ceiling(_element.ActualHeight / PageSize.Height);
+            }
+        }
+
+        public override int PageCount
+        {
+            get { return Columns * Rows; }
+        }
+
+        public override sealed Size PageSize { set; get; }
+
+        public override IDocumentPaginatorSource Source
+        {
+            get { return null; }
         }
     }
 }

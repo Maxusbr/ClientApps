@@ -330,7 +330,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             {
                 var dt = new DateTime(day.Year, day.Month, day.Day);
                 BuildDataRow(data, dt);
-                if (dt.Equals(SelectedDate))
+                if (dt.Equals(SelectedDate) || Scale == 5)
                     list = GetStaticData();
             });
             slowTask.ContinueWith(delegate
