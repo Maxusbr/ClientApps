@@ -572,7 +572,10 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
 
         private PrintableFuelReport GetDayReport(DateTime dt, Size pageSize)
         {
-            var cntrl = new PrintableFuelReport(vm, dt, chbGraph.IsChecked == true, chbTable.IsChecked == true);
+            var cntrl = new PrintableFuelReport(vm, dt, chbGraph.IsChecked == true, chbTable.IsChecked == true)
+            {
+                MinWidth = pageSize.Width
+            };
             cntrl.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             var scale = pageSize.Width / (cntrl.DesiredSize.Width);//Math.Min(PageSize.Width/(cntrl.ActualWidth + 80), PageSize.Height / (cntrl.ActualHeight + 80));
             cntrl.RenderTransform = new ScaleTransform(scale, scale);

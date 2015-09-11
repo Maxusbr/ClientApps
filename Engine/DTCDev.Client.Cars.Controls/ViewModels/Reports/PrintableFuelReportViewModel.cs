@@ -32,7 +32,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Reports
             if (model.Result != null)
             {
                 res.DID = model.Result.DID;
-                res.Report = model.Result.Report.Where(o => dt.Equals(o.DT.ToDate())).ToList();
+                res.Report = model.Result.Report.Where(o => dt.Equals(o.DT.ToDate())).OrderBy(r => r.DT.ToDateTime()).ToList();
                 _report = res.Report.GroupBy(x =>
                 {
                     var stamp = x.DT.ToDateTime();
