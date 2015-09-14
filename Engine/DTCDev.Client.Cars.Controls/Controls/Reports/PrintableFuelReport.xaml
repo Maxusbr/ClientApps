@@ -6,15 +6,15 @@
               xmlns:reports="clr-namespace:DTCDev.Client.Cars.Controls.ViewModels.Reports"
              x:Class="DTCDev.Client.Cars.Controls.Controls.Reports.PrintableFuelReport"
              mc:Ignorable="d" 
-             d:DesignHeight="660" d:DesignWidth="645" >
+             d:DesignHeight="490.5" d:DesignWidth="645" >
     <Border>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30" />
                 <RowDefinition Height="Auto"/>
-                <RowDefinition/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Отчет для автомобиля: "/>
@@ -43,7 +43,7 @@
                 <TextBlock x:Name="txtAdd" Text="---" Grid.Row="1" Grid.Column="1"/>
                 <TextBlock x:Name="txtDown" Text="---" Grid.Row="2" Grid.Column="1"/>
             </Grid>
-            <Grid x:Name="PrintableGrid" Grid.Row="3" Margin="0,10" RenderTransformOrigin="0.5,0.5">
+            <Grid x:Name="PrintableGrid" Grid.Row="3" Margin="10" RenderTransformOrigin="0.5,0.5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="300"/>
                     <RowDefinition />
@@ -75,7 +75,7 @@
                     <Canvas x:Name="cnvDisplay" Height="280" Margin="5,0"/>
                 </Grid>
             </Grid>
-            <Grid x:Name="grdData" Grid.Row="4" Visibility="Collapsed">
+            <Grid x:Name="grdData" Grid.Row="4">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition/>

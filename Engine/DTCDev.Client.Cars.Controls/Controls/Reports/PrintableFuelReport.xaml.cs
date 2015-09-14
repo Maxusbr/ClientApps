@@ -33,7 +33,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
             DataContext = _vm = new PrintableFuelReportViewModel();
         }
 
-        public PrintableFuelReport(FuelReportViewModel model, DateTime dt, bool addGraph = true, bool addtable = true )
+        public PrintableFuelReport(FuelReportViewModel model, DateTime dt, bool addGraph = true, bool addtable = true)
         {
             InitializeComponent();
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject())) return;
@@ -46,11 +46,12 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
         {
             if (_vm.Result == null || _vm.Result.Report == null || !_vm.Result.Report.Any())
                 return;
-            if(addtable)
+            if (!addtable)
             {
-                grdData.Visibility= Visibility.Visible;
-                ItemsData.ItemsSource = _vm.Report;
+                grdData.Visibility = Visibility.Collapsed;
+
             }
+            else ItemsData.ItemsSource = _vm.Report;
             tbCarNumber.Text = _vm.CarNumber;
             tbSelectedDate.Text = _vm.SelectedDate;
             CreateData();
@@ -145,7 +146,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
         {
             cnvDisplay.Children.Clear();
 
-            var pathGeometry = new PathGeometry {FillRule = FillRule.Nonzero};
+            var pathGeometry = new PathGeometry { FillRule = FillRule.Nonzero };
             var figure = new PathFigure
             {
                 StartPoint = new Point(0, 200),
@@ -178,7 +179,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
 
                             }
                             hourWidth += 1;
-                            var ls = new LineSegment {Point = new Point(width + dayWidth + hourWidth, lastFuel)};
+                            var ls = new LineSegment { Point = new Point(width + dayWidth + hourWidth, lastFuel) };
                             figure.Segments.Add(ls);
                             dt += TimeSpan.FromMinutes(1);
                         }
@@ -202,7 +203,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
                             text.Text = "0" + h.ToString() + ":00";
                         else
                             text.Text = h.ToString() + ":00";
-                        
+
                         cnvDisplay.Children.Add(text);
                         Canvas.SetLeft(text, width + dayWidth);
                         Canvas.SetTop(text, 210);
@@ -220,19 +221,19 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
                     }
                     else
                     {
-                        var text = new TextBlock {Width = 25};
+                        var text = new TextBlock { Width = 25 };
                         if (h < 10)
                             text.Text = "0" + h.ToString();
                         else
                             text.Text = h.ToString();
-                        
+
                         cnvDisplay.Children.Add(text);
                         Canvas.SetLeft(text, width + dayWidth);
                         Canvas.SetTop(text, 210);
                         dayWidth += 25;
                         dt += TimeSpan.FromHours(1);
 
-                        var ls = new LineSegment {Point = new Point(width + dayWidth, lastFuel)};
+                        var ls = new LineSegment { Point = new Point(width + dayWidth, lastFuel) };
                         figure.Segments.Add(ls);
                     }
                 }
@@ -242,7 +243,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
             {
                 //нет данных по дню, рисуем пустой прочерк
                 width = DecorateDay(width, dt, 50);
-                var ls = new LineSegment {Point = new Point(width, lastFuel)};
+                var ls = new LineSegment { Point = new Point(width, lastFuel) };
                 figure.Segments.Add(ls);
             }
 
@@ -308,52 +309,58 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
             imax = imax / 10;
             var added = 0;
             var deleted = 0;
-            if(addGraph)
+
             for (var i = 0; i < _dtm.Count - 1; i++)
             {
                 if (_dtm[i + 1].Vol - _dtm[i].Vol > imax)
                 {
                     added += _dtm[i + 1].Vol - _dtm[i].Vol;
-                    var brdr = new Border
+                    if (addGraph)
                     {
-                        Background = new SolidColorBrush(Colors.Green),
-                        Opacity = 0.7,
-                        Width = 30,
-                        Height = 200
-                    };
-                    var txt = new TextBlock
-                    {
-                        Text = (_dtm[i + 1].Vol - _dtm[i].Vol).ToString(),
-                        Foreground = new SolidColorBrush(Colors.White),
-                        FontWeight = FontWeights.Bold,
-                        FontSize = 14,
-                        TextAlignment = TextAlignment.Center
-                    };
-                    brdr.Child = txt;
-                    cnvDisplay.Children.Add(brdr);
-                    Canvas.SetLeft(brdr, _dtm[i + 1].WidthPoint.X - 15);
+                        var brdr = new Border
+                        {
+                            Background = new SolidColorBrush(Colors.Green),
+                            Opacity = 0.7,
+                            Width = 30,
+                            Height = 200
+                        };
+                        var txt = new TextBlock
+                        {
+                            Text = (_dtm[i + 1].Vol - _dtm[i].Vol).ToString(),
+                            Foreground = new SolidColorBrush(Colors.White),
+                            FontWeight = FontWeights.Bold,
+                            FontSize = 14,
+                            TextAlignment = TextAlignment.Center
+                        };
+                        brdr.Child = txt;
+                        cnvDisplay.Children.Add(brdr);
+                        Canvas.SetLeft(brdr, _dtm[i + 1].WidthPoint.X - 15);
+                    }
                 }
                 if (_dtm[i].Vol - _dtm[i + 1].Vol > imax)
                 {
                     deleted += _dtm[i].Vol - _dtm[i + 1].Vol;
-                    var brdr = new Border
+                    if (addGraph)
                     {
-                        Background = new SolidColorBrush(Colors.Red),
-                        Opacity = 0.7,
-                        Width = 30,
-                        Height = 200
-                    };
-                    var txt = new TextBlock
-                    {
-                        Text = (_dtm[i].Vol - _dtm[i + 1].Vol).ToString(),
-                        Foreground = new SolidColorBrush(Colors.White),
-                        FontWeight = FontWeights.Bold,
-                        FontSize = 14,
-                        TextAlignment = TextAlignment.Center
-                    };
-                    brdr.Child = txt;
-                    cnvDisplay.Children.Add(brdr);
-                    Canvas.SetLeft(brdr, _dtm[i + 1].WidthPoint.X - 15);
+                        var brdr = new Border
+                        {
+                            Background = new SolidColorBrush(Colors.Red),
+                            Opacity = 0.7,
+                            Width = 30,
+                            Height = 200
+                        };
+                        var txt = new TextBlock
+                        {
+                            Text = (_dtm[i].Vol - _dtm[i + 1].Vol).ToString(),
+                            Foreground = new SolidColorBrush(Colors.White),
+                            FontWeight = FontWeights.Bold,
+                            FontSize = 14,
+                            TextAlignment = TextAlignment.Center
+                        };
+                        brdr.Child = txt;
+                        cnvDisplay.Children.Add(brdr);
+                        Canvas.SetLeft(brdr, _dtm[i + 1].WidthPoint.X - 15);
+                    }
                 }
             }
             txtAdd.Text = added.ToString();
@@ -398,6 +405,6 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
             public Point WidthPoint { get; set; }
         }
 
-        
+
     }
 }

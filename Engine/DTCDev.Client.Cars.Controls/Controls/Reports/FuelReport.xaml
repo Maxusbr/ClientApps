@@ -97,9 +97,6 @@
         </Grid>
         <Border x:Name="PrinterSetup" Grid.Row="1" VerticalAlignment="Top" Margin="311,5,0,0" BorderThickness="1" BorderBrush="Gray" Background="White" Grid.RowSpan="2" HorizontalAlignment="Left" Visibility="Collapsed">
             <Grid Margin="10,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
