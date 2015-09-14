@@ -234,9 +234,6 @@
     <Compile Include="Slides\Settings\SlideSettingsWorks.xaml.cs">
       <DependentUpon>SlideSettingsWorks.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Slides\SlideStart.xaml.cs">
-      <DependentUpon>SlideStart.xaml</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -501,10 +498,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Slides\Settings\SlideSettingsWorks.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Slides\SlideStart.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

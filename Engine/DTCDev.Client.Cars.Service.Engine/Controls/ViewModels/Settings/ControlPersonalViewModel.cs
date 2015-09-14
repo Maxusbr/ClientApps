@@ -74,9 +74,14 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
                 CompleteSaveEnabled = false;
 
                 if (value == null)
+                {
                     VisEdit = Visibility.Collapsed;
+                }
                 else
+                {
                     VisEdit = Visibility.Visible;
+                    EditText = "РЕДАКТИРОВАНИЕ ПОЛЬЗОВАТЕЛЯ";
+                }
             }
         }
 
@@ -124,6 +129,22 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             }
         }
 
+        private string _editText = "РЕДАКТИРОВАНИЕ ПОЛЬЗОВАТЕЛЯ";
+
+        public string EditText
+        {
+            get { return _editText; }
+            set
+            {
+                _editText = value;
+                this.OnPropertyChanged("EditText");
+            }
+        }
+
+
+
+
+
         private RelayCommand _completeSaveCommand;
         public RelayCommand CompleteSaveCommand
         {
@@ -132,12 +153,9 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
 
         private void CompleteSave(object obj)
         {
+            //Завершение процесса построения
             if (SelectedUser == null) return;
             _handler.EditUser(SelectedUser.Model);
-            //Временно пока не работает запрос
-            //if (SelectedUser.Model.id != 0) return;
-            //SelectedUser.Model.id = ListUsers.Count;
-            //ListUsers.Add(SelectedUser);
             VisEdit = Visibility.Collapsed;
         }
 
@@ -152,6 +170,7 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Settings
             SelectedUser = new EmployeeViewModel();
             SelectedRole = null;
             VisEdit = Visibility.Visible;
+            EditText = "ДОБАВЛЕНИЕ ПОЛЬЗОВАТЕЛЯ";
         }
 
     }
