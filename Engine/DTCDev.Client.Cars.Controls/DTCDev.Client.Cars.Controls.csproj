@@ -109,6 +109,9 @@
     <Compile Include="Controls\History\HistoryControl.xaml.cs">
       <DependentUpon>HistoryControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\History\HistoryTablesControl.xaml.cs">
+      <DependentUpon>HistoryTablesControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\History\HistoryWorkControl.xaml.cs">
       <DependentUpon>HistoryWorkControl.xaml</DependentUpon>
     </Compile>
@@ -300,6 +303,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\History\HistoryControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\History\HistoryTablesControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
