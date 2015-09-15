@@ -28,7 +28,8 @@
         </DataGrid>
         <Button Margin="4" VerticalAlignment="Bottom" Grid.Row="1"
             		Command="{Binding AddUserCommand}" Content="Добавить"/>
-        <Grid Grid.Column="2" Grid.Row="1" Margin="4" Visibility="{Binding Path=VisEdit}">
+        <TextBlock Text="{Binding Path=EditText}" Visibility="{Binding Path=VisEdit}" Grid.Column="2" Grid.Row="1" VerticalAlignment="Top" Margin="4" FontSize="16"/>
+        <Grid Grid.Column="2" Grid.Row="1" Margin="4,40,4,4" Visibility="{Binding Path=VisEdit}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition/>
