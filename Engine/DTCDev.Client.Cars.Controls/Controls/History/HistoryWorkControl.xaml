@@ -68,6 +68,17 @@
             </Grid.RowDefinitions>
             <TextBlock Text="{Binding LoadedText}" Margin="10,10,10,0" VerticalAlignment="Top"/>
             <DataGrid Margin="10,7,70,40" ItemsSource="{Binding HistoryRows}" AutoGenerateColumns="False" SelectedItem="{Binding SelectedHistoryRow, Mode=TwoWay}" CanUserAddRows="False" Grid.Row="2" SelectionMode="Single">
+                <DataGrid.Resources>
+                    <Style TargetType="{x:Type DataGridColumnHeader}">
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" TextWrapping="Wrap" MaxWidth="100"/>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </DataGrid.Resources>
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding StringDate}" Header="Дата" Width="*" IsReadOnly="True"/>
                     <DataGridTextColumn Binding="{Binding Mileage}" Header="Пробег" IsReadOnly="True"/>
