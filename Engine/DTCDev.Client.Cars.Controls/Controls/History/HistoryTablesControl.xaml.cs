@@ -21,7 +21,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
     /// </summary>
     public partial class HistoryTablesControl : UserControl
     {
-        private HistoryWorkViewModel _hvm;
+        private readonly HistoryWorkViewModel _hvm;
 
         public HistoryTablesControl()
         {
@@ -57,7 +57,8 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            _hvm.LoadData();
+            if(!_hvm.HistoryRows.Any())
+                _hvm.LoadData();
         }
     }
 }

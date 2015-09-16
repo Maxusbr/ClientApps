@@ -193,18 +193,24 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             var prms = model.Data.Select(p => p.Code).Distinct().ToList();
             var slowTask = new Task(delegate
             {
-                foreach (var item in Routes)
+                try
                 {
-                    var dt = new DateTime(item.StartDate.Year, item.StartDate.Month, item.StartDate.Day);
-                    var list =
-                        model.Data.Where(o => dt + o.Time.ToTimeSpan() >= item.StartDate && dt + o.Time.ToTimeSpan() < item.EndDate);
-                    if(!list.Any()) continue;
-                    foreach (var el in prms.Select(pr => list.FirstOrDefault(o => o.Code.Equals(pr))).Where(el => el != null))
+                    foreach (var item in Routes)
                     {
-                        item.AddTipValue(converter.GetPidInfo(el.Code), el.Vol);
+                        var dt = new DateTime(item.StartDate.Year, item.StartDate.Month, item.StartDate.Day);
+                        var list =
+                            model.Data.Where(o => dt + o.Time.ToTimeSpan() >= item.StartDate && dt + o.Time.ToTimeSpan() < item.EndDate);
+                        if(!list.Any()) continue;
+                        foreach (var el in prms.Select(pr => list.FirstOrDefault(o => o.Code.Equals(pr))).Where(el => el != null))
+                        {
+                            item.AddTipValue(converter.GetPidInfo(el.Code), el.Vol);
+                        }
+                        //if(list.Any())
+                        //    obd.Data.AddRange(list);
                     }
-                    //if(list.Any())
-                    //    obd.Data.AddRange(list);
+                }
+                catch
+                {
                 }
             });
             slowTask.ContinueWith(obj =>

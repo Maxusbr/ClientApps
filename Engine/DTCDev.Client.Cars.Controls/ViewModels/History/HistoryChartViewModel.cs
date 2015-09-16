@@ -50,7 +50,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             _handler.DayRefreshed += Instance_DayRefreshed;
             _handler.OBDLoaded += Instance_OBDLoaded;
             _handler.AccLoaded += Instance_AccLoaded;
-            //_handler.DayStateChange += _handler_DayStateChange;
+            _handler.DayChange += _handler_DayChange;
         }
 
 
@@ -68,6 +68,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         protected virtual void OnClearControls()
         {
             if (ClearControls != null) ClearControls.Invoke(this, EventArgs.Empty);
+            IsWaiting = false;
         }
 
         #endregion
@@ -113,11 +114,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 if (_scale == scale) return;
                 _scale = scale;
                 OnPropertyChanged("Scale");
-                Recalqulate();
-                if (Scale == 5)
-                    VisButtons = Visibility.Collapsed;
-                else
-                    VisButtons = Visibility.Visible;
+                OnPropertyChanged("VisButtons");
+                if(!IsWaiting)
+                    Recalqulate();
             }
         }
 
@@ -139,9 +138,10 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             get { return _selectedTime; }
             set
             {
-                if (_selectedTime == value) return;
+                //if (_selectedTime == value) return;
                 _selectedTime = value;
                 SelectedDate = new DateTime(value.Year, value.Month, value.Day);
+                Recalqulate();
                 _handler.OnSetDateTimePosition(value);
             }
         }
@@ -170,17 +170,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
-        private Visibility _visButtons = Visibility.Collapsed;
-
-        public Visibility VisButtons
-        {
-            get { return _visButtons; }
-            set
-            {
-                _visButtons = value;
-                this.OnPropertyChanged("VisButtons");
-            }
-        }
+        public bool VisButtons { get { return Scale < 5; } }
 
         /// <summary>
         /// Выбранная дата
@@ -195,17 +185,17 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 _selectedDate = value;
                 OnPropertyChanged("StrSelectedDate");
                 if (value <= new DateTime(1, 1, 1)) return;
-                if (Scale == 5)
-                {
-                    Scale = 4;
-                    var list = _loadedData.FirstOrDefault(o => o.Date.Equals(value));
-                    if (list != null)
-                        _handler.OnDayStateChange(list.Data);
-                }
-                else Recalqulate();
+                
+                //if (Scale == 5)
+                //{
+                //    var list = _loadedData.FirstOrDefault(o => o.Date.Equals(value));
+                //    if (list != null)
+                //        _handler.OnDayStateChange(list.Data);
+                //}
+                //else
                 //if(!_loadedObdData.Any(o => o.DT.ToDate.Equals(value)))
-                _handler.StartLoadOBD(SelectedCar.ID, value);
-                _handler.OnDayChange(value);
+                //_handler.StartLoadOBD(SelectedCar.ID, value);
+                //_handler.OnDayChange(value);
                 PreviosDate = (value - TimeSpan.FromDays(1)).ToString("dd.MM.yyyy");
                 NextDate = (value + TimeSpan.FromDays(1)).ToString("dd.MM.yyyy");
             }
@@ -227,6 +217,19 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
 
         #region Handlers
+        private void _handler_DayChange(DateTime date)
+        {
+            if (SelectedTime == date)
+            {
+                IsWaiting = false;
+                return;
+            }
+            if (_scale > 1) _scale -= 1;
+            OnPropertyChanged("Scale");
+            OnPropertyChanged("VisButtons");
+            SelectedTime = date;
+        }
+
         /// <summary>
         /// Хендлер обработки выбранной даты в истории
         /// </summary>
@@ -287,7 +290,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             //return;
             //var exist = _loadedObdData.FirstOrDefault(o => o.DT.ToDate.Equals(data.DT.ToDate));
             //if (exist == null)
-            //if (!data.DT.ToDate.Equals(SelectedDate)) return;
+                if (!data.DT.ToDate.Equals(SelectedDate)) return;
             var list = new List<ScaleValuesData>();
             var slowTask = new Task(delegate
             {
@@ -322,7 +325,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         {
             var f = data.FirstOrDefault();
             if (f == null) return;
-            CacheRoute(string.Format("[{0}]-{1}-{2}-{3}", f.DevID, day.Day, day.Month, day.Year), data);
+            //CacheRoute(string.Format("[{0}]-{1}-{2}-{3}", f.DevID, day.Day, day.Month, day.Year), data);
             if (f.DevID != SelectedCar.ID) return;
             var list = new List<ChartValuesData>();
             UpDate = "Обновляю данные за " + day.ToShortDateString();
@@ -360,6 +363,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         public void LoadData()
         {
             if (SelectedCar == null || string.IsNullOrEmpty(SelectedCar.Car.Id)) return;
+            IsWaiting = true;
             const int days = 30;
             var dt = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
             var list = new List<ChartValuesData>();
@@ -377,13 +381,14 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                     //_selectedDate = _loadedData.Where(w => w.Data.Any()).Min(o => o.Date);
                     list = GetStaticData();
                 }
-                _handler.StartLoadHistory(SelectedCar.ID, DateTime.Now - TimeSpan.FromDays(days), DateTime.Now, true);
+                //_handler.StartLoadHistory(SelectedCar.ID, DateTime.Now - TimeSpan.FromDays(days), DateTime.Now, true);
             });
             slowTask.ContinueWith(delegate
             {
                 DispatherThreadRun(delegate
                 {
                     ListData = new ScaleValuesData { Data = list, Scale = Scale };
+                    IsWaiting = false;
                 });
             });
             slowTask.Start();
@@ -456,7 +461,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         /// </summary>
         public void Recalqulate()
         {
-            IsWaiting = true;
+            
             var list = new List<ChartValuesData>();
             var slowTask = new Task(delegate
             {
@@ -469,7 +474,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                     ListData = new ScaleValuesData { Data = list, Scale = Scale };
                     if (Scale == 5) OnClearControls();
                     else AddMoreCharts();
-                    IsWaiting = false;
                 });
             });
             slowTask.Start();
@@ -514,6 +518,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 {
                     foreach (var model in list.Where(model => model.Data.Any()))
                         OnAddControl(model);
+                    IsWaiting = false;
                 });
             });
             slowTask.Start();

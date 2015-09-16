@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DTCDev.Client.Cars.Controls.ViewModels.History;
+using DTCDev.Client.Cars.Engine.Handlers.Cars;
 
 namespace DTCDev.Client.Cars.Controls.Controls.History
 {
@@ -38,8 +39,12 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         {
             if (date <= new DateTime(1, 1, 1)) return;
             _displayedDate = date;
-            if( _vm.SelectedTime != date ) _vm.SelectedTime = date;
-            if(_vm.Scale == 5) _vm.Scale -= 1;
+            _vm.IsWaiting = true;
+            HistoryHandler.Instance.OnDayChange(date);
+            
+            //if ( _vm.SelectedTime != date ) _vm.SelectedTime = date;
+            //if(_vm.Scale < 5)
+            //    _vm.Scale -= 1;
             //tbDate.Text = date.ToString("g");
         }
         private void ChartDataControl_MouseWheel(DateTime date, MouseWheelEventArgs e)
@@ -134,14 +139,14 @@ namespace DTCDev.Client.Cars.Controls.Controls.History
         private void btnRight_Click(object sender, RoutedEventArgs e)
         {
             _displayedDate += TimeSpan.FromDays(1);
-            _vm.Scale = 5;
+            _vm.Scale = 4;
             _vm.SelectedTime = _displayedDate;
         }
 
         private void btnLeft_Click(object sender, RoutedEventArgs e)
         {
             _displayedDate -= TimeSpan.FromDays(1);
-            _vm.Scale = 5;
+            _vm.Scale = 4;
             _vm.SelectedTime = _displayedDate;
         }
     }

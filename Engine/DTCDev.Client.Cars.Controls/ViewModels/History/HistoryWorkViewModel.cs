@@ -54,9 +54,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         private void _handler_DayChange(DateTime date)
         {
-            var pos = HistoryRows.FirstOrDefault(o => o.Date.Year == date.Year && o.Date.Month == date.Month &&  o.Date.Day == date.Day);
-            if (pos != null)
-                SelectedHistoryRow = pos;
+            //var pos = HistoryRows.FirstOrDefault(o => o.Date.Year == date.Year && o.Date.Month == date.Month &&  o.Date.Day == date.Day);
+            //if (pos != null)
+            //    SelectedHistoryRow = pos;
         }
 
         void _tableHistory_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -95,6 +95,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             get { return _historyRows; }
         }
 
+        private bool _foundselected;
+
         /// <summary>
         /// Выбранная дата истории
         /// </summary>
@@ -105,10 +107,12 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             {
                 if(_selectedRow == value) return;
                 _selectedRow = value;
+                OnPropertyChanged("SelectedHistoryRow");
+                if(_foundselected) return;
                 Iswaiting = true;
                 TableHistory.Update(value);
 
-                OnPropertyChanged("SelectedHistoryRow");
+                
                 OnPropertyChanged("TableHistory");
 
                 SortData();
@@ -165,6 +169,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                 if (_position == null) return;
                 _position = value;
                 OnPropertyChanged("Position");
+                OnPropertyChanged("VisableChart");
             }
         }
 
@@ -230,6 +235,8 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             }
         }
 
+        public bool VisableChart { get { return !string.IsNullOrEmpty(Position.Car.Id); } }
+
         private void CarSelector_OnCarChanged(DISP_Car car)
         {
             if (car == null) return;
@@ -241,7 +248,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                     Id = car.Car.Id
                 }
             };
+            HistoryRows.Clear();
             LoadData();
+            
         }
 
         /// <summary>
@@ -279,6 +288,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         /// <param name="model"></param>
         private void Instance_OBDLoaded(OBDHistoryDataModel model)
         {
+            if (SelectedHistoryRow == null || !model.DT.ToDate.Equals(SelectedHistoryRow.Date)) return;
             var obd = new OBDHistoryDataModel { DevID = model.DevID, DT = model.DT };
             var slowTask = new Task(delegate
             {
@@ -597,10 +607,12 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
                         if (item != null)
                         {
                             var indx = HistoryRows.IndexOf(item);
-                            //var selected = HistoryRows[indx].Equals(SelectedHistoryRow);
+                            _foundselected = HistoryRows[indx].Equals(SelectedHistoryRow);
                             DistanceAll -= HistoryRows[indx].Mileage;
                             HistoryRows[indx] = r;
-                            //if (selected) SelectedHistoryRow = r;
+                            if (_foundselected)
+                                SelectedHistoryRow = r;
+                            _foundselected = false;
                             DistanceAll += r.Mileage;
                         }
                         else
@@ -624,7 +636,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             //SortDataByDate(true);
             AccHistory = null;
             OBDHistory = null;
-            _handler.StartLoadDayLines(Position.Car.Id, SelectedHistoryRow.Date);
+            //_handler.StartLoadDayLines(Position.Car.Id, SelectedHistoryRow.Date);
             _handler.StartLoadOBD(Position.Car.Id, SelectedHistoryRow.Date);
             _handler.StartLoadAcc(Position.Car.Id, SelectedHistoryRow.Date);
 

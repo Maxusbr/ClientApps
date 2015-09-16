@@ -373,10 +373,10 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>                
             </Grid.RowDefinitions>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,4,10,10">
-                <Button x:Name="btnLeft" Content="{Binding Path=PreviosDate}" Visibility="{Binding Path=VisButtons}" Click="btnLeft_Click"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,4,10,10" Visibility="{Binding VisButtons, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}" >
+                <Button x:Name="btnLeft" Content="{Binding Path=PreviosDate}" Click="btnLeft_Click"/>
                 <TextBlock VerticalAlignment="Top" HorizontalAlignment="Right" Text="{Binding StrSelectedDate}" Margin="10,4" FontSize="14" FontWeight="Bold"/>
-                <Button x:Name="btnRight" Content="{Binding Path=NextDate}" Visibility="{Binding Path=VisButtons}" Click="btnRight_Click"/>
+                <Button x:Name="btnRight" Content="{Binding Path=NextDate}" Click="btnRight_Click"/>
             </StackPanel>
             <TextBlock x:Name="tbDate" VerticalAlignment="Top" HorizontalAlignment="Left" Text="{Binding UpDate}"/>
             <Border Grid.Column="1" Padding="5" Grid.Row="1" >

@@ -15,10 +15,10 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
     public class HistoryRowsViewModel : ViewModelBase
     {
         private readonly System.Windows.Threading.Dispatcher _dispatcher;
-        private readonly ObservableCollection<HistoryRow> _rowSList = new ObservableCollection<HistoryRow>();
+        private readonly List<HistoryRow> _rowSList = new List<HistoryRow>();
         private HistoryRow _selectedRow;
 
-        public ObservableCollection<HistoryRow> RowsList
+        public List<HistoryRow> RowsList
         {
             get { return _rowSList; }
         }
@@ -104,13 +104,35 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
 
         internal void Update(LoadedHistoryRows value)
         {
-            if (value == null) return;
+            
             RowsList.Clear();
-            foreach (var item in value.Data)
+            var slowTask = new Task(delegate
             {
-                RowsList.Add(new HistoryRow(item));
-            }
-            ListHistoryRows.Refresh();
+                if (value == null) return;
+                foreach (var item in value.Data)
+                {
+                    RowsList.Add(new HistoryRow(item));
+                }
+            });
+            slowTask.ContinueWith(delegate
+            {
+                DispatherThreadRun(delegate
+                {
+                    ListHistoryRows.Refresh();
+                });
+            });
+            slowTask.Start();
+        }
+
+        /// <summary>
+        /// Выполнение метода action в потоке приложения
+        /// </summary>
+        /// <param name="action"></param>
+        private void DispatherThreadRun(Action action)
+        {
+            if (_dispatcher != null)
+                _dispatcher.BeginInvoke(action);
+
         }
     }
 
