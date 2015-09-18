@@ -329,13 +329,14 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
         /// <param name="data"></param>
         private void Instance_DayRefreshed(DateTime day, List<CarStateModel> data)
         {
+            var dt = new DateTime(day.Year, day.Month, day.Day);
             var f = data.FirstOrDefault();
             if (f == null || f.DevID != Position.ID) return;
-            BuildHistoryRow(data, day);
+            BuildHistoryRow(data, dt);
             if (CarSelector.SelectedCar != null)
                 CacheRoute(string.Format("[{0}]-{1}-{2}-{3}", CarSelector.SelectedCar.ID, day.Day, day.Month, day.Year), data);
-            _lastLoadedDate = day;
-            LoadedText = "Обновляю " + day.ToString("dd.MM.yy");
+            _lastLoadedDate = dt;
+            LoadedText = "Обновляю " + dt.ToString("dd.MM.yy");
         }
 
         ////loading data of history completed
