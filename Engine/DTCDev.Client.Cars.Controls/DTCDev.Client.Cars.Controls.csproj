@@ -203,6 +203,9 @@
     <Compile Include="Controls\Settings\SettingsControllers.xaml.cs">
       <DependentUpon>SettingsControllers.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Settings\SettingsNotification.xaml.cs">
+      <DependentUpon>SettingsNotification.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Settings\SettingsZones.xaml.cs">
       <DependentUpon>SettingsZones.xaml</DependentUpon>
     </Compile>
@@ -219,6 +222,7 @@
     <Compile Include="Models\RoutesModel.cs" />
     <Compile Include="ViewModels\Car\CarDetailsViewModel.cs" />
     <Compile Include="ViewModels\Car\CarInOutViewModel.cs" />
+    <Compile Include="ViewModels\Car\CarsNotificationViewModel.cs" />
     <Compile Include="ViewModels\Car\CarsViewModel.cs" />
     <Compile Include="ViewModels\Car\CarToolTipViewModel.cs" />
     <Compile Include="ViewModels\Car\CarZoneHistoryErrorViewModel.cs" />
@@ -433,6 +437,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Settings\SettingsControllers.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Settings\SettingsNotification.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

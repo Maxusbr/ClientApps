@@ -24,6 +24,22 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Car
             CarsHandler.Instance.CarsRefreshed += Instance_CarsRefreshed;
             CarSelector.OnCarChanged -= CarSelector_OnCarChanged;
             CarSelector.OnCarChanged += CarSelector_OnCarChanged;
+            CarSelector.OnCarSelected -= CarSelector_OnCarSelected;
+            CarSelector.OnCarSelected += CarSelector_OnCarSelected;
+            CarSelector.ClearSelection -= CarSelector_ClearSelection;
+            CarSelector.ClearSelection += CarSelector_ClearSelection;
+        }
+
+        private void CarSelector_ClearSelection(object sender, EventArgs e)
+        {
+            foreach (var el in CarsList)
+                el.Selected = false;
+        }
+
+        private void CarSelector_OnCarSelected(IEnumerable<string> cars)
+        {
+            foreach (var el in CarsList)
+                el.Selected = cars.FirstOrDefault(o => el.ID.Equals(o)) != null;
         }
 
         void CarSelector_OnCarChanged(DISP_Car car)

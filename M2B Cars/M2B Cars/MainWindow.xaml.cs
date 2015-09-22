@@ -193,6 +193,7 @@ namespace M2B_Cars
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
+            CarSelector.OnClearSelection();
             ContentGrid.Visibility = Visibility.Collapsed;
             ccContent.Content = null;
         }
