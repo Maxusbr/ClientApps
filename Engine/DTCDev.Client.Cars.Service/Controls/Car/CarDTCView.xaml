@@ -58,5 +58,12 @@
             <Image Source="/DTCDev.Client.Cars.Service;component/Assets/Images/binders.png" Width="24"/>
         </Button>
         <ContentControl Grid.RowSpan="3" Grid.ColumnSpan="3" x:Name="ccBusy" Visibility="Collapsed"/>
+        <Button Grid.Column="2" Style="{DynamicResource MetroCircleButtonStyle}" Width="52" Height="52" x:Name="btnDropError" Click="btnDropError_Click">
+            <Grid>
+                <Image Source="/DTCDev.Client.Cars.Service;component/Assets/Images/engine.png" Width="34"/>
+                <Path Stroke="Red" StrokeThickness="2" Data="M 0,2 2,0 34,34 " Fill="Red"/>
+                <Path Stroke="Red" StrokeThickness="2" Data="M 34,2 32,0 0,34" Fill="Red"/>
+            </Grid>
+        </Button>
     </Grid>
 </UserControl>

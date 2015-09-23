@@ -7,7 +7,7 @@
              xmlns:converters="clr-namespace:DTCDev.Client.Cars.Controls.Controls.History"
              xmlns:busy="clr-namespace:DTCDev.Client.Busy;assembly=DTCDev.Client"
              mc:Ignorable="d" 
-             d:DesignHeight="301" d:DesignWidth="559" d:DataContext="{d:DesignInstance history:HistoryWorkViewModel}" Loaded="UserControl_Loaded">
+             d:DesignHeight="301" d:DesignWidth="809" d:DataContext="{d:DesignInstance history:HistoryWorkViewModel}" Loaded="UserControl_Loaded">
     <UserControl.Resources>
         <converters:SpeedValueToStyleConverter x:Key="ValueToStyleConverter" СonditionValue="{StaticResource DarkOrange1}" TrueValue="{StaticResource Green1}" FalseValue="{StaticResource DarkRed1}" DesibleValue="Transparent" />
         <Style x:Key="StyleCell" TargetType="{x:Type DataGridCell}">
@@ -23,17 +23,17 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="300"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
         <Border Padding="5" BorderThickness="1" Margin="0,0,1,0" BorderBrush="Gray">
             <DataGrid ItemsSource="{Binding HistoryRows}" AutoGenerateColumns="False" SelectedItem="{Binding SelectedHistoryRow, Mode=TwoWay}" CanUserAddRows="False" SelectionMode="Single" FontSize="9.333">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding StringDate}" Header="Дата" Width="*" IsReadOnly="True"/>
-                    <DataGridTextColumn Binding="{Binding Mileage}" Header="Пробег" IsReadOnly="True"/>
-                    <DataGridTextColumn Binding="{Binding MiddleSpeed}" Header="Ср. скорость" IsReadOnly="True"/>
-                    <DataGridTextColumn Binding="{Binding Start}" Header="Начало" IsReadOnly="True"/>
-                    <DataGridTextColumn Binding="{Binding Stop}" Header="Окончание" IsReadOnly="True"/>
+                    <DataGridTextColumn Binding="{Binding Mileage}" Header="км/д" Width="55" IsReadOnly="True"/>
+                    <DataGridTextColumn Binding="{Binding MiddleSpeed}" Header="км/ч" Width="55" IsReadOnly="True"/>
+                    <DataGridTextColumn Binding="{Binding Start}" Header="Start" Width="55" IsReadOnly="True"/>
+                    <DataGridTextColumn Binding="{Binding Stop}" Header="stop" Width="55" IsReadOnly="True"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Border>

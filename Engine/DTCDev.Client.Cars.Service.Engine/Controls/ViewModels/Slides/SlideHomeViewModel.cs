@@ -264,10 +264,12 @@ namespace DTCDev.Client.Cars.Service.Engine.Controls.ViewModels.Slides
         private void StartAddNews()
         {
             Thread.Sleep(1000);
+            AddNews("Добавлена функция гашения ошибок");
+            Thread.Sleep(100);
             AddNews("Добавлена работа с пользователями программы");
             Thread.Sleep(100);
             AddNews("Добавлена форма обратной связи и форма заказа оборудования. Подробнее в разделе \"Помощь\"");
-            Thread.Sleep(1000);
+            Thread.Sleep(100);
             AddNews("Добавлены мастера приемщики и выбор мастера, находящегося сейчас в смене");
             Thread.Sleep(100);
             AddNews("Добавлена возможность просмотра справки по программе");

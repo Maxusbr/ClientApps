@@ -6,12 +6,25 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Background="White">
-        <ListBox ItemsSource="{Binding Path=CarsList}" SelectedItem="{Binding Path=SelectedCar, Mode=TwoWay}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <ListBox Grid.Row="1" ItemsSource="{Binding Path=CarsList}" SelectedItem="{Binding Path=SelectedCar, Mode=TwoWay}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Car:CarViewElement CarExemplar="{Binding}"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        <DataGrid Grid.Row="1" FontSize="10" ItemsSource="{Binding Path=CarsList}" SelectedItem="{Binding Path=SelectedCar, Mode=TwoWay}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Название" Width="120"/>
+                <DataGridTextColumn Header="Связь"/>
+                <DataGridTextColumn Header="СП" ToolTipService.ToolTip="Кол-во спутников"/>
+                <DataGridTextColumn Header="Скор"/>
+                <DataGridTextColumn Header="МВ"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </UserControl>
