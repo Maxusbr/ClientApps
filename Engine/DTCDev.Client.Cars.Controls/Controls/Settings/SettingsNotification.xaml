@@ -27,10 +27,11 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <TextBlock Text="Номер телефона:" VerticalAlignment="Center" Margin="5" />
-            <TextBox Text="{Binding PhoneNumber, Mode=TwoWay}" MinWidth="100" Grid.Column="1" Margin="5"/>
+            <TextBox Text="{Binding PhoneNumber, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" MinWidth="100" Grid.Column="1" Margin="5"/>
             <CheckBox Content="Уведомлять о выходе из зоны" IsChecked="{Binding IsZoneControl, Mode=TwoWay}" Grid.ColumnSpan="2" Grid.Row="1" Margin="5" />
             <TextBlock Text="Максимальная скорость:" VerticalAlignment="Center" Margin="5" Grid.Row="2" />
-            <TextBox Text="{Binding SpeedWarning, Mode=TwoWay}" HorizontalContentAlignment="Right" Margin="5" Grid.Column="1" Grid.Row="2"/>
+            <TextBox Text="{Binding SpeedWarning, Mode=TwoWay, NotifyOnValidationError=True, StringFormat=\{0:D\}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                     HorizontalContentAlignment="Right" Margin="5" Grid.Column="1" Grid.Row="2" />
             <Button Content="Привязать" Command="{Binding AddPhoneLinkCommand}" Grid.ColumnSpan="2" Grid.Row="3" Margin="5" IsEnabled="{Binding EnableButtons, Mode=OneWay}" />
         </Grid>
         <ListView ItemsSource="{Binding ListPhone}" SelectedItem="{Binding SelectedPhone, Mode=TwoWay}" Grid.Column="1" Margin="5" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" MinWidth="120"/>

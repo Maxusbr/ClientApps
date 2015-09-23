@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Data;
 using DTCDev.Client.Cars.Controls.ViewModels.History;
 using DTCDev.Client.Cars.Engine.AppLogic;
@@ -14,7 +15,7 @@ using Microsoft.Win32;
 
 namespace DTCDev.Client.Cars.Controls.ViewModels.Car
 {
-    public class CarsNotificationViewModel : BaseViewModel
+    public class CarsNotificationViewModel : BaseViewModel, IDataErrorInfo
     {
         private readonly List<PhoneCarsLink> _phonesCarsList = new List<PhoneCarsLink>();
         private string _selectedPhone;
@@ -58,7 +59,6 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Car
                 if (_phoneNumber == value) return;
                 _phoneNumber = value;
                 OnPropertyChanged("PhoneNumber");
-                OnPropertyChanged("EnableButtons");
             }
         }
 
@@ -117,7 +117,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Car
             SpeedWarning = link.SpeedWarning;
         }
 
-        public bool EnableButtons { get { return !string.IsNullOrEmpty(PhoneNumber) && _selectedCar != null; } }
+        public bool EnableButtons { get { return !string.IsNullOrEmpty(PhoneNumber) && _selectedCar != null && ValidatePhone(); } }
+
+        
 
         private RelayCommand _addPhoneLinkCommand;
         private string _phoneNumber;
@@ -127,6 +129,12 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Car
         public RelayCommand AddPhoneLinkCommand
         {
             get { return _addPhoneLinkCommand ?? (_addPhoneLinkCommand = new RelayCommand(a => AddPhoneLink())); }
+        }
+
+        private bool ValidatePhone()
+        {
+            var rg = new Regex(@"^\+?\d?(\(\d{3,5}\))?[\d- ]+\d$");
+            return PhoneNumber != null && rg.IsMatch(PhoneNumber);
         }
 
         private void AddPhoneLink()
@@ -162,6 +170,22 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Car
         {
             //TODO Сохранить привязку в базе
         }
+
+        public string this[string columnName]
+        {
+            get
+            {
+                error = string.Empty;
+                OnPropertyChanged("EnableButtons");
+                if (columnName == "PhoneNumber" && !ValidatePhone())
+                {
+                    error = PhoneNumber != null ? "Неверный формат телефона!": string.Empty;
+                }
+                return error;
+            }
+        }
+        private string error = string.Empty;
+        public string Error { get { return error; } }
     }
 
     public class PhoneCarsLink : BaseViewModel
