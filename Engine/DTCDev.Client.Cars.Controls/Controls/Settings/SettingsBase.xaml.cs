@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DTCDev.Client.Cars.Engine.AppLogic;
 
 namespace DTCDev.Client.Cars.Controls.Controls.Settings
 {
@@ -30,6 +31,7 @@ namespace DTCDev.Client.Cars.Controls.Controls.Settings
 
         private void Image_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            CarSelector.OnClearSelection();
             grdContent.Children.Clear();
             grdContent.Visibility = Visibility.Collapsed;
             stkBack.Visibility = Visibility.Collapsed;
@@ -62,6 +64,14 @@ namespace DTCDev.Client.Cars.Controls.Controls.Settings
         private void grdControllerLines_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             SettingsControllerLines control = new SettingsControllerLines();
+            grdContent.Children.Add(control);
+            grdContent.Visibility = Visibility.Visible;
+            stkBack.Visibility = Visibility.Visible;
+        }
+
+        private void grdPhones_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var control = new SettingsNotification();
             grdContent.Children.Add(control);
             grdContent.Visibility = Visibility.Visible;
             stkBack.Visibility = Visibility.Visible;

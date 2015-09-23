@@ -33,7 +33,7 @@
                 <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/SettingsMenu/car-icon.png" Width="33"/>
                 <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="Автомобили в зонах" VerticalAlignment="Center" FontSize="16" Margin="10,0,0,0"/>
             </Grid>
-            <Grid Visibility="Collapsed" Width="200" Height="40" Margin="5" x:Name="grdControlles" MouseLeftButtonUp="grdControllers_MouseLeftButtonUp" Cursor="Hand">
+            <Grid Width="200" Height="40" Margin="5" x:Name="grdControlles" MouseLeftButtonUp="grdControllers_MouseLeftButtonUp" Cursor="Hand" Visibility="Collapsed">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="40"/>
                     <ColumnDefinition/>
@@ -42,7 +42,7 @@
                 <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/gas_station.png" Width="33"/>
                 <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="Настройки линии топлива" VerticalAlignment="Center" FontSize="16" Margin="10,0,0,0"/>
             </Grid>
-            <Grid Visibility="Collapsed" Width="200" Height="40" Margin="5" x:Name="grdControllerLines" MouseLeftButtonUp="grdControllerLines_MouseLeftButtonUp" Cursor="Hand">
+            <Grid Width="200" Height="40" Margin="5" x:Name="grdControllerLines" MouseLeftButtonUp="grdControllerLines_MouseLeftButtonUp" Cursor="Hand" Visibility="Collapsed">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="40"/>
                     <ColumnDefinition/>
@@ -50,6 +50,15 @@
                 <Border Grid.ColumnSpan="2" Background="White" Opacity="0"/>
                 <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/SettingsMenu/device.png" Width="33"/>
                 <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="Настройки датчиков" VerticalAlignment="Center" FontSize="16" Margin="10,0,0,0"/>
+            </Grid>
+            <Grid Width="200" Height="40" Margin="5" x:Name="grdPhones" MouseLeftButtonUp="grdPhones_MouseLeftButtonUp" Cursor="Hand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.ColumnSpan="2" Background="White" Opacity="0"/>
+                <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/SettingsMenu/device.png" Width="33"/>
+                <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="Настройки уведомлений" VerticalAlignment="Center" FontSize="16" Margin="10,0,0,0"/>
             </Grid>
         </WrapPanel>
         <Grid Grid.Row="1" x:Name="grdContent" Background="White" Visibility="Collapsed">

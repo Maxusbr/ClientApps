@@ -339,6 +339,7 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
 
 
         private FuelDataModel _fuelData = new FuelDataModel();
+        
 
         /// <summary>
         /// Данные о топливе в автомобиле
@@ -352,7 +353,19 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
             }
         }
 
-
+        private bool _selected;
+        /// <summary>
+        /// Выбран ли автомобиль
+        /// </summary>
+        public bool Selected
+        {
+            get { return _selected; }
+            set
+            {
+                _selected = value;
+                OnPropertyChanged("Selected");
+            }
+        }
 
 
         public class EOBDData

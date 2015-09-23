@@ -8,6 +8,7 @@
              Height="Auto" d:DesignWidth="500" MinWidth="350" x:Name="control" Foreground="Black">
     <UserControl.Resources>
         <Models:InvertBoolToVisibilityConverter x:Key="InvertBoolToVisibilityConverter"/>
+        <Models:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <Storyboard x:Key="stbShowDetails">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="image1">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
@@ -119,8 +120,9 @@
             <TextBlock x:Name="txtFuel" Text="000 л" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
         </Grid>
         <Border Grid.ColumnSpan="5" BorderBrush="DarkRed" Visibility="{Binding CarExemplar.ZoneData.InZone, Converter={StaticResource InvertBoolToVisibilityConverter}, ElementName=control}" BorderThickness="1"/>
-        
-        
+        <Border Grid.ColumnSpan="5" BorderBrush="DarkBlue" Visibility="{Binding CarExemplar.Selected, Converter={StaticResource BoolToVisibilityConverter}, ElementName=control}" BorderThickness="1" />
+
+
         <!-- Statuses-->
         <Grid Grid.Row="1" Grid.ColumnSpan="8" x:Name="grdStatusNetwork" Height="0">
             <Grid.ColumnDefinitions>
@@ -146,7 +148,7 @@
                 <StackPanel x:Name="stkOBDParams"/>
             </ScrollViewer>
         </Grid>
-        
+
         <StackPanel x:Name="stkSensors" Grid.Column="10"/>
     </Grid>
 </UserControl>

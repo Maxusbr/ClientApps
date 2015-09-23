@@ -38,9 +38,21 @@ namespace DTCDev.Client.Cars.Engine.AppLogic
         }
 
         public delegate void OnCarChangedHandler(DISP_Car car);
+        public delegate void OnCarMoreSelectedHandler(IEnumerable<string> cars);
 
         public static event OnCarChangedHandler OnCarChanged;
         public static event OnCarChangedHandler ViewCarDetails;
+        public static event OnCarMoreSelectedHandler OnCarSelected;
+        public static event EventHandler ClearSelection;
 
+        public static void CreateCarSelected(IEnumerable<string> cars)
+        {
+            if (OnCarSelected != null) OnCarSelected(cars);
+        }
+
+        public static void OnClearSelection()
+        {
+            if (ClearSelection != null) ClearSelection(null, EventArgs.Empty);
+        }
     }
 }
