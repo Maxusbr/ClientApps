@@ -1,0 +1,25 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:reports="clr-namespace:DTCDev.Client.Cars.Controls.ViewModels.Reports"
+             xmlns:convertors="clr-namespace:DTCDev.Client.BindingConvertors;assembly=DTCDev.Client" 
+             x:Class="DTCDev.Client.Cars.Controls.Controls.Reports.ParkReportValueControl"
+             mc:Ignorable="d" 
+              d:DesignWidth="294.28" d:DataContext="{d:DesignInstance {x:Type reports:ChangedValue}}" >
+    <UserControl.Resources>
+        <convertors:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+    <Border Padding="5,0">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="&#xE2BC;" FontFamily="Segoe UI Symbol" FontSize="18.667" Foreground="DarkGreen" Visibility="{Binding ChangedUp, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <TextBlock Grid.Column="0" Text="&#xE2BD;" FontFamily="Segoe UI Symbol" FontSize="18.667" Foreground="DarkRed" Visibility="{Binding ChangedDn, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <TextBlock Grid.Column="1" Text="{Binding StringValue}" TextAlignment="Right" Margin="10,0,0,0" VerticalAlignment="Center"/>
+        </Grid>
+    </Border>
+</UserControl>

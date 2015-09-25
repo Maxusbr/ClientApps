@@ -61,7 +61,9 @@ namespace DTCDev.Client.Cars.Controls.Controls.Reports
 
         private void grdParkingReport_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-
+            grdContent.Children.Add(new ParkReport());
+            grdContent.Visibility = Visibility.Visible;
+            stkBack.Visibility = Visibility.Visible;
         }
 
         private void grdFuelReport_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)

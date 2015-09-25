@@ -51,14 +51,14 @@
                 <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/ReportsMenu/work.png" Width="32"/>
                 <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="Начало/окончание работы" VerticalAlignment="Center" FontSize="16" Margin="10,0,0,0"/>
             </Grid>
-            <Grid Width="200" Height="40" Margin="5" Visibility="Collapsed" x:Name="grdParkingReport" MouseLeftButtonUp="grdParkingReport_MouseLeftButtonUp" Cursor="Hand">
+            <Grid Width="200" Height="40" Margin="5" x:Name="grdParkingReport" MouseLeftButtonUp="grdParkingReport_MouseLeftButtonUp" Cursor="Hand">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="40"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Border Grid.ColumnSpan="2" Background="White" Opacity="0"/>
                 <Image Source="/DTCDev.Client.Cars.Controls;component/Assets/Content/Images/ReportsMenu/stop.png" Width="33"/>
-                <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="Стоянки" VerticalAlignment="Center" FontSize="16" Margin="10,0,0,0"/>
+                <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="Парковый отчет" VerticalAlignment="Center" FontSize="16" Margin="10,0,0,0"/>
             </Grid>
             <Grid Width="200" Height="40" Margin="5" x:Name="grdFuelReport" MouseLeftButtonUp="grdFuelReport_MouseLeftButtonUp" Cursor="Hand">
                 <Grid.ColumnDefinitions>
