@@ -50,6 +50,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
         public delegate void OrderRecomendationsLoadHandler(string text);
         public event OrderRecomendationsLoadHandler OrderRecomendationsLoad;
         private bool _onlyFill;
+        /// <summary>
+        /// Send clear DTC codes result complete. Object is bool value. True - success, false - error
+        /// </summary>
+        public event EventHandler ClearDTCCodesSended;
 
 
         private void GetCarDetailComplete(CarListDetailsDataModel cardetail)
@@ -356,6 +360,15 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
             catch { }
         }
 
+        public void ClearTroubleCodes(string deviceID)
+        {
+            try
+            {
+                TCPConnection.Instance.SendData("BZ" + deviceID);
+            }
+            catch { }
+        }
+
 
 
 
@@ -443,6 +456,10 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                 case 'v':
                 case 'V':
                     FillsendSatus(row);
+                    break;
+                case 'z':
+                case 'Z':
+                    ClearCodesSended(row);
                     break;
 
             }
@@ -783,6 +800,19 @@ namespace DTCDev.Client.Cars.Service.Engine.Handlers
                 {
                     CarStorage.Instance.SetSendStatus(sended, submited);
                 }));
+        }
+
+        //parse clear dtc codes result
+        private void ClearCodesSended(string result)
+        {
+            if (Application.Current != null && ClearDTCCodesSended!=null)
+                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        if (result == "OK")
+                            ClearDTCCodesSended(true, new EventArgs());
+                        else
+                            ClearDTCCodesSended(false, new EventArgs());
+                    }));
         }
     }
 }

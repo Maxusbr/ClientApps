@@ -187,5 +187,33 @@ namespace DTCDev.Client.Cars.Service.Controls.Car
             //myPanel.Arrange(new Rect(new Point(0, 0), myPanel.DesiredSize));
             printDialog.PrintVisual(myPanel, "Статистика по ошибкам");
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnDropError_Click(object sender, RoutedEventArgs e)
+        {
+            if(MessageBox.Show("Вы уверены, что хотите удалить коды неисправностей в автомобиле? Коды неисправностей будут удалены не в базе программы, а очищены непосредственно в автомобиле.", "Очистка кодов неисправностей", MessageBoxButton.YesNo)==MessageBoxResult.Yes)
+            {
+                CarsHandler.Instance.ClearDTCCodesSended += Instance_ClearDTCCodesSended;
+                CarsHandler.Instance.ClearTroubleCodes(_car.CarModel.DID);
+            }
+        }
+
+        void Instance_ClearDTCCodesSended(object sender, EventArgs e)
+        {
+            bool result = (bool)sender;
+            if(result)
+            {
+                MessageBox.Show("Отправка запроса на сброс кодов выполнена успешно. Коды неисправностей будут сброшены в ближайшее время");
+            }
+            else
+            {
+                MessageBox.Show("Во время выполнения запроса произошла ошибка. Попробуйте повторить действие.");
+            }
+            CarsHandler.Instance.ClearDTCCodesSended -= Instance_ClearDTCCodesSended;
+        }
     }
 }
