@@ -44,6 +44,8 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
             {
                 _data = value;
                 OnPropertyChanged("Data");
+                OnPropertyChanged("MB");
+                OnPropertyChanged("LastDateUpdate");
                 Update();
                 if (value == null) return;
 
@@ -55,13 +57,13 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
                     Navigation.Angle = Data.Navigation.Speed / 10 - 30;
                     Navigation.CountSatelite = Data.Navigation.Sattelites.ToString();
                 }
-                Navigation.Current_Speed = value.Navigation.Speed/10.0;
+                Navigation.Current_Speed = value.Navigation.Speed / 10.0;
                 FuelData.CalculateFuelData(value);
             }
         }
 
         private readonly NavigationData _navigation = new NavigationData();
-        
+
         /// <summary>
         /// Данные о навигации автомобиля
         /// </summary>
@@ -339,7 +341,7 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
 
 
         private FuelDataModel _fuelData = new FuelDataModel();
-        
+
 
         /// <summary>
         /// Данные о топливе в автомобиле
@@ -367,6 +369,59 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
             }
         }
 
+        public string LastDateUpdate
+        {
+            get
+            {
+                return Data.DateUpdate.Y > 1 ?
+                  Data.DateUpdate.ToDateTime().ToString("dd.MM.yy HH:mm:ss") : "---";
+            }
+        }
+
+        public int MB
+        {
+            get
+            {
+                var res = 0;
+                if (Data.AcsX == 0 && Data.AcsXMax == 0 && Data.AcsY == 0 && Data.AcsYMax == 0 && Data.AcsZ == 0 &&
+                    Data.AcsZMax == 0)
+                    return res;
+                double x = Data.AcsX - Data.AcsXMax;
+                double y = Data.AcsY - Data.AcsYMax;
+                double z = Data.AcsZ - Data.AcsZMax;
+
+                x = Math.Abs(x);
+                y = Math.Abs(y);
+                z = Math.Abs(z);
+
+                x = (100 - x) / 100.0d * 0.3d;
+                y = (100 - y) / 100.0d * 0.5d;
+                z = (100 - z) / 100.0d * 0.2d;
+
+                var ak = (x + y + z) * 0.7;
+                double spk = 0;
+                if (Data.Navigation.Speed < 300)
+                    spk = 0.3d;
+                else
+                    spk = 300 / (double)Data.Navigation.Speed;
+                if (Data.Navigation.Speed > 1100)
+                    ak = ak * 1100 / (double)Data.Navigation.Speed;
+
+                res = (int)((ak + spk) * 100);
+                return res;
+            }
+        }
+
+        private bool _visableOBDDetails;
+        public bool VisableOBDDetails
+        {
+            get { return _visableOBDDetails; }
+            set
+            {
+                _visableOBDDetails = value;
+                OnPropertyChanged("VisableOBDDetails");
+            }
+        }
 
         public class EOBDData
         {
@@ -375,6 +430,6 @@ namespace DTCDev.Client.Cars.Engine.DisplayModels
             public string Value { get; set; }
         }
 
-        
+
     }
 }

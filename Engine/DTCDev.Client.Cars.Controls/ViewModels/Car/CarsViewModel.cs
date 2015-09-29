@@ -54,6 +54,9 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Car
         public ObservableCollection<DISP_Car> CarsList { get; set; }
 
         private DISP_Car _selectedCar;
+        private bool _toggleButtonChecked;
+
+
         public DISP_Car SelectedCar
         {
             get { return _selectedCar; }
@@ -66,8 +69,21 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Car
             }
         }
 
+        public bool ToggleButtonChecked
+        {
+            get { return _toggleButtonChecked; }
+            set
+            {
+                _toggleButtonChecked = value;
+                OnPropertyChanged("ToggleButtonChecked");
+                OnPropertyChanged("ToggleButtonName");
+            }
+        }
 
-
+        public string ToggleButtonName
+        {
+            get { return ToggleButtonChecked ? "Список": "Таблица"; }
+        }
 
         void Instance_CarsRefreshed(IEnumerable<DISP_Car> data )
         {
