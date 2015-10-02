@@ -290,7 +290,7 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.History
             //return;
             //var exist = _loadedObdData.FirstOrDefault(o => o.DT.ToDate.Equals(data.DT.ToDate));
             //if (exist == null)
-                if (!data.DT.ToDate.Equals(SelectedDate)) return;
+                if (data.DT == null || !data.DT.ToDate.Equals(SelectedDate)) return;
             var list = new List<ScaleValuesData>();
             var slowTask = new Task(delegate
             {

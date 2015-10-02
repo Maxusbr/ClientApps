@@ -34,15 +34,16 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Reports
         {
             _dispatcher = dispatcher;
             Iswaiting = true;
-            Date = day;
+            Date = new DateTime(day.Year, day.Month, day.Day);
             SortDataByDate(data, day);
             HistoryHandler.Instance.OBDLoaded += Instance_OBDLoaded;
-            HistoryHandler.Instance.StartLoadOBD(CarSelector.SelectedCar.Car.Id, day);
+            HistoryHandler.Instance.StartLoadOBD(CarSelector.SelectedCar.Car.Id, Date);
         }
 
         private void Instance_OBDLoaded(OBDHistoryDataModel model)
         {
-            if (model == null || !CarSelector.SelectedCar.Car.Id.Equals(model.DevID) || !model.Data.Any()) return;
+            if (model == null || !CarSelector.SelectedCar.Car.Id.Equals(model.DevID) || !model.Data.Any()
+                || !Date.Equals(model.DT.ToDate)) return;
             HistoryHandler.Instance.OBDLoaded -= Instance_OBDLoaded;
             var converter = new PIDConverter();
             DispatherThreadRun(delegate
