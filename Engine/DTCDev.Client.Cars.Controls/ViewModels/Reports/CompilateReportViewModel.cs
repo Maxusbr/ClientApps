@@ -87,18 +87,19 @@ namespace DTCDev.Client.Cars.Controls.ViewModels.Reports
         private void Instance_DayRefreshed(DateTime day, List<CarStateModel> data)
         {
             var curentdata = data ?? new List<CarStateModel>();
+            var dt = new DateTime(day.Year, day.Month, day.Day);
             var first = curentdata.FirstOrDefault();
-            if(first == null || !first.DevID.Equals(CarSelector.SelectedCar.Car.Id) || !Vaiting || day < DateStart || day > DateStop) return;
-            var el = HistoryRows.FirstOrDefault(o => o.Date.Equals(day));
+            if(first == null || !first.DevID.Equals(CarSelector.SelectedCar.Car.Id) || !Vaiting || dt < DateStart || dt > DateStop) return;
+            var el = HistoryRows.FirstOrDefault(o => o.Date.Equals(dt));
             if (el == null)
                 DispatherThreadRun(() =>
                 {
-                    var item = new HistoryCarStateViewModel(curentdata, day, _dispatcher);
+                    var item = new HistoryCarStateViewModel(curentdata, dt, _dispatcher);
                     OnAddHistoryRow(item);
                     HistoryRows.Add(item);
                 });
             else
-                el.SortDataByDate(curentdata, day);
+                el.SortDataByDate(curentdata, dt);
             //if(!_loadedObdData.Any(o => o.DT.ToDate.Equals(day)))
                 
         }
